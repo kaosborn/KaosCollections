@@ -55,6 +55,7 @@
     <Compile Include="TestBtreeLinq.cs" />
     <Compile Include="TestBtreeObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestBtreeStress.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
