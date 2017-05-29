@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "BtreeDictionary", "BtreeDictionary\BtreeDictionary.shproj", "{9AAB8F38-1582-401D-A4FD-ADAE2C6CB496}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KaosCollections400", "KaosCollections400\KaosCollections400.csproj", "{04BC35F4-F0D8-47D0-AE7C-B2D62BE49FC6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Collections400", "Collections400\Collections400.csproj", "{04BC35F4-F0D8-47D0-AE7C-B2D62BE49FC6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{5FF2A63A-FAF6-4C90-8A11-B491F46A70A9}"
 EndProject

@@ -47,9 +47,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\KaosCollections400\KaosCollections400.csproj">
+    <ProjectReference Include="..\..\Collections400\Collections400.csproj">
       <Project>{04bc35f4-f0d8-47d0-ae7c-b2d62be49fc6}</Project>
-      <Name>KaosCollections400</Name>
+      <Name>Collections400</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

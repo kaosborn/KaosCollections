@@ -7,7 +7,7 @@
     <ProjectGuid>{04BC35F4-F0D8-47D0-AE7C-B2D62BE49FC6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KaosCollections400</RootNamespace>
+    <RootNamespace>Kaos.Collections</RootNamespace>
     <AssemblyName>KaosCollections400</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
