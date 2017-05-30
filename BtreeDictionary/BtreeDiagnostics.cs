@@ -13,7 +13,6 @@ using System.Collections.Generic;
 namespace Kaos.Collections
 {
 #if DEBUG
-    [Serializable]
     public class BtreeInsaneException : Exception
     {
         public BtreeInsaneException () { }

@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.4</TargetFramework>
+    <AssemblyName>KaosCollections</AssemblyName>
+    <RootNamespace>Kaos.Collections</RootNamespace>
+    <Version>0.3.0</Version>
+    <Authors>Kasey O.</Authors>
+    <Description>Generic collections library</Description>
+    <AssemblyVersion>0.3.0.0</AssemblyVersion>
+    <FileVersion>0.3.0.0</FileVersion>
+    <Company>github.com/kaosborn</Company>
+    <PackageId>Kaos.Collections</PackageId>
+    <Copyright>Copyright © github.com/kaosborn 2009-2017</Copyright>
+    <PackageProjectUrl>https://github.com/kaosborn/KaosCollections/wiki</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/kaosborn/KaosCollections.git</RepositoryUrl>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <RepositoryType>Git</RepositoryType>
+    <PackageReleaseNotes>Contains only BtreeDictionary (a SortedDictionary replacement).</PackageReleaseNotes>
+    <PackageTags>Generics Collections SortedDictionary BTree</PackageTags>
+  </PropertyGroup>
+
+  <Import Project="..\BtreeDictionary\BtreeDictionary.projitems" Label="Shared" />
+
+</Project>
