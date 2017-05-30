@@ -135,7 +135,7 @@ namespace Kaos.Collections
                 Console.Write ("L{0}: ", level);
                 for (; ; )
                 {
-                    branch.Dump ();
+                    branch.Dump();
                     branch = (Branch<TKey>) branchPath.TraverseRight();
 
                     if (branch == null)
@@ -143,7 +143,7 @@ namespace Kaos.Collections
                     Console.Write (" | ");
                 }
                 ++level;
-                Console.WriteLine ();
+                Console.WriteLine();
             }
 
             TreePath<TKey, TValue> leafPath = new TreePath<TKey, TValue> (this, level);

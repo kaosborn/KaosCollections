@@ -39,19 +39,19 @@ namespace CollectionsTest
         // Must not contain value 50.
         static int[] keys = new int[] { 12, 28, 15, 18, 14, 19, 25 };
 
-        public void Setup () { Setup (5); }
+        public void Setup() { Setup (5); }
 
         public void Setup (int order)
         {
 #if TEST_SORTEDDICTIONARY
-            tree1 = new SortedDictionary<int, int> ();
-            tree2 = new SortedDictionary<string, int> ();
+            tree1 = new SortedDictionary<int,int>();
+            tree2 = new SortedDictionary<string,int>();
 #else
             tree1 = new BtreeDictionary<int, int> (order);
             tree2 = new BtreeDictionary<string, int> (order);
 #endif
 
-            Type treeType = tree1.GetType ();
+            Type treeType = tree1.GetType();
 
             // For testing explicit implementations.
             genCol1 = (ICollection<KeyValuePair<int, int>>) tree1;

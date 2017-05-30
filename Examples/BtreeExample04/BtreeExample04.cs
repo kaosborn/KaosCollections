@@ -22,7 +22,7 @@ namespace ExampleApp
             Console.WriteLine ("Case insensitive:");
             foreach (KeyValuePair<string, int> pair in tree1)
                 Console.WriteLine (pair.Key);
-            Console.WriteLine ();
+            Console.WriteLine();
 
             var tree2 = new BtreeDictionary<string, int> (StringComparer.Ordinal);
             tree2.Add ("AAA", 0);

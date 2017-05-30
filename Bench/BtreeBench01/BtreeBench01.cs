@@ -3,8 +3,8 @@
 // Purpose: Benchmark SortedDictionary and BtreeDictionary comparisons with range query narrative.
 //
 // Usage notes:
-// - For valid results, run Release build outside Visual Studio.
-// - Adjust reps to change test duration.  Higher values show greater BtreeDictionary improvements.
+// • For valid results, run Release build outside Visual Studio.
+// • Adjust reps to change test duration.  Higher values show greater BtreeDictionary improvements.
 //
 
 using System;

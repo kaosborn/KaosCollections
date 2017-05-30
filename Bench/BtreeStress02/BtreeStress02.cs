@@ -3,7 +3,7 @@
 // Purpose: Stress BtreeDictionary with permutation deletes.
 //
 // Usage notes:
-// - Not a performance test so run Debug version for full diagnostics.
+// • Not a performance test so run Debug version for full diagnostics.
 //
 
 using System;

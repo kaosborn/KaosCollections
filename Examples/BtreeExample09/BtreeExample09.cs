@@ -3,7 +3,7 @@
 // Purpose: Demonstrate FxCore usage.
 //
 // Usage:
-//   To execute from a command prompt run:
+// • To execute from a command prompt run:
 //     dotnet BtreeExample09.dll
 
 using System;

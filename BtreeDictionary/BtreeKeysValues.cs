@@ -100,8 +100,8 @@ namespace Kaos.Collections
                 // Long form used for 5% performance increase.
                 public BtreeKeysEnumerator (BtreeDictionary<TKey, TValue> tree)
                 {
-                    target = tree;
-                    Reset ();
+                    this.target = tree;
+                    Reset();
                 }
 
                 object System.Collections.IEnumerator.Current
@@ -223,9 +223,9 @@ namespace Kaos.Collections
             /// Get an enumerator that will loop thru the collection of values.
             /// </summary>
             /// <returns>An enumerator for the collection.</returns>
-            public IEnumerator<TValue> GetEnumerator ()
+            public IEnumerator<TValue> GetEnumerator()
             {
-                for (Leaf<TKey, TValue> currentLeaf = tree.GetFirstLeaf (); ; )
+                for (Leaf<TKey, TValue> currentLeaf = tree.GetFirstLeaf();; )
                 {
                     for (int leafIndex = 0; leafIndex < currentLeaf.KeyCount; ++leafIndex)
                         yield return currentLeaf.GetValue (leafIndex);
@@ -242,10 +242,10 @@ namespace Kaos.Collections
 
             /// <exclude />
             void ICollection<TValue>.Add (TValue value)
-            { throw new NotSupportedException (); }
+            { throw new NotSupportedException(); }
 
-            void ICollection<TValue>.Clear ()
-            { throw new NotSupportedException (); }
+            void ICollection<TValue>.Clear()
+            { throw new NotSupportedException(); }
 
             bool ICollection<TValue>.Contains (TValue value)
             { return tree.ContainsValue (value); }
@@ -254,7 +254,7 @@ namespace Kaos.Collections
             { get { return true; } }
 
             bool ICollection<TValue>.Remove (TValue val)
-            { throw new NotSupportedException (); }
+            { throw new NotSupportedException(); }
 
             #endregion
         }

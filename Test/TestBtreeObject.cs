@@ -39,9 +39,9 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void Test_Object_CopyTo_ArgumentException1 ()
+        public void Test_Object_CopyTo_ArgumentException1()
         {
-            Setup ();
+            Setup();
             var target = new System.Collections.Generic.KeyValuePair<int, int>[keys.Length,2];
             objCol1.CopyTo (target, 0);
         }
@@ -275,7 +275,7 @@ namespace CollectionsTest
         public void Test_Object_Keys_GetEnumerator()
         {
             int n = 10;
-            Setup ();
+            Setup();
 
             for (int k = 0; k < n; ++k)
                 tree1.Add (k, k + 1000);
@@ -311,7 +311,7 @@ namespace CollectionsTest
         [TestMethod]
         public void Test_Object_Keys_IsSynchronized()
         {
-            Setup ();
+            Setup();
             Assert.IsFalse (((ICollection) tree1.Keys).IsSynchronized);
         }
 

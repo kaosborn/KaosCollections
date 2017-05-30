@@ -45,7 +45,7 @@ namespace Kaos.Collections
                 throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
 
             if (!(array is System.Collections.Generic.KeyValuePair<TKey, TValue>[])
-                & array.GetType () != typeof (object[]))
+                & array.GetType() != typeof (object[]))
                 throw new ArgumentException ("Target array type is not compatible with the type of items in the collection.");
 
             foreach (System.Collections.Generic.KeyValuePair<TKey, TValue> pair in this)
@@ -57,14 +57,14 @@ namespace Kaos.Collections
 
         /// <summary>Gets an enumerator that iterates thru the collection.</summary>
         /// <returns>An enumerator for the collection.</returns>
-        IDictionaryEnumerator IDictionary.GetEnumerator ()
+        IDictionaryEnumerator IDictionary.GetEnumerator()
         { return new BtreeObjectEnumerator (this); }
 
 
         /// <summary>Gets an enumerator that iterates thru the collection.</summary>
         /// <returns>An enumerator for the collection.</returns>
-        IEnumerator IEnumerable.GetEnumerator ()
-        { return ((IDictionary) this).GetEnumerator (); }
+        IEnumerator IEnumerable.GetEnumerator()
+        { return ((IDictionary) this).GetEnumerator(); }
 
 
         /// <summary>Remove the supplied key and its associated value from the collection.</summary>
@@ -83,7 +83,7 @@ namespace Kaos.Collections
 
         /// <summary>Deprecated.</summary>
         object ICollection.SyncRoot
-        { get { return new System.Object (); } }
+        { get { return new System.Object(); } }
 
         #endregion
 
@@ -241,7 +241,7 @@ namespace Kaos.Collections
 
             /// <summary>Gets an enumerator that iterates thru the collection.</summary>
             /// <returns>An enumerator for the collection.</returns>
-            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator ()
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
             { return GetEnumerator(); }
 
             bool System.Collections.ICollection.IsSynchronized { get { return false; } }
@@ -278,7 +278,7 @@ namespace Kaos.Collections
                 }
             }
 
-            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator ()
+            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
             { return GetEnumerator(); }
 
             bool System.Collections.ICollection.IsSynchronized

@@ -46,8 +46,7 @@ namespace Kaos.Collections
         /// Make a new BTD
         /// consisting of TKey/TValue pairs.
         /// </summary>
-        public BtreeDictionary ()
-            : this (MaximumOrder, null)
+        public BtreeDictionary() : this (MaximumOrder, null)
         { }
 
 
@@ -56,8 +55,7 @@ namespace Kaos.Collections
         /// consisting of TKey/TValue pairs.
         /// </summary>
         /// <param name="order">Maximum number of children of a node.</param>
-        public BtreeDictionary (int order)
-            : this (order, null)
+        public BtreeDictionary (int order) : this (order, null)
         { }
 
 
@@ -66,8 +64,7 @@ namespace Kaos.Collections
         /// consisting of TKey/TValue pairs sorted by the supplied key comparer.
         /// </summary>
         /// <param name="comparer">Comparison operator for keys.</param>
-        public BtreeDictionary (IComparer<TKey> comparer)
-            : this (MaximumOrder, comparer)
+        public BtreeDictionary (IComparer<TKey> comparer) : this (MaximumOrder, comparer)
         { }
 
 
@@ -85,12 +82,12 @@ namespace Kaos.Collections
             this.comparer = comparer != null? comparer : Comparer<TKey>.Default;
 
             // Create an empty tree consisting of an empty branch and an empty leaf.
-            root = new Branch<TKey> (new Leaf<TKey, TValue> (order), order);
-            height = 2;
+            this.root = new Branch<TKey> (new Leaf<TKey, TValue> (order), order);
+            this.height = 2;
 
             // Allocate the subcollections.
-            keys = new BtreeKeys (this);
-            values = new BtreeValues (this);
+            this.keys = new BtreeKeys (this);
+            this.values = new BtreeValues (this);
         }
 
 
@@ -100,8 +97,7 @@ namespace Kaos.Collections
         /// </summary>
         /// <param name="dictionary">The source of the contents of the new
         /// <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>.</param>
-        public BtreeDictionary (IDictionary<TKey, TValue> dictionary)
-            : this (dictionary, null)
+        public BtreeDictionary (IDictionary<TKey, TValue> dictionary) : this (dictionary, null)
         { }
 
 
@@ -113,8 +109,7 @@ namespace Kaos.Collections
         /// <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>.</param>
         /// <param name="comparer">Comparison operator for keys.</param>
         /// <exception cref="ArgumentNullException">When <em>dictionary</em> is <b>null</b>.</exception>
-        public BtreeDictionary (IDictionary<TKey, TValue> dictionary, IComparer<TKey> comparer)
-            : this (comparer)
+        public BtreeDictionary (IDictionary<TKey, TValue> dictionary, IComparer<TKey> comparer) : this (comparer)
         {
             if (dictionary == null)
                 throw new ArgumentNullException ("dictionary");
@@ -216,7 +211,7 @@ namespace Kaos.Collections
         /// <summary>Gets an enumerator that iterates thru the collection.</summary>
         /// <returns>An enumerator for the collection.</returns>
         /// <remarks>Implements IEnumerable&lt;KeyValuePair&lt;TKey, TValue&gt;&gt;.</remarks>
-        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator ()
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         { return new BtreeEnumerator (this); }
 
 
@@ -284,7 +279,7 @@ namespace Kaos.Collections
             public BtreeEnumerator (BtreeDictionary<TKey, TValue> dictionary)
             {
                 target = dictionary;
-                Reset ();
+                Reset();
             }
 
             object System.Collections.IEnumerator.Current
@@ -300,7 +295,7 @@ namespace Kaos.Collections
             /// Advance the enumerator to the next location.
             /// </summary>
             /// <returns><b>false</b> if no more data; otherewise <b>true</b></returns>
-            public bool MoveNext ()
+            public bool MoveNext()
             {
                 if (++leafIndex < currentLeaf.KeyCount)
                     return true;
@@ -313,11 +308,11 @@ namespace Kaos.Collections
             /// <summary>
             /// Move the enumerator back to its initial location.
             /// </summary>
-            public void Reset ()
-            { leafIndex = -1; currentLeaf = target.GetFirstLeaf (); }
+            public void Reset()
+            { leafIndex = -1; currentLeaf = target.GetFirstLeaf(); }
 
             /// <exclude />
-            public void Dispose () { GC.SuppressFinalize (this); }
+            public void Dispose() { GC.SuppressFinalize (this); }
         }
 
         #endregion

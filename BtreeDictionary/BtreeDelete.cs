@@ -32,7 +32,7 @@ namespace Kaos.Collections
                     Debug.Assert (leaf.RightLeaf == null, "only the rightmost leaf should ever be emptied");
 
                     // Leaf is empty.  Prune it unless it is the only leaf in the tree.
-                    Leaf<TKey, TValue> leftLeaf = (Leaf<TKey, TValue>) path.GetLeftNode ();
+                    Leaf<TKey, TValue> leftLeaf = (Leaf<TKey, TValue>) path.GetLeftNode();
                     if (leftLeaf != null)
                     {
                         leftLeaf.RightLeaf = leaf.RightLeaf;
@@ -53,7 +53,7 @@ namespace Kaos.Collections
                         int shifts = leaf.KeyCapacity - (leaf.KeyCount + rightLeaf.KeyCount - 1) / 2;
                         leaf.Add (rightLeaf, 0, shifts);
                         rightLeaf.Remove (0, shifts);
-                        path.TraverseRight ();
+                        path.TraverseRight();
                         path.SetPivot (path.TopNode.GetKey (0));
                     }
                     else

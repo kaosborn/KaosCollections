@@ -17,7 +17,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_Ctor1 ()
+        public void Test_Ctor1()
         {
             var tree = new BtreeDictionary<int, int> (6);
             Assert.AreEqual (0, tree.Count);
@@ -27,7 +27,7 @@ namespace CollectionsTest
         [TestMethod]
         public void Test_BetweenKeys()
         {
-            var bt = new BtreeDictionary<int, int> ();
+            var bt = new BtreeDictionary<int,int>();
 
             for (int i = 90; i >= 0; i -= 10)
                 bt.Add (i, -100 - i);
@@ -48,14 +48,14 @@ namespace CollectionsTest
         [TestMethod]
         public void Test_BetweenKeysPassedEnd()
         {
-            var btree = new BtreeDictionary<int, int> ();
+            var btree = new BtreeDictionary<int,int>();
 
             for (int i = 0; i < 1000; ++i)
                 btree.Add (i, -i);
 
             int iterations = 0;
             int sumVals = 0;
-            foreach (KeyValuePair<int, int> e in btree.BetweenKeys (500, 1500))
+            foreach (KeyValuePair<int,int> e in btree.BetweenKeys (500, 1500))
             {
                 ++iterations;
                 sumVals += e.Value;
@@ -69,7 +69,7 @@ namespace CollectionsTest
         [TestMethod]
         public void Test_SkipUntilKey()
         {
-            var btree = new BtreeDictionary<int, int> ();
+            var btree = new BtreeDictionary<int,int>();
 
             for (int i = 1; i <= 1000; ++i)
                 btree.Add (i, -i);
@@ -92,7 +92,7 @@ namespace CollectionsTest
         public void Test_SkipUntilKeyMissingVal()
         {
 
-            var btree = new BtreeDictionary<int, int> ();
+            var btree = new BtreeDictionary<int,int>();
 
             for (int i = 0; i < 1000; i += 2)
                 btree.Add (i, -i);
@@ -115,7 +115,7 @@ namespace CollectionsTest
         [TestMethod]
         public void Test_SkipUntilKeyPassedEnd()
         {
-            var btree = new BtreeDictionary<int, int> ();
+            var btree = new BtreeDictionary<int,int>();
 
             for (int i = 0; i < 1000; ++i)
                 btree.Add (i, -i);

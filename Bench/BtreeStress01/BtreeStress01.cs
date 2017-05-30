@@ -1,9 +1,9 @@
 ﻿//
-// Brute force testing of insertions and deletions using permutations.
+// Program: BtreeStress01.cs
+// Purpose: Brute force testing of insertions and deletions using permutations.
 //
 
 using System;
-//using System.Collections.Generic;
 using System.Threading;
 using Kaos.Collections;
 using Kaos.Combinatorics;
@@ -12,7 +12,7 @@ namespace KwDataBench
 {
     class BtreeBench03
     {
-        static void Main ()
+        static void Main()
         {
             var tree = new BtreeDictionary<int, int> (5);
             
@@ -32,7 +32,7 @@ namespace KwDataBench
                             {
                                 try
                                 {
-                                    tree.SanityCheck ();
+                                    tree.SanityCheck();
                                 }
                                 catch (DataMisalignedException ex)
                                 {
