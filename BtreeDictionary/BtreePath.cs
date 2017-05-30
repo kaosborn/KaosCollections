@@ -129,7 +129,7 @@ namespace Kaos.Collections
                     return nodeStack[depth].GetKey (indexStack[depth] - 1);
             }
 
-            Debug.Fail ("no left pivot");
+            Debug.Assert (false, "no left pivot");
             return default (TKey);
         }
 
