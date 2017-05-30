@@ -2,6 +2,9 @@
 // Program: BtreeExample01.cs
 // Purpose: Exercise BtreeDictionary.Remove() showing various tree mutation scenarios.
 //
+// Usage notes:
+// • For complete results, run Debug build.
+//
 
 using System;
 using Kaos.Collections;
@@ -28,32 +31,46 @@ namespace ExampleApp
 #if DEBUG
             Console.WriteLine ("\nA BtreeDictionary of order 6 weighted to the right of the root:");
             Console.WriteLine ("(Order is defined as the maximum number of children of a node.)\n");
-            tree.Dump(); tree.SanityCheck();
+            foreach (var lx in tree.GenerateTreeText())
+                Console.WriteLine (lx);
+            tree.SanityCheck();
 
             Console.WriteLine ("\nCoalesce leaves, balance branches by deleting 24:\n");
             tree.Remove (24);
-            tree.Dump(); tree.SanityCheck();
+            foreach (var lx in tree.GenerateTreeText())
+                Console.WriteLine (lx);
+            tree.SanityCheck();
 
             Console.WriteLine ("\nUpdate a branch key by deleting 32:\n");
             tree.Remove (32);
-            tree.Dump(); tree.SanityCheck();
+            foreach (var lx in tree.GenerateTreeText())
+                Console.WriteLine (lx);
+            tree.SanityCheck();
 
             Console.WriteLine ("\nUpdate the root branch key by deleting 62:\n");
             tree.Remove (62);
-            tree.Dump(); tree.SanityCheck();
+            foreach (var lx in tree.GenerateTreeText())
+                Console.WriteLine (lx);
+            tree.SanityCheck();
 
             Console.WriteLine ("\nCoalesce leaves by deleting 58:\n");
             tree.Remove (58);
-            tree.Dump(); tree.SanityCheck();
+            foreach (var lx in tree.GenerateTreeText())
+                Console.WriteLine (lx);
+            tree.SanityCheck();
 
             Console.WriteLine ("\nDelete rightmost branches by deleting 92:");
             Console.WriteLine ("(Any rightmost node may contain as few as 1 element.)\n");
             tree.Remove (92);
-            tree.Dump(); tree.SanityCheck();
+            foreach (var lx in tree.GenerateTreeText())
+                Console.WriteLine (lx);
+            tree.SanityCheck();
 
             Console.WriteLine ("\nCoalesce leaf, coalesce branches, prune root by deleting 36:\n");
             tree.Remove (36);
-            tree.Dump(); tree.SanityCheck();
+            foreach (var lx in tree.GenerateTreeText())
+                Console.WriteLine (lx);
+            tree.SanityCheck();
 #endif
         }
     }

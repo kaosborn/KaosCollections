@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Kaos.Collections
 {
@@ -118,10 +119,11 @@ namespace Kaos.Collections
         /// Display contents of tree by level (breadth first).
         /// </summary>
         /// </exclude>
-        public void Dump()
+        public IEnumerable<string> GenerateTreeText()
         {
             int level = 0;
             Node<TKey> first;
+            var sb = new StringBuilder();
 
             for (;;)
             {
@@ -132,35 +134,40 @@ namespace Kaos.Collections
 
                 Branch<TKey> branch = (Branch<TKey>) first;
 
-                Console.Write ("L{0}: ", level);
-                for (; ; )
+                sb.Append ('L');
+                sb.Append (level);
+                sb.Append (": ");
+                for (;;)
                 {
-                    branch.Dump();
+                    branch.Append (sb);
                     branch = (Branch<TKey>) branchPath.TraverseRight();
 
                     if (branch == null)
                         break;
-                    Console.Write (" | ");
+                    sb.Append (" | ");
                 }
                 ++level;
-                Console.WriteLine();
+                yield return sb.ToString();
+                sb.Length = 0;
             }
 
             TreePath<TKey, TValue> leafPath = new TreePath<TKey, TValue> (this, level);
-            Console.Write ("L{0}: ", level);
+            sb.Append ('L');
+            sb.Append (level);
+            sb.Append (": ");
             for (Leaf<TKey, TValue> leaf = (Leaf<TKey, TValue>) first;;)
             {
-                leaf.Dump();
+                leaf.Append (sb);
                 leaf = (Leaf<TKey, TValue>) leafPath.TraverseRight();
                 if (leaf == null)
                     break;
 
                 if (leafPath.IsFirstChild)
-                    Console.Write (" | ");
+                    sb.Append (" | ");
                 else
-                    Console.Write ("|");
+                    sb.Append ('|');
             }
-            Console.WriteLine();
+            yield return sb.ToString();
         }
     }
 
@@ -168,15 +175,16 @@ namespace Kaos.Collections
 
     internal abstract partial class Node<TKey>
     {
-        internal void Dump()
+        internal StringBuilder Append (StringBuilder sb)
         {
             for (int k = 0; k < this.KeyCount; k++)
             {
                 if (k > 0)
-                    Console.Write (",");
+                    sb.Append (',');
 
-                Console.Write (GetKey (k));
+                sb.Append (GetKey (k));
             }
+            return sb;
         }
     }
 
