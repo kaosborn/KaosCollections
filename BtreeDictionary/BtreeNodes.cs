@@ -47,14 +47,12 @@ namespace Kaos.Collections
     {
         private List<Node<TKey>> childNodes;
 
-        internal Branch (Branch<TKey> leftBranch)
-            : base (leftBranch.ChildCount)
+        internal Branch (Branch<TKey> leftBranch) : base (leftBranch.ChildCount)
         {
             Init (leftBranch.ChildCount);
         }
 
-        internal Branch (Node<TKey> child, int newOrder)
-            : base (newOrder)
+        internal Branch (Node<TKey> child, int newOrder) : base (newOrder)
         {
             Init (newOrder);
             Add (child);
@@ -112,8 +110,7 @@ namespace Kaos.Collections
         private Leaf<TKey, TValue> rightLeaf;  // For the linked leaf list.
         private List<TValue> values;           // Payload.
 
-        internal Leaf (int newOrder)
-            : base (newOrder)
+        internal Leaf (int newOrder) : base (newOrder)
         {
             values = new List<TValue> (newOrder - 1);
             rightLeaf = null;
@@ -121,8 +118,7 @@ namespace Kaos.Collections
 
         /// <summary>Splice a leaf to right of <paramref name="leftLeaf"/>.</summary>
         /// <param name="leftLeaf">Provides linked list insert point.</param>
-        internal Leaf (Leaf<TKey, TValue> leftLeaf)
-            : base (leftLeaf.KeyCapacity + 1)
+        internal Leaf (Leaf<TKey, TValue> leftLeaf) : base (leftLeaf.KeyCapacity + 1)
         {
             values = new List<TValue> (leftLeaf.KeyCapacity);
 

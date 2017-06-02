@@ -1,7 +1,7 @@
 ﻿//
 // Library: KaosCollections
 // File:    BtreePath.cs
-// Purpose: Defines internal class that stores a element location path.
+// Purpose: Defines internal class that stores an element location path.
 //
 // Copyright © 2009-2017 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely
@@ -25,11 +25,6 @@ namespace Kaos.Collections
         private List<int> indexStack;
         private List<Node<TKey>> nodeStack;
 
-        /// <summary>
-        /// <b>true</b> if leaf key is an exact match; otherwise <b>false</b>.</summary>
-        internal bool IsFound
-        { get; private set; }
-
         #region Constructors
 
         /// <summary>Perform search and store each level of path on the stack.</summary>
@@ -40,9 +35,7 @@ namespace Kaos.Collections
             indexStack = new List<int>();
             nodeStack = new List<Node<TKey>>();
 
-            Node<TKey> node = tree.root;
-
-            for (;;)
+            for (Node<TKey> node = tree.root;;)
             {
                 Debug.Assert (node != null);
 
@@ -52,7 +45,7 @@ namespace Kaos.Collections
                 if (node is Leaf<TKey, TValue>)
                 {
                     IsFound = i >= 0;
-                    if (!IsFound)
+                    if (! IsFound)
                         i = ~i;
                     indexStack.Add (i);
                     return;
@@ -71,6 +64,11 @@ namespace Kaos.Collections
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// <b>true</b> if leaf key is an exact match; otherwise <b>false</b>.</summary>
+        internal bool IsFound
+        { get; private set; }
 
         internal Node<TKey> TopNode
         { get { return nodeStack[indexStack.Count - 1]; } }
@@ -96,6 +94,9 @@ namespace Kaos.Collections
             }
         }
 
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Get the node to the immediate left of the node at TreePath.
@@ -146,10 +147,6 @@ namespace Kaos.Collections
                 }
         }
 
-        #endregion
-
-        #region Methods
-
         internal void Clear()
         {
             indexStack.Clear();
@@ -176,7 +173,7 @@ namespace Kaos.Collections
         {
             Node<TKey> node = null;
             int height = indexStack.Count;
-            for (; ; )
+            for (;;)
             {
                 if (indexStack.Count < 2)
                 {

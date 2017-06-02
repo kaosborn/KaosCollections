@@ -52,7 +52,7 @@ namespace Kaos.Collections
             if (branch.KeyCapacity != root.KeyCapacity)
                 throw new BtreeInsaneException ("Branch KeyCapacity Inconsistent");
 
-            if (!isRightmost && (branch.KeyCount + 1) < branch.KeyCapacity / 2)
+            if (! isRightmost && (branch.KeyCount + 1) < branch.KeyCapacity / 2)
                 throw new BtreeInsaneException ("Branch underfilled");
 
             if (branch.ChildCount != branch.KeyCount + 1)
@@ -212,8 +212,7 @@ namespace Kaos.Collections
         /// <param name="tree">Target of path.</param>
         /// <param name="level">Level of node to seek where root is level 0.</param>
         /// <remarks>Used only for diagnostics.</remarks>
-        internal TreePath (BtreeDictionary<TKey, TValue> tree, int level)
-            : this (tree)
+        internal TreePath (BtreeDictionary<TKey, TValue> tree, int level) : this (tree)
         {
             Node<TKey> node = TopNode;
             for (;;)

@@ -64,7 +64,7 @@ namespace Kaos.Collections
         // Leaf has been split so insert the new anchor into a branch.
         private void Promote (TreePath<TKey, TValue> path, TKey key, Node<TKey> newNode)
         {
-            for (; ; )
+            for (;;)
             {
                 if (path.Height == 1)
                 {
@@ -119,7 +119,7 @@ namespace Kaos.Collections
 
                     if (branchIndex > halfway)
                     {
-                        for (; ; )
+                        for (;;)
                         {
                             ++moveIndex;
                             newBranch.Add (branch.GetChild (moveIndex));

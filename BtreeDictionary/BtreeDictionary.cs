@@ -226,7 +226,7 @@ namespace Kaos.Collections
                 throw new ArgumentNullException ("key");
 
             TreePath<TKey, TValue> path = new TreePath<TKey, TValue> (this, key);
-            if (!path.IsFound)
+            if (! path.IsFound)
                 return false;
 
             Delete (path);
@@ -407,7 +407,7 @@ namespace Kaos.Collections
         bool ICollection<KeyValuePair<TKey, TValue>>.Contains (KeyValuePair<TKey, TValue> pair)
         {
             var path = new TreePath<TKey, TValue> (this, pair.Key);
-            if (!path.IsFound)
+            if (! path.IsFound)
                 return false;
 
             Leaf<TKey, TValue> leaf = (Leaf<TKey, TValue>) path.TopNode;
