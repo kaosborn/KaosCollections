@@ -17,7 +17,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)BtreeFind.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BtreeInsert.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BtreeKeysValues.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)BtreeNodes.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)BtreePath.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BtreeNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BtreeNodeVector.cs" />
   </ItemGroup>
 </Project>
