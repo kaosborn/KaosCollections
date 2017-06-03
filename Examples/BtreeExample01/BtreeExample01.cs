@@ -73,5 +73,52 @@ namespace ExampleApp
             tree.SanityCheck();
 #endif
         }
+
+        /* Output:
+
+        A BtreeDictionary of order 6 weighted to the right of the root:
+        (Order is defined as the maximum number of children of a node.)
+
+        L0: 42
+        L1: 28,32 | 52,62,72,82,92
+        L2: 24,26|28,30|32,36,40 | 42,50|52,58|62,64,70|72,80|82,84,86,88,90|92
+
+        Coalesce leaves, balance branches by deleting 24:
+
+        L0: 62
+        L1: 32,42,52 | 72,82,92
+        L2: 26,28,30|32,36,40|42,50|52,58 | 62,64,70|72,80|82,84,86,88,90|92
+
+        Update a branch key by deleting 32:
+
+        L0: 62
+        L1: 36,42,52 | 72,82,92
+        L2: 26,28,30|36,40|42,50|52,58 | 62,64,70|72,80|82,84,86,88,90|92
+
+        Update the root branch key by deleting 62:
+
+        L0: 64
+        L1: 36,42,52 | 72,82,92
+        L2: 26,28,30|36,40|42,50|52,58 | 64,70|72,80|82,84,86,88,90|92
+
+        Coalesce leaves by deleting 58:
+
+        L0: 72
+        L1: 36,42,52 | 82,92
+        L2: 26,28,30|36,40|42,50|52,64,70 | 72,80|82,84,86,88,90|92
+
+        Delete rightmost branches by deleting 92:
+        (Any rightmost node may contain as few as 1 element.)
+
+        L0: 72
+        L1: 36,42,52 | 82
+        L2: 26,28,30|36,40|42,50|52,64,70 | 72,80|82,84,86,88,90
+
+        Coalesce leaf, coalesce branches, prune root by deleting 36:
+
+        L0: 40,52,72,82
+        L1: 26,28,30|40,42,50|52,64,70|72,80|82,84,86,88,90
+
+        */
     }
 }
