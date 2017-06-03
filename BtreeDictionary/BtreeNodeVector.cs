@@ -1,6 +1,6 @@
 ﻿//
 // Library: KaosCollections
-// File:    BtreePath.cs
+// File:    BtreeNodeVector.cs
 // Purpose: Defines nonpublic class that stores an element location path.
 //
 // Copyright © 2009-2017 Kasey Osborn (github.com/kaosborn)
