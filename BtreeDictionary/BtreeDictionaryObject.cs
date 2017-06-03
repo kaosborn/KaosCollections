@@ -25,7 +25,7 @@ namespace Kaos.Collections
 
         bool IDictionary.Contains (object jKey)
         {
-            var path = new TreePath<TKey, TValue> (this, (TKey) jKey);
+            var path = new NodeVector (this, (TKey) jKey);
             return path.IsFound;
         }
 
@@ -75,7 +75,7 @@ namespace Kaos.Collections
             if (key == null)
                 throw new ArgumentNullException ("key");
 
-            var path = new TreePath<TKey, TValue> (this, (TKey) key);
+            var path = new NodeVector (this, (TKey) key);
             if (path.IsFound)
                 Delete (path);
         }
@@ -93,7 +93,7 @@ namespace Kaos.Collections
         public class BtreeObjectEnumerator : IDictionaryEnumerator
         {
             BtreeDictionary<TKey, TValue> target;
-            Leaf<TKey, TValue> currentLeaf;
+            Leaf currentLeaf;
             int leafIndex;
 
             #region Constructors
@@ -176,7 +176,7 @@ namespace Kaos.Collections
                     throw new ArgumentNullException ("key");
 
                 int index;
-                Leaf<TKey, TValue> leaf = Find ((TKey) key, out index);
+                Leaf leaf = Find ((TKey) key, out index);
                 if (index < 0)
                     return null;
                 return leaf.GetValue (index);
@@ -186,7 +186,7 @@ namespace Kaos.Collections
                 if (key == null)
                     throw new ArgumentNullException ("key");
 
-                var path = new TreePath<TKey, TValue> (this, (TKey) key);
+                var path = new NodeVector (this, (TKey) key);
                 if (path.IsFound)
                     path.LeafValue = (TValue) value;
                 else

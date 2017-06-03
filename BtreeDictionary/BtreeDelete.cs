@@ -1,7 +1,7 @@
 ﻿//
 // Library: KaosCollections
 // File:    BtreeDelete.cs
-// Purpose: Define internal BtreeDictionary delete operations.
+// Purpose: Define nonpublic BtreeDictionary delete operations.
 //
 // Copyright © 2009-2017 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely
@@ -13,13 +13,13 @@ namespace Kaos.Collections
 {
     public partial class BtreeDictionary<TKey, TValue>
     {
-        #region Internal methods
+        #region Nonpublic methods
 
-        // Delete element already found at path.
-        private void Delete (TreePath<TKey, TValue> path)
+        // Delete element specified by path.
+        private void Delete (NodeVector path)
         {
             int leafIndex = path.TopNodeIndex;
-            Leaf<TKey, TValue> leaf = (Leaf<TKey, TValue>) path.TopNode;
+            var leaf = (Leaf) path.TopNode;
 
             leaf.Remove (leafIndex);
             --Count;
@@ -32,7 +32,7 @@ namespace Kaos.Collections
                     Debug.Assert (leaf.RightLeaf == null, "only the rightmost leaf should ever be emptied");
 
                     // Leaf is empty.  Prune it unless it is the only leaf in the tree.
-                    Leaf<TKey, TValue> leftLeaf = (Leaf<TKey, TValue>) path.GetLeftNode();
+                    var leftLeaf = (Leaf) path.GetLeftNode();
                     if (leftLeaf != null)
                     {
                         leftLeaf.RightLeaf = leaf.RightLeaf;
@@ -45,7 +45,7 @@ namespace Kaos.Collections
             // Leaf underflow?
             if (leaf.KeyCount < leaf.KeyCapacity / 2)
             {
-                Leaf<TKey, TValue> rightLeaf = leaf.RightLeaf;
+                Leaf rightLeaf = leaf.RightLeaf;
                 if (rightLeaf != null)
                     if (leaf.KeyCount + rightLeaf.KeyCount > leaf.KeyCapacity)
                     {
@@ -68,15 +68,15 @@ namespace Kaos.Collections
         }
 
 
-        // Leaf has been emptied, now non-lazy delete its pivot.
-        private void Demote (TreePath<TKey, TValue> path)
+        // Leaf has been emptied so non-lazy delete its pivot.
+        private void Demote (NodeVector path)
         {
             for (;;)
             {
                 Debug.Assert (path.Height > 0);
                 path.Pop();
 
-                Branch<TKey> branch = (Branch<TKey>) path.TopNode;
+                var branch = (Branch) path.TopNode;
                 if (path.TopNodeIndex == 0)
                 {
                     if (branch.KeyCount == 0)
@@ -84,10 +84,10 @@ namespace Kaos.Collections
                         continue;
 
                     // Rotate pivot for first child.
-                    TKey pivot0 = branch.GetKey (0);
+                    TKey pivot = branch.GetKey (0);
                     branch.RemoveKey (0);
                     branch.RemoveChild (0);
-                    path.SetPivot (pivot0);
+                    path.SetPivot (pivot);
                 }
                 else
                 {
@@ -96,16 +96,16 @@ namespace Kaos.Collections
                     branch.RemoveChild (path.TopNodeIndex);
                 }
 
-                Branch<TKey> right = (Branch<TKey>) path.TraverseRight();
+                var right = (Branch) path.TraverseRight();
                 if (right == null)
                 {
                     if (branch == root && branch.KeyCount == 0)
                     {
                         // Prune the empty root.
-                        Branch<TKey> newRoot = branch.FirstChild as Branch<TKey>;
+                        var newRoot = branch.FirstChild as Branch;
                         if (newRoot != null)
                         {
-                            root = (Branch<TKey>) branch.FirstChild;
+                            root = newRoot;
                             --height;
                         }
                     }
@@ -117,12 +117,12 @@ namespace Kaos.Collections
                     // Coalesce left: move pivot and right sibling nodes.
                     branch.AddKey (path.GetPivot());
 
-                    for (int i = 0; ; ++i)
+                    for (int ix = 0; ; ++ix)
                     {
-                        branch.Add (right.GetChild (i));
-                        if (i >= right.KeyCount)
+                        branch.Add (right.GetChild (ix));
+                        if (ix >= right.KeyCount)
                             break;
-                        branch.AddKey (right.GetKey (i));
+                        branch.AddKey (right.GetKey (ix));
                     }
 
                     // Cascade demotion.

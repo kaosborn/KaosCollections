@@ -1,7 +1,7 @@
 ﻿//
 // Library: KaosCollections
 // File:    BtreeInsert.cs
-// Purpose: Define internal BtreeDictionary insert operations.
+// Purpose: Define nonpublic BtreeDictionary insert operations.
 //
 // Copyright © 2009-2017 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely
@@ -13,12 +13,12 @@ namespace Kaos.Collections
 {
     public partial class BtreeDictionary<TKey, TValue>
     {
-        #region Internal methods
+        #region Nonpublic methods
 
         // Insert element at preseeked path.
-        private void Insert (TreePath<TKey, TValue> path, TKey key, TValue value)
+        private void Insert (NodeVector path, TKey key, TValue value)
         {
-            Leaf<TKey, TValue> leaf = (Leaf<TKey, TValue>) path.TopNode;
+            var leaf = (Leaf) path.TopNode;
             int leafIndex = path.TopNodeIndex;
 
             if (leaf.NotFull)
@@ -29,7 +29,7 @@ namespace Kaos.Collections
             }
 
             // Leaf overflow.  Right split a new leaf.
-            Leaf<TKey, TValue> newLeaf = new Leaf<TKey, TValue> (leaf);
+            var newLeaf = new Leaf (leaf);
 
             if (newLeaf.RightLeaf == null && leafIndex == leaf.KeyCount)
                 // Densify sequential loads.
@@ -57,12 +57,12 @@ namespace Kaos.Collections
 
             // Promote anchor of split leaf.
             ++Count;
-            Promote (path, newLeaf.GetKey (0), (Node<TKey>) newLeaf);
+            Promote (path, newLeaf.GetKey (0), (Node) newLeaf);
         }
 
 
         // Leaf has been split so insert the new anchor into a branch.
-        private void Promote (TreePath<TKey, TValue> path, TKey key, Node<TKey> newNode)
+        private void Promote (NodeVector path, TKey key, Node newNode)
         {
             for (;;)
             {
@@ -71,14 +71,14 @@ namespace Kaos.Collections
                     Debug.Assert (root == path.TopNode);
 
                     // Graft new root.
-                    root = new Branch<TKey> (path.TopNode, Order);
+                    root = new Branch (path.TopNode, Order);
                     root.Add (key, newNode);
                     ++height;
                     break;
                 }
 
                 path.Pop();
-                Branch<TKey> branch = (Branch<TKey>) path.TopNode;
+                var branch = (Branch) path.TopNode;
                 int branchIndex = path.TopNodeIndex;
 
                 if (branch.NotFull)
@@ -90,20 +90,20 @@ namespace Kaos.Collections
                 }
 
                 // Right split an overflowing branch.
-                Branch<TKey> newBranch = new Branch<TKey> (branch);
+                var newBranch = new Branch (branch);
                 int halfway = (branch.KeyCount + 1) / 2;
 
                 if (branchIndex < halfway)
                 {
                     // Split with left-side insert.
-                    for (int i = halfway; ; ++i)
+                    for (int ix = halfway; ; ++ix)
                     {
-                        if (i >= branch.KeyCount)
+                        if (ix >= branch.KeyCount)
                         {
-                            newBranch.Add (branch.GetChild (i));
+                            newBranch.Add (branch.GetChild (ix));
                             break;
                         }
-                        newBranch.Add (branch.GetKey (i), branch.GetChild (i));
+                        newBranch.Add (branch.GetKey (ix), branch.GetChild (ix));
                     }
 
                     TKey newPromotion = branch.GetKey (halfway - 1);

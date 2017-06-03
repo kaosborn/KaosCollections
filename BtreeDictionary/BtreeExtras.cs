@@ -24,12 +24,12 @@ namespace Kaos.Collections
                 throw new InvalidOperationException ("Sequence contains no elements");
 
             // Take rightmost child until no more.
-            for (Node<TKey> node = root;;)
+            for (Node node = root;;)
             {
-                Branch<TKey> branch = node as Branch<TKey>;
+                var branch = node as Branch;
                 if (branch == null)
                     return new KeyValuePair<TKey, TValue> (node.GetKey (node.KeyCount - 1),
-                                                           ((Leaf<TKey, TValue>) node).GetValue (node.KeyCount - 1));
+                                                           ((Leaf) node).GetValue (node.KeyCount - 1));
 
                 node = branch.GetChild (node.KeyCount);
             }
@@ -44,7 +44,7 @@ namespace Kaos.Collections
         public IEnumerable<KeyValuePair<TKey, TValue>> SkipUntilKey (TKey key)
         {
             int index;
-            Leaf<TKey, TValue> leaf = Find (key, out index);
+            Leaf leaf = Find (key, out index);
 
             // When the supplied start key is not be found, start with the next highest key.
             if (index < 0)
@@ -83,7 +83,7 @@ namespace Kaos.Collections
         public IEnumerable<KeyValuePair<TKey, TValue>> BetweenKeys (TKey startKey, TKey endKey)
         {
             int index;
-            Leaf<TKey, TValue> leaf = Find (startKey, out index);
+            Leaf leaf = Find (startKey, out index);
 
             // When the supplied start key is not be found, start with the next highest key.
             if (index < 0)

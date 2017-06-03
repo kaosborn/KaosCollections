@@ -32,9 +32,9 @@ namespace Kaos.Collections
         System.Collections.IEnumerable
         where TKey : IComparable
     {
-        internal Branch<TKey> root;
-        internal IComparer<TKey> comparer;
-        internal int height;
+        private Branch root;
+        private IComparer<TKey> comparer;
+        private int height;
         private BtreeKeys keys;
         private BtreeValues values;
         const int MinimumOrder = 5;
@@ -79,10 +79,10 @@ namespace Kaos.Collections
             if (order < MinimumOrder)
                 throw new ArgumentOutOfRangeException ("order", "Minimum value is " + MinimumOrder);
 
-            this.comparer = comparer != null? comparer : Comparer<TKey>.Default;
+            this.comparer = comparer ?? Comparer<TKey>.Default;
 
             // Create an empty tree consisting of an empty branch and an empty leaf.
-            this.root = new Branch<TKey> (new Leaf<TKey, TValue> (order), order);
+            this.root = new Branch (new Leaf (order), order);
             this.height = 2;
 
             // Allocate the subcollections.
@@ -134,7 +134,7 @@ namespace Kaos.Collections
             if (key == null)
                 throw new ArgumentNullException ("key");
 
-            var path = new TreePath<TKey, TValue> (this, key);
+            var path = new NodeVector (this, key);
             if (path.IsFound)
                 throw new ArgumentException ("An entry with the same key already exists.");
 
@@ -145,7 +145,7 @@ namespace Kaos.Collections
         /// <summary>Remove all TKey/TValue pairs from the collection.</summary>
         public void Clear()
         {
-            root = new Branch<TKey> (new Leaf<TKey, TValue> (Order), Order);
+            root = new Branch (new Leaf (Order), Order);
             height = 2;
             Count = 0;
         }
@@ -163,7 +163,7 @@ namespace Kaos.Collections
             if (key == null)
                 throw new ArgumentNullException ("key");
 
-            var path = new TreePath<TKey, TValue> (this, key);
+            var path = new NodeVector (this, key);
             return path.IsFound;
         }
 
@@ -225,7 +225,7 @@ namespace Kaos.Collections
             if (key == null)
                 throw new ArgumentNullException ("key");
 
-            TreePath<TKey, TValue> path = new TreePath<TKey, TValue> (this, key);
+            var path = new NodeVector (this, key);
             if (! path.IsFound)
                 return false;
 
@@ -246,7 +246,7 @@ namespace Kaos.Collections
                 throw new ArgumentNullException ("key");
 
             int index;
-            Leaf<TKey, TValue> leaf = Find (key, out index);
+            Leaf leaf = Find (key, out index);
             if (index >= 0)
             {
                 value = leaf.GetValue (index);
@@ -266,7 +266,7 @@ namespace Kaos.Collections
         {
             // Long form is 10% faster than yield syntax form.
             BtreeDictionary<TKey, TValue> target;
-            Leaf<TKey, TValue> currentLeaf;
+            Leaf currentLeaf;
             int leafIndex;
 
             /// <summary>
@@ -349,7 +349,7 @@ namespace Kaos.Collections
                     throw new ArgumentNullException ("key");
 
                 int index;
-                Leaf<TKey, TValue> leaf = Find (key, out index);
+                Leaf leaf = Find (key, out index);
                 if (index < 0)
                     throw new KeyNotFoundException ("The given key was not present in the dictionary.");
                 return leaf.GetValue (index);
@@ -359,7 +359,7 @@ namespace Kaos.Collections
                 if (key == null)
                     throw new ArgumentNullException ("key");
 
-                var path = new TreePath<TKey, TValue> (this, key);
+                var path = new NodeVector (this, key);
                 if (path.IsFound)
                     path.LeafValue = value;
                 else
@@ -384,7 +384,6 @@ namespace Kaos.Collections
         #endregion
 
         #region Explicit Methods
-        // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
         /// <summary>Adds an element with the specified key/value pair.</summary>
         /// <param name="keyValuePair">Contains the key and value of the element to add.</param>
@@ -392,7 +391,7 @@ namespace Kaos.Collections
         /// has already been added.</exception>
         void ICollection<KeyValuePair<TKey, TValue>>.Add (KeyValuePair<TKey, TValue> keyValuePair)
         {
-            var path = new TreePath<TKey, TValue> (this, keyValuePair.Key);
+            var path = new NodeVector (this, keyValuePair.Key);
             if (path.IsFound)
                 throw new ArgumentException ("An entry with the same key already exists.");
 
@@ -406,11 +405,11 @@ namespace Kaos.Collections
         /// otherwise <b>false</b>.</returns>
         bool ICollection<KeyValuePair<TKey, TValue>>.Contains (KeyValuePair<TKey, TValue> pair)
         {
-            var path = new TreePath<TKey, TValue> (this, pair.Key);
+            var path = new NodeVector (this, pair.Key);
             if (! path.IsFound)
                 return false;
 
-            Leaf<TKey, TValue> leaf = (Leaf<TKey, TValue>) path.TopNode;
+            var leaf = (Leaf) path.TopNode;
             return (pair.Value.Equals (leaf.GetValue (path.TopNodeIndex)));
         }
 
@@ -434,7 +433,7 @@ namespace Kaos.Collections
         /// <returns><b>true</b> if key/value pair removed; otherwise <b>false</b>.</returns>
         bool ICollection<KeyValuePair<TKey, TValue>>.Remove (KeyValuePair<TKey, TValue> pair)
         {
-            var path = new TreePath<TKey, TValue> (this, pair.Key);
+            var path = new NodeVector (this, pair.Key);
             if (path.IsFound)
                 if (pair.Value.Equals (path.LeafValue))
                 {

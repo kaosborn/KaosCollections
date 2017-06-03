@@ -94,7 +94,7 @@ namespace Kaos.Collections
             private class BtreeKeysEnumerator : IEnumerator<TKey>
             {
                 BtreeDictionary<TKey, TValue> target;
-                Leaf<TKey, TValue> currentLeaf;
+                Leaf currentLeaf;
                 int leafIndex;
 
                 // Long form used for 5% performance increase.
@@ -225,7 +225,7 @@ namespace Kaos.Collections
             /// <returns>An enumerator for the collection.</returns>
             public IEnumerator<TValue> GetEnumerator()
             {
-                for (Leaf<TKey, TValue> currentLeaf = tree.GetFirstLeaf();; )
+                for (Leaf currentLeaf = tree.GetFirstLeaf();; )
                 {
                     for (int leafIndex = 0; leafIndex < currentLeaf.KeyCount; ++leafIndex)
                         yield return currentLeaf.GetValue (leafIndex);

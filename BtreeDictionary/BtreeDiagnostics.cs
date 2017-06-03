@@ -25,7 +25,7 @@ namespace Kaos.Collections
     public partial class BtreeDictionary<TKey, TValue>
     {
         /// <summary>
-        /// Perform diagnostics check for data structure internal errors. Since this is an
+        /// Perform diagnostics check for data structure sanity errors. Since this is an
         /// in-memory managed structure, any errors would indicate a bug. Also performs space
         /// complexity diagnostics to ensure that all non-rightmost nodes maintain 50% fill.
         /// </summary>
@@ -34,23 +34,23 @@ namespace Kaos.Collections
         {
             int Order = root.KeyCapacity + 1;
 
-            Leaf<TKey, TValue> lastLeaf = Check (root, 1, true, default (TKey), null);
+            Leaf lastLeaf = Check (root, 1, true, default (TKey), null);
             if (lastLeaf.RightLeaf != null)
                 throw new BtreeInsaneException ("Last leaf has invalid RightLeaf");
         }
 
 
-        private Leaf<TKey, TValue> Check
+        private Leaf Check
         (
-            Branch<TKey> branch,
+            Branch branch,
             int level,
             bool isRightmost,
             TKey anchor,  // ignored when isRightmost true
-            Leaf<TKey, TValue> visited
+            Leaf visited
         )
         {
             if (branch.KeyCapacity != root.KeyCapacity)
-                throw new BtreeInsaneException ("Branch KeyCapacity Inconsistent");
+                throw new BtreeInsaneException ("Branch KeyCapacity inconsistent");
 
             if (! isRightmost && (branch.KeyCount + 1) < branch.KeyCapacity / 2)
                 throw new BtreeInsaneException ("Branch underfilled");
@@ -68,12 +68,12 @@ namespace Kaos.Collections
 
                 if (level + 1 < height)
                 {
-                    Branch<TKey> child = (Branch<TKey>) branch.GetChild (i);
+                    var child = (Branch) branch.GetChild (i);
                     visited = Check (child, level + 1, isRightmost0, anchor0, visited);
                 }
                 else
                 {
-                    Leaf<TKey, TValue> leaf = (Leaf<TKey, TValue>) branch.GetChild (i);
+                    var leaf = (Leaf) branch.GetChild (i);
                     visited = Check (leaf, isRightmost0, anchor0, visited);
                 }
             }
@@ -81,16 +81,10 @@ namespace Kaos.Collections
         }
 
 
-        private Leaf<TKey, TValue> Check
-        (
-            Leaf<TKey, TValue> leaf,
-            bool isRightmost,
-            TKey anchor,
-            Leaf<TKey, TValue> visited
-        )
+        private Leaf Check (Leaf leaf, bool isRightmost, TKey anchor, Leaf visited)
         {
             if (leaf.KeyCapacity != root.KeyCapacity)
-                throw new BtreeInsaneException ("Leaf KeyCapacity Inconsistent");
+                throw new BtreeInsaneException ("Leaf KeyCapacity inconsistent");
 
             if (! isRightmost && leaf.KeyCount < leaf.KeyCapacity / 2)
                 throw new BtreeInsaneException ("Leaf underfilled");
@@ -122,17 +116,17 @@ namespace Kaos.Collections
         public IEnumerable<string> GenerateTreeText()
         {
             int level = 0;
-            Node<TKey> first;
+            Node first;
             var sb = new StringBuilder();
 
             for (;;)
             {
-                TreePath<TKey, TValue> branchPath = new TreePath<TKey, TValue> (this, level);
+                var branchPath = new NodeVector (this, level);
                 first = branchPath.TopNode;
-                if (first is Leaf<TKey, TValue>)
+                if (first is Leaf)
                     break;
 
-                Branch<TKey> branch = (Branch<TKey>) first;
+                var branch = (Branch) first;
 
                 sb.Append ('L');
                 sb.Append (level);
@@ -140,7 +134,7 @@ namespace Kaos.Collections
                 for (;;)
                 {
                     branch.Append (sb);
-                    branch = (Branch<TKey>) branchPath.TraverseRight();
+                    branch = (Branch) branchPath.TraverseRight();
 
                     if (branch == null)
                         break;
@@ -151,14 +145,14 @@ namespace Kaos.Collections
                 sb.Length = 0;
             }
 
-            TreePath<TKey, TValue> leafPath = new TreePath<TKey, TValue> (this, level);
+            var leafPath = new NodeVector (this, level);
             sb.Append ('L');
             sb.Append (level);
             sb.Append (": ");
-            for (Leaf<TKey, TValue> leaf = (Leaf<TKey, TValue>) first;;)
+            for (var leaf = (Leaf) first;;)
             {
                 leaf.Append (sb);
-                leaf = (Leaf<TKey, TValue>) leafPath.TraverseRight();
+                leaf = (Leaf) leafPath.TraverseRight();
                 if (leaf == null)
                     break;
 
@@ -168,61 +162,6 @@ namespace Kaos.Collections
                     sb.Append ('|');
             }
             yield return sb.ToString();
-        }
-    }
-
-
-
-    internal abstract partial class Node<TKey>
-    {
-        internal StringBuilder Append (StringBuilder sb)
-        {
-            for (int k = 0; k < this.KeyCount; k++)
-            {
-                if (k > 0)
-                    sb.Append (',');
-
-                sb.Append (GetKey (k));
-            }
-            return sb;
-        }
-    }
-
-
-
-    internal partial class TreePath<TKey, TValue>
-    {
-        internal bool IsFirstChild
-        { get { return this.indexStack[Height - 2] == 0; } }
-
-        
-        /// <summary>Make an empty path.</summary>
-        /// <param name="tree">Target of path.</param>
-        internal TreePath (BtreeDictionary<TKey, TValue> tree)
-        {
-            indexStack = new List<int>();
-            nodeStack = new List<Node<TKey>>();
-            IsFound = false;
-
-            Push (tree.root, 0);
-        }
-
-
-        /// <summary>Make a path to leftmost branch or leaf at the given level.</summary>
-        /// <param name="tree">Target of path.</param>
-        /// <param name="level">Level of node to seek where root is level 0.</param>
-        /// <remarks>Used only for diagnostics.</remarks>
-        internal TreePath (BtreeDictionary<TKey, TValue> tree, int level) : this (tree)
-        {
-            Node<TKey> node = TopNode;
-            for (;;)
-            {
-                if (level <= 0)
-                    break;
-                node = ((Branch<TKey>) node).GetChild (0);
-                Push (node, 0);
-                --level;
-            }
         }
     }
 #endif
