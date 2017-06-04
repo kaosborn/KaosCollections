@@ -34,11 +34,12 @@ namespace Kaos.Collections
     {
         private Branch root;
         private IComparer<TKey> comparer;
-        private int height;
+        private int maxKeyCount;
         private BtreeKeys keys;
         private BtreeValues values;
-        const int MinimumOrder = 5;
-        const int MaximumOrder = 64;
+        private const int MinimumOrder = 5;
+        private const int DefaultOrder = 32;
+        private const int MaximumOrder = 256;
 
         #region Constructors
 
@@ -46,7 +47,7 @@ namespace Kaos.Collections
         /// Make a new BTD
         /// consisting of TKey/TValue pairs.
         /// </summary>
-        public BtreeDictionary() : this (MaximumOrder, null)
+        public BtreeDictionary() : this (DefaultOrder, null)
         { }
 
 
@@ -64,7 +65,7 @@ namespace Kaos.Collections
         /// consisting of TKey/TValue pairs sorted by the supplied key comparer.
         /// </summary>
         /// <param name="comparer">Comparison operator for keys.</param>
-        public BtreeDictionary (IComparer<TKey> comparer) : this (MaximumOrder, comparer)
+        public BtreeDictionary (IComparer<TKey> comparer) : this (DefaultOrder, comparer)
         { }
 
 
@@ -76,16 +77,16 @@ namespace Kaos.Collections
         /// <param name="comparer">Comparison operator for keys.</param>
         public BtreeDictionary (int order, IComparer<TKey> comparer)
         {
-            if (order < MinimumOrder)
-                throw new ArgumentOutOfRangeException ("order", "Minimum value is " + MinimumOrder);
+            if (order < MinimumOrder || order > MaximumOrder)
+                throw new ArgumentOutOfRangeException ("order", "Must be between " + MinimumOrder + " and " + MaximumOrder);
 
             this.comparer = comparer ?? Comparer<TKey>.Default;
 
             // Create an empty tree consisting of an empty branch and an empty leaf.
-            this.root = new Branch (new Leaf (order), order);
-            this.height = 2;
+            this.maxKeyCount = order - 1;
+            this.root = new Branch (new Leaf());
 
-            // Allocate the subcollections.
+            // Allocate the virtual subcollections.
             this.keys = new BtreeKeys (this);
             this.values = new BtreeValues (this);
         }
@@ -145,8 +146,7 @@ namespace Kaos.Collections
         /// <summary>Remove all TKey/TValue pairs from the collection.</summary>
         public void Clear()
         {
-            root = new Branch (new Leaf (Order), Order);
-            height = 2;
+            root = new Branch (new Leaf (maxKeyCount), maxKeyCount);
             Count = 0;
         }
 
@@ -318,10 +318,6 @@ namespace Kaos.Collections
         #endregion
 
         #region Properties
-
-        /// <summary>Maximum number of children of a branch.</summary>
-        internal int Order
-        { get { return root.KeyCapacity + 1; } }
 
         /// <summary>Used to order keys in the sorted dictionary.</summary>
         /// <remarks>To override sorting based on the default comparer, supply an

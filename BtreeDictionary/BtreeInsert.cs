@@ -21,7 +21,7 @@ namespace Kaos.Collections
             var leaf = (Leaf) path.TopNode;
             int leafIndex = path.TopNodeIndex;
 
-            if (leaf.NotFull)
+            if (leaf.KeyCount < maxKeyCount)
             {
                 leaf.Insert (leafIndex, key, value);
                 ++Count;
@@ -29,7 +29,7 @@ namespace Kaos.Collections
             }
 
             // Leaf overflow.  Right split a new leaf.
-            var newLeaf = new Leaf (leaf);
+            var newLeaf = new Leaf (leaf, maxKeyCount);
 
             if (newLeaf.RightLeaf == null && leafIndex == leaf.KeyCount)
                 // Densify sequential loads.
@@ -68,12 +68,10 @@ namespace Kaos.Collections
             {
                 if (path.Height == 1)
                 {
-                    Debug.Assert (root == path.TopNode);
-
                     // Graft new root.
-                    root = new Branch (path.TopNode, Order);
+                    Debug.Assert (root == path.TopNode);
+                    root = new Branch (path.TopNode, maxKeyCount);
                     root.Add (key, newNode);
-                    ++height;
                     break;
                 }
 
@@ -81,7 +79,7 @@ namespace Kaos.Collections
                 var branch = (Branch) path.TopNode;
                 int branchIndex = path.TopNodeIndex;
 
-                if (branch.NotFull)
+                if (branch.KeyCount < maxKeyCount)
                 {
                     // Typical case where branch has room.
                     branch.InsertKey (branchIndex, key);
@@ -90,7 +88,7 @@ namespace Kaos.Collections
                 }
 
                 // Right split an overflowing branch.
-                var newBranch = new Branch (branch);
+                var newBranch = new Branch (branch, maxKeyCount);
                 int halfway = (branch.KeyCount + 1) / 2;
 
                 if (branchIndex < halfway)

@@ -32,27 +32,42 @@ namespace Kaos.Collections
         /// </exclude>
         public void SanityCheck()
         {
-            int Order = root.KeyCapacity + 1;
-
-            Leaf lastLeaf = Check (root, 1, true, default (TKey), null);
+            int height = GetHeight();
+            Leaf lastLeaf = Check (root, 1, height, true, default (TKey), null);
             if (lastLeaf.RightLeaf != null)
                 throw new BtreeInsaneException ("Last leaf has invalid RightLeaf");
+        }
+
+
+        /// <summary>Maximum number of children of a branch.</summary>
+        public int GetOrder()
+        { return maxKeyCount + 1; }
+
+
+        public int GetHeight()
+        {
+            int depth = 2;
+            for (Branch branch = root;;)
+            {
+                Node node = branch.FirstChild;
+                if (node is Leaf)
+                    return depth;
+                ++depth;
+                branch = (Branch) node;
+            }
         }
 
 
         private Leaf Check
         (
             Branch branch,
-            int level,
+            int level, int height,
             bool isRightmost,
             TKey anchor,  // ignored when isRightmost true
             Leaf visited
         )
         {
-            if (branch.KeyCapacity != root.KeyCapacity)
-                throw new BtreeInsaneException ("Branch KeyCapacity inconsistent");
-
-            if (! isRightmost && (branch.KeyCount + 1) < branch.KeyCapacity / 2)
+            if (! isRightmost && (branch.KeyCount + 1) < maxKeyCount / 2)
                 throw new BtreeInsaneException ("Branch underfilled");
 
             if (branch.ChildCount != branch.KeyCount + 1)
@@ -69,7 +84,7 @@ namespace Kaos.Collections
                 if (level + 1 < height)
                 {
                     var child = (Branch) branch.GetChild (i);
-                    visited = Check (child, level + 1, isRightmost0, anchor0, visited);
+                    visited = Check (child, level + 1, height, isRightmost0, anchor0, visited);
                 }
                 else
                 {
@@ -83,10 +98,7 @@ namespace Kaos.Collections
 
         private Leaf Check (Leaf leaf, bool isRightmost, TKey anchor, Leaf visited)
         {
-            if (leaf.KeyCapacity != root.KeyCapacity)
-                throw new BtreeInsaneException ("Leaf KeyCapacity inconsistent");
-
-            if (! isRightmost && leaf.KeyCount < leaf.KeyCapacity / 2)
+            if (! isRightmost && leaf.KeyCount < maxKeyCount / 2)
                 throw new BtreeInsaneException ("Leaf underfilled");
 
             if (! anchor.Equals (default (TKey)) && !anchor.Equals (leaf.GetKey (0)))

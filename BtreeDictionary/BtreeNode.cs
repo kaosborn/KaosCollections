@@ -1,6 +1,6 @@
 ﻿//
 // Library: KaosCollections
-// File:    BtreeNodes.cs
+// File:    BtreeNode.cs
 // Purpose: Define nonpublic tree structure and its basic operations.
 //
 // Copyright © 2009-2017 Kasey Osborn (github.com/kaosborn)
@@ -19,11 +19,9 @@ namespace Kaos.Collections
         {
             protected List<TKey> keys;
 
-            protected Node (int order) { keys = new List<TKey> (order - 1); }
+            protected Node (int keyCapacity) { keys = new List<TKey> (keyCapacity); }
 
             public int KeyCount { get { return keys.Count; } }
-            public int KeyCapacity { get { return keys.Capacity; } }
-            public bool NotFull { get { return keys.Count < keys.Capacity; } }
 
             public void AddKey (TKey key) { keys.Add (key); }
             public TKey GetKey (int index) { return keys[index]; }
@@ -54,19 +52,22 @@ namespace Kaos.Collections
         {
             private List<Node> childNodes;
 
-            public Branch (Branch leftBranch) : base (leftBranch.ChildCount)
+            // Called on initialization only.
+            public Branch (Leaf leaf, int keyCapacity=0) : base (keyCapacity)
             {
-                Init (leftBranch.ChildCount);
+                this.childNodes = new List<Node> (keyCapacity) { leaf };
             }
 
-            public Branch (Node child, int order) : base (order)
+            public Branch (Branch leftBranch, int keyCapacity) : base (keyCapacity)
             {
-                Init (order);
-                Add (child);
+                this.childNodes = new List<Node> (keyCapacity + 1);
             }
 
-            private void Init (int order)
-            { childNodes = new List<Node> (order); }
+            public Branch (Node child, int keyCapacity) : base (keyCapacity)
+            {
+                this.childNodes = new List<Node> (keyCapacity + 1) { child };
+            }
+
 
             public int ChildCount
             { get { return childNodes.Count; } }
@@ -113,17 +114,17 @@ namespace Kaos.Collections
             private Leaf rightLeaf;       // For the linked leaf list.
             private List<TValue> values;  // Payload.
 
-            public Leaf (int order) : base (order)
+            public Leaf (int capacity=0) : base (capacity)
             {
-                values = new List<TValue> (order - 1);
+                values = new List<TValue> (capacity);
                 rightLeaf = null;
             }
 
             /// <summary>Splice a leaf to right of <paramref name="leftLeaf"/>.</summary>
             /// <param name="leftLeaf">Provides linked list insert point.</param>
-            public Leaf (Leaf leftLeaf) : base (leftLeaf.KeyCapacity + 1)
+            public Leaf (Leaf leftLeaf, int capacity) : base (capacity)
             {
-                values = new List<TValue> (leftLeaf.KeyCapacity);
+                values = new List<TValue> (capacity);
 
                 // Linked list insertion.
                 rightLeaf = leftLeaf.rightLeaf;
@@ -131,7 +132,7 @@ namespace Kaos.Collections
             }
 
 
-            /// <summary>Give next leaf in linked list.</summary>
+            /// <summary>Next leaf in linked list.</summary>
             public Leaf RightLeaf
             {
                 get { return rightLeaf; }

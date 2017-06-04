@@ -43,14 +43,14 @@ namespace Kaos.Collections
                 }
 
             // Leaf underflow?
-            if (leaf.KeyCount < leaf.KeyCapacity / 2)
+            if (leaf.KeyCount < maxKeyCount / 2)
             {
                 Leaf rightLeaf = leaf.RightLeaf;
                 if (rightLeaf != null)
-                    if (leaf.KeyCount + rightLeaf.KeyCount > leaf.KeyCapacity)
+                    if (leaf.KeyCount + rightLeaf.KeyCount > maxKeyCount)
                     {
                         // Balance leaves by shifting pairs from right leaf.
-                        int shifts = leaf.KeyCapacity - (leaf.KeyCount + rightLeaf.KeyCount - 1) / 2;
+                        int shifts = maxKeyCount - (leaf.KeyCount + rightLeaf.KeyCount - 1) / 2;
                         leaf.Add (rightLeaf, 0, shifts);
                         rightLeaf.Remove (0, shifts);
                         path.TraverseRight();
@@ -104,15 +104,12 @@ namespace Kaos.Collections
                         // Prune the empty root.
                         var newRoot = branch.FirstChild as Branch;
                         if (newRoot != null)
-                        {
                             root = newRoot;
-                            --height;
-                        }
                     }
                     return;
                 }
 
-                if (branch.KeyCount + right.KeyCount < branch.KeyCapacity)
+                if (branch.KeyCount + right.KeyCount < maxKeyCount)
                 {
                     // Coalesce left: move pivot and right sibling nodes.
                     branch.AddKey (path.GetPivot());
@@ -130,7 +127,7 @@ namespace Kaos.Collections
                 }
 
                 // Branch underflow?
-                if (branch.KeyCount < branch.KeyCapacity / 2)
+                if (branch.KeyCount < maxKeyCount / 2)
                 {
                     int shifts = (right.KeyCount - branch.KeyCount) / 2 - 1;
 
