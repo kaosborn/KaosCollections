@@ -3,8 +3,9 @@
 // Purpose: Benchmark SortedDictionary and BtreeDictionary comparisons with range query narrative.
 //
 // Usage notes:
-// • For valid results, run Release build outside Visual Studio.
-// • Adjust reps to change test duration.  Higher values show greater BtreeDictionary improvements.
+// • Adjust 'reps' to change test duration.  Higher values show greater BtreeDictionary improvements.
+// • To include diagnostic results, run Debug build.
+// • For valid time results, run Release build outside Visual Studio.
 //
 
 using System;
@@ -80,6 +81,14 @@ namespace BenchApp
             Console.WriteLine (time21 + "ms");
             Console.WriteLine ("Last time = " + (time22 - time21) + "ms");
             Console.WriteLine ("Range time = " + (time23 - time22) + "ms");
+
+#if DEBUG
+            bt.SanityCheck();
+            Console.WriteLine();
+            Console.Write ("---- height = " + bt.GetHeight());
+            Console.Write (", branch fill = " + bt.BranchSlotsUsed * 100 / bt.BranchSlotCount + "%");
+            Console.WriteLine (", leaf fill = " + bt.LeafSlotsUsed * 100 / bt.LeafSlotCount + "% ----");
+#endif
         }
     }
 }

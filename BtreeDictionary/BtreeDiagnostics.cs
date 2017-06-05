@@ -24,6 +24,12 @@ namespace Kaos.Collections
 
     public partial class BtreeDictionary<TKey, TValue>
     {
+        public int BranchSlotCount { get; private set; }
+        public int BranchSlotsUsed { get; private set; }
+        public int LeafSlotCount { get; private set; }
+        public int LeafSlotsUsed { get; private set; }
+
+
         /// <summary>
         /// Perform diagnostics check for data structure sanity errors. Since this is an
         /// in-memory managed structure, any errors would indicate a bug. Also performs space
@@ -33,9 +39,16 @@ namespace Kaos.Collections
         public void SanityCheck()
         {
             int height = GetHeight();
+            BranchSlotCount = 0;
+            BranchSlotsUsed = 0;
+            LeafSlotCount = 0;
+            LeafSlotsUsed = 0;
             Leaf lastLeaf = Check (root, 1, height, true, default (TKey), null);
             if (lastLeaf.RightLeaf != null)
                 throw new BtreeInsaneException ("Last leaf has invalid RightLeaf");
+
+            if (Count != LeafSlotsUsed)
+                throw new BtreeInsaneException ("Mismatched Count=" + Count + ", expected=" + LeafSlotsUsed);
         }
 
 
@@ -67,6 +80,9 @@ namespace Kaos.Collections
             Leaf visited
         )
         {
+            BranchSlotCount += maxKeyCount;
+            BranchSlotsUsed += branch.KeyCount;
+
             if (! isRightmost && (branch.KeyCount + 1) < maxKeyCount / 2)
                 throw new BtreeInsaneException ("Branch underfilled");
 
@@ -98,6 +114,9 @@ namespace Kaos.Collections
 
         private Leaf Check (Leaf leaf, bool isRightmost, TKey anchor, Leaf visited)
         {
+            LeafSlotCount += maxKeyCount;
+            LeafSlotsUsed += leaf.KeyCount;
+
             if (! isRightmost && leaf.KeyCount < maxKeyCount / 2)
                 throw new BtreeInsaneException ("Leaf underfilled");
 

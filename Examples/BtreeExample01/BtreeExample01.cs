@@ -3,7 +3,7 @@
 // Purpose: Exercise BtreeDictionary.Remove() showing various tree mutation scenarios.
 //
 // Usage notes:
-// • For complete results, run Debug build.
+// • To include diagnostic results, run Debug build.
 //
 
 using System;
@@ -13,10 +13,26 @@ namespace ExampleApp
 {
     class BtreeExample01
     {
+        static BtreeDictionary<int,int> tree;
+
+        static void WriteInfo()
+        {
+            Console.WriteLine();
+#if DEBUG
+            foreach (var lx in tree.GenerateTreeText())
+                Console.WriteLine (lx);
+
+            tree.SanityCheck();
+            Console.WriteLine();
+#endif
+        }
+
+
         static void Main()
         {
+            int order = 6;
             // Create a tree of low order to keep the output small:
-            var tree = new BtreeDictionary<int, int> (6);
+            tree = new BtreeDictionary<int, int> (order);
 
             // Build a 3-level tree:
             for (int i = 2; i <= 92; i += 2)
@@ -28,74 +44,43 @@ namespace ExampleApp
             foreach (int i in new int[] { 34, 38, 44, 46, 48, 54, 56, 60, 66, 68, 74, 76, 78 })
                 tree.Remove (i);
 
-#if DEBUG
-            Console.WriteLine ();
-            Console.WriteLine ("A BtreeDictionary of order 6 weighted to the right of the root:");
-            Console.WriteLine ("(Order is defined as the maximum number of children of a node.)");
-            Console.WriteLine ();
-            Console.WriteLine ("Height = " + tree.GetHeight() + ", Order = " + tree.GetOrder() + ":");
-            Console.WriteLine ();
-            foreach (var lx in tree.GenerateTreeText())
-                Console.WriteLine (lx);
-            tree.SanityCheck();
+            Console.WriteLine ("A BtreeDictionary weighted to the right of the root.  Order = " + order + ":");
+            WriteInfo();
 
-            Console.WriteLine ();
             Console.WriteLine ("Coalesce leaves, balance branches by deleting 24:");
-            Console.WriteLine ();
             tree.Remove (24);
-            foreach (var lx in tree.GenerateTreeText())
-                Console.WriteLine (lx);
-            tree.SanityCheck();
+            WriteInfo();
 
-            Console.WriteLine ();
             Console.WriteLine ("Update a branch key by deleting 32:");
-            Console.WriteLine ();
             tree.Remove (32);
-            foreach (var lx in tree.GenerateTreeText())
-                Console.WriteLine (lx);
-            tree.SanityCheck();
+            WriteInfo();
 
-            Console.WriteLine ();
             Console.WriteLine ("Update the root branch key by deleting 62:");
-            Console.WriteLine ();
             tree.Remove (62);
-            foreach (var lx in tree.GenerateTreeText())
-                Console.WriteLine (lx);
-            tree.SanityCheck();
+            WriteInfo();
 
-            Console.WriteLine ();
             Console.WriteLine ("Coalesce leaves by deleting 58:");
-            Console.WriteLine ();
             tree.Remove (58);
-            foreach (var lx in tree.GenerateTreeText())
-                Console.WriteLine (lx);
-            tree.SanityCheck();
+            WriteInfo();
 
-            Console.WriteLine ();
             Console.WriteLine ("Delete rightmost branches by deleting 92:");
             Console.WriteLine ("(Any rightmost node may contain as few as 1 element.)");
-            Console.WriteLine ();
             tree.Remove (92);
-            foreach (var lx in tree.GenerateTreeText())
-                Console.WriteLine (lx);
-            tree.SanityCheck();
+            WriteInfo();
 
-            Console.WriteLine ();
             Console.WriteLine ("Coalesce leaf, coalesce branches, prune root by deleting 36:");
-            Console.WriteLine ();
             tree.Remove (36);
-            foreach (var lx in tree.GenerateTreeText())
-                Console.WriteLine (lx);
-            tree.SanityCheck();
+            WriteInfo();
+#if DEBUG
+            Console.Write ("---- height = " + tree.GetHeight());
+            Console.Write (", branch fill = " + tree.BranchSlotsUsed * 100 / tree.BranchSlotCount + "%");
+            Console.WriteLine (", leaf fill = " + tree.LeafSlotsUsed * 100 / tree.LeafSlotCount + "% ----");
 #endif
         }
 
         /* Output:
 
-        Height = 3, Order = 6
-
-        A BtreeDictionary of order 6 weighted to the right of the root:
-        (Order is defined as the maximum number of children of a node.)
+        A BtreeDictionary weighted to the right of the root.  Order = 6:
 
         L0: 42
         L1: 28,32 | 52,62,72,82,92
@@ -136,6 +121,8 @@ namespace ExampleApp
 
         L0: 40,52,72,82
         L1: 26,28,30|40,42,50|52,64,70|72,80|82,84,86,88,90
+
+        ---- height = 2, branch fill = 80%, leaf fill = 64% ----
 
         */
     }
