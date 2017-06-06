@@ -38,7 +38,7 @@ namespace Kaos.Collections
         private BtreeKeys keys;
         private BtreeValues values;
         private const int MinimumOrder = 5;
-        private const int DefaultOrder = 32;
+        private const int DefaultOrder = 128;
         private const int MaximumOrder = 256;
 
         #region Constructors

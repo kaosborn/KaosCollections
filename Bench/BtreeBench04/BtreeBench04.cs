@@ -37,21 +37,24 @@ namespace BenchApp
 
             ////
 
-            var bt = new BtreeDictionary<Guid,int>();
-            Console.Write ("\nLoading BtreeDictionary with " + reps + " elements:\n\nLoad time = ");
-
-            Stopwatch watch2 = new Stopwatch();
-            watch2.Reset();
-            watch2.Start();
-
-            for (int i = 0; i < reps; ++i)
+            for (int order=32; order <= 256; order+=16)
             {
-                var guid = Guid.NewGuid();
-                bt.Add (guid, i);
-            }
+                var bt = new BtreeDictionary<Guid,int> (order);
+                Console.Write ("\nLoading BtreeDictionary (order="+order+") with " + reps + " elements:\n\nLoad time = ");
 
-            var time21 = watch2.ElapsedMilliseconds;
-            Console.WriteLine (time21 + "ms");
+                Stopwatch watch2 = new Stopwatch();
+                watch2.Reset();
+                watch2.Start();
+
+                for (int i = 0; i < reps; ++i)
+                {
+                    var guid = Guid.NewGuid();
+                    bt.Add (guid, i);
+                }
+
+                var time21 = watch2.ElapsedMilliseconds;
+                Console.WriteLine (time21 + "ms");
+            }
         }
     }
 }
