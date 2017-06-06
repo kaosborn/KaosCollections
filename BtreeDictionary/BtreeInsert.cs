@@ -20,6 +20,7 @@ namespace Kaos.Collections
         {
             var leaf = (Leaf) path.TopNode;
             int leafIndex = path.TopNodeIndex;
+            bool isAppend = false;
 
             if (leaf.KeyCount < maxKeyCount)
             {
@@ -32,8 +33,10 @@ namespace Kaos.Collections
             var newLeaf = new Leaf (leaf, maxKeyCount);
 
             if (newLeaf.RightLeaf == null && leafIndex == leaf.KeyCount)
-                // Densify sequential loads.
+            {
+                isAppend = true;
                 newLeaf.Add (key, value);
+            }
             else
             {
                 int halfway = leaf.KeyCount / 2 + 1;
@@ -57,12 +60,12 @@ namespace Kaos.Collections
 
             // Promote anchor of split leaf.
             ++Count;
-            Promote (path, newLeaf.GetKey (0), (Node) newLeaf);
+            Promote (path, newLeaf.GetKey (0), (Node) newLeaf, isAppend);
         }
 
 
         // Leaf has been split so insert the new anchor into a branch.
-        private void Promote (NodeVector path, TKey key, Node newNode)
+        private void Promote (NodeVector path, TKey key, Node newNode, bool isAppend)
         {
             for (;;)
             {
@@ -89,7 +92,7 @@ namespace Kaos.Collections
 
                 // Right split an overflowing branch.
                 var newBranch = new Branch (branch, maxKeyCount);
-                int halfway = (branch.KeyCount + 1) / 2;
+                int halfway = isAppend ? branch.KeyCount - 2 : (branch.KeyCount + 1) / 2;
 
                 if (branchIndex < halfway)
                 {
