@@ -19,12 +19,12 @@ namespace Kaos.Collections
         private void Insert (NodeVector path, TKey key, TValue value)
         {
             var leaf = (Leaf) path.TopNode;
-            int leafIndex = path.TopNodeIndex;
+            int pathIndex = path.TopNodeIndex;
             bool isAppend = false;
 
             if (leaf.KeyCount < maxKeyCount)
             {
-                leaf.Insert (leafIndex, key, value);
+                leaf.Insert (pathIndex, key, value);
                 ++Count;
                 return;
             }
@@ -32,29 +32,29 @@ namespace Kaos.Collections
             // Leaf overflow.  Right split a new leaf.
             var newLeaf = new Leaf (leaf, maxKeyCount);
 
-            if (newLeaf.RightLeaf == null && leafIndex == leaf.KeyCount)
+            if (newLeaf.RightLeaf == null && pathIndex == leaf.KeyCount)
             {
                 isAppend = true;
                 newLeaf.Add (key, value);
             }
             else
             {
-                int halfway = leaf.KeyCount / 2 + 1;
+                int splitIndex = leaf.KeyCount / 2 + 1;
 
-                if (leafIndex < halfway)
+                if (pathIndex < splitIndex)
                 {
                     // Left-side insert: Copy right side to the split leaf.
-                    newLeaf.Add (leaf, halfway - 1, leaf.KeyCount);
-                    leaf.Truncate (halfway - 1);
-                    leaf.Insert (leafIndex, key, value);
+                    newLeaf.Add (leaf, splitIndex - 1, leaf.KeyCount);
+                    leaf.Truncate (splitIndex - 1);
+                    leaf.Insert (pathIndex, key, value);
                 }
                 else
                 {
                     // Right-side insert: Copy split leaf parts and new key.
-                    newLeaf.Add (leaf, halfway, leafIndex);
+                    newLeaf.Add (leaf, splitIndex, pathIndex);
                     newLeaf.Add (key, value);
-                    newLeaf.Add (leaf, leafIndex, leaf.KeyCount);
-                    leaf.Truncate (halfway);
+                    newLeaf.Add (leaf, pathIndex, leaf.KeyCount);
+                    leaf.Truncate (splitIndex);
                 }
             }
 
@@ -92,12 +92,12 @@ namespace Kaos.Collections
 
                 // Right split an overflowing branch.
                 var newBranch = new Branch (branch, maxKeyCount);
-                int halfway = isAppend ? branch.KeyCount - 2 : (branch.KeyCount + 1) / 2;
+                int splitIndex = isAppend ? branch.KeyCount - 2 : (branch.KeyCount + 1) / 2;
 
-                if (branchIndex < halfway)
+                if (branchIndex < splitIndex)
                 {
                     // Split with left-side insert.
-                    for (int ix = halfway; ; ++ix)
+                    for (int ix = splitIndex; ; ++ix)
                     {
                         if (ix >= branch.KeyCount)
                         {
@@ -107,8 +107,8 @@ namespace Kaos.Collections
                         newBranch.Add (branch.GetKey (ix), branch.GetChild (ix));
                     }
 
-                    TKey newPromotion = branch.GetKey (halfway - 1);
-                    branch.Truncate (halfway - 1);
+                    TKey newPromotion = branch.GetKey (splitIndex - 1);
+                    branch.Truncate (splitIndex - 1);
                     branch.InsertKey (branchIndex, key);
                     branch.Insert (branchIndex + 1, newNode);
                     key = newPromotion;
@@ -116,32 +116,32 @@ namespace Kaos.Collections
                 else
                 {
                     // Split branch with right-side insert (or cascade promote).
-                    int moveIndex = halfway;
+                    int leftIndex = splitIndex;
 
-                    if (branchIndex > halfway)
+                    if (branchIndex > splitIndex)
                     {
                         for (;;)
                         {
-                            ++moveIndex;
-                            newBranch.Add (branch.GetChild (moveIndex));
-                            if (moveIndex >= branchIndex)
+                            ++leftIndex;
+                            newBranch.Add (branch.GetChild (leftIndex));
+                            if (leftIndex >= branchIndex)
                                 break;
-                            newBranch.AddKey (branch.GetKey (moveIndex));
+                            newBranch.AddKey (branch.GetKey (leftIndex));
                         }
                         newBranch.AddKey (key);
-                        key = branch.GetKey (halfway);
+                        key = branch.GetKey (splitIndex);
                     }
 
                     newBranch.Add (newNode);
 
-                    while (moveIndex < branch.KeyCount)
+                    while (leftIndex < branch.KeyCount)
                     {
-                        newBranch.AddKey (branch.GetKey (moveIndex));
-                        ++moveIndex;
-                        newBranch.Add (branch.GetChild (moveIndex));
+                        newBranch.AddKey (branch.GetKey (leftIndex));
+                        ++leftIndex;
+                        newBranch.Add (branch.GetChild (leftIndex));
                     }
 
-                    branch.Truncate (halfway);
+                    branch.Truncate (splitIndex);
                 }
 
                 newNode = newBranch;
