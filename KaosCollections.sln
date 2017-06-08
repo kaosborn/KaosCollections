@@ -1,15 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.6
+VisualStudioVersion = 15.0.26430.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "BtreeDictionary", "BtreeDictionary\BtreeDictionary.shproj", "{9AAB8F38-1582-401D-A4FD-ADAE2C6CB496}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Collections400", "Collections400\Collections400.csproj", "{04BC35F4-F0D8-47D0-AE7C-B2D62BE49FC6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{5FF2A63A-FAF6-4C90-8A11-B491F46A70A9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BtreeExample01", "Examples\BtreeExample01\BtreeExample01.csproj", "{9D913856-8058-4708-B63A-6EEFCE22D6A3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BtreeExample02", "Examples\BtreeExample02\BtreeExample02.csproj", "{5716ECDB-3E20-4F65-B785-D4E09D0D2620}"
 EndProject
@@ -35,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Collections", "Collections\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BtreeExample09", "Examples\BtreeExample09\BtreeExample09.csproj", "{B6862A6A-D09B-4B51-BA60-26DCD80C0079}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BtreeBench03", "Bench\BtreeBench03\BtreeBench03.csproj", "{B2E1C469-4A85-4F63-8D62-D43443A8B294}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		BtreeDictionary\BtreeDictionary.projitems*{04bc35f4-f0d8-47d0-ae7c-b2d62be49fc6}*SharedItemsImports = 4
@@ -49,10 +49,6 @@ Global
 		{04BC35F4-F0D8-47D0-AE7C-B2D62BE49FC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04BC35F4-F0D8-47D0-AE7C-B2D62BE49FC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04BC35F4-F0D8-47D0-AE7C-B2D62BE49FC6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9D913856-8058-4708-B63A-6EEFCE22D6A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9D913856-8058-4708-B63A-6EEFCE22D6A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9D913856-8058-4708-B63A-6EEFCE22D6A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9D913856-8058-4708-B63A-6EEFCE22D6A3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5716ECDB-3E20-4F65-B785-D4E09D0D2620}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5716ECDB-3E20-4F65-B785-D4E09D0D2620}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5716ECDB-3E20-4F65-B785-D4E09D0D2620}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -97,12 +93,15 @@ Global
 		{B6862A6A-D09B-4B51-BA60-26DCD80C0079}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6862A6A-D09B-4B51-BA60-26DCD80C0079}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6862A6A-D09B-4B51-BA60-26DCD80C0079}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2E1C469-4A85-4F63-8D62-D43443A8B294}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2E1C469-4A85-4F63-8D62-D43443A8B294}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2E1C469-4A85-4F63-8D62-D43443A8B294}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2E1C469-4A85-4F63-8D62-D43443A8B294}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{9D913856-8058-4708-B63A-6EEFCE22D6A3} = {5FF2A63A-FAF6-4C90-8A11-B491F46A70A9}
 		{5716ECDB-3E20-4F65-B785-D4E09D0D2620} = {5FF2A63A-FAF6-4C90-8A11-B491F46A70A9}
 		{AA43DEB7-E073-490A-98C3-153692F7D1C9} = {5FF2A63A-FAF6-4C90-8A11-B491F46A70A9}
 		{3B3965D8-3657-46D0-8A94-CBC041BE0D40} = {5FF2A63A-FAF6-4C90-8A11-B491F46A70A9}
@@ -112,5 +111,6 @@ Global
 		{8D3A6449-A8BC-49B9-A8C3-9821CBDCDC8F} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{46FF72E9-14D6-40AF-A171-2FC4FB0F9222} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{B6862A6A-D09B-4B51-BA60-26DCD80C0079} = {5FF2A63A-FAF6-4C90-8A11-B491F46A70A9}
+		{B2E1C469-4A85-4F63-8D62-D43443A8B294} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 	EndGlobalSection
 EndGlobal

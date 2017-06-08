@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9D913856-8058-4708-B63A-6EEFCE22D6A3}</ProjectGuid>
+    <ProjectGuid>{B2E1C469-4A85-4F63-8D62-D43443A8B294}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>BtreeExample01</RootNamespace>
-    <AssemblyName>BtreeExample01</AssemblyName>
+    <RootNamespace>BtreeBench03</RootNamespace>
+    <AssemblyName>BtreeBench03</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
