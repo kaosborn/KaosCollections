@@ -1,7 +1,7 @@
 ﻿//
 // Library: KaosCollections
 // File:    BtreeDiagnostics.cs
-// Purpose: Define BtreeDictionary API for Debug builds only.
+// Purpose: Define BtreeDictionary API for Debug build only.
 //
 // Copyright © 2009-2017 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely
@@ -14,16 +14,9 @@ using System.Text;
 namespace Kaos.Collections
 {
 #if DEBUG
-    public class BtreeInsaneException : Exception
-    {
-        public BtreeInsaneException () { }
-        public BtreeInsaneException (string message) : base (message) { }
-        public BtreeInsaneException (string message, Exception inner) : base (message, inner) { }
-    }
-
-
     public partial class BtreeDictionary<TKey, TValue>
     {
+        // Telemetry counters:
         public int BranchSlotCount { get; private set; }
         public int BranchSlotsUsed { get; private set; }
         public int LeafSlotCount { get; private set; }
@@ -38,17 +31,18 @@ namespace Kaos.Collections
         /// </exclude>
         public void SanityCheck()
         {
-            int height = GetHeight();
             BranchSlotCount = 0;
             BranchSlotsUsed = 0;
             LeafSlotCount = 0;
             LeafSlotsUsed = 0;
-            Leaf lastLeaf = Check (root, 1, height, true, default (TKey), null);
+
+            Leaf lastLeaf = Check (root, 1, GetHeight(), true, default (TKey), null);
+
             if (lastLeaf.RightLeaf != null)
-                throw new BtreeInsaneException ("Last leaf has invalid RightLeaf");
+                throw new InvalidOperationException ("Last leaf has invalid RightLeaf");
 
             if (Count != LeafSlotsUsed)
-                throw new BtreeInsaneException ("Mismatched Count=" + Count + ", expected=" + LeafSlotsUsed);
+                throw new InvalidOperationException ("Mismatched Count=" + Count + ", expected=" + LeafSlotsUsed);
         }
 
 
@@ -84,10 +78,10 @@ namespace Kaos.Collections
             BranchSlotsUsed += branch.KeyCount;
 
             if (! isRightmost && (branch.KeyCount + 1) < maxKeyCount / 2)
-                throw new BtreeInsaneException ("Branch underfilled");
+                throw new InvalidOperationException ("Branch underfilled");
 
             if (branch.ChildCount != branch.KeyCount + 1)
-                throw new BtreeInsaneException ("Branch ChildCount wrong");
+                throw new InvalidOperationException ("Branch ChildCount wrong");
 
             for (int i = 0; i < branch.ChildCount; ++i)
             {
@@ -95,7 +89,7 @@ namespace Kaos.Collections
                 bool isRightmost0 = isRightmost && i < branch.ChildCount;
                 if (i < branch.KeyCount - 1)
                     if (branch.GetKey (i).CompareTo (branch.GetKey (i + 1)) >= 0)
-                        throw new BtreeInsaneException ("Branch keys not ascending");
+                        throw new InvalidOperationException ("Branch keys not ascending");
 
                 if (level + 1 < height)
                 {
@@ -118,23 +112,23 @@ namespace Kaos.Collections
             LeafSlotsUsed += leaf.KeyCount;
 
             if (! isRightmost && leaf.KeyCount < maxKeyCount / 2)
-                throw new BtreeInsaneException ("Leaf underfilled");
+                throw new InvalidOperationException ("Leaf underfilled");
 
             if (! anchor.Equals (default (TKey)) && !anchor.Equals (leaf.GetKey (0)))
-                throw new BtreeInsaneException ("Leaf has wrong anchor");
+                throw new InvalidOperationException ("Leaf has wrong anchor");
 
             for (int i = 0; i < leaf.KeyCount; ++i)
                 if (i < leaf.KeyCount - 1 && leaf.GetKey (i).CompareTo (leaf.GetKey (i + 1)) >= 0)
-                    throw new BtreeInsaneException ("Leaf keys not ascending");
+                    throw new InvalidOperationException ("Leaf keys not ascending");
 
             if (visited == null)
             {
                 if (! anchor.Equals (default (TKey)))
-                    throw new BtreeInsaneException ("Inconsistent visited, anchor");
+                    throw new InvalidOperationException ("Inconsistent visited, anchor");
             }
             else
                 if (visited.RightLeaf != leaf)
-                    throw new BtreeInsaneException ("Leaf has bad RightLeaf");
+                    throw new InvalidOperationException ("Leaf has bad RightLeaf");
 
             return leaf;
         }
