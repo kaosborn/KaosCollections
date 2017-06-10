@@ -8,14 +8,13 @@ using System.Threading;
 using Kaos.Collections;
 using Kaos.Combinatorics;
 
-namespace KwDataBench
+namespace BenchApp
 {
-    class BtreeBench03
+    class BtreeStress01
     {
         static void Main()
         {
             var tree = new BtreeDictionary<int, int> (5);
-            
 
             for (int w = 1; w < 21; ++w)
             {
@@ -43,12 +42,10 @@ namespace KwDataBench
                             }
 #endif
                         }
-                        //VERBOSE Console.WriteLine ("Added {0}", permAdd);
 
                         for (int m = 0; m < permDel.Picks; ++m)
                         {
                             tree.Remove (permDel[m]);
-
 #if DEBUG
                             try
                             {
@@ -63,8 +60,6 @@ namespace KwDataBench
                             }
 #endif
                         }
-                        //VERBOSE Console.WriteLine ("  Del {0}", permDel);
-
 #if DEBUG
                         if (tree.Count != 0)
                             throw new DataMisalignedException ("Count should be zero");
