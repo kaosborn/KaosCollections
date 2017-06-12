@@ -20,6 +20,10 @@
     <PackageTags>Generics Collections SortedDictionary BTree</PackageTags>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard1.0|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard1.0\KaosCollections.xml</DocumentationFile>
+  </PropertyGroup>
+
   <Import Project="..\BtreeDictionary\BtreeDictionary.projitems" Label="Shared" />
 
 </Project>
