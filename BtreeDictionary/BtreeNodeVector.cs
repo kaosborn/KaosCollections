@@ -31,14 +31,14 @@ namespace Kaos.Collections
             /// <param name="key">Value to find.</param>
             public NodeVector (BtreeDictionary<TKey, TValue> tree, TKey key)
             {
-                indexStack = new List<int>();
-                nodeStack = new List<Node>();
+                this.indexStack = new List<int>();
+                this.nodeStack = new List<Node>();
 
                 for (Node node = tree.root;;)
                 {
                     Debug.Assert (node != null);
 
-                    nodeStack.Add (node);
+                    this.nodeStack.Add (node);
                     int ix = node.Search (key, tree.comparer);
 
                     if (node is Leaf)
@@ -46,12 +46,12 @@ namespace Kaos.Collections
                         IsFound = ix >= 0;
                         if (! IsFound)
                             ix = ~ix;
-                        indexStack.Add (ix);
+                        this.indexStack.Add (ix);
                         return;
                     }
 
                     ix = (ix < 0)? ~ix : ix+1;
-                    indexStack.Add (ix);
+                    this.indexStack.Add (ix);
                     node = ((Branch) node).GetChild (ix);
                 }
             }
