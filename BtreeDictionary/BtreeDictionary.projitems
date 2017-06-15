@@ -9,13 +9,11 @@
     <Import_RootNamespace>BtreeDictionary</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)BtreeDelete.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BtreeDiagnostics.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BtreeDictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BtreeDictionaryObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BtreeExtras.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BtreeFind.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)BtreeInsert.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BtreeKeysValues.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BtreeNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BtreeNodeVector.cs" />
