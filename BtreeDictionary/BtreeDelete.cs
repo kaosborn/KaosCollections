@@ -13,71 +13,73 @@ namespace Kaos.Collections
 {
     public partial class BtreeDictionary<TKey, TValue>
     {
+    private partial class NodeVector
+    {
         #region Nonpublic methods
 
-        // Delete element specified by path.
-        private void Delete (NodeVector path)
+        // Delete specified key-vaue pair.
+        public void Delete()
         {
-            int leafIndex = path.TopNodeIndex;
-            var leaf = (Leaf) path.TopNode;
+            int leafIndex = TopNodeIndex;
+            var leaf = (Leaf) TopNode;
 
             leaf.Remove (leafIndex);
-            --Count;
+            --owner.Count;
 
             if (leafIndex == 0)
                 if (leaf.KeyCount != 0)
-                    path.SetPivot (path.TopNode.GetKey (0));
+                    SetPivot (TopNode.GetKey (0));
                 else
                 {
                     Debug.Assert (leaf.RightLeaf == null, "only the rightmost leaf should ever be emptied");
 
                     // Leaf is empty.  Prune it unless it is the only leaf in the tree.
-                    var leftLeaf = (Leaf) path.GetLeftNode();
+                    var leftLeaf = (Leaf) GetLeftNode();
                     if (leftLeaf != null)
                     {
                         leftLeaf.RightLeaf = leaf.RightLeaf;
-                        Demote (path);
+                        Demote();
                     }
 
                     return;
                 }
 
             // Leaf underflow?
-            if (leaf.KeyCount < maxKeyCount / 2)
+            if (leaf.KeyCount < owner.maxKeyCount / 2)
             {
                 Leaf rightLeaf = leaf.RightLeaf;
                 if (rightLeaf != null)
-                    if (leaf.KeyCount + rightLeaf.KeyCount > maxKeyCount)
+                    if (leaf.KeyCount + rightLeaf.KeyCount > owner.maxKeyCount)
                     {
                         // Balance leaves by shifting pairs from right leaf.
-                        int shifts = maxKeyCount - (leaf.KeyCount + rightLeaf.KeyCount - 1) / 2;
+                        int shifts = owner.maxKeyCount - (leaf.KeyCount + rightLeaf.KeyCount - 1) / 2;
                         leaf.Add (rightLeaf, 0, shifts);
                         rightLeaf.Remove (0, shifts);
-                        path.TraverseRight();
-                        path.SetPivot (path.TopNode.GetKey (0));
+                        TraverseRight();
+                        SetPivot (TopNode.GetKey (0));
                     }
                     else
                     {
                         // Coalesce right leaf to current leaf and prune right leaf.
                         leaf.Add (rightLeaf, 0, rightLeaf.KeyCount);
                         leaf.RightLeaf = rightLeaf.RightLeaf;
-                        path.TraverseRight();
-                        Demote (path);
+                        TraverseRight();
+                        Demote();
                     }
             }
         }
 
 
         // Leaf has been emptied so non-lazy delete its pivot.
-        private void Demote (NodeVector path)
+        public void Demote()
         {
             for (;;)
             {
-                Debug.Assert (path.Height > 0);
-                path.Pop();
+                Debug.Assert (Height > 0);
+                Pop();
 
-                var branch = (Branch) path.TopNode;
-                if (path.TopNodeIndex == 0)
+                var branch = (Branch) TopNode;
+                if (TopNodeIndex == 0)
                 {
                     if (branch.KeyCount == 0)
                         // Cascade when rightmost branch is empty.
@@ -87,32 +89,32 @@ namespace Kaos.Collections
                     TKey pivot = branch.GetKey (0);
                     branch.RemoveKey (0);
                     branch.RemoveChild (0);
-                    path.SetPivot (pivot);
+                    SetPivot (pivot);
                 }
                 else
                 {
                     // Typical branch pivot delete.
-                    branch.RemoveKey (path.TopNodeIndex - 1);
-                    branch.RemoveChild (path.TopNodeIndex);
+                    branch.RemoveKey (TopNodeIndex - 1);
+                    branch.RemoveChild (TopNodeIndex);
                 }
 
-                var right = (Branch) path.TraverseRight();
+                var right = (Branch) TraverseRight();
                 if (right == null)
                 {
-                    if (branch == root && branch.KeyCount == 0)
+                    if (branch == owner.root && branch.KeyCount == 0)
                     {
                         // Prune the empty root.
                         var newRoot = branch.FirstChild as Branch;
                         if (newRoot != null)
-                            root = newRoot;
+                            owner.root = newRoot;
                     }
                     return;
                 }
 
-                if (branch.KeyCount + right.KeyCount < maxKeyCount)
+                if (branch.KeyCount + right.KeyCount < owner.maxKeyCount)
                 {
                     // Coalesce left: move pivot and right sibling nodes.
-                    branch.AddKey (path.GetPivot());
+                    branch.AddKey (GetPivot());
 
                     for (int ix = 0; ; ++ix)
                     {
@@ -127,12 +129,12 @@ namespace Kaos.Collections
                 }
 
                 // Branch underflow?
-                if (branch.KeyCount < maxKeyCount / 2)
+                if (branch.KeyCount < owner.maxKeyCount / 2)
                 {
                     int shifts = (right.KeyCount - branch.KeyCount) / 2 - 1;
 
                     // Balance branches to keep ratio.  Rotate thru the pivot.
-                    branch.AddKey (path.GetPivot());
+                    branch.AddKey (GetPivot());
 
                     // Shift pairs from right sibling.
                     for (int rightIndex = 0; ; ++rightIndex)
@@ -145,7 +147,7 @@ namespace Kaos.Collections
                         branch.AddKey (right.GetKey (rightIndex));
                     }
 
-                    path.SetPivot (right.GetKey (shifts));
+                    SetPivot (right.GetKey (shifts));
                     right.Remove (0, shifts + 1);
                 }
 
@@ -154,5 +156,6 @@ namespace Kaos.Collections
         }
 
         #endregion
+    }
     }
 }

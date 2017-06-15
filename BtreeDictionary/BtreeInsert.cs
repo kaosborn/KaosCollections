@@ -13,23 +13,25 @@ namespace Kaos.Collections
 {
     public partial class BtreeDictionary<TKey, TValue>
     {
+    private partial class NodeVector
+    {
         #region Nonpublic methods
 
         // Insert element at preseeked path.
-        private void Insert (NodeVector path, TKey key, TValue value)
+        public void Insert (TKey key, TValue value)
         {
-            var leaf = (Leaf) path.TopNode;
-            int pathIndex = path.TopNodeIndex;
+            var leaf = (Leaf) TopNode;
+            int pathIndex = TopNodeIndex;
 
-            if (leaf.KeyCount < maxKeyCount)
+            if (leaf.KeyCount < owner.maxKeyCount)
             {
                 leaf.Insert (pathIndex, key, value);
-                ++Count;
+                ++owner.Count;
                 return;
             }
 
             // Leaf is full so right split a new leaf.
-            var newLeaf = new Leaf (leaf, maxKeyCount);
+            var newLeaf = new Leaf (leaf, owner.maxKeyCount);
 
             if (newLeaf.RightLeaf == null && pathIndex == leaf.KeyCount)
                 newLeaf.Add (key, value);
@@ -55,30 +57,30 @@ namespace Kaos.Collections
             }
 
             // Promote anchor of split leaf.
-            ++Count;
-            Promote (path, newLeaf.GetKey (0), (Node) newLeaf, newLeaf.RightLeaf == null);
+            ++owner.Count;
+            Promote (newLeaf.GetKey (0), (Node) newLeaf, newLeaf.RightLeaf == null);
         }
 
 
         // Leaf or branch has been split so insert the new anchor into a branch.
-        private void Promote (NodeVector path, TKey key, Node newNode, bool isAppend)
+        private void Promote (TKey key, Node newNode, bool isAppend)
         {
             for (;;)
             {
-                if (path.Height == 1)
+                if (Height == 1)
                 {
                     // Graft new root.
-                    Debug.Assert (root == path.TopNode);
-                    root = new Branch (path.TopNode, maxKeyCount);
-                    root.Add (key, newNode);
+                    Debug.Assert (owner.root == TopNode);
+                    owner.root = new Branch (TopNode, owner.maxKeyCount);
+                    owner.root.Add (key, newNode);
                     break;
                 }
 
-                path.Pop();
-                var branch = (Branch) path.TopNode;
-                int branchIndex = path.TopNodeIndex;
+                Pop();
+                var branch = (Branch) TopNode;
+                int branchIndex = TopNodeIndex;
 
-                if (branch.KeyCount < maxKeyCount)
+                if (branch.KeyCount < owner.maxKeyCount)
                 {
                     // Typical case where branch has room.
                     branch.InsertKey (branchIndex, key);
@@ -87,7 +89,7 @@ namespace Kaos.Collections
                 }
 
                 // Branch is full so right split a new branch.
-                var newBranch = new Branch (branch, maxKeyCount);
+                var newBranch = new Branch (branch, owner.maxKeyCount);
                 int splitIndex = isAppend ? branch.KeyCount - 2 : (branch.KeyCount + 1) / 2;
 
                 if (branchIndex < splitIndex)
@@ -146,4 +148,5 @@ namespace Kaos.Collections
 
         #endregion
     }
+}
 }

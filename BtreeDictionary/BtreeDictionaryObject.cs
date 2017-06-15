@@ -77,7 +77,7 @@ namespace Kaos.Collections
 
             var path = new NodeVector (this, (TKey) key);
             if (path.IsFound)
-                Delete (path);
+                path.Delete();
         }
 
 
@@ -190,7 +190,7 @@ namespace Kaos.Collections
                 if (path.IsFound)
                     path.LeafValue = (TValue) value;
                 else
-                    Insert (path, (TKey) key, (TValue) value);
+                    path.Insert ((TKey) key, (TValue) value);
             }
         }
 

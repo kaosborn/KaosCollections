@@ -139,7 +139,7 @@ namespace Kaos.Collections
             if (path.IsFound)
                 throw new ArgumentException ("An entry with the same key already exists.");
 
-            Insert (path, key, value);
+            path.Insert (key, value);
         }
 
 
@@ -229,7 +229,7 @@ namespace Kaos.Collections
             if (! path.IsFound)
                 return false;
 
-            Delete (path);
+            path.Delete();
             return true;
         }
 
@@ -359,7 +359,7 @@ namespace Kaos.Collections
                 if (path.IsFound)
                     path.LeafValue = value;
                 else
-                    Insert (path, key, value);
+                    path.Insert (key, value);
             }
         }
 
@@ -391,7 +391,7 @@ namespace Kaos.Collections
             if (path.IsFound)
                 throw new ArgumentException ("An entry with the same key already exists.");
 
-            Insert (path, keyValuePair.Key, keyValuePair.Value);
+            path.Insert (keyValuePair.Key, keyValuePair.Value);
         }
 
 
@@ -433,7 +433,7 @@ namespace Kaos.Collections
             if (path.IsFound)
                 if (pair.Value.Equals (path.LeafValue))
                 {
-                    Delete (path);
+                    path.Delete();
                     return true;
                 }
 

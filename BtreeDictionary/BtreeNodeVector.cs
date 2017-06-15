@@ -21,8 +21,9 @@ namespace Kaos.Collections
         /// </remarks>
         /// <typeparam name="TKey">Key type.</typeparam>
         /// <typeparam name="TValue">Value type.</typeparam>
-        private class NodeVector
+        private partial class NodeVector
         {
+            private BtreeDictionary<TKey, TValue> owner;
             private List<int> indexStack;
             private List<Node> nodeStack;
 
@@ -31,6 +32,7 @@ namespace Kaos.Collections
             /// <param name="key">Value to find.</param>
             public NodeVector (BtreeDictionary<TKey, TValue> tree, TKey key)
             {
+                this.owner = tree;
                 this.indexStack = new List<int>();
                 this.nodeStack = new List<Node>();
 
@@ -50,7 +52,7 @@ namespace Kaos.Collections
                         return;
                     }
 
-                    ix = (ix < 0)? ~ix : ix+1;
+                    ix = (ix < 0) ? ~ix : ix+1;
                     this.indexStack.Add (ix);
                     node = ((Branch) node).GetChild (ix);
                 }
