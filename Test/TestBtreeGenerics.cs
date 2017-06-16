@@ -12,6 +12,30 @@ namespace CollectionsTest
     public partial class Test_Btree
     {
         [TestMethod]
+        public void Test_Inheritance()
+        {
+            Setup();
+
+            Assert.IsTrue (tree2 is System.Collections.Generic.IDictionary<string,int>);
+            Assert.IsTrue (tree2 is System.Collections.Generic.ICollection<KeyValuePair<string,int>>);
+            Assert.IsTrue (tree2 is System.Collections.Generic.IEnumerable<KeyValuePair<string,int>>);
+            Assert.IsTrue (tree2 is System.Collections.IEnumerable);
+            Assert.IsTrue (tree2 is System.Collections.IDictionary);
+            Assert.IsTrue (tree2 is System.Collections.ICollection);
+
+            Assert.IsTrue (tree2.Keys is System.Collections.Generic.ICollection<string>);
+            Assert.IsTrue (tree2.Keys is System.Collections.Generic.IEnumerable<string>);
+            Assert.IsTrue (tree2.Keys is System.Collections.IEnumerable);
+            Assert.IsTrue (tree2.Keys is System.Collections.ICollection);
+
+            Assert.IsTrue (tree2.Values is System.Collections.Generic.ICollection<int>);
+            Assert.IsTrue (tree2.Values is System.Collections.Generic.IEnumerable<int>);
+            Assert.IsTrue (tree2.Values is System.Collections.IEnumerable);
+            Assert.IsTrue (tree2.Values is System.Collections.ICollection);
+        }
+
+
+        [TestMethod]
         public void Test_Ctor0()
         {
             Setup();
