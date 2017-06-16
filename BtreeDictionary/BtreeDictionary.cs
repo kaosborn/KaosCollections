@@ -8,6 +8,7 @@
 //
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 [assembly: CLSCompliant (true)]
@@ -25,11 +26,7 @@ namespace Kaos.Collections
     /// </remarks>
     public sealed partial class BtreeDictionary<TKey, TValue> :
         IDictionary<TKey, TValue>,
-        ICollection<KeyValuePair<TKey, TValue>>,
-        IEnumerable<KeyValuePair<TKey, TValue>>,
-        System.Collections.IDictionary,
-        System.Collections.ICollection,
-        System.Collections.IEnumerable
+        IDictionary
         where TKey : IComparable
     {
         private Branch root;

@@ -8,6 +8,7 @@
 //
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Kaos.Collections
@@ -18,10 +19,8 @@ namespace Kaos.Collections
         /// Represents a collection of keys of a <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>.
         /// </summary>
         public sealed partial class BtreeKeys :
-            System.Collections.Generic.ICollection<TKey>,
-            System.Collections.Generic.IEnumerable<TKey>,
-            System.Collections.ICollection,
-            System.Collections.IEnumerable
+            ICollection<TKey>,
+            ICollection
         {
             BtreeDictionary<TKey, TValue> tree;
 
@@ -157,10 +156,8 @@ namespace Kaos.Collections
         /// Represents a collection of values of a <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>.
         /// </summary>
         public sealed partial class BtreeValues :
-            System.Collections.Generic.ICollection<TValue>,
-            System.Collections.Generic.IEnumerable<TValue>,
-            System.Collections.ICollection,
-            System.Collections.IEnumerable
+            ICollection<TValue>,
+            ICollection
         {
             private BtreeDictionary<TKey, TValue> tree;
 
