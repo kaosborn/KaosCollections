@@ -21,6 +21,9 @@ namespace Kaos.Collections
         public sealed class BtreeKeys :
             ICollection<TKey>,
             ICollection
+#if NETSTANDARD1_0
+            , IReadOnlyCollection<TKey>
+#endif
         {
             BtreeDictionary<TKey, TValue> tree;
 
@@ -190,6 +193,9 @@ namespace Kaos.Collections
         public sealed class BtreeValues :
             ICollection<TValue>,
             ICollection
+#if NETSTANDARD1_0
+            , IReadOnlyCollection<TValue>
+#endif
         {
             private BtreeDictionary<TKey, TValue> tree;
 

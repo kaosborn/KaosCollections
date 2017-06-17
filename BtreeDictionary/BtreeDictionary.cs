@@ -27,6 +27,9 @@ namespace Kaos.Collections
     public sealed partial class BtreeDictionary<TKey, TValue> :
         IDictionary<TKey, TValue>,
         IDictionary
+#if NETSTANDARD1_0
+        , IReadOnlyDictionary<TKey, TValue>
+#endif
         where TKey : IComparable
     {
         private Branch root;
@@ -418,6 +421,13 @@ namespace Kaos.Collections
         ICollection<TKey> IDictionary<TKey, TValue>.Keys
         { get { return (ICollection<TKey>) keys; } }
 
+#if NETSTANDARD1_0
+        IEnumerable<TKey> IReadOnlyDictionary<TKey, TValue>.Keys
+        { get { return Keys; } }
+
+        IEnumerable<TValue> IReadOnlyDictionary<TKey, TValue>.Values
+        { get { return Values; } }
+#endif
 
         /// <summary>Delete the supplied key and its associated value from the collection.
         /// </summary>
