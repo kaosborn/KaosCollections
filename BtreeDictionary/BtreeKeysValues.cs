@@ -18,7 +18,7 @@ namespace Kaos.Collections
         /// <summary>
         /// Represents a collection of keys of a <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>.
         /// </summary>
-        public sealed partial class BtreeKeys :
+        public sealed class BtreeKeys :
             ICollection<TKey>,
             ICollection
         {
@@ -103,7 +103,7 @@ namespace Kaos.Collections
                     Reset();
                 }
 
-                object System.Collections.IEnumerator.Current
+                object IEnumerator.Current
                 { get { return (object) Current; } }
 
                 public TKey Current
@@ -133,6 +133,11 @@ namespace Kaos.Collections
 
             #region Explicit properties and methods
 
+            /// <summary>Gets an enumerator that iterates thru the collection.</summary>
+            /// <returns>An enumerator for the collection.</returns>
+            IEnumerator IEnumerable.GetEnumerator()
+            { return GetEnumerator(); }
+
             void ICollection<TKey>.Add (TKey key)
             { throw new NotSupportedException(); }
 
@@ -142,11 +147,38 @@ namespace Kaos.Collections
             bool ICollection<TKey>.Contains (TKey key)
             { return tree.ContainsKey (key); }
 
+            void ICollection.CopyTo (Array array, int index)
+            {
+                if (array == null)
+                    throw new ArgumentNullException ("array");
+
+                if (array.Rank > 1)
+                    throw new ArgumentException ("Multi dimension array is not supported on this operation.");
+
+                if (index < 0)
+                    throw new ArgumentOutOfRangeException ("index", "Index is less than zero.");
+
+                if (index + Count > array.Length)
+                    throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
+
+                foreach (TKey key in this)
+                {
+                    array.SetValue (key, index);
+                    ++index;
+                }
+            }
+
             bool ICollection<TKey>.IsReadOnly
             { get { return true; } }
 
             bool ICollection<TKey>.Remove (TKey key)
             { throw new NotSupportedException(); }
+
+            bool ICollection.IsSynchronized
+            { get { return false; } }
+
+            object ICollection.SyncRoot
+            { get { return ((ICollection) tree).SyncRoot; } }
 
             #endregion
         }
@@ -155,7 +187,7 @@ namespace Kaos.Collections
         /// <summary>
         /// Represents a collection of values of a <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>.
         /// </summary>
-        public sealed partial class BtreeValues :
+        public sealed class BtreeValues :
             ICollection<TValue>,
             ICollection
         {
@@ -237,6 +269,9 @@ namespace Kaos.Collections
 
             #region Explicit properties and methods
 
+            IEnumerator IEnumerable.GetEnumerator()
+            { return GetEnumerator(); }
+
             /// <exclude />
             void ICollection<TValue>.Add (TValue value)
             { throw new NotSupportedException(); }
@@ -247,11 +282,38 @@ namespace Kaos.Collections
             bool ICollection<TValue>.Contains (TValue value)
             { return tree.ContainsValue (value); }
 
+            void ICollection.CopyTo (Array array, int index)
+            {
+                if (array == null)
+                    throw new ArgumentNullException ("array");
+
+                if (array.Rank > 1)
+                    throw new ArgumentException ("Multi dimension array is not supported on this operation.");
+
+                if (index < 0)
+                    throw new ArgumentOutOfRangeException ("index", "Index is less than zero.");
+
+                if (index + Count > array.Length)
+                    throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
+
+                foreach (TValue value in this)
+                {
+                    array.SetValue (value, index);
+                    ++index;
+                }
+            }
+
             bool ICollection<TValue>.IsReadOnly
             { get { return true; } }
 
             bool ICollection<TValue>.Remove (TValue val)
             { throw new NotSupportedException(); }
+
+            bool ICollection.IsSynchronized
+            { get { return false; } }
+
+            object ICollection.SyncRoot
+            { get { return ((ICollection) tree).SyncRoot; } }
 
             #endregion
         }
