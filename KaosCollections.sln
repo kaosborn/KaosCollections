@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BtreeExample03", "Examples\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BtreeExample04", "Examples\BtreeExample04\BtreeExample04.csproj", "{3B3965D8-3657-46D0-8A94-CBC041BE0D40}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{BCEF34A3-F70C-44FB-94A2-24F58587F490}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bench", "Bench", "{F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BtreeBench01", "Bench\BtreeBench01\BtreeBench01.csproj", "{E59375A2-9D83-4F7F-BC82-54F57CC1B76D}"
@@ -29,11 +27,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BtreeStress01", "Bench\Btre
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BtreeStress02", "Bench\BtreeStress02\BtreeStress02.csproj", "{46FF72E9-14D6-40AF-A171-2FC4FB0F9222}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Collections", "Collections\Collections.csproj", "{D44B60E8-0C5A-42DD-87B7-1125E37F4749}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Collections", "Collections\Collections.csproj", "{D44B60E8-0C5A-42DD-87B7-1125E37F4749}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BtreeExample09", "Examples\BtreeExample09\BtreeExample09.csproj", "{B6862A6A-D09B-4B51-BA60-26DCD80C0079}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BtreeExample09", "Examples\BtreeExample09\BtreeExample09.csproj", "{B6862A6A-D09B-4B51-BA60-26DCD80C0079}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BtreeBench03", "Bench\BtreeBench03\BtreeBench03.csproj", "{B2E1C469-4A85-4F63-8D62-D43443A8B294}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCore", "TestCore\TestCore.csproj", "{461A1620-1382-47D3-8F13-8DA892138184}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -61,10 +61,6 @@ Global
 		{3B3965D8-3657-46D0-8A94-CBC041BE0D40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B3965D8-3657-46D0-8A94-CBC041BE0D40}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B3965D8-3657-46D0-8A94-CBC041BE0D40}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BCEF34A3-F70C-44FB-94A2-24F58587F490}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BCEF34A3-F70C-44FB-94A2-24F58587F490}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BCEF34A3-F70C-44FB-94A2-24F58587F490}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BCEF34A3-F70C-44FB-94A2-24F58587F490}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E59375A2-9D83-4F7F-BC82-54F57CC1B76D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E59375A2-9D83-4F7F-BC82-54F57CC1B76D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E59375A2-9D83-4F7F-BC82-54F57CC1B76D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -97,6 +93,10 @@ Global
 		{B2E1C469-4A85-4F63-8D62-D43443A8B294}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2E1C469-4A85-4F63-8D62-D43443A8B294}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2E1C469-4A85-4F63-8D62-D43443A8B294}.Release|Any CPU.Build.0 = Release|Any CPU
+		{461A1620-1382-47D3-8F13-8DA892138184}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{461A1620-1382-47D3-8F13-8DA892138184}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{461A1620-1382-47D3-8F13-8DA892138184}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{461A1620-1382-47D3-8F13-8DA892138184}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

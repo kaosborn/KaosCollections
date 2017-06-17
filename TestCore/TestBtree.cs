@@ -2,11 +2,8 @@
 // File: TestBtree.cs
 //
 // Run BtreeDictionary's suite against SortedDictionary to demonstrate identical behavior
-// between the two API's.  To perform baseline test against SortedDictionary:
-//
-// Solution Explorer -> BtreeTest -> Properties
-// -> Build -> Conditional compilation symbols
-//    -> input TEST_SORTEDDICTIONARY
+// between the two API's.  To perform baseline test against SortedDictionary, add the
+// TEST_SORTEDDICTIONARY compilation symbol.
 //
 
 using System;
