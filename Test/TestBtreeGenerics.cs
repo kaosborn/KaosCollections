@@ -47,9 +47,9 @@ namespace CollectionsTest
         public void Test_Ctor2A()
         {
 #if TEST_SORTEDDICTIONARY
-            var tree = new SortedDictionary<string, int> (StringComparer.InvariantCultureIgnoreCase);
+            var tree = new SortedDictionary<string, int> (StringComparer.OrdinalIgnoreCase);
 #else
-            var tree = new BtreeDictionary<string, int> (StringComparer.InvariantCultureIgnoreCase);
+            var tree = new BtreeDictionary<string, int> (StringComparer.OrdinalIgnoreCase);
 #endif
 
             tree.Add ("AAA", 0);
