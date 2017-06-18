@@ -23,9 +23,15 @@ namespace Kaos.Collections
         }
 
 
-        bool IDictionary.Contains (object jKey)
+        bool IDictionary.Contains (object key)
         {
-            var path = new NodeVector (this, (TKey) jKey);
+            if (key == null)
+                throw new ArgumentNullException ("key");
+
+            if (! (key is TKey))
+                return false;
+
+            var path = new NodeVector (this, (TKey) key);
             return path.IsFound;
         }
 

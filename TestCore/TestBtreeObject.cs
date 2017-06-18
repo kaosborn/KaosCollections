@@ -8,7 +8,7 @@ namespace CollectionsTest
     public partial class Test_Btree
     {
         [TestMethod]
-        public void Test_Object_Contains_Key()
+        public void Unit_ObjectContainsKey()
         {
             Setup();
 
@@ -17,7 +17,17 @@ namespace CollectionsTest
 
             Assert.IsTrue (objCol1.Contains (keys[0]));
             Assert.IsFalse (objCol1.Contains (-1));
+            Assert.IsFalse (objCol1.Contains ("foo"));
         }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void Unit_ObjectContainsKeyNull()
+        {
+            Setup();
+            var result = objCol2.Contains (null);
+        }
+
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
