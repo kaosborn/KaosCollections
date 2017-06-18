@@ -222,6 +222,19 @@ namespace CollectionsTest
 
 
         [TestMethod]
+        public void Unit_ContainsValueNull()
+        {
+            Setup();
+            tree3.Add ("9", 9);
+            Assert.IsTrue (tree3.ContainsValue (9));
+            Assert.IsFalse (tree3.ContainsValue (null));
+
+            tree3.Add ("unknown", null);
+            Assert.IsTrue (tree3.ContainsValue (null));
+        }
+
+
+        [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
         public void Test_CopyTo_ArgumentNullException()
         {
