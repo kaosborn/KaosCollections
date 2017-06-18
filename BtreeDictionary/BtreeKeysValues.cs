@@ -18,7 +18,7 @@ namespace Kaos.Collections
         /// <summary>
         /// Represents a collection of keys of a <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>.
         /// </summary>
-        public sealed class BtreeKeys :
+        public sealed class KeyCollection :
             ICollection<TKey>,
             ICollection
 #if NETSTANDARD1_0
@@ -36,7 +36,7 @@ namespace Kaos.Collections
             /// <param name="dictionary">
             /// <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/> containing these keys.
             /// </param>
-            public BtreeKeys (BtreeDictionary<TKey, TValue> dictionary)
+            public KeyCollection (BtreeDictionary<TKey, TValue> dictionary)
             {
                 this.tree = dictionary;
             }
@@ -190,7 +190,7 @@ namespace Kaos.Collections
         /// <summary>
         /// Represents a collection of values of a <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>.
         /// </summary>
-        public sealed class BtreeValues :
+        public sealed class ValueCollection :
             ICollection<TValue>,
             ICollection
 #if NETSTANDARD1_0
@@ -208,7 +208,7 @@ namespace Kaos.Collections
             /// <param name="dictionary">
             /// <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/> containing these keys.
             /// </param>
-            public BtreeValues (BtreeDictionary<TKey, TValue> dictionary)
+            public ValueCollection (BtreeDictionary<TKey, TValue> dictionary)
             {
                 this.tree = dictionary;
             }

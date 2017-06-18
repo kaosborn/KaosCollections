@@ -35,8 +35,8 @@ namespace Kaos.Collections
         private Branch root;
         private IComparer<TKey> comparer;
         private int maxKeyCount;
-        private BtreeKeys keys;
-        private BtreeValues values;
+        private KeyCollection keys;
+        private ValueCollection values;
         private const int MinimumOrder = 5;
         private const int DefaultOrder = 128;
         private const int MaximumOrder = 256;
@@ -87,8 +87,8 @@ namespace Kaos.Collections
             this.root = new Branch (new Leaf());
 
             // Allocate the virtual subcollections.
-            this.keys = new BtreeKeys (this);
-            this.values = new BtreeValues (this);
+            this.keys = new KeyCollection (this);
+            this.values = new ValueCollection (this);
         }
 
 
