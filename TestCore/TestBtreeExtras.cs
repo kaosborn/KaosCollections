@@ -10,14 +10,14 @@ namespace CollectionsTest
     {
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void Test_Ctor1E1()
+        public void Unit_XtraCtor1E1()
         {
-            var tree = new BtreeDictionary<int, int> (3);
+            var tree = new BtreeDictionary<int, int> (4);
         }
 
 
         [TestMethod]
-        public void Test_Ctor1()
+        public void Unit_XtraCtor1()
         {
             var tree = new BtreeDictionary<int, int> (6);
             Assert.AreEqual (0, tree.Count);
@@ -25,7 +25,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_BetweenKeys()
+        public void Unit_XtraBetweenKeys()
         {
             var bt = new BtreeDictionary<int,int>();
 
@@ -46,7 +46,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_BetweenKeysPassedEnd()
+        public void Unit_XtraBetweenKeysPassedEnd()
         {
             var btree = new BtreeDictionary<int,int>();
 
@@ -67,7 +67,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_SkipUntilKey()
+        public void Unit_XtraSkipUntilKey()
         {
             var btree = new BtreeDictionary<int,int>();
 
@@ -89,7 +89,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_SkipUntilKeyMissingVal()
+        public void Unit_XtraSkipUntilKeyMissingVal()
         {
 
             var btree = new BtreeDictionary<int,int>();
@@ -113,7 +113,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_SkipUntilKeyPassedEnd()
+        public void Unit_XtraSkipUntilKeyPassedEnd()
         {
             var btree = new BtreeDictionary<int,int>();
 
