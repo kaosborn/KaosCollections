@@ -222,15 +222,33 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_ContainsValueNull()
+        public void Unit_ContainsValueNullStruct()
         {
             Setup();
+
             tree3.Add ("9", 9);
             Assert.IsTrue (tree3.ContainsValue (9));
             Assert.IsFalse (tree3.ContainsValue (null));
 
             tree3.Add ("unknown", null);
             Assert.IsTrue (tree3.ContainsValue (null));
+        }
+
+
+        [TestMethod]
+        public void Unit_ContainsValueNullRef()
+        {
+            Setup();
+
+            tree4.Add (5, "ee");
+            tree4.Add (3, "cc");
+            tree4.Add (7, "gg");
+            Assert.IsFalse (tree4.ContainsValue (null));
+
+            tree4.Add (-1, null);
+            Assert.IsFalse (tree4.ContainsValue ("dd"));
+            Assert.IsTrue (tree4.ContainsValue ("cc"));
+            Assert.IsTrue (tree4.ContainsValue (null));
         }
 
 
