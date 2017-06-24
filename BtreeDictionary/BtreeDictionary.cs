@@ -162,8 +162,8 @@ namespace Kaos.Collections
             if (key == null)
                 throw new ArgumentNullException ("key");
 
-            var path = new NodeVector (this, key);
-            return path.IsFound;
+            Leaf leaf = Find (key, out int index);
+            return index >= 0;
         }
 
 
