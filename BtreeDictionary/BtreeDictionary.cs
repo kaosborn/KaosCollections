@@ -444,14 +444,11 @@ namespace Kaos.Collections
         bool ICollection<KeyValuePair<TKey, TValue>>.Remove (KeyValuePair<TKey, TValue> pair)
         {
             var path = new NodeVector (this, pair.Key);
-            if (path.IsFound)
-                if (pair.Value.Equals (path.LeafValue))
-                {
-                    path.Delete();
-                    return true;
-                }
+            if (! path.IsFound || ! EqualityComparer<TValue>.Default.Equals (pair.Value, path.LeafValue))
+                return false;
 
-            return false;
+            path.Delete();
+            return true;
         }
 
         /// <summary>Get the collection of values from this key/value collection.</summary>
