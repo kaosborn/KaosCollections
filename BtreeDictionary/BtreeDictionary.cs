@@ -410,12 +410,10 @@ namespace Kaos.Collections
         /// otherwise <b>false</b>.</returns>
         bool ICollection<KeyValuePair<TKey, TValue>>.Contains (KeyValuePair<TKey, TValue> pair)
         {
-            var path = new NodeVector (this, pair.Key);
-            if (! path.IsFound)
+            var leaf = Find (pair.Key, out int index);
+            if (index < 0)
                 return false;
-
-            var leaf = (Leaf) path.TopNode;
-            return (pair.Value.Equals (leaf.GetValue (path.TopNodeIndex)));
+            return EqualityComparer<TValue>.Default.Equals (leaf.GetValue (index), pair.Value);
         }
 
 
