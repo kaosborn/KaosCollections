@@ -609,6 +609,26 @@ namespace CollectionsTest
 
 
         [TestMethod]
+        public void Unit_ICollectionCompairPairNullRef()
+        {
+            Setup();
+            tree4.Add (3, "cc");
+            tree4.Add (1, "aa");
+
+            var pair0 = new KeyValuePair<int,string> (0, null);
+            var pair1 = new KeyValuePair<int,string> (3, "cc");
+
+            var gcol = (ICollection<KeyValuePair<int,string>>) tree4;
+
+            Assert.IsFalse (gcol.Contains (pair0));
+            Assert.IsTrue (gcol.Contains (pair1));
+
+            tree4.Add (0, null);
+            Assert.IsTrue (gcol.Contains (pair0));
+        }
+
+
+        [TestMethod]
         public void Test_ICollection_GetEnumerator()
         {
             Setup();
