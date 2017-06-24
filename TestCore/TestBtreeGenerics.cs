@@ -710,14 +710,32 @@ namespace CollectionsTest
             Assert.IsFalse (isRemoved);
             Assert.AreEqual (2, tree2.Count);
 
-            // Nothing removed here because value doesn't match.
-            Assert.IsFalse (isRemoved);
             isRemoved = genCol2.Remove (pair2);
             Assert.AreEqual (2, tree2.Count);
 
             isRemoved = genCol2.Remove (pair1);
             Assert.IsTrue (isRemoved);
             Assert.AreEqual (1, tree2.Count);
+        }
+
+
+        [TestMethod]
+        public void Unit_ICollectionRemovePairNull()
+        {
+            Setup();
+            tree4.Add (3, "cc");
+            tree4.Add (5, "ee");
+            tree4.Add (4, null);
+
+            var pc = (ICollection<KeyValuePair<int,string>>) tree4;
+            bool isOK = pc.Remove (new KeyValuePair<int,string> (99, null));
+            Assert.IsFalse (isOK);
+
+            isOK = pc.Remove (new KeyValuePair<int,string> (4, null));
+            Assert.IsTrue (isOK);
+
+            isOK = tree4.ContainsKey (4);
+            Assert.IsFalse (isOK);
         }
 
 
