@@ -123,7 +123,6 @@ namespace Kaos.Collections
 
         #region Methods
 
-
         /// <summary>Adds an element with the specified key and value.</summary>
         /// <param name="key">The key of the element to add.</param>
         /// <param name="value">The value of the element to add.  May be null.</param>
@@ -175,9 +174,19 @@ namespace Kaos.Collections
         /// otherwise <b>false</b>.</returns>
         public bool ContainsValue (TValue value)
         {
-            foreach (KeyValuePair<TKey, TValue> pair in this)
-                if (pair.Value.Equals (value))
-                    return true;
+            if (value != null)
+            {
+                var comparer = EqualityComparer<TValue>.Default;
+                for (Leaf leaf = GetFirstLeaf(); leaf != null; leaf = leaf.RightLeaf)
+                    for (int vix = 0; vix < leaf.ValueCount; ++vix)
+                        if (comparer.Equals (leaf.GetValue (vix), value))
+                            return true;
+            }
+            else
+                for (Leaf leaf = GetFirstLeaf(); leaf != null; leaf = leaf.RightLeaf)
+                    for (int vix = 0; vix < leaf.ValueCount; ++vix)
+                        if (leaf.GetValue (vix) == null)
+                            return true;
 
             return false;
         }
