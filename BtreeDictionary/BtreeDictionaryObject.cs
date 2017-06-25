@@ -27,13 +27,13 @@ namespace Kaos.Collections
         bool IDictionary.Contains (object key)
         {
             if (key == null)
-                throw new ArgumentNullException ("key");
+                throw new ArgumentNullException (nameof (key));
 
             if (! (key is TKey))
                 return false;
 
-            var path = new NodeVector (this, (TKey) key);
-            return path.IsFound;
+            Leaf leaf = Find ((TKey) key, out int lix);
+            return lix >= 0;
         }
 
 
