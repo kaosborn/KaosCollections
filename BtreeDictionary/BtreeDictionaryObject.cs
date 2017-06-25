@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Kaos.Collections
 {
@@ -18,7 +19,7 @@ namespace Kaos.Collections
 
         void IDictionary.Add (object key, object value)
         {
-            var genCol = (System.Collections.Generic.IDictionary<TKey, TValue>) this;
+            var genCol = (IDictionary<TKey, TValue>) this;
             genCol.Add ((TKey) key, (TValue) value);
         }
 
@@ -50,11 +51,10 @@ namespace Kaos.Collections
             if (index + Count > array.Length)
                 throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
 
-            if (! (array is System.Collections.Generic.KeyValuePair<TKey, TValue>[])
-                & array.GetType() != typeof (object[]))
+            if (! (array is KeyValuePair<TKey, TValue>[]) && array.GetType() != typeof (Object[]))
                 throw new ArgumentException ("Target array type is not compatible with the type of items in the collection.");
 
-            foreach (System.Collections.Generic.KeyValuePair<TKey, TValue> pair in this)
+            foreach (KeyValuePair<TKey, TValue> pair in this)
             {
                 array.SetValue (pair, index);
                 ++index;
@@ -89,7 +89,7 @@ namespace Kaos.Collections
 
         /// <summary>Deprecated.</summary>
         object ICollection.SyncRoot
-        { get { return new System.Object(); } }
+        { get { return new Object(); } }
 
         #endregion
 

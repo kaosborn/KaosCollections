@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Kaos.Collections;
 
@@ -25,7 +26,7 @@ namespace CollectionsTest
         public void Unit_ObjectContainsKeyNull()
         {
             Setup();
-            var result = objCol2.Contains (null);
+            bool isOK = objCol2.Contains (null);
         }
 
 
@@ -34,7 +35,7 @@ namespace CollectionsTest
         public void Test_Object_CopyTo_ArgumentNullException()
         {
             Setup();
-            var target = new System.Collections.Generic.KeyValuePair<int, int>[keys.Length];
+            var target = new KeyValuePair<int, int>[keys.Length];
             objCol1.CopyTo (null, -1);
         }
 
@@ -43,7 +44,7 @@ namespace CollectionsTest
         public void Test_Object_CopyTo_ArgumentOutOfRangeException()
         {
             Setup();
-            var target = new System.Collections.Generic.KeyValuePair<int, int>[keys.Length];
+            var target = new KeyValuePair<int,int>[keys.Length];
             objCol1.CopyTo (target, -1);
         }
 
@@ -52,7 +53,7 @@ namespace CollectionsTest
         public void Test_Object_CopyTo_ArgumentException1()
         {
             Setup();
-            var target = new System.Collections.Generic.KeyValuePair<int, int>[keys.Length,2];
+            var target = new KeyValuePair<int,int>[keys.Length,2];
             objCol1.CopyTo (target, 0);
         }
 
@@ -64,7 +65,7 @@ namespace CollectionsTest
             for (int key = 1; key < 10; ++key)
                 tree1.Add (key, key + 1000);
 
-            var target = new System.Collections.Generic.KeyValuePair<int, int>[1];
+            var target = new KeyValuePair<int,int>[1];
             objCol1.CopyTo (target, 0);
         }
 
@@ -86,7 +87,7 @@ namespace CollectionsTest
             foreach (int key in keys)
                 tree1.Add (key, key + 1000);
 
-            var target = new System.Collections.Generic.KeyValuePair<int, int>[keys.Length];
+            var target = new KeyValuePair<int,int>[keys.Length];
 
             objCol1.CopyTo (target, 0);
 
@@ -106,8 +107,8 @@ namespace CollectionsTest
             var obj = new object[4];
             id.CopyTo (obj, 2);
 
-            var pair = new System.Collections.Generic.KeyValuePair<string,int>();
-            pair = (System.Collections.Generic.KeyValuePair<string, int>) obj[2];
+            var pair = new KeyValuePair<string,int>();
+            pair = (KeyValuePair<string,int>) obj[2];
             Assert.AreEqual ("aardvark", pair.Key);
         }
 
