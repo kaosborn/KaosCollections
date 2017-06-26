@@ -19,6 +19,9 @@ namespace Kaos.Collections
 
         void IDictionary.Add (object key, object value)
         {
+            if (key == null)
+                throw new ArgumentNullException (nameof (key));
+
             if (! (key is TKey))
                 throw new ArgumentException ("Parameter '" + nameof (key) + "' is not of type '" + typeof (TKey) + "'.");
 
