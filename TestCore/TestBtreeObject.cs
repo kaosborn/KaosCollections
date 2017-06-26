@@ -215,6 +215,8 @@ namespace CollectionsTest
             Assert.AreEqual (1, objCol1.Count);
             objCol1.Remove (17);
             Assert.AreEqual (0, objCol1.Count);
+
+            objCol1.Remove ("ignore wrong type");
         }
 
 

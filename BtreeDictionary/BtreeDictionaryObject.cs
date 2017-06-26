@@ -81,6 +81,9 @@ namespace Kaos.Collections
             if (key == null)
                 throw new ArgumentNullException ("key");
 
+            if (! (key is TKey))
+                return;
+
             var path = new NodeVector (this, (TKey) key);
             if (path.IsFound)
                 path.Delete();
