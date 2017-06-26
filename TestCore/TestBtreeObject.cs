@@ -179,6 +179,15 @@ namespace CollectionsTest
         }
 
         [TestMethod]
+        [ExpectedException (typeof (ArgumentException))]
+        public void Crash_ObjectAddDupl()
+        {
+            Setup();
+            objCol2.Add ("nn", 1);
+            objCol2.Add ("nn", 2);
+        }
+
+        [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
         public void Test_Object_Item_Get_ArgumentNullException()
         {
