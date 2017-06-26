@@ -154,6 +154,22 @@ namespace CollectionsTest
         }
 
         [TestMethod]
+        [ExpectedException (typeof (ArgumentException))]
+        public void Crash_ObjectAddBadKey()
+        {
+            Setup();
+            objCol2.Add (23, 45);
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentException))]
+        public void Crash_ObjectAddBadValue()
+        {
+            Setup();
+            objCol2.Add ("razz", "matazz");
+        }
+
+        [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
         public void Test_Object_Item_Get_ArgumentNullException()
         {
