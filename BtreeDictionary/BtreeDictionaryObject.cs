@@ -85,7 +85,7 @@ namespace Kaos.Collections
         void IDictionary.Remove (object key)
         {
             if (key == null)
-                throw new ArgumentNullException ("key");
+                throw new ArgumentNullException (nameof (key));
 
             if (! (key is TKey))
                 return;
@@ -188,7 +188,7 @@ namespace Kaos.Collections
             get
             {
                 if (key == null)
-                    throw new ArgumentNullException ("key");
+                    throw new ArgumentNullException (nameof (key));
 
                 int index;
                 Leaf leaf = Find ((TKey) key, out index);
@@ -199,7 +199,7 @@ namespace Kaos.Collections
             set
             {
                 if (key == null)
-                    throw new ArgumentNullException ("key");
+                    throw new ArgumentNullException (nameof (key));
 
                 var path = new NodeVector (this, (TKey) key);
                 if (path.IsFound)

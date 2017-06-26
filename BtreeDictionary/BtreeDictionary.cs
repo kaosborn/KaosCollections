@@ -132,7 +132,7 @@ namespace Kaos.Collections
         public void Add (TKey key, TValue value)
         {
             if (key == null)
-                throw new ArgumentNullException ("key");
+                throw new ArgumentNullException (nameof (key));
 
             var path = new NodeVector (this, key);
             if (path.IsFound)
@@ -160,7 +160,7 @@ namespace Kaos.Collections
         public bool ContainsKey (TKey key)
         {
             if (key == null)
-                throw new ArgumentNullException ("key");
+                throw new ArgumentNullException (nameof (key));
 
             Leaf leaf = Find (key, out int index);
             return index >= 0;
@@ -201,10 +201,10 @@ namespace Kaos.Collections
         public void CopyTo (KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
             if (array == null)
-                throw new ArgumentNullException ("array");
+                throw new ArgumentNullException (nameof (array));
 
             if (arrayIndex < 0)
-                throw new ArgumentOutOfRangeException ("arrayIndex", "Index is less than zero.");
+                throw new ArgumentOutOfRangeException (nameof (arrayIndex), "Index is less than zero.");
 
             if (arrayIndex + Count > array.Length)
                 throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
@@ -232,7 +232,7 @@ namespace Kaos.Collections
         public bool Remove (TKey key)
         {
             if (key == null)
-                throw new ArgumentNullException ("key");
+                throw new ArgumentNullException (nameof (key));
 
             var path = new NodeVector (this, key);
             if (! path.IsFound)
@@ -252,7 +252,7 @@ namespace Kaos.Collections
         public bool TryGetValue (TKey key, out TValue value)
         {
             if (key == null)
-                throw new ArgumentNullException ("key");
+                throw new ArgumentNullException (nameof (key));
 
             int index;
             Leaf leaf = Find (key, out index);
@@ -351,7 +351,7 @@ namespace Kaos.Collections
             get
             {
                 if (key == null)
-                    throw new ArgumentNullException ("key");
+                    throw new ArgumentNullException (nameof (key));
 
                 int index;
                 Leaf leaf = Find (key, out index);
@@ -362,7 +362,7 @@ namespace Kaos.Collections
             set
             {
                 if (key == null)
-                    throw new ArgumentNullException ("key");
+                    throw new ArgumentNullException (nameof (key));
 
                 var path = new NodeVector (this, key);
                 if (path.IsFound)
