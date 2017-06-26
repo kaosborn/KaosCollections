@@ -1,7 +1,7 @@
-﻿//
+//
 // Library: KaosCollections
 // File:    BtreeDictionaryObject.cs
-// Purpose: Defines nongeneric API for BtreeDictionary and its Keys and Values sublcasses.
+// Purpose: Defines nongeneric API for BtreeDictionary and its Keys and Values subclasses.
 //
 // Copyright © 2009-2017 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely
@@ -19,6 +19,12 @@ namespace Kaos.Collections
 
         void IDictionary.Add (object key, object value)
         {
+            if (! (key is TKey))
+                throw new ArgumentException ("Parameter '" + nameof (key) + "' is not of type '" + typeof (TKey) + "'.");
+
+            if (! (value is TValue))
+                throw new ArgumentException ("Parameter '" + nameof (value) + "' is not of type '" + typeof (TValue) + "'.");
+
             var genCol = (IDictionary<TKey, TValue>) this;
             genCol.Add ((TKey) key, (TValue) value);
         }
