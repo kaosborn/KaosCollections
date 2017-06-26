@@ -153,6 +153,15 @@ namespace CollectionsTest
             Assert.IsFalse (objCol1.IsSynchronized);
         }
 
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void Crash_ObjectAddNullKey()
+        {
+            Setup();
+            objCol2.Add ((string) null, 1);
+        }
+
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
         public void Crash_ObjectAddBadKey()
