@@ -17,6 +17,13 @@ namespace Kaos.Collections
     {
         #region Explicit object properties and methods
 
+        /// <summary>Adds the specified key and value to the dictionary.</summary>
+        /// <param name="key">The key of the element to add.</param>
+        /// <param name="value">The value of the element to add.</param>
+        /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
+        /// <exception cref="ArgumentException">When an element with the same key already exists in the Dictionary.</exception>
+        /// <exception cref="ArgumentException">When <em>key</em> is not a TKey.</exception>
+        /// <exception cref="ArgumentException">When <em>value</em> is not a TValue.</exception>
         void IDictionary.Add (object key, object value)
         {
             if (key == null)
@@ -33,6 +40,10 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>Determines whether the dictionary contains an element with the specified key.</summary>
+        /// <param name="key">The key to locate in the dictionary.</param>
+        /// <returns><b>true</b> if the collection contains the supplied key; otherwise <b>false</b>.</returns>
+        /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
         bool IDictionary.Contains (object key)
         {
             if (key == null)
@@ -46,13 +57,23 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>Copies the elements of the dictionary to an array, starting at the specified array index.</summary>
+        /// <param name="array">The destination array of the copy.</param>
+        /// <param name="index">The zero-based index in array at which copying begins.</param>
+        /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than 0.</exception>
+        /// <exception cref="ArgumentException">
+        /// When array is multidimensional,
+        /// the number of elements in the source is greater than the available space,
+        /// or the type of the source cannot be cast for the destination.
+        /// </exception>
         void ICollection.CopyTo (Array array, int index)
         {
             if (array == null)
-                throw new ArgumentNullException ("array");
+                throw new ArgumentNullException (nameof (array));
 
             if (array.Rank > 1)
-                throw new ArgumentException ("Multi dimension array is not supported on this operation.");
+                throw new ArgumentException ("Multidimension array is not supported on this operation.");
 
             if (index < 0)
                 throw new ArgumentOutOfRangeException ("index", "Index is less than zero.");
@@ -136,22 +157,26 @@ namespace Kaos.Collections
             /// <summary>
             /// Get the key/value pair at the current location.
             /// </summary>
-            public DictionaryEntry Entry { get { return new DictionaryEntry (Key, Value); } }
+            public DictionaryEntry Entry
+            { get { return new DictionaryEntry (Key, Value); } }
 
             /// <summary>
             /// Get the key/value pair at the current location.
             /// </summary>
-            public object Current { get { return Entry; } }
+            public object Current
+            { get { return Entry; } }
 
             /// <summary>
             /// Get the key at the current location.
             /// </summary>
-            public object Key { get { return currentLeaf.GetKey (leafIndex); } }
+            public object Key
+            { get { return currentLeaf.GetKey (leafIndex); } }
 
             /// <summary>
             /// Get the value at the current location.
             /// </summary>
-            public object Value { get { return currentLeaf.GetValue (leafIndex); } }
+            public object Value
+            { get { return currentLeaf.GetValue (leafIndex); } }
 
             #endregion
 
