@@ -18,10 +18,10 @@ namespace Kaos.Collections
         /// <summary>A page of the B+ tree. May be internal (Branch) or terminal (Leaf).</summary>
         private class Node
         {
-            protected List<TKey> keys;
+            protected readonly List<TKey> keys;
 
             protected Node (int keyCapacity)
-            { keys = new List<TKey> (keyCapacity); }
+            { this.keys = new List<TKey> (keyCapacity); }
 
             public int KeyCount { get { return keys.Count; } }
 
@@ -49,13 +49,14 @@ namespace Kaos.Collections
 #endif
         }
 
+
         /// <summary>An internal B+ tree page.</summary>
         /// <remarks>
         /// Contains copies of the first key of every leaf (except the leftmost).
         /// </remarks>
         private class Branch : Node
         {
-            private List<Node> childNodes;
+            private readonly List<Node> childNodes;
 
             // Called on initialization only.
             public Branch (Leaf leaf, int keyCapacity=0) : base (keyCapacity)
@@ -121,13 +122,13 @@ namespace Kaos.Collections
         /// </remarks>
         private class Leaf : Node
         {
-            private Leaf rightLeaf;       // For the linked leaf list.
-            private List<TValue> values;  // Payload.
+            private readonly List<TValue> values;  // Payload.
+            private Leaf rightLeaf;  // For the linked leaf list.
 
             public Leaf (int capacity=0) : base (capacity)
             {
-                values = new List<TValue> (capacity);
-                rightLeaf = null;
+                this.values = new List<TValue> (capacity);
+                this.rightLeaf = null;
             }
 
             /// <summary>Splice a leaf to right of <paramref name="leftLeaf"/>.</summary>
@@ -135,10 +136,10 @@ namespace Kaos.Collections
             /// <param name="capacity">The initial number of elements the page can store.</param>
             public Leaf (Leaf leftLeaf, int capacity) : base (capacity)
             {
-                values = new List<TValue> (capacity);
+                this.values = new List<TValue> (capacity);
 
                 // Linked list insertion.
-                rightLeaf = leftLeaf.rightLeaf;
+                this.rightLeaf = leftLeaf.rightLeaf;
                 leftLeaf.rightLeaf = this;
             }
 

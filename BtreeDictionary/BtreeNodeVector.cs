@@ -21,9 +21,9 @@ namespace Kaos.Collections
         /// </remarks>
         private class NodeVector
         {
-            private BtreeDictionary<TKey,TValue> owner;
-            private List<int> indexStack;
-            private List<Node> nodeStack;
+            private readonly BtreeDictionary<TKey,TValue> owner;
+            private readonly List<int> indexStack;
+            private readonly List<Node> nodeStack;
 
             #region Constructors
 
