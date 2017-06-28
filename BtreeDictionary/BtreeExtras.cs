@@ -21,7 +21,7 @@ namespace Kaos.Collections
         public KeyValuePair<TKey, TValue> Last()
         {
             if (Count == 0)
-                throw new InvalidOperationException ("Sequence contains no elements");
+                throw new InvalidOperationException ("Sequence contains no elements.");
 
             // Take rightmost child until no more.
             for (Node node = root;;)
@@ -41,8 +41,12 @@ namespace Kaos.Collections
         /// </summary>
         /// <param name="key">Minimum value of range.</param>
         /// <returns>An enumerator for the collection for key values greater than or equal to <em>key</em>.</returns>
+        /// <exception cref="ArgumentNullException">When supplied key is <b>null</b>.</exception>
         public IEnumerable<KeyValuePair<TKey, TValue>> SkipUntilKey (TKey key)
         {
+            if (key == null)
+                throw new ArgumentNullException (nameof (key));
+
             int index;
             Leaf leaf = Find (key, out index);
 
