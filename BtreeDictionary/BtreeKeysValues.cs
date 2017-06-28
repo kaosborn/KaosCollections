@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 namespace Kaos.Collections
 {
-    public partial class BtreeDictionary<TKey, TValue>
+    public partial class BtreeDictionary<TKey,TValue>
     {
         /// <summary>
         /// Represents a collection of keys of a <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>.
@@ -25,7 +25,7 @@ namespace Kaos.Collections
             , IReadOnlyCollection<TKey>
 #endif
         {
-            BtreeDictionary<TKey, TValue> tree;
+            private readonly BtreeDictionary<TKey,TValue> tree;
 
             #region Constructors
 
@@ -36,7 +36,7 @@ namespace Kaos.Collections
             /// <param name="dictionary">
             /// <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/> containing these keys.
             /// </param>
-            public KeyCollection (BtreeDictionary<TKey, TValue> dictionary)
+            public KeyCollection (BtreeDictionary<TKey,TValue> dictionary)
             {
                 this.tree = dictionary;
             }
@@ -45,7 +45,6 @@ namespace Kaos.Collections
 
             #region Properties
 
-            // Implements ICollection<TKey> and object ICollection.
             /// <summary>
             /// Get the number of keys in the collection.
             /// </summary>
@@ -95,12 +94,12 @@ namespace Kaos.Collections
             /// </summary>
             private class BtreeKeysEnumerator : IEnumerator<TKey>
             {
-                BtreeDictionary<TKey, TValue> target;
-                Leaf currentLeaf;
-                int leafIndex;
+                private readonly BtreeDictionary<TKey,TValue> target;
+                private Leaf currentLeaf;
+                private int leafIndex;
 
                 // Long form used for 5% performance increase.
-                public BtreeKeysEnumerator (BtreeDictionary<TKey, TValue> tree)
+                public BtreeKeysEnumerator (BtreeDictionary<TKey,TValue> tree)
                 {
                     this.target = tree;
                     Reset();
@@ -197,7 +196,7 @@ namespace Kaos.Collections
             , IReadOnlyCollection<TValue>
 #endif
         {
-            private BtreeDictionary<TKey, TValue> tree;
+            private readonly BtreeDictionary<TKey,TValue> tree;
 
             #region Constructors
 
@@ -208,7 +207,7 @@ namespace Kaos.Collections
             /// <param name="dictionary">
             /// <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/> containing these keys.
             /// </param>
-            public ValueCollection (BtreeDictionary<TKey, TValue> dictionary)
+            public ValueCollection (BtreeDictionary<TKey,TValue> dictionary)
             {
                 this.tree = dictionary;
             }
@@ -323,6 +322,5 @@ namespace Kaos.Collections
 
             #endregion
         }
-
     }
 }
