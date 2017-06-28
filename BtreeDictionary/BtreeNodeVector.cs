@@ -1,7 +1,7 @@
 ﻿//
 // Library: KaosCollections
 // File:    BtreeNodeVector.cs
-// Purpose: Defines nonpublic class that stores an element location path.
+// Purpose: Defines nonpublic class that stores an element traversal path.
 //
 // Copyright © 2009-2017 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely
@@ -12,18 +12,16 @@ using System.Diagnostics;
 
 namespace Kaos.Collections
 {
-    public partial class BtreeDictionary<TKey, TValue>
+    public partial class BtreeDictionary<TKey,TValue>
     {
         /// <summary>Stack trace from root to leaf of a key/value pair.</summary>
         /// <remarks>
-        /// Provides directions to existing key or insertion point for non-existing key
+        /// Provides traversal path to existing key or insertion point for non-existing key
         /// along with various helper methods.
         /// </remarks>
-        /// <typeparam name="TKey">Key type.</typeparam>
-        /// <typeparam name="TValue">Value type.</typeparam>
         private class NodeVector
         {
-            private BtreeDictionary<TKey, TValue> owner;
+            private BtreeDictionary<TKey,TValue> owner;
             private List<int> indexStack;
             private List<Node> nodeStack;
 
@@ -32,7 +30,7 @@ namespace Kaos.Collections
             /// <summary>Perform search and store each level of path on the stack.</summary>
             /// <param name="tree">Tree to search.</param>
             /// <param name="key">Value to find.</param>
-            public NodeVector (BtreeDictionary<TKey, TValue> tree, TKey key)
+            public NodeVector (BtreeDictionary<TKey,TValue> tree, TKey key)
             {
                 this.owner = tree;
                 this.indexStack = new List<int>();
@@ -166,8 +164,8 @@ namespace Kaos.Collections
 
 
             /// <summary>Adjust tree path to node to the right.</summary>
-            /// <returns>Node to immediate right of current path; <b>null</b> if current path
-            /// at rightmost node.</returns>
+            /// <returns>Node to immediate right of current path;
+            /// <b>null</b> if current path at rightmost node.</returns>
             public Node TraverseRight()
             {
                 Node node = null;
@@ -204,7 +202,7 @@ namespace Kaos.Collections
             }
 
 
-            /// <summary>Insert element at preseeked path.</summary>
+            /// <summary>Insert element at this path.</summary>
             public void Insert (TKey key, TValue value)
             {
                 var leaf = (Leaf) TopNode;
@@ -333,7 +331,8 @@ namespace Kaos.Collections
                 }
             }
 
-            /// <summary>Delete specified key-vaue pair.</summary>
+
+            /// <summary>Delete key/value at this path.</summary>
             public void Delete()
             {
                 int leafIndex = TopNodeIndex;
@@ -347,7 +346,7 @@ namespace Kaos.Collections
                         SetPivot (TopNode.GetKey (0));
                     else
                     {
-                        Debug.Assert (leaf.RightLeaf == null, "only the rightmost leaf should ever be emptied");
+                        Debug.Assert (leaf.RightLeaf==null, "only rightmost leaf should ever be empty");
 
                         // Leaf is empty.  Prune it unless it is the only leaf in the tree.
                         var leftLeaf = (Leaf) GetLeftNode();
@@ -474,13 +473,15 @@ namespace Kaos.Collections
             #endregion
 
 #if DEBUG
+            /// <summary>Returns <b>true</b> if no left sibling.</summary>
             public bool IsFirstChild
             { get { return this.indexStack[Height - 2] == 0; } }
 
-        
+
             /// <summary>Make an empty path.</summary>
             /// <param name="tree">Target of path.</param>
-            public NodeVector (BtreeDictionary<TKey, TValue> tree)
+            /// <remarks>Used only for diagnostics.</remarks>
+            public NodeVector (BtreeDictionary<TKey,TValue> tree)
             {
                 indexStack = new List<int>();
                 nodeStack = new List<Node>();
@@ -493,7 +494,7 @@ namespace Kaos.Collections
             /// <param name="tree">Target of path.</param>
             /// <param name="level">Level of node to seek where root is level 0.</param>
             /// <remarks>Used only for diagnostics.</remarks>
-            public NodeVector (BtreeDictionary<TKey, TValue> tree, int level) : this (tree)
+            public NodeVector (BtreeDictionary<TKey,TValue> tree, int level) : this (tree)
             {
                 for (Node node = TopNode; level > 0; --level)
                 {

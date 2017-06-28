@@ -13,13 +13,15 @@ using System.Text;
 
 namespace Kaos.Collections
 {
-    public partial class BtreeDictionary<TKey, TValue>
+    public partial class BtreeDictionary<TKey,TValue>
     {
+        /// <summary>A page of the B+ tree. May be internal (Branch) or terminal (Leaf).</summary>
         private class Node
         {
             protected List<TKey> keys;
 
-            protected Node (int keyCapacity) { keys = new List<TKey> (keyCapacity); }
+            protected Node (int keyCapacity)
+            { keys = new List<TKey> (keyCapacity); }
 
             public int KeyCount { get { return keys.Count; } }
 
@@ -47,7 +49,10 @@ namespace Kaos.Collections
 #endif
         }
 
-
+        /// <summary>An internal B+ tree page.</summary>
+        /// <remarks>
+        /// Contains copies of the first key of every leaf (except the leftmost).
+        /// </remarks>
         private class Branch : Node
         {
             private List<Node> childNodes;
@@ -109,6 +114,11 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>An terminal B+ tree page.</summary>
+        /// <remarks>
+        /// All key/value pairs are contained in this class.
+        /// Leaf is a sequential linked list also referenced by parent branches.
+        /// </remarks>
         private class Leaf : Node
         {
             private Leaf rightLeaf;       // For the linked leaf list.
@@ -122,6 +132,7 @@ namespace Kaos.Collections
 
             /// <summary>Splice a leaf to right of <paramref name="leftLeaf"/>.</summary>
             /// <param name="leftLeaf">Provides linked list insert point.</param>
+            /// <param name="capacity">The initial number of elements the page can store.</param>
             public Leaf (Leaf leftLeaf, int capacity) : base (capacity)
             {
                 values = new List<TValue> (capacity);
