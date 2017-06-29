@@ -21,9 +21,10 @@ namespace CollectionsTest
             Assert.IsFalse (objCol1.Contains ("foo"));
         }
 
+
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void Unit_ObjectContainsKeyNull()
+        public void Crash_ObjectContainsKey_ArgumentNull()
         {
             Setup();
             bool isOK = objCol2.Contains (null);
@@ -32,34 +33,37 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void Test_Object_CopyTo_ArgumentNullException()
+        public void Crash_ObjectCopyTo_ArgumentNull()
         {
             Setup();
-            var target = new KeyValuePair<int, int>[keys.Length];
+            var target = new KeyValuePair<int,int>[keys.Length];
             objCol1.CopyTo (null, -1);
         }
 
+
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void Test_Object_CopyTo_ArgumentOutOfRangeException()
+        public void Crash_ObjectCopyTo_ArgumentOutOfRange()
         {
             Setup();
             var target = new KeyValuePair<int,int>[keys.Length];
             objCol1.CopyTo (target, -1);
         }
 
+
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void Test_Object_CopyTo_ArgumentException1()
+        public void Crash_ObjectCopyTo_Argument_1()
         {
             Setup();
             var target = new KeyValuePair<int,int>[keys.Length,2];
             objCol1.CopyTo (target, 0);
         }
 
+
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void Test_Object_CopyTo_ArgumentException2()
+        public void Crash_ObjectCopyTo_Argument_2()
         {
             Setup();
             for (int key = 1; key < 10; ++key)
@@ -69,9 +73,10 @@ namespace CollectionsTest
             objCol1.CopyTo (target, 0);
         }
 
+
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void Test_Object_CopyTo_ArgumentException_BadType()
+        public void Crash_ObjectCopyToBadType_Argument()
         {
             Setup();
             tree1.Add (42, 420);
@@ -80,8 +85,9 @@ namespace CollectionsTest
             objCol1.CopyTo (target, 0);
         }
 
+
         [TestMethod]
-        public void Test_Object_CopyTo()
+        public void Unit_ObjectCopyTo()
         {
             Setup();
             foreach (int key in keys)
@@ -95,8 +101,9 @@ namespace CollectionsTest
                 Assert.AreEqual (target[i].Key + 1000, target[i].Value);
         }
 
+
         [TestMethod]
-        public void Test_Object_CopyTo_Downcast()
+        public void Unit_ObjectCopyToDowncast()
         {
             Setup();
             tree2.Add ("aardvark", 1);
@@ -114,7 +121,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_Object_GetEnumerator()
+        public void Unit_ObjectGetKeysEnumerator()
         {
             Setup();
 
@@ -133,21 +140,23 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_Object_IsFixedSize()
+        public void Unit_ObjectIsFixedSize()
         {
             Setup();
             Assert.IsFalse (objCol1.IsFixedSize);
         }
 
+
         [TestMethod]
-        public void Test_Object_IsReadonly()
+        public void Unit_ObjectIsReadonly()
         {
             Setup();
             Assert.IsFalse (objCol1.IsReadOnly);
         }
 
+
         [TestMethod]
-        public void Test_Object_IsSynchronized()
+        public void Unit_ObjectIsSynchronized()
         {
             Setup();
             Assert.IsFalse (objCol1.IsSynchronized);
@@ -156,57 +165,63 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void Crash_ObjectAddNullKey()
+        public void Crash_ObjectAddNullKey_Argument()
         {
             Setup();
-            objCol2.Add ((string) null, 1);
+            objCol2.Add ((String) null, 1);
         }
+
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void Crash_ObjectAddBadKey()
+        public void Crash_ObjectAddBadKey_Argument()
         {
             Setup();
             objCol2.Add (23, 45);
         }
 
+
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void Crash_ObjectAddBadValue()
+        public void Crash_ObjectAddBadValue_Argument()
         {
             Setup();
             objCol2.Add ("razz", "matazz");
         }
 
+
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void Crash_ObjectAddDupl()
+        public void Crash_ObjectAddDupl_Argument()
         {
             Setup();
             objCol2.Add ("nn", 1);
             objCol2.Add ("nn", 2);
         }
 
+
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void Test_Object_Item_Get_ArgumentNullException()
+        public void Crash_ObjectItemGet_ArgumentNull()
         {
             Setup();
             objCol2.Add ("foo", 10);
             object j = objCol2[null];
         }
 
+
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void Test_Object_Item_Set_ArgumentNullException()
+        public void Crash_ObjectItemSet_ArgumentNull()
         {
             Setup();
             objCol2.Add ("foo", 10);
             objCol2[null] = "bar";
         }
 
+
         [TestMethod]
-        public void Test_Object_Item()
+        public void Unit_ObjectItem()
         {
             Setup();
 
@@ -231,14 +246,15 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void Test_Object_Remove_ArgumentNullException()
+        public void Crash_ObjectRemove_ArgumentNull()
         {
             Setup();
             objCol1.Remove (null);
         }
 
+
         [TestMethod]
-        public void Test_Object_Remove()
+        public void Unit_ObjectRemove()
         {
             Setup();
 
@@ -259,16 +275,17 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void Test_Object_Keys_CopyTo_ArgumentNullException()
+        public void Crash_ObjectKeysCopyTo_ArgumentNull()
         {
             Setup();
             ICollection c1 = (ICollection) tree1.Keys;
             c1.CopyTo (null, -1);
         }
 
+
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void Test_Object_Keys_CopyTo_ArgumentException_MultiDimensional()
+        public void Crash_ObjectKeysCopyToMultiDimensional_Argument()
         {
             Setup();
             tree1.Add (42, 420);
@@ -277,9 +294,10 @@ namespace CollectionsTest
             c1.CopyTo (target, -1);
         }
 
+
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void Test_Object_Keys_CopyTo_ArgumentOutOfRangeException()
+        public void Crash_ObjectKeysCopyTo_ArgumentOutOfRange()
         {
             Setup();
             tree1.Add (42, 420);
@@ -288,9 +306,10 @@ namespace CollectionsTest
             c1.CopyTo (target, -1);
         }
 
+
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void Test_Object_Keys_CopyTo_ArgumentException_NotLongEnough()
+        public void Crash_ObjectKeysCopyToNotLongEnough_Argument()
         {
             Setup();
             for (int i = 0; i < 10; ++i)
@@ -300,8 +319,9 @@ namespace CollectionsTest
             c1.CopyTo (target, 5);
         }
 
+
         [TestMethod]
-        public void Test_Object_Keys_CopyTo()
+        public void Unit_ObjectKeysCopyTo()
         {
             int n = 10;
             Setup();
@@ -318,8 +338,9 @@ namespace CollectionsTest
                 Assert.AreEqual (i + 100, (int) target[i]);
         }
 
+
         [TestMethod]
-        public void Test_Object_Keys_GetEnumerator()
+        public void Unit_ObjectKeysGetEnumerator()
         {
             int n = 10;
             Setup();
@@ -340,7 +361,7 @@ namespace CollectionsTest
         // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
         [TestMethod]
-        public void Test_Object_Keys_Count()
+        public void Unit_ObjectKeysCount()
         {
             int n = 10;
             Setup();
@@ -355,8 +376,9 @@ namespace CollectionsTest
             Assert.AreEqual (n, c1.Count);
         }
 
+
         [TestMethod]
-        public void Test_Object_Keys_IsSynchronized()
+        public void Unit_ObjectKeysIsSynchronized()
         {
             Setup();
             Assert.IsFalse (((ICollection) tree1.Keys).IsSynchronized);
@@ -368,16 +390,17 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void Test_Object_Values_CopyTo_ArgumentNullException()
+        public void Crash_ObjectValuesCopyTo_ArgumentNull()
         {
             Setup();
             ICollection c1 = (ICollection) tree1.Values;
             c1.CopyTo (null, -1);
         }
 
+
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void Test_Object_Values_CopyTo_ArgumentException_MultiDimensional()
+        public void Crash_ObjectValuesCopyToMultiDimensional_Argument()
         {
             Setup();
             tree1.Add (42, 420);
@@ -386,9 +409,10 @@ namespace CollectionsTest
             c1.CopyTo (target, -1);
         }
 
+
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void Test_Object_Values_CopyTo_ArgumentOutOfRangeException()
+        public void Crash_ObjectValuesCopyTo_ArgumentOutOfRange()
         {
             Setup();
             tree1.Add (42, 420);
@@ -397,9 +421,10 @@ namespace CollectionsTest
             c1.CopyTo (target, -1);
         }
 
+
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void Test_Object_Values_CopyTo_ArgumentException_NotLongEnough()
+        public void Crash_ObjectValuesCopyToNotLongEnough_Argument()
         {
             Setup();
             for (int i = 0; i < 10; ++i)
@@ -409,8 +434,9 @@ namespace CollectionsTest
             c1.CopyTo (target, 5);
         }
 
+
         [TestMethod]
-        public void Test_Object_Values_CopyTo()
+        public void Unit_ObjectValuesCopyTo()
         {
             int n = 10;
             Setup();
@@ -427,8 +453,9 @@ namespace CollectionsTest
                 Assert.AreEqual (i + 1000, (int) target[i]);
         }
 
+
         [TestMethod]
-        public void Test_Object_Values_GetEnumerator()
+        public void Unit_ObjectValuesGetEnumerator()
         {
             int n = 10;
             Setup();
@@ -449,7 +476,7 @@ namespace CollectionsTest
         // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
         [TestMethod]
-        public void Test_Object_Values_Count()
+        public void Unit_ObjectValuesCount()
         {
             int n = 10;
             Setup();
@@ -464,8 +491,9 @@ namespace CollectionsTest
             Assert.AreEqual (n, c1.Count);
         }
 
+
         [TestMethod]
-        public void Test_Object_Values_IsSynchronized()
+        public void Unit_ObjectValuesIsSynchronized()
         {
             Setup();
             Assert.IsFalse (((ICollection) tree1.Values).IsSynchronized);

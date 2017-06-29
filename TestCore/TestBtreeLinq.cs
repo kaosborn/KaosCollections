@@ -17,7 +17,7 @@ namespace CollectionsTest
     {
         [TestMethod]
         [ExpectedException (typeof (InvalidOperationException))]
-        public void Test_LastE1()
+        public void Crash_Last_InvalidOperation()
         {
             Setup();
 
@@ -27,7 +27,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_Last()
+        public void Unit_Last()
         {
             Setup();
             tree1.Add (3, -33);
@@ -42,7 +42,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_LinqAny()
+        public void Unit_LinqAny()
         {
             Setup();
 
@@ -60,7 +60,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_LongCount()
+        public void Unit_LongCount()
         {
             Setup();
             tree1.Add (3, -33);

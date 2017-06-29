@@ -10,16 +10,16 @@ namespace CollectionsTest
     {
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void Unit_XtraCtor1E1()
+        public void Crash_XtraCtor1E1_ArgumentOutOfRange()
         {
-            var tree = new BtreeDictionary<int, int> (4);
+            var tree = new BtreeDictionary<int,int> (4);
         }
 
 
         [TestMethod]
         public void Unit_XtraCtor1()
         {
-            var tree = new BtreeDictionary<int, int> (6);
+            var tree = new BtreeDictionary<int,int> (6);
             Assert.AreEqual (0, tree.Count);
         }
 

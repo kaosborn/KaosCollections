@@ -9,7 +9,7 @@ namespace CollectionsTest
     {
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void Test_Keys_CopyTo_ArgumentNullException()
+        public void Crash_KeysCopyTo_ArgumentNull()
         {
             Setup();
             var target = new int[10];
@@ -19,7 +19,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void Test_Keys_CopyTo_ArgumentOutOfRangeException_Of_Valid_Values()
+        public void Crash_KeysCopyToOfValidValues_ArgumentOutOfRange()
         {
             Setup();
             var target = new int[keys.Length];
@@ -29,7 +29,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void Test_Keys_CopyTo_ArgumentException_Not_Long_Enough()
+        public void Crash_KeysCopyToNotLongEnough_Argument()
         {
             Setup();
             for (int key = 1; key < 10; ++key)
@@ -41,7 +41,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_Keys_CopyTo()
+        public void Unit_KeysCopyTo()
         {
             int n = 10;
             int offset = 5;
@@ -59,7 +59,7 @@ namespace CollectionsTest
         ////
 
         [TestMethod]
-        public void Test_Keys_GetEnumerator()
+        public void Unit_KeysGetEnumerator()
         {
             int n = 100;
             Setup();
@@ -80,7 +80,7 @@ namespace CollectionsTest
         // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
         [TestMethod]
-        public void Test_Keys_Count()
+        public void Unit_KeysCount()
         {
             Setup();
             foreach (int key in keys)
@@ -92,7 +92,7 @@ namespace CollectionsTest
         // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
         [TestMethod]
-        public void Test_ICollection_Keys_Contains()
+        public void Unit_ICollectionKeysContains()
         {
             Setup();
             tree2.Add ("alpha", 10);
@@ -104,7 +104,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_ICollection_Keys_CopyTo()
+        public void Unit_ICollectionKeysCopyTo()
         {
             Setup();
             tree2.Add ("alpha", 1);
@@ -122,7 +122,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_ICollection_Keys_IsReadonly()
+        public void Unit_ICollectionKeysIsReadonly()
         {
             Setup();
             Assert.IsTrue (genKeys1.IsReadOnly);
@@ -131,7 +131,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (NotSupportedException))]
-        public void Test_ICollection_Keys_Add_NotSupportedException()
+        public void Crash_ICollectionKeysAdd_NotSupported()
         {
             Setup();
             genKeys2.Add ("omega");
@@ -140,7 +140,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (NotSupportedException))]
-        public void Test_ICollection_Keys_Clear_NotSupportedException()
+        public void Crash_ICollectionKeysClear_NotSupported()
         {
             Setup();
             genKeys2.Clear();
@@ -149,7 +149,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (NotSupportedException))]
-        public void Test_ICollection_Keys_Remove_NotSupportedException()
+        public void Crash_ICollectionKeysRemove_NotSupported()
         {
             Setup();
             genKeys2.Remove ("omega");
@@ -158,7 +158,7 @@ namespace CollectionsTest
         ////
 
         [TestMethod]
-        public void Test_Keys_SyncRoot()
+        public void Unit_KeysSyncRoot()
         {
             Setup();
 
@@ -172,7 +172,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void Test_Values_CopyTo_ArgumentNullException()
+        public void Crash_ValuesCopyTo_ArgumentNull()
         {
             Setup();
             var target = new int[keys.Length];
@@ -182,7 +182,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void Test_Values_CopyTo_ArgumentOutOfRangeException_Of_Valid_Values()
+        public void Crash_ValuesCopyToOfValidValues_ArgumentOutOfRange()
         {
             Setup();
             var target = new int[10];
@@ -192,9 +192,10 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void Test_Values_CopyTo_ArgumentException_Not_Long_Enough()
+        public void Crash_ValuesCopyToNotLongEnough_Argument()
         {
             Setup();
+
             for (int key = 1; key < 10; ++key)
                 tree1.Add (key, key + 1000);
 
@@ -204,7 +205,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_Values_CopyTo()
+        public void Unit_ValuesCopyTo()
         {
             int n = 10;
             int offset = 5;
@@ -221,7 +222,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_Values_GetEnumerator()
+        public void Unit_ValuesGetEnumerator()
         {
             int n = 100;
             Setup();
@@ -242,7 +243,7 @@ namespace CollectionsTest
         ////
 
         [TestMethod]
-        public void Test_Values_SyncRoot()
+        public void Unit_ValuesSyncRoot()
         {
             Setup();
 
@@ -255,7 +256,7 @@ namespace CollectionsTest
         // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
         [TestMethod]
-        public void Test_Values_Count()
+        public void Unit_ValuesCount()
         {
             Setup();
             foreach (int key in keys)
@@ -267,7 +268,7 @@ namespace CollectionsTest
         // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
         [TestMethod]
-        public void Test_ICollection_Values_Contains()
+        public void Unit_ICollectionValuesContains()
         {
             Setup();
             tree2.Add ("alpha", 10);
@@ -279,7 +280,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_ICollection_Values_CopyTo()
+        public void Unit_ICollectionValuesCopyTo()
         {
             Setup();
             tree2.Add ("alpha", 1);
@@ -297,7 +298,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_ICollection_Values_Collection_IsReadonly()
+        public void Unit_ICollectionValuesCollectionIsReadonly()
         {
             Setup();
             ICollection<int> ic = (ICollection<int>) tree1.Values;
@@ -307,7 +308,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (NotSupportedException))]
-        public void Test_ICollection_Values_Add_NotSupportedException()
+        public void Crash_ICollectionValuesAdd_NotSupported()
         {
             Setup();
             genValues2.Add (9);
@@ -316,7 +317,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (NotSupportedException))]
-        public void Test_ICollection_Values_Clear_NotSupportedException()
+        public void Crash_ICollectionValuesClear_NotSupported()
         {
             Setup();
             genValues2.Clear();
@@ -325,7 +326,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (NotSupportedException))]
-        public void Test_ICollection_Values_Remove_NotSupportedException()
+        public void Crash_ICollectionValuesRemove_NotSupported()
         {
             Setup();
             genValues2.Remove (9);

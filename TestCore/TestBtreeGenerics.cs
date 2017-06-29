@@ -12,7 +12,7 @@ namespace CollectionsTest
     public partial class Test_Btree
     {
         [TestMethod]
-        public void Test_Inheritance()
+        public void Unit_Inheritance()
         {
             Setup();
 
@@ -33,15 +33,15 @@ namespace CollectionsTest
             Assert.IsTrue (tree2.Values is System.Collections.IEnumerable);
             Assert.IsTrue (tree2.Values is System.Collections.ICollection);
 
-            Assert.IsTrue (tree2 is System.Collections.Generic.IReadOnlyDictionary<string, int>);
-            Assert.IsTrue (tree2 is System.Collections.Generic.IReadOnlyCollection<KeyValuePair<string, int>>);
+            Assert.IsTrue (tree2 is System.Collections.Generic.IReadOnlyDictionary<string,int>);
+            Assert.IsTrue (tree2 is System.Collections.Generic.IReadOnlyCollection<KeyValuePair<string,int>>);
             Assert.IsTrue (tree2.Keys is System.Collections.Generic.IReadOnlyCollection<string>);
             Assert.IsTrue (tree2.Values is System.Collections.Generic.IReadOnlyCollection<int>);
         }
 
 
         [TestMethod]
-        public void Test_Ctor0()
+        public void Unit_Ctor0()
         {
             Setup();
             Assert.AreEqual (0, tree1.Count);
@@ -49,12 +49,12 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_Ctor2A()
+        public void Unit_Ctor2A()
         {
 #if TEST_SORTEDDICTIONARY
-            var tree = new SortedDictionary<string, int> (StringComparer.OrdinalIgnoreCase);
+            var tree = new SortedDictionary<string,int> (StringComparer.OrdinalIgnoreCase);
 #else
-            var tree = new BtreeDictionary<string, int> (StringComparer.OrdinalIgnoreCase);
+            var tree = new BtreeDictionary<string,int> (StringComparer.OrdinalIgnoreCase);
 #endif
 
             tree.Add ("AAA", 0);
@@ -63,7 +63,7 @@ namespace CollectionsTest
             tree.Add ("ddd", 3);
 
             int actualPosition = 0;
-            foreach (KeyValuePair<string, int> pair in tree)
+            foreach (KeyValuePair<string,int> pair in tree)
             {
                 Assert.AreEqual (actualPosition, pair.Value);
                 ++actualPosition;
@@ -74,12 +74,12 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_Ctor2B()
+        public void Unit_Ctor2B()
         {
 #if TEST_SORTEDDICTIONARY
-            var tree = new SortedDictionary<string, int> (StringComparer.Ordinal);
+            var tree = new SortedDictionary<string,int> (StringComparer.Ordinal);
 #else
-            var tree = new BtreeDictionary<string, int> (StringComparer.Ordinal);
+            var tree = new BtreeDictionary<string,int> (StringComparer.Ordinal);
 #endif
             tree.Add ("AAA", 0);
             tree.Add ("CCC", 1);
@@ -87,7 +87,7 @@ namespace CollectionsTest
             tree.Add ("ddd", 3);
 
             int actualPosition = 0;
-            foreach (KeyValuePair<string, int> pair in tree)
+            foreach (KeyValuePair<string,int> pair in tree)
             {
                 Assert.AreEqual (actualPosition, pair.Value);
                 ++actualPosition;
@@ -99,30 +99,30 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void Test_Ctor_ArgumentNullException()
+        public void Crash_Ctor_ArgumentNull()
         {
-            IDictionary<int, int> listArg = null;
+            IDictionary<int,int> listArg = null;
 #if TEST_SORTEDDICTIONARY
-            IDictionary<int, int> idx = new SortedDictionary<int, int> (listArg);
+            IDictionary<int,int> idx = new SortedDictionary<int,int> (listArg);
 #else
-            IDictionary<int, int> idx = new BtreeDictionary<int, int> (listArg);
+            IDictionary<int,int> idx = new BtreeDictionary<int,int> (listArg);
 #endif
         }
 
 
         [TestMethod]
-        public void Test_Ctor_IDictionary()
+        public void Unit_CtorIDictionary()
         {
             Setup();
 
-            IDictionary<string, int> sl = new SortedList<string,int>();
+            IDictionary<string,int> sl = new SortedList<string,int>();
             sl.Add ("Gremlin", 1);
             sl.Add ("Pacer", 2);
 
 #if TEST_SORTEDDICTIONARY
-            var tree = new SortedDictionary<string, int> (sl);
+            var tree = new SortedDictionary<string,int> (sl);
 #else
-            var tree = new BtreeDictionary<string, int> (sl);
+            var tree = new BtreeDictionary<string,int> (sl);
 #endif
 
             Assert.AreEqual (1, tree["Gremlin"]);
@@ -132,7 +132,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void Test_Add_ArgumentNullException()
+        public void Crash_Add_ArgumentNull()
         {
             Setup();
             tree2.Add (null, 0);
@@ -141,7 +141,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void Test_Add_ArgumentException_Entry_Already_Exists()
+        public void Crash_AddEntryAlreadyExists_Argument()
         {
             Setup();
             tree2.Add ("foo", 1);
@@ -150,7 +150,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_AddCount()
+        public void Unit_AddCount()
         {
             Setup();
 
@@ -162,7 +162,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_Clear()
+        public void Unit_Clear()
         {
             Setup();
 
@@ -173,7 +173,7 @@ namespace CollectionsTest
             Assert.AreEqual (0, tree1.Count);
 
             int actualCount = 0;
-            foreach (KeyValuePair<int, int> pair in tree1)
+            foreach (KeyValuePair<int,int> pair in tree1)
                 ++actualCount;
 
             Assert.AreEqual (0, actualCount);
@@ -182,7 +182,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void Test_ContainsKey_ArgumentNullException()
+        public void Crash_ContainsKey_ArgumentNull()
         {
             Setup();
 
@@ -192,7 +192,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_ContainsKey()
+        public void Unit_ContainsKey()
         {
             Setup();
 
@@ -206,7 +206,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_ContainsValue()
+        public void Unit_ContainsValue()
         {
             Setup();
 
@@ -254,20 +254,20 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void Test_CopyTo_ArgumentNullException()
+        public void Crash_CopyTo_ArgumentNull()
         {
             Setup();
-            var target = new KeyValuePair<int, int>[keys.Length];
+            var target = new KeyValuePair<int,int>[keys.Length];
             tree1.CopyTo (null, -1);
         }
 
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void Test_CopyTo_ArgumentOutOfRangeException_1()
+        public void Crash_CopyTo_ArgumentOutOfRange_1()
         {
             Setup();
-            var target = new KeyValuePair<int, int>[keys.Length];
+            var target = new KeyValuePair<int,int>[keys.Length];
             tree1.CopyTo (target, -1);
         }
 
@@ -275,32 +275,32 @@ namespace CollectionsTest
         // MS docs incorrectly state ArgumentOutOfRangeException for this case.
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void Test_CopyTo_ArgumentException_1()
+        public void Crash_CopyTo_Argument_1()
         {
             Setup();
             for (int key = 1; key < 10; ++key)
                 tree1.Add (key, key + 1000);
 
-            var target = new KeyValuePair<int, int>[10];
+            var target = new KeyValuePair<int,int>[10];
             tree1.CopyTo (target, 25);
         }
 
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void Test_CopyTo_ArgumentException_2()
+        public void Crash_CopyTo_Argument_2()
         {
             Setup();
             for (int key = 1; key < 10; ++key)
                 tree1.Add (key, key + 1000);
 
-            var target = new System.Collections.Generic.KeyValuePair<int, int>[4];
+            var target = new System.Collections.Generic.KeyValuePair<int,int>[4];
             tree1.CopyTo (target, 2);
         }
 
 
         [TestMethod]
-        public void Test_CopyTo()
+        public void Unit_CopyTo()
         {
             Setup();
             int offset = 1;
@@ -309,7 +309,7 @@ namespace CollectionsTest
             for (int i = 0; i < size; ++i)
                 tree1.Add (i + 1000, i + 10000);
 
-            var pairs = new KeyValuePair<int, int>[size + offset];
+            var pairs = new KeyValuePair<int,int>[size + offset];
 
             tree1.CopyTo (pairs, offset);
 
@@ -328,7 +328,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_GetEnumerator()
+        public void Unit_GetEnumerator()
         {
             Setup();
 
@@ -337,7 +337,7 @@ namespace CollectionsTest
 
             int actualCount = 0;
 
-            foreach (KeyValuePair<int, int> pair in tree1)
+            foreach (KeyValuePair<int,int> pair in tree1)
             {
                 ++actualCount;
                 Assert.AreEqual (pair.Key + 1000, pair.Value);
@@ -349,7 +349,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void Test_Remove_ArgumentNullException()
+        public void Crash_Remove_ArgumentNull()
         {
             Setup();
             tree2.Add ("delta", 4);
@@ -359,7 +359,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_Remove()
+        public void Unit_Remove()
         {
             Setup();
 
@@ -378,7 +378,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void Test_TryGetValue_ArgumentNullException()
+        public void Crash_TryGetValue_ArgumentNull()
         {
             Setup();
 
@@ -388,7 +388,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_TryGetValue_For_Unfound_Key_int()
+        public void Unit_TryGetValueOrUnfoundKeyInt()
         {
             Setup (5);
             for (int i = 2; i <= 50; i+=2)
@@ -410,12 +410,12 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_TryGetValue_For_Unfound_Key_String()
+        public void Unit_TryGetValueForUnfoundKeyString()
         {
 #if TEST_SORTEDDICTIONARY
-            var sd = new SortedDictionary<string, int> (StringComparer.Ordinal);
+            var sd = new SortedDictionary<string,int> (StringComparer.Ordinal);
 #else
-            var sd = new BtreeDictionary<string, int> (StringComparer.Ordinal);
+            var sd = new BtreeDictionary<string,int> (StringComparer.Ordinal);
 #endif
 
             for (char c = 'A'; c <= 'Z'; ++c)
@@ -437,7 +437,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_TryGetValue()
+        public void Unit_TryGetValue()
         {
             Setup();
 
@@ -455,7 +455,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_Obj_GetEnumerator()
+        public void Unit_ObjectGetEnumerator()
         {
             Setup();
             var aa = (System.Collections.IEnumerable) tree1;
@@ -465,7 +465,7 @@ namespace CollectionsTest
         // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
         [TestMethod]
-        public void Test_Comparer()
+        public void Unit_Comparer()
         {
             Setup();
 
@@ -476,7 +476,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_Count()
+        public void Unit_Count()
         {
             Setup();
 
@@ -497,7 +497,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void Test_Item_ArgumentNullException_1()
+        public void Crash_Item_ArgumentNull_1()
         {
             Setup();
             tree2[null] = 42;
@@ -506,7 +506,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void Test_Item_ArgumentNullException_2()
+        public void Crash_Item_ArgumentNull_2()
         {
             Setup();
             int x = tree2[null];
@@ -515,7 +515,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (KeyNotFoundException))]
-        public void Test_Item_KeyNotFoundException_1()
+        public void Crash_Item_KeyNotFound_1()
         {
             Setup();
             tree2.Add ("pi", 9);
@@ -526,7 +526,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (KeyNotFoundException))]
-        public void Test_Item_KeyNotFoundException_2()
+        public void Crash_Item_KeyNotFound_2()
         {
             Setup();
             tree1.Add (23, 230);
@@ -536,7 +536,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_Item()
+        public void Unit_Item()
         {
             Setup();
 
@@ -558,12 +558,12 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void Test_ICollection_Add_Pair_ArgumentException_Entry_Already_Exists()
+        public void Crash_ICollectionAddPairEntryAlreadyExists_Argument()
         {
             Setup();
-            var p1 = new KeyValuePair<string, int> ("beta", 1);
-            var p2 = new KeyValuePair<string, int> (null, 98);
-            var p3 = new KeyValuePair<string, int> (null, 99);
+            var p1 = new KeyValuePair<string,int> ("beta", 1);
+            var p2 = new KeyValuePair<string,int> (null, 98);
+            var p3 = new KeyValuePair<string,int> (null, 99);
 
             genCol2.Add (p1);
 
@@ -579,10 +579,10 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_ICollection_Add_Pair()
+        public void Unit_ICollectionAddPair()
         {
             Setup();
-            var p1 = new KeyValuePair<int, int> (17, 170);
+            var p1 = new KeyValuePair<int,int> (17, 170);
             genCol1.Add (p1);
 
             Assert.AreEqual (1, tree1.Count);
@@ -591,13 +591,13 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_ICollection_Contains_Pair()
+        public void Unit_ICollectionContainsPair()
         {
             Setup();
-            KeyValuePair<string, int> pair0 = new KeyValuePair<string, int> (null, 0);
-            KeyValuePair<string, int> pair1 = new KeyValuePair<string, int> ("alpha", 1);
-            KeyValuePair<string, int> pair2 = new KeyValuePair<string, int> ("delta", 4);
-            KeyValuePair<string, int> pair3 = new KeyValuePair<string, int> ("zed", 99);
+            KeyValuePair<string,int> pair0 = new KeyValuePair<string,int> (null, 0);
+            KeyValuePair<string,int> pair1 = new KeyValuePair<string,int> ("alpha", 1);
+            KeyValuePair<string,int> pair2 = new KeyValuePair<string,int> ("delta", 4);
+            KeyValuePair<string,int> pair3 = new KeyValuePair<string,int> ("zed", 99);
 
             tree2.Add (pair1.Key, pair1.Value);
 
@@ -629,14 +629,14 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_ICollection_GetEnumerator()
+        public void Unit_ICollectionGetEnumerator()
         {
             Setup();
             foreach (int k in keys)
                 tree1.Add (k, k + 100);
 
             int actualCount = 0;
-            foreach (KeyValuePair<int, int> pair in genCol1)
+            foreach (KeyValuePair<int,int> pair in genCol1)
             {
                 Assert.AreEqual (pair.Key + 100, pair.Value);
                 ++actualCount;
@@ -647,16 +647,16 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_IEnumerablePair_GetEnumerator()
+        public void Unit_IEnumerablePairGetEnumerator()
         {
             Setup();
             foreach (int k in keys)
                 tree1.Add (k, k + 100);
 
-            var x = (IEnumerable<KeyValuePair<int, int>>) tree1;
+            var x = (IEnumerable<KeyValuePair<int,int>>) tree1;
 
             int actualCount = 0;
-            foreach (KeyValuePair<int, int> pair in x)
+            foreach (KeyValuePair<int,int> pair in x)
             {
                 Assert.AreEqual (pair.Key + 100, pair.Value);
                 ++actualCount;
@@ -667,7 +667,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_ICollection_IsReadonly()
+        public void Unit_ICollectionIsReadonly()
         {
             Setup();
             Assert.IsFalse (genCol1.IsReadOnly);
@@ -676,26 +676,26 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_IDictionary_Keys()
+        public void Unit_IDictionaryKeys()
         {
             Setup();
             tree2.Add ("alpha", 1);
             tree2.Add ("beta", 2);
-            var genId = (IDictionary<string, int>) tree2;
+            var genId = (IDictionary<string,int>) tree2;
             int count = genId.Keys.Count;
             Assert.AreEqual (2, count);
         }
 
 
         [TestMethod]
-        public void Test_ICollection_Remove_Pair()
+        public void Unit_ICollectionRemovePair()
         {
             Setup();
 
-            KeyValuePair<string, int> pair0 = new KeyValuePair<string, int> (null, 0);
-            KeyValuePair<string, int> pair1 = new KeyValuePair<string, int> ("ten", 10);
-            KeyValuePair<string, int> pair2 = new KeyValuePair<string, int> ("ten", 100);
-            KeyValuePair<string, int> pair3 = new KeyValuePair<string, int> ("twenty", 20);
+            KeyValuePair<string,int> pair0 = new KeyValuePair<string,int> (null, 0);
+            KeyValuePair<string,int> pair1 = new KeyValuePair<string,int> ("ten", 10);
+            KeyValuePair<string,int> pair2 = new KeyValuePair<string,int> ("ten", 100);
+            KeyValuePair<string,int> pair3 = new KeyValuePair<string,int> ("twenty", 20);
 
             genCol2.Add (pair0);
             genCol2.Add (pair1);
@@ -740,12 +740,12 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Test_IDictionary_Values()
+        public void Unit_IDictionaryValues()
         {
             Setup();
             tree2.Add ("alpha", 1);
             tree2.Add ("beta", 2);
-            var genId = (IDictionary<string, int>) tree2;
+            var genId = (IDictionary<string,int>) tree2;
             int count = genId.Values.Count;
             Assert.AreEqual (2, count);
         }
