@@ -204,7 +204,7 @@ namespace Kaos.Collections
                 throw new ArgumentNullException (nameof (array));
 
             if (arrayIndex < 0)
-                throw new ArgumentOutOfRangeException (nameof (arrayIndex), "Index is less than zero.");
+                throw new ArgumentOutOfRangeException (nameof (arrayIndex), "Index is less than 0.");
 
             if (arrayIndex + Count > array.Length)
                 throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");

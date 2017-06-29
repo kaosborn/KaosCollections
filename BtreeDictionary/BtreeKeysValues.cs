@@ -66,10 +66,10 @@ namespace Kaos.Collections
                     throw new ArgumentNullException (nameof (array));
 
                 if (arrayIndex < 0)
-                    throw new ArgumentOutOfRangeException (nameof (arrayIndex), "Specified argument was out of the range of valid values.");
+                    throw new ArgumentOutOfRangeException (nameof (arrayIndex), arrayIndex, "Specified argument was out of the range of valid values.");
 
                 if (arrayIndex + Count > array.Length)
-                    throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (arrayIndex));
+                    throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
 
                 foreach (TKey key in this)
                 {
@@ -155,7 +155,7 @@ namespace Kaos.Collections
                     throw new ArgumentNullException (nameof (array));
 
                 if (array.Rank > 1)
-                    throw new ArgumentException ("Multi dimension array is not supported on this operation.");
+                    throw new ArgumentException ("Multidimension array is not supported on this operation.", nameof (array));
 
                 if (index < 0)
                     throw new ArgumentOutOfRangeException (nameof (index), "Index is less than 0.");
@@ -237,10 +237,10 @@ namespace Kaos.Collections
                     throw new ArgumentNullException (nameof (array));
 
                 if (arrayIndex < 0)
-                    throw new ArgumentOutOfRangeException (nameof (arrayIndex), "Specified argument was out of the range of valid values.");
+                    throw new ArgumentOutOfRangeException (nameof (arrayIndex), arrayIndex, "Specified argument was out of the range of valid values.");
 
                 if (arrayIndex + Count > array.Length)
-                    throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (arrayIndex));
+                    throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
 
                 foreach (TValue value in this)
                 {
@@ -293,10 +293,10 @@ namespace Kaos.Collections
                     throw new ArgumentNullException (nameof (array));
 
                 if (array.Rank > 1)
-                    throw new ArgumentException ("Multi dimension array is not supported on this operation.");
+                    throw new ArgumentException ("Multidimension array is not supported on this operation.", nameof (array));
 
                 if (index < 0)
-                    throw new ArgumentOutOfRangeException (nameof (index), "Index is less than 0.");
+                    throw new ArgumentOutOfRangeException (nameof (index), index, "Index is less than 0.");
 
                 if (index + Count > array.Length)
                     throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");

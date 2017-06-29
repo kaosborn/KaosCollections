@@ -73,7 +73,7 @@ namespace Kaos.Collections
                 throw new ArgumentNullException (nameof (array));
 
             if (array.Rank > 1)
-                throw new ArgumentException ("Multidimension array is not supported on this operation.");
+                throw new ArgumentException ("Multidimension array is not supported on this operation.", nameof (array));
 
             if (index < 0)
                 throw new ArgumentOutOfRangeException (nameof (index), "Index is less than 0.");
@@ -82,7 +82,7 @@ namespace Kaos.Collections
                 throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
 
             if (! (array is KeyValuePair<TKey, TValue>[]) && array.GetType() != typeof (Object[]))
-                throw new ArgumentException ("Target array type is not compatible with the type of items in the collection.");
+                throw new ArgumentException ("Target array type is not compatible with the type of items in the collection.", nameof (array));
 
             foreach (KeyValuePair<TKey, TValue> pair in this)
             {
