@@ -36,8 +36,12 @@ namespace Kaos.Collections
             /// <param name="dictionary">
             /// <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/> containing these keys.
             /// </param>
+            /// <exception cref="ArgumentNullException">When <em>dictionary</em> is <b>null</b>.</exception>
             public KeyCollection (BtreeDictionary<TKey,TValue> dictionary)
             {
+                if (dictionary == null)
+                    throw new ArgumentNullException (nameof (dictionary));
+
                 this.tree = dictionary;
             }
 
@@ -207,8 +211,12 @@ namespace Kaos.Collections
             /// <param name="dictionary">
             /// <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/> containing these keys.
             /// </param>
+            /// <exception cref="ArgumentNullException">When <em>dictionary</em> is <b>null</b>.</exception>
             public ValueCollection (BtreeDictionary<TKey,TValue> dictionary)
             {
+                if (dictionary == null)
+                    throw new ArgumentNullException (nameof (dictionary));
+
                 this.tree = dictionary;
             }
 
