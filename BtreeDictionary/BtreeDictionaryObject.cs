@@ -76,7 +76,7 @@ namespace Kaos.Collections
                 throw new ArgumentException ("Multidimension array is not supported on this operation.");
 
             if (index < 0)
-                throw new ArgumentOutOfRangeException ("index", "Index is less than zero.");
+                throw new ArgumentOutOfRangeException (nameof (index), "Index is less than 0.");
 
             if (index + Count > array.Length)
                 throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");

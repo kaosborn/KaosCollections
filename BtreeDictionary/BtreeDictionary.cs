@@ -78,7 +78,7 @@ namespace Kaos.Collections
         public BtreeDictionary (int order, IComparer<TKey> comparer)
         {
             if (order < MinimumOrder || order > MaximumOrder)
-                throw new ArgumentOutOfRangeException ("order", "Must be between " + MinimumOrder + " and " + MaximumOrder);
+                throw new ArgumentOutOfRangeException (nameof (order), "Must be between " + MinimumOrder + " and " + MaximumOrder);
 
             this.comparer = comparer ?? Comparer<TKey>.Default;
 

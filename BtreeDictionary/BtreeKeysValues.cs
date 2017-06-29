@@ -63,13 +63,13 @@ namespace Kaos.Collections
             public void CopyTo (TKey[] array, int arrayIndex)
             {
                 if (array == null)
-                    throw new ArgumentNullException ("array");
+                    throw new ArgumentNullException (nameof (array));
 
                 if (arrayIndex < 0)
-                    throw new ArgumentOutOfRangeException ("arrayIndex", "Specified argument was out of the range of valid values.");
+                    throw new ArgumentOutOfRangeException (nameof (arrayIndex), "Specified argument was out of the range of valid values.");
 
                 if (arrayIndex + Count > array.Length)
-                    throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", "arrayIndex");
+                    throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (arrayIndex));
 
                 foreach (TKey key in this)
                 {
@@ -152,13 +152,13 @@ namespace Kaos.Collections
             void ICollection.CopyTo (Array array, int index)
             {
                 if (array == null)
-                    throw new ArgumentNullException ("array");
+                    throw new ArgumentNullException (nameof (array));
 
                 if (array.Rank > 1)
                     throw new ArgumentException ("Multi dimension array is not supported on this operation.");
 
                 if (index < 0)
-                    throw new ArgumentOutOfRangeException ("index", "Index is less than zero.");
+                    throw new ArgumentOutOfRangeException (nameof (index), "Index is less than 0.");
 
                 if (index + Count > array.Length)
                     throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
@@ -234,13 +234,13 @@ namespace Kaos.Collections
             public void CopyTo (TValue[] array, int arrayIndex)
             {
                 if (array == null)
-                    throw new ArgumentNullException ("array");
+                    throw new ArgumentNullException (nameof (array));
 
                 if (arrayIndex < 0)
-                    throw new ArgumentOutOfRangeException ("arrayIndex", "Specified argument was out of the range of valid values.");
+                    throw new ArgumentOutOfRangeException (nameof (arrayIndex), "Specified argument was out of the range of valid values.");
 
                 if (arrayIndex + Count > array.Length)
-                    throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", "arrayIndex");
+                    throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (arrayIndex));
 
                 foreach (TValue value in this)
                 {
@@ -290,13 +290,13 @@ namespace Kaos.Collections
             void ICollection.CopyTo (Array array, int index)
             {
                 if (array == null)
-                    throw new ArgumentNullException ("array");
+                    throw new ArgumentNullException (nameof (array));
 
                 if (array.Rank > 1)
                     throw new ArgumentException ("Multi dimension array is not supported on this operation.");
 
                 if (index < 0)
-                    throw new ArgumentOutOfRangeException ("index", "Index is less than zero.");
+                    throw new ArgumentOutOfRangeException (nameof (index), "Index is less than 0.");
 
                 if (index + Count > array.Length)
                     throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
