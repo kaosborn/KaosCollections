@@ -86,27 +86,22 @@ namespace Kaos.Collections
 
             #region Iteration
 
-            /// <summary>
-            /// Get an iterator that will loop thru the collection in order.
-            /// </summary>
+            /// <summary>Returns an enumerator that iterates through the KeyCollection.</summary>
             public IEnumerator<TKey> GetEnumerator()
-            { return new BtreeKeysEnumerator (tree); }
+            { return new Enumerator (tree); }
 
 
-            /// <summary>
-            /// Get an enumerator that will loop thru the collection in order.
-            /// </summary>
-            private class BtreeKeysEnumerator : IEnumerator<TKey>
+            /// <summary>Enumerates the sorted elements of a KeyCollection.</summary>
+            public class Enumerator : IEnumerator<TKey>
             {
-                private readonly BtreeDictionary<TKey,TValue> target;
+                private readonly BtreeDictionary<TKey,TValue> tree;
                 private Leaf currentLeaf;
                 private int leafIndex;
 
-                // Long form used for 5% performance increase.
-                public BtreeKeysEnumerator (BtreeDictionary<TKey,TValue> tree)
+                internal Enumerator (BtreeDictionary<TKey,TValue> dictionary)
                 {
-                    this.target = tree;
-                    Reset();
+                    this.tree = dictionary;
+                    ((IEnumerator) this).Reset();
                 }
 
                 object IEnumerator.Current
@@ -117,18 +112,24 @@ namespace Kaos.Collections
 
                 public bool MoveNext()
                 {
-                    if (++leafIndex < currentLeaf.KeyCount)
-                        return true;
+                    if (currentLeaf != null)
+                    {
+                        if (++leafIndex < currentLeaf.KeyCount)
+                            return true;
 
-                    leafIndex = 0;
-                    currentLeaf = currentLeaf.RightLeaf;
-                    return currentLeaf != null;
+                        leafIndex = 0;
+                        currentLeaf = currentLeaf.RightLeaf;
+                        if (currentLeaf != null)
+                            return true;
+                    }
+
+                    return false;
                 }
 
-                public void Reset()
+                void IEnumerator.Reset()
                 {
                     leafIndex = -1;
-                    currentLeaf = target.GetFirstLeaf();
+                    currentLeaf = tree.GetFirstLeaf();
                 }
 
                 public void Dispose() { Dispose (true); GC.SuppressFinalize (this); }
@@ -262,20 +263,14 @@ namespace Kaos.Collections
             #region Iteration
 
             /// <summary>
-            /// Get an enumerator that will loop thru the collection of values.
+            /// Returns an enumerator that iterates through the ValueCollection.
             /// </summary>
             /// <returns>An enumerator for the collection.</returns>
             public IEnumerator<TValue> GetEnumerator()
             {
-                for (Leaf currentLeaf = tree.GetFirstLeaf();; )
-                {
+                for (Leaf currentLeaf = tree.GetFirstLeaf(); currentLeaf != null; currentLeaf = currentLeaf.RightLeaf)
                     for (int leafIndex = 0; leafIndex < currentLeaf.KeyCount; ++leafIndex)
                         yield return currentLeaf.GetValue (leafIndex);
-
-                    currentLeaf = currentLeaf.RightLeaf;
-                    if (currentLeaf == null)
-                        break;
-                }
             }
 
             #endregion
