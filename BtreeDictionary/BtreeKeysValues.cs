@@ -267,10 +267,52 @@ namespace Kaos.Collections
             /// </summary>
             /// <returns>An enumerator for the collection.</returns>
             public IEnumerator<TValue> GetEnumerator()
+            { return new Enumerator (tree); }
+
+
+            /// <summary>Enumerates the elements of a ValueCollection ordered by key.</summary>
+            public class Enumerator : IEnumerator<TValue>
             {
-                for (Leaf currentLeaf = tree.GetFirstLeaf(); currentLeaf != null; currentLeaf = currentLeaf.RightLeaf)
-                    for (int leafIndex = 0; leafIndex < currentLeaf.KeyCount; ++leafIndex)
-                        yield return currentLeaf.GetValue (leafIndex);
+                private readonly BtreeDictionary<TKey,TValue> tree;
+                private Leaf currentLeaf;
+                private int leafIndex;
+
+                internal Enumerator (BtreeDictionary<TKey,TValue> dictionary)
+                {
+                    this.tree = dictionary;
+                    ((IEnumerator) this).Reset();
+                }
+
+                object IEnumerator.Current
+                { get { return (object) Current; } }
+
+                public TValue Current
+                { get { return currentLeaf.GetValue (leafIndex); } }
+
+                public bool MoveNext()
+                {
+                    if (currentLeaf != null)
+                    {
+                        if (++leafIndex < currentLeaf.KeyCount)
+                            return true;
+
+                        leafIndex = 0;
+                        currentLeaf = currentLeaf.RightLeaf;
+                        if (currentLeaf != null)
+                            return true;
+                    }
+
+                    return false;
+                }
+
+                void IEnumerator.Reset()
+                {
+                    leafIndex = -1;
+                    currentLeaf = tree.GetFirstLeaf();
+                }
+
+                public void Dispose() { Dispose (true); GC.SuppressFinalize (this); }
+                protected virtual void Dispose (bool disposing) { }
             }
 
             #endregion
