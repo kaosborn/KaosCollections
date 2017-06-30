@@ -60,25 +60,25 @@ namespace Kaos.Collections
             #region Methods
 
             /// <summary>
-            /// Copy keys to a target array starting as position <em>arrayIndex</em> in the target.
+            /// Copy keys to a target array starting as position <em>index</em> in the target.
             /// </summary>
             /// <param name="array">Array to modify.</param>
-            /// <param name="arrayIndex">Starting position in <em>array</em>.</param>
-            public void CopyTo (TKey[] array, int arrayIndex)
+            /// <param name="index">Starting position in <em>array</em>.</param>
+            public void CopyTo (TKey[] array, int index)
             {
                 if (array == null)
                     throw new ArgumentNullException (nameof (array));
 
-                if (arrayIndex < 0)
-                    throw new ArgumentOutOfRangeException (nameof (arrayIndex), arrayIndex, "Specified argument was out of the range of valid values.");
+                if (index < 0)
+                    throw new ArgumentOutOfRangeException (nameof (index), index, "Specified argument was out of the range of valid values.");
 
-                if (arrayIndex + Count > array.Length)
+                if (Count > array.Length - index)
                     throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
 
                 foreach (TKey key in this)
                 {
-                    array[arrayIndex] = key;
-                    ++arrayIndex;
+                    array[index] = key;
+                    ++index;
                 }
             }
 
@@ -165,7 +165,7 @@ namespace Kaos.Collections
                 if (index < 0)
                     throw new ArgumentOutOfRangeException (nameof (index), "Index is less than 0.");
 
-                if (index + Count > array.Length)
+                if (Count > array.Length - index)
                     throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
 
                 foreach (TKey key in this)
@@ -236,25 +236,25 @@ namespace Kaos.Collections
             #region Methods
 
             /// <summary>
-            /// Copy values to a target array starting as position <em>arrayIndex</em> in the target.
+            /// Copy values to a target array starting as position <em>index</em> in the target.
             /// </summary>
             /// <param name="array">Array to modify.</param>
-            /// <param name="arrayIndex">Starting position in <em>array</em>.</param>
-            public void CopyTo (TValue[] array, int arrayIndex)
+            /// <param name="index">Starting position in <em>array</em>.</param>
+            public void CopyTo (TValue[] array, int index)
             {
                 if (array == null)
                     throw new ArgumentNullException (nameof (array));
 
-                if (arrayIndex < 0)
-                    throw new ArgumentOutOfRangeException (nameof (arrayIndex), arrayIndex, "Specified argument was out of the range of valid values.");
+                if (index < 0)
+                    throw new ArgumentOutOfRangeException (nameof (index), index, "Specified argument was out of the range of valid values.");
 
-                if (arrayIndex + Count > array.Length)
+                if (Count > array.Length - index)
                     throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
 
                 foreach (TValue value in this)
                 {
-                    array[arrayIndex] = value;
-                    ++arrayIndex;
+                    array[index] = value;
+                    ++index;
                 }
             }
 
@@ -343,7 +343,7 @@ namespace Kaos.Collections
                 if (index < 0)
                     throw new ArgumentOutOfRangeException (nameof (index), index, "Index is less than 0.");
 
-                if (index + Count > array.Length)
+                if (Count > array.Length - index)
                     throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
 
                 foreach (TValue value in this)

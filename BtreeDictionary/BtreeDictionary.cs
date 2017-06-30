@@ -194,25 +194,25 @@ namespace Kaos.Collections
 
         /// <summary>Copy the collection to the specified array offset.</summary>
         /// <param name="array">Destionation of copy.</param>
-        /// <param name="arrayIndex">Copy starts at this location.</param>
+        /// <param name="index">Copy starts at this location.</param>
         /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">When <em>arrayIndex</em> is less than 0.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than 0.</exception>
         /// <exception cref="ArgumentException">When not enough space is given for the copy.</exception>
-        public void CopyTo (KeyValuePair<TKey, TValue>[] array, int arrayIndex)
+        public void CopyTo (KeyValuePair<TKey, TValue>[] array, int index)
         {
             if (array == null)
                 throw new ArgumentNullException (nameof (array));
 
-            if (arrayIndex < 0)
-                throw new ArgumentOutOfRangeException (nameof (arrayIndex), "Index is less than 0.");
+            if (index < 0)
+                throw new ArgumentOutOfRangeException (nameof (index), "Index is less than 0.");
 
-            if (arrayIndex + Count > array.Length)
+            if (Count > array.Length - index)
                 throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
 
             foreach (KeyValuePair<TKey, TValue> pair in this)
             {
-                array[arrayIndex] = pair;
-                ++arrayIndex;
+                array[index] = pair;
+                ++index;
             }
         }
 
