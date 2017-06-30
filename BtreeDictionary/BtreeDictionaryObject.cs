@@ -236,26 +236,21 @@ namespace Kaos.Collections
                 if (value == null && default (TValue) != null)
                     throw new ArgumentNullException (nameof (value));
 
+                if (! (key is TKey))
+                    throw new ArgumentException ("Parameter '" + nameof (key) + "' is not of type '" + typeof (TKey) + "'.");
+
                 try
                 {
-                    var tempKey = (TKey) key;
-                    try
-                    {
-                        var path = new NodeVector (this, tempKey);
-                        if (path.IsFound)
-                            path.LeafValue = (TValue) value;
-                        else
-                            path.Insert (tempKey, (TValue) value);
-                    }
-                    catch (InvalidCastException)
-                    {
-                        // Can't use 'is' for this because it won't handle null.
-                        throw new ArgumentException ("Parameter 'value' is not of type '" + typeof (TValue) + "'.");
-                    }
+                    var path = new NodeVector (this, (TKey) key);
+                    if (path.IsFound)
+                        path.LeafValue = (TValue) value;
+                    else
+                        path.Insert ((TKey) key, (TValue) value);
                 }
                 catch (InvalidCastException)
                 {
-                    throw new ArgumentException ("Parameter '" + nameof (key) + "' is not of type '" + typeof (TKey) + "'.");
+                    // Can't use 'is' for this because it won't handle null.
+                    throw new ArgumentException ("Parameter 'value' is not of type '" + typeof (TValue) + "'.");
                 }
             }
         }
