@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 namespace Kaos.Collections
 {
-    public partial class BtreeDictionary<TKey, TValue>
+    public partial class BtreeDictionary<TKey,TValue>
     {
         #region Explicit object properties and methods
 
@@ -81,14 +81,15 @@ namespace Kaos.Collections
             if (Count > array.Length - index)
                 throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
 
-            if (! (array is KeyValuePair<TKey, TValue>[]) && array.GetType() != typeof (Object[]))
+            if (! (array is KeyValuePair<TKey,TValue>[]) && array.GetType() != typeof (Object[]))
                 throw new ArgumentException ("Target array type is not compatible with the type of items in the collection.", nameof (array));
 
-            foreach (KeyValuePair<TKey, TValue> pair in this)
-            {
-                array.SetValue (pair, index);
-                ++index;
-            }
+            for (Leaf leaf = GetFirstLeaf(); leaf != null; leaf = leaf.RightLeaf)
+                for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
+                {
+                    array.SetValue (new KeyValuePair<TKey,TValue>(leaf.GetKey (leafIndex), leaf.GetValue (leafIndex)), index);
+                    ++index;
+                }
         }
 
         /// <summary>Gets an enumerator that iterates thru the collection.</summary>

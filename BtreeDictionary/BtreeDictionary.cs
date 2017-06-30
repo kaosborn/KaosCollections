@@ -198,7 +198,7 @@ namespace Kaos.Collections
         /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than 0.</exception>
         /// <exception cref="ArgumentException">When not enough space is given for the copy.</exception>
-        public void CopyTo (KeyValuePair<TKey, TValue>[] array, int index)
+        public void CopyTo (KeyValuePair<TKey,TValue>[] array, int index)
         {
             if (array == null)
                 throw new ArgumentNullException (nameof (array));
@@ -209,18 +209,16 @@ namespace Kaos.Collections
             if (Count > array.Length - index)
                 throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
 
-            foreach (KeyValuePair<TKey, TValue> pair in this)
-            {
-                array[index] = pair;
-                ++index;
-            }
+            for (Leaf leaf = GetFirstLeaf(); leaf != null; leaf = leaf.RightLeaf)
+                for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
+                    array[index++] = new KeyValuePair<TKey,TValue> (leaf.GetKey (leafIndex), leaf.GetValue (leafIndex));
         }
 
 
         /// <summary>Gets an enumerator that iterates thru the collection.</summary>
         /// <returns>An enumerator for the collection.</returns>
         /// <remarks>Implements IEnumerable&lt;KeyValuePair&lt;TKey, TValue&gt;&gt;.</remarks>
-        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
+        public IEnumerator<KeyValuePair<TKey,TValue>> GetEnumerator()
         { return new BtreeEnumerator (this); }
 
 

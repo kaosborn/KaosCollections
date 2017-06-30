@@ -75,11 +75,9 @@ namespace Kaos.Collections
                 if (Count > array.Length - index)
                     throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
 
-                foreach (TKey key in this)
-                {
-                    array[index] = key;
-                    ++index;
-                }
+                for (Leaf leaf = tree.GetFirstLeaf(); leaf != null; leaf = leaf.RightLeaf)
+                    for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
+                        array[index++] = leaf.GetKey (leafIndex);
             }
 
             #endregion
@@ -168,11 +166,12 @@ namespace Kaos.Collections
                 if (Count > array.Length - index)
                     throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
 
-                foreach (TKey key in this)
-                {
-                    array.SetValue (key, index);
-                    ++index;
-                }
+                for (Leaf leaf = tree.GetFirstLeaf(); leaf != null; leaf = leaf.RightLeaf)
+                    for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
+                    {
+                        array.SetValue (leaf.GetKey (leafIndex), index);
+                        ++index;
+                    }
             }
 
             bool ICollection<TKey>.IsReadOnly
@@ -251,11 +250,9 @@ namespace Kaos.Collections
                 if (Count > array.Length - index)
                     throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
 
-                foreach (TValue value in this)
-                {
-                    array[index] = value;
-                    ++index;
-                }
+                for (Leaf leaf = tree.GetFirstLeaf(); leaf != null; leaf = leaf.RightLeaf)
+                    for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
+                        array[index++] = leaf.GetValue (leafIndex);
             }
 
             #endregion
@@ -346,17 +343,18 @@ namespace Kaos.Collections
                 if (Count > array.Length - index)
                     throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
 
-                foreach (TValue value in this)
-                {
-                    array.SetValue (value, index);
-                    ++index;
-                }
+                for (Leaf leaf = tree.GetFirstLeaf(); leaf != null; leaf = leaf.RightLeaf)
+                    for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
+                    {
+                        array.SetValue (leaf.GetValue (leafIndex), index);
+                        ++index;
+                    }
             }
 
             bool ICollection<TValue>.IsReadOnly
             { get { return true; } }
 
-            bool ICollection<TValue>.Remove (TValue val)
+            bool ICollection<TValue>.Remove (TValue value)
             { throw new NotSupportedException(); }
 
             bool ICollection.IsSynchronized
