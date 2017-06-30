@@ -211,12 +211,52 @@ namespace CollectionsTest
 
 
         [TestMethod]
+        public void Crash_ObjectItemGetBadKey()
+        {
+            Setup();
+            objCol2.Add ("foo", 10);
+            object j = objCol2[45];
+            Assert.IsNull (j);
+        }
+
+
+        [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void Crash_ObjectItemSet_ArgumentNull()
+        public void Crash_ObjectItemSetKey_ArgumentNull()
         {
             Setup();
             objCol2.Add ("foo", 10);
             objCol2[null] = "bar";
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void Crash_ObjectItemSetValue_ArgumentNull()
+        {
+            Setup();
+            objCol2.Add ("foo", 10);
+            objCol2["foo"] = null;
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentException))]
+        public void Crash_ObjectItemSetBadKey_Argument()
+        {
+            Setup();
+            objCol2.Add ("foo", 10);
+            objCol2[23] = 45;
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentException))]
+        public void Crash_ObjectItemSetBadValue_Argument()
+        {
+            Setup();
+            objCol2.Add ("foo", 10);
+            objCol2["red"] = "blue";
         }
 
 
@@ -241,6 +281,10 @@ namespace CollectionsTest
 
             object j2 = objCol2["bar"];
             Assert.AreEqual (40, (int) j2);
+
+            objCol4[12] = "twelve";
+            objCol4[13] = null;
+            Assert.AreEqual (2, objCol4.Count);
         }
 
 
