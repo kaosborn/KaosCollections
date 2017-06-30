@@ -211,29 +211,52 @@ namespace Kaos.Collections
         #region Explicit properties and methods
 
         /// <summary>Get or set the value associated with the supplied key.</summary>
-        public object this[object key]
+        /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
+        object IDictionary.this[object key]
         {
             get
             {
                 if (key == null)
                     throw new ArgumentNullException (nameof (key));
 
-                int index;
-                Leaf leaf = Find ((TKey) key, out index);
-                if (index < 0)
-                    return null;
-                return leaf.GetValue (index);
+                if (key is TKey)
+                {
+                    Leaf leaf = Find ((TKey) key, out int index);
+                    if (index >= 0)
+                        return leaf.GetValue (index);
+                }
+
+                return null;
             }
             set
             {
                 if (key == null)
                     throw new ArgumentNullException (nameof (key));
 
-                var path = new NodeVector (this, (TKey) key);
-                if (path.IsFound)
-                    path.LeafValue = (TValue) value;
-                else
-                    path.Insert ((TKey) key, (TValue) value);
+                if (value == null && default (TValue) != null)
+                    throw new ArgumentNullException (nameof (value));
+
+                try
+                {
+                    var tempKey = (TKey) key;
+                    try
+                    {
+                        var path = new NodeVector (this, tempKey);
+                        if (path.IsFound)
+                            path.LeafValue = (TValue) value;
+                        else
+                            path.Insert (tempKey, (TValue) value);
+                    }
+                    catch (InvalidCastException)
+                    {
+                        // Can't use 'is' for this because it won't handle null.
+                        throw new ArgumentException ("Parameter 'value' is not of type '" + typeof (TValue) + "'.");
+                    }
+                }
+                catch (InvalidCastException)
+                {
+                    throw new ArgumentException ("Parameter '" + nameof (key) + "' is not of type '" + typeof (TKey) + "'.");
+                }
             }
         }
 
