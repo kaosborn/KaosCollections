@@ -219,7 +219,7 @@ namespace Kaos.Collections
         /// <returns>An enumerator for the collection.</returns>
         /// <remarks>Implements IEnumerable&lt;KeyValuePair&lt;TKey, TValue&gt;&gt;.</remarks>
         public IEnumerator<KeyValuePair<TKey,TValue>> GetEnumerator()
-        { return new BtreeEnumerator (this); }
+        { return new Enumerator (this); }
 
 
         /// <summary>Remove the key/value pair from the dictionary.</summary>
@@ -269,54 +269,58 @@ namespace Kaos.Collections
         // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
         /// <summary>Provides sequential access to the TKey/TValue collection.</summary>
-        public sealed class BtreeEnumerator : IEnumerator<KeyValuePair<TKey, TValue>>
+        public sealed class Enumerator : IEnumerator<KeyValuePair<TKey,TValue>>
         {
-            // Long form is 10% faster than yield syntax form.
-            BtreeDictionary<TKey, TValue> target;
-            Leaf currentLeaf;
-            int leafIndex;
+            private readonly BtreeDictionary<TKey, TValue> tree;
+            private Leaf currentLeaf;
+            private int leafIndex;
 
-            /// <summary>
-            /// Make an iterator that will loop thru the collection in order.
-            /// </summary>
-            /// <param name="dictionary">
-            /// <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>
-            /// containing these key/value pairs.
-            /// </param>
-            public BtreeEnumerator (BtreeDictionary<TKey, TValue> dictionary)
+            /// <summary>Make an iterator that will loop thru the collection in order.</summary>
+            /// <param name="dictionary"><see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>containing these key/value pairs.</param>
+            internal Enumerator (BtreeDictionary<TKey,TValue> dictionary)
             {
-                target = dictionary;
-                Reset();
+                this.tree = dictionary;
+                ((IEnumerator) this).Reset();
             }
 
-            object System.Collections.IEnumerator.Current
-            { get { return (object) Current; } }
+            object IEnumerator.Current
+            {
+                get
+                {
+                    if (leafIndex < 0)
+                        throw new InvalidOperationException ("Enumeration is not active.");
+                    return (object) currentLeaf.GetPair (leafIndex);
+                }
+            }
 
-            /// <summary>
-            /// Get the key/value pair at the current location.
-            /// </summary>
-            public KeyValuePair<TKey, TValue> Current
-            { get { return currentLeaf.GetPair (leafIndex); } }
+            /// <summary>Get the key/value pair at the current location.</summary>
+            public KeyValuePair<TKey,TValue> Current
+            { get { return leafIndex < 0? new KeyValuePair<TKey,TValue> (default (TKey), default (TValue))
+                                        : currentLeaf.GetPair (leafIndex); } }
 
-            /// <summary>
-            /// Advance the enumerator to the next location.
-            /// </summary>
-            /// <returns><b>false</b> if no more data; otherewise <b>true</b></returns>
+            /// <summary>Advance the enumerator to the next location.</summary>
+            /// <returns><b>false</b> if no more data; otherwise <b>true</b>.</returns>
             public bool MoveNext()
             {
-                if (++leafIndex < currentLeaf.KeyCount)
-                    return true;
+                if (currentLeaf != null)
+                {
+                    if (++leafIndex < currentLeaf.KeyCount)
+                        return true;
 
-                leafIndex = 0;
-                currentLeaf = currentLeaf.RightLeaf;
-                return currentLeaf != null;
+                    currentLeaf = currentLeaf.RightLeaf;
+                    if (currentLeaf != null)
+                    {
+                        leafIndex = 0;
+                        return true;
+                    }
+                    leafIndex = -1;
+                }
+                return false;
             }
 
-            /// <summary>
-            /// Move the enumerator back to its initial location.
-            /// </summary>
-            public void Reset()
-            { leafIndex = -1; currentLeaf = target.GetFirstLeaf(); }
+            /// <summary>Move the enumerator back to its initial location.</summary>
+            void IEnumerator.Reset()
+            { leafIndex = -1; currentLeaf = tree.GetFirstLeaf(); }
 
             /// <exclude />
             public void Dispose() { GC.SuppressFinalize (this); }
