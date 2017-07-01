@@ -328,7 +328,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_GetEnumerator()
+        public void Unit_EnumeratorIteration()
         {
             Setup();
 
@@ -344,6 +344,51 @@ namespace CollectionsTest
             }
 
             Assert.AreEqual (keys.Length, actualCount);
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void Crash_EnumeratorObjectPair1_InvalidOperation()
+        {
+            Setup();
+            tree2.Add ("cc", 3);
+            IEnumerator<KeyValuePair<string,int>> kvEnum = tree2.GetEnumerator();
+
+            object jp = ((System.Collections.IEnumerator) kvEnum).Current;
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void Crash_EnumeratorObjectPair2_InvalidOperation()
+        {
+            Setup();
+            tree2.Add ("cc", 3);
+            IEnumerator<KeyValuePair<string,int>> kvEnum = tree2.GetEnumerator();
+            kvEnum.MoveNext();
+            kvEnum.MoveNext();
+
+            object jp = ((System.Collections.IEnumerator) kvEnum).Current;
+        }
+
+
+        [TestMethod]
+        public void Unit_EnumeratorPair()
+        {
+            Setup();
+            tree2.Add ("nine", 9);
+            IEnumerator<KeyValuePair<string,int>> kvEnum = tree2.GetEnumerator();
+
+            kvEnum.MoveNext();
+            KeyValuePair<string,int> pair = kvEnum.Current;
+            Assert.AreEqual (9, pair.Value);
+            Assert.AreEqual ("nine", pair.Key);
+
+            kvEnum.MoveNext();
+            pair = kvEnum.Current;
+            Assert.AreEqual (default (string), pair.Key);
+            Assert.AreEqual (default (int), pair.Value);
         }
 
 
@@ -663,6 +708,25 @@ namespace CollectionsTest
             }
 
             Assert.AreEqual (keys.Length, actualCount);
+        }
+
+
+        [TestMethod]
+        public void Unit_IEnumerableGetEnumerator()
+        {
+            Setup();
+            tree4.Add (3, "cc");
+            int rowCount = 0;
+
+            foreach (var row in (System.Collections.IEnumerable) tree4)
+            {
+                var kv = (KeyValuePair<int,string>) row;
+                Assert.AreEqual (3, kv.Key);
+                Assert.AreEqual ("cc", kv.Value);
+                ++rowCount;
+            }
+
+            Assert.AreEqual (1, rowCount);
         }
 
 
