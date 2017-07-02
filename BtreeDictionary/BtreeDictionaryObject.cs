@@ -92,16 +92,17 @@ namespace Kaos.Collections
                 }
         }
 
+
         /// <summary>Gets an enumerator that iterates thru the collection.</summary>
         /// <returns>An enumerator for the collection.</returns>
         IDictionaryEnumerator IDictionary.GetEnumerator()
-        { return new BtreeObjectEnumerator (this); }
+        { return new Enumerator (this, false); }
 
 
         /// <summary>Gets an enumerator that iterates thru the collection.</summary>
         /// <returns>An enumerator for the collection.</returns>
         IEnumerator IEnumerable.GetEnumerator()
-        { return ((IDictionary) this).GetEnumerator(); }
+        { return new Enumerator (this); }
 
 
         /// <summary>Remove the supplied key and its associated value from the collection.</summary>
@@ -126,88 +127,6 @@ namespace Kaos.Collections
         { get { return new Object(); } }
 
         #endregion
-
-        /// <summary>
-        /// Represents an iterator for the collection.
-        /// </summary>
-        public class BtreeObjectEnumerator : IDictionaryEnumerator
-        {
-            BtreeDictionary<TKey, TValue> target;
-            Leaf currentLeaf;
-            int leafIndex;
-
-            #region Constructors
-
-            /// <summary>
-            /// Make an enumerator that will loop thru the collection in order.
-            /// </summary>
-            /// <param name="dictionary">
-            /// <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>
-            /// containing these key/value pairs.
-            /// </param>
-            public BtreeObjectEnumerator (BtreeDictionary<TKey, TValue> dictionary)
-            {
-                target = dictionary;
-                Reset();
-            }
-
-            #endregion
-
-            #region Properties
-
-            /// <summary>
-            /// Get the key/value pair at the current location.
-            /// </summary>
-            public DictionaryEntry Entry
-            { get { return new DictionaryEntry (Key, Value); } }
-
-            /// <summary>
-            /// Get the key/value pair at the current location.
-            /// </summary>
-            public object Current
-            { get { return Entry; } }
-
-            /// <summary>
-            /// Get the key at the current location.
-            /// </summary>
-            public object Key
-            { get { return currentLeaf.GetKey (leafIndex); } }
-
-            /// <summary>
-            /// Get the value at the current location.
-            /// </summary>
-            public object Value
-            { get { return currentLeaf.GetValue (leafIndex); } }
-
-            #endregion
-
-            #region Methods
-
-            /// <summary>
-            /// Advance the enumerator to the next location.
-            /// </summary>
-            /// <returns><b>false</b> if no more data; otherwise <b>true</b></returns>
-            public bool MoveNext()
-            {
-                if (++leafIndex < currentLeaf.KeyCount)
-                    return true;
-
-                leafIndex = 0;
-                currentLeaf = currentLeaf.RightLeaf;
-                return currentLeaf != null;
-            }
-
-            /// <summary>
-            /// Move the enumerator back to its initial location.
-            /// </summary>
-            public void Reset()
-            {
-                leafIndex = -1;
-                currentLeaf = target.GetFirstLeaf();
-            }
-
-            #endregion
-        }
 
         #region Explicit properties and methods
 

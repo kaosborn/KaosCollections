@@ -266,22 +266,41 @@ namespace Kaos.Collections
             }
         }
 
-        // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+        #endregion
+
+        #region Enumerator class
 
         /// <summary>Provides sequential access to the TKey/TValue collection.</summary>
-        public sealed class Enumerator : IEnumerator<KeyValuePair<TKey,TValue>>
+        public sealed class Enumerator : IEnumerator<KeyValuePair<TKey,TValue>>, IDictionaryEnumerator
         {
             private readonly BtreeDictionary<TKey, TValue> tree;
             private Leaf currentLeaf;
             private int leafIndex;
+            private bool isGeneric;
 
             /// <summary>Make an iterator that will loop thru the collection in order.</summary>
             /// <param name="dictionary"><see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>containing these key/value pairs.</param>
-            internal Enumerator (BtreeDictionary<TKey,TValue> dictionary)
+            internal Enumerator (BtreeDictionary<TKey,TValue> dictionary, bool isGeneric=true)
             {
                 this.tree = dictionary;
+                this.isGeneric = isGeneric;
                 ((IEnumerator) this).Reset();
             }
+
+            object IDictionaryEnumerator.Key
+            { get { if (leafIndex < 0)
+                        throw new InvalidOperationException ("Enumeration is not active.");
+                    return currentLeaf.GetKey (leafIndex); } }
+
+            object IDictionaryEnumerator.Value
+            { get { if (leafIndex < 0)
+                        throw new InvalidOperationException ("Enumeration is not active.");
+                    return currentLeaf.GetValue (leafIndex); } }
+
+            DictionaryEntry IDictionaryEnumerator.Entry
+            { get { if (leafIndex < 0)
+                        throw new InvalidOperationException ("Enumeration is not active.");
+                    return new DictionaryEntry (currentLeaf.GetKey (leafIndex), currentLeaf.GetValue (leafIndex)); } }
 
             object IEnumerator.Current
             {
@@ -289,7 +308,11 @@ namespace Kaos.Collections
                 {
                     if (leafIndex < 0)
                         throw new InvalidOperationException ("Enumeration is not active.");
-                    return (object) currentLeaf.GetPair (leafIndex);
+
+                    if (isGeneric)
+                        return currentLeaf.GetPair (leafIndex);
+                    else
+                        return new DictionaryEntry (currentLeaf.GetKey (leafIndex), currentLeaf.GetValue (leafIndex));
                 }
             }
 
@@ -390,7 +413,7 @@ namespace Kaos.Collections
 
         #endregion
 
-        #region Explicit Methods
+        #region Explicit methods
 
         /// <summary>Adds an element with the specified key/value pair.</summary>
         /// <param name="keyValuePair">Contains the key and value of the element to add.</param>
