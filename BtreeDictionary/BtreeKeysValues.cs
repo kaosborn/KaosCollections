@@ -103,10 +103,17 @@ namespace Kaos.Collections
                 }
 
                 object IEnumerator.Current
-                { get { return (object) Current; } }
+                {
+                    get
+                    {
+                        if (leafIndex < 0)
+                            throw new InvalidOperationException();
+                        return (object) Current;
+                    }
+                }
 
                 public TKey Current
-                { get { return currentLeaf.GetKey (leafIndex); } }
+                { get { return leafIndex < 0? default (TKey) : currentLeaf.GetKey (leafIndex); } }
 
                 public bool MoveNext()
                 {
@@ -115,10 +122,11 @@ namespace Kaos.Collections
                         if (++leafIndex < currentLeaf.KeyCount)
                             return true;
 
-                        leafIndex = 0;
                         currentLeaf = currentLeaf.RightLeaf;
                         if (currentLeaf != null)
-                            return true;
+                        { leafIndex = 0; return true; }
+
+                        leafIndex = -1;
                     }
 
                     return false;
@@ -281,10 +289,17 @@ namespace Kaos.Collections
                 }
 
                 object IEnumerator.Current
-                { get { return (object) Current; } }
+                {
+                    get
+                    {
+                        if (leafIndex < 0)
+                            throw new InvalidOperationException();
+                        return (object) Current;
+                    }
+                }
 
                 public TValue Current
-                { get { return currentLeaf.GetValue (leafIndex); } }
+                { get { return leafIndex < 0? default (TValue) : currentLeaf.GetValue (leafIndex); } }
 
                 public bool MoveNext()
                 {
@@ -293,10 +308,11 @@ namespace Kaos.Collections
                         if (++leafIndex < currentLeaf.KeyCount)
                             return true;
 
-                        leafIndex = 0;
                         currentLeaf = currentLeaf.RightLeaf;
                         if (currentLeaf != null)
-                            return true;
+                        { leafIndex = 0; return true; }
+
+                        leafIndex = -1;
                     }
 
                     return false;
