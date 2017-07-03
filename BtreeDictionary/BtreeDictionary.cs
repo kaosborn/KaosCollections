@@ -468,13 +468,13 @@ namespace Kaos.Collections
 
         /// <summary>Delete the supplied key and its associated value from the collection.
         /// </summary>
-        /// <param name="pair">Contains key and value to find and remove. No operation is taken
+        /// <param name="keyValuePair">Contains key and value to find and remove. No operation is taken
         /// unless both key and value match.</param>
         /// <returns><b>true</b> if key/value pair removed; otherwise <b>false</b>.</returns>
-        bool ICollection<KeyValuePair<TKey, TValue>>.Remove (KeyValuePair<TKey, TValue> pair)
+        bool ICollection<KeyValuePair<TKey,TValue>>.Remove (KeyValuePair<TKey,TValue> keyValuePair)
         {
-            var path = new NodeVector (this, pair.Key);
-            if (! path.IsFound || ! EqualityComparer<TValue>.Default.Equals (pair.Value, path.LeafValue))
+            var path = new NodeVector (this, keyValuePair.Key);
+            if (! path.IsFound || ! EqualityComparer<TValue>.Default.Equals (keyValuePair.Value, path.LeafValue))
                 return false;
 
             path.Delete();
