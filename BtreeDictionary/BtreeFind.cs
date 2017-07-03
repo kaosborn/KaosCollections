@@ -1,7 +1,7 @@
 ﻿//
 // Library: KaosCollections
 // File:    BtreeFind.cs
-// Purpose: Define BtreeDictionary seek functions without a TreePath.
+// Purpose: Define BtreeDictionary seek function without a NodeVector path.
 //
 // Copyright © 2009-2017 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely
@@ -11,19 +11,9 @@ using System.Collections.Generic;
 
 namespace Kaos.Collections
 {
-    public partial class BtreeDictionary<TKey, TValue>
+    public partial class BtreeDictionary<TKey,TValue>
     {
         #region Nonpublic methods
-
-        /// <summary>Get the leftmost leaf.</summary>
-        /// <remarks>Used by iteration.</remarks>
-        private Leaf GetFirstLeaf()
-        {
-            for (Node node = root; ; node = ((Branch) node).FirstChild)
-                if (node is Leaf)
-                    return (Leaf) node;
-        }
-
 
         /// <summary>Perform lite search for key.</summary>
         /// <param name="key">Target of search.</param>

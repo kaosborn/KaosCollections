@@ -82,7 +82,7 @@ namespace Kaos.Collections
             { return childNodes[childIndex]; }
 
             public Node FirstChild
-            { get { return childNodes[0]; } }
+            { get { return childNodes[0]; } set { childNodes[0] = value; } }
 
             public void RemoveChild (int index)
             { childNodes.RemoveAt (index); }
@@ -203,7 +203,7 @@ namespace Kaos.Collections
 
             public void Truncate (int index)
             {
-                Debug.Assert (index >= 0 && index < ValueCount);
+                Debug.Assert (index >= 0 && (ValueCount == 0 || index < ValueCount));
                 RemoveKeys (index, KeyCount - index);
                 values.RemoveRange (index, ValueCount - index);
             }

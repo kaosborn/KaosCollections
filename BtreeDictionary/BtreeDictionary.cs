@@ -33,10 +33,11 @@ namespace Kaos.Collections
         where TKey : IComparable
     {
         private Branch root;
-        private IComparer<TKey> comparer;
-        private int maxKeyCount;
-        private KeyCollection keys;
-        private ValueCollection values;
+        private readonly Leaf firstLeaf;
+        private readonly int maxKeyCount;
+        private readonly IComparer<TKey> comparer;
+        private readonly KeyCollection keys;
+        private readonly ValueCollection values;
         private const int MinimumOrder = 4;
         private const int DefaultOrder = 128;
         private const int MaximumOrder = 256;
@@ -84,7 +85,8 @@ namespace Kaos.Collections
 
             // Create an empty tree consisting of an empty branch and an empty leaf.
             this.maxKeyCount = order - 1;
-            this.root = new Branch (new Leaf());
+            this.firstLeaf = new Leaf();
+            this.root = new Branch (firstLeaf);
 
             // Allocate the virtual subcollections.
             this.keys = new KeyCollection (this);
@@ -145,7 +147,10 @@ namespace Kaos.Collections
         /// <summary>Remove all TKey/TValue pairs from the collection.</summary>
         public void Clear()
         {
-            root = new Branch (new Leaf (maxKeyCount), maxKeyCount);
+            firstLeaf.Truncate (0);
+            firstLeaf.RightLeaf = null;
+            root.Truncate (0);
+            root.FirstChild = firstLeaf;
             Count = 0;
         }
 
@@ -177,13 +182,13 @@ namespace Kaos.Collections
             if (value != null)
             {
                 var comparer = EqualityComparer<TValue>.Default;
-                for (Leaf leaf = GetFirstLeaf(); leaf != null; leaf = leaf.RightLeaf)
+                for (Leaf leaf = firstLeaf; leaf != null; leaf = leaf.RightLeaf)
                     for (int vix = 0; vix < leaf.ValueCount; ++vix)
                         if (comparer.Equals (leaf.GetValue (vix), value))
                             return true;
             }
             else
-                for (Leaf leaf = GetFirstLeaf(); leaf != null; leaf = leaf.RightLeaf)
+                for (Leaf leaf = firstLeaf; leaf != null; leaf = leaf.RightLeaf)
                     for (int vix = 0; vix < leaf.ValueCount; ++vix)
                         if (leaf.GetValue (vix) == null)
                             return true;
@@ -209,7 +214,7 @@ namespace Kaos.Collections
             if (Count > array.Length - index)
                 throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
 
-            for (Leaf leaf = GetFirstLeaf(); leaf != null; leaf = leaf.RightLeaf)
+            for (Leaf leaf = firstLeaf; leaf != null; leaf = leaf.RightLeaf)
                 for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
                     array[index++] = new KeyValuePair<TKey,TValue> (leaf.GetKey (leafIndex), leaf.GetValue (leafIndex));
         }
@@ -343,7 +348,7 @@ namespace Kaos.Collections
 
             /// <summary>Move the enumerator back to its initial location.</summary>
             void IEnumerator.Reset()
-            { leafIndex = -1; currentLeaf = tree.GetFirstLeaf(); }
+            { leafIndex = -1; currentLeaf = tree.firstLeaf; }
 
             /// <exclude />
             public void Dispose() { GC.SuppressFinalize (this); }

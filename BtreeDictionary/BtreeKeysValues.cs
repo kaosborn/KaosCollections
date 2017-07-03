@@ -75,7 +75,7 @@ namespace Kaos.Collections
                 if (Count > array.Length - index)
                     throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
 
-                for (Leaf leaf = tree.GetFirstLeaf(); leaf != null; leaf = leaf.RightLeaf)
+                for (Leaf leaf = tree.firstLeaf; leaf != null; leaf = leaf.RightLeaf)
                     for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
                         array[index++] = leaf.GetKey (leafIndex);
             }
@@ -135,7 +135,7 @@ namespace Kaos.Collections
                 void IEnumerator.Reset()
                 {
                     leafIndex = -1;
-                    currentLeaf = tree.GetFirstLeaf();
+                    currentLeaf = tree.firstLeaf;
                 }
 
                 public void Dispose() { Dispose (true); GC.SuppressFinalize (this); }
@@ -174,7 +174,7 @@ namespace Kaos.Collections
                 if (Count > array.Length - index)
                     throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
 
-                for (Leaf leaf = tree.GetFirstLeaf(); leaf != null; leaf = leaf.RightLeaf)
+                for (Leaf leaf = tree.firstLeaf; leaf != null; leaf = leaf.RightLeaf)
                     for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
                     {
                         array.SetValue (leaf.GetKey (leafIndex), index);
@@ -258,7 +258,7 @@ namespace Kaos.Collections
                 if (Count > array.Length - index)
                     throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
 
-                for (Leaf leaf = tree.GetFirstLeaf(); leaf != null; leaf = leaf.RightLeaf)
+                for (Leaf leaf = tree.firstLeaf; leaf != null; leaf = leaf.RightLeaf)
                     for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
                         array[index++] = leaf.GetValue (leafIndex);
             }
@@ -321,7 +321,7 @@ namespace Kaos.Collections
                 void IEnumerator.Reset()
                 {
                     leafIndex = -1;
-                    currentLeaf = tree.GetFirstLeaf();
+                    currentLeaf = tree.firstLeaf;
                 }
 
                 public void Dispose() { Dispose (true); GC.SuppressFinalize (this); }
@@ -359,7 +359,7 @@ namespace Kaos.Collections
                 if (Count > array.Length - index)
                     throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
 
-                for (Leaf leaf = tree.GetFirstLeaf(); leaf != null; leaf = leaf.RightLeaf)
+                for (Leaf leaf = tree.firstLeaf; leaf != null; leaf = leaf.RightLeaf)
                     for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
                     {
                         array.SetValue (leaf.GetValue (leafIndex), index);
