@@ -111,10 +111,10 @@ namespace Kaos.Collections
             LeafSlotCount += maxKeyCount;
             LeafSlotsUsed += leaf.KeyCount;
 
-            if (! isRightmost && leaf.KeyCount < maxKeyCount / 2)
+            if (leaf.RightLeaf != null && leaf.KeyCount < (maxKeyCount + 1) / 2)
                 throw new InvalidOperationException ("Leaf underfilled");
 
-            if (! anchor.Equals (default (TKey)) && !anchor.Equals (leaf.GetKey (0)))
+            if (! anchor.Equals (default (TKey)) && ! anchor.Equals (leaf.GetKey (0)))
                 throw new InvalidOperationException ("Leaf has wrong anchor");
 
             for (int i = 0; i < leaf.KeyCount; ++i)
