@@ -275,7 +275,7 @@ namespace Kaos.Collections
 
                     // Branch is full so right split a new branch.
                     var newBranch = new Branch (branch, owner.maxKeyCount);
-                    int splitIndex = isAppend ? branch.KeyCount - 2 : (branch.KeyCount + 1) / 2;
+                    int splitIndex = isAppend ? branch.KeyCount - 1 : (branch.KeyCount + 1) / 2;
 
                     if (branchIndex < splitIndex)
                     {
@@ -360,14 +360,14 @@ namespace Kaos.Collections
                     }
 
                 // Leaf underflow?
-                if (leaf.KeyCount < owner.maxKeyCount / 2)
+                if (leaf.KeyCount < (owner.maxKeyCount + 1) / 2)
                 {
                     Leaf rightLeaf = leaf.RightLeaf;
                     if (rightLeaf != null)
                         if (leaf.KeyCount + rightLeaf.KeyCount > owner.maxKeyCount)
                         {
                             // Balance leaves by shifting pairs from right leaf.
-                            int shifts = owner.maxKeyCount - (leaf.KeyCount + rightLeaf.KeyCount - 1) / 2;
+                            int shifts = owner.maxKeyCount - (leaf.KeyCount + rightLeaf.KeyCount) / 2;
                             leaf.Add (rightLeaf, 0, shifts);
                             rightLeaf.Remove (0, shifts);
                             TraverseRight();
@@ -400,7 +400,7 @@ namespace Kaos.Collections
                             // Cascade when rightmost branch is empty.
                             continue;
 
-                        // Rotate pivot for first child.
+                        // Rotate pivot for first pair.
                         TKey pivot = branch.GetKey (0);
                         branch.RemoveKey (0);
                         branch.RemoveChild (0);

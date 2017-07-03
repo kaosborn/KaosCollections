@@ -12,7 +12,7 @@ namespace CollectionsTest
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
         public void Crash_XtraCtor1E1_ArgumentOutOfRange()
         {
-            var tree = new BtreeDictionary<int,int> (4);
+            var tree = new BtreeDictionary<int,int> (3);
         }
 
 

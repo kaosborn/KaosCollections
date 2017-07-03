@@ -37,7 +37,7 @@ namespace Kaos.Collections
         private int maxKeyCount;
         private KeyCollection keys;
         private ValueCollection values;
-        private const int MinimumOrder = 5;
+        private const int MinimumOrder = 4;
         private const int DefaultOrder = 128;
         private const int MaximumOrder = 256;
 
