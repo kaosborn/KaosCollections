@@ -1,6 +1,9 @@
 ﻿//
-// Program: BtreeStress01.cs
-// Purpose: Brute force testing of insertions and deletions using permutations.
+// Program: BtreeStress02.cs
+// Purpose: Stress BtreeDictionary with permutation deletes.
+//
+// Usage notes:
+// • Not a performance test so run Debug version for full diagnostics.
 //
 
 using System;
@@ -8,13 +11,13 @@ using System.Threading;
 using Kaos.Collections;
 using Kaos.Combinatorics;
 
-namespace BenchApp
+namespace SampleApp
 {
     class BtreeStress01
     {
         static void Main()
         {
-            var tree = new BtreeDictionary<int, int> (5);
+            var tree = new BtreeDictionary<int,int> (4);
 
             for (int w = 1; w < 21; ++w)
             {
@@ -22,10 +25,9 @@ namespace BenchApp
                 {
                     foreach (Permutation permDel in permAdd.GetRows())
                     {
-                        for (int m = 0; m < permAdd.Picks; ++m)
+                        for (int m = 0; m < permAdd.Choices; ++m)
                         {
                             tree.Add (permAdd[m], permAdd[m] + 100);
-
 #if DEBUG
                             if (permDel.Rank == 0)
                             {
@@ -36,14 +38,14 @@ namespace BenchApp
                                 catch (DataMisalignedException ex)
                                 {
                                     Console.WriteLine ("Insanity found: {0}", ex.Message);
-                                    Console.WriteLine ("Order={0} add.Rank={1} m={2}", w, permAdd.Rank, m);
+                                    Console.WriteLine ("Width={0} add.Rank={1} m={2}", w, permAdd.Rank, m);
                                     throw;
                                 }
                             }
 #endif
                         }
 
-                        for (int m = 0; m < permDel.Picks; ++m)
+                        for (int m = 0; m < permDel.Choices; ++m)
                         {
                             tree.Remove (permDel[m]);
 #if DEBUG
@@ -54,21 +56,20 @@ namespace BenchApp
                             catch (DataMisalignedException ex)
                             {
                                 Console.WriteLine ("Insanity found: {0}", ex.Message);
-                                Console.WriteLine ("Order={0} add.Rank={1} del.Rank={2} m={3}",
+                                Console.WriteLine ("Width={0} add.Rank={1} del.Rank={2} m={3}",
                                                    w, permAdd.Rank, permDel.Rank, m);
                                 throw;
                             }
 #endif
                         }
-#if DEBUG
+
                         if (tree.Count != 0)
                             throw new DataMisalignedException ("Count should be zero");
-#endif
                         tree.Clear();
                     }
                 }
 
-                Console.WriteLine ("{2} - Completed Order {0} = {1}", w, new Permutation (w), DateTime.Now);
+                Console.WriteLine ("{2} - Completed Width {0} = {1}", w, new Permutation (w), DateTime.Now);
                 Thread.Sleep (250);
             }
         }

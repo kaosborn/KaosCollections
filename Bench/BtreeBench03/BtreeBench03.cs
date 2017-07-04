@@ -3,17 +3,17 @@
 // Purpose: Exercise BtreeDictionary.Remove() showing various tree mutation scenarios.
 //
 // Usage notes:
-// • To include diagnostic results, run Debug build.
+// • To include diagnostics and tree dumps, run Debug build.
 //
 
 using System;
 using Kaos.Collections;
 
-namespace ExampleApp
+namespace SampleApp
 {
-    class BtreeExample01
+    class BtreeBench03
     {
-        static BtreeDictionary<int,int> tree;
+        static BtreeDictionary<int,int> tree = new BtreeDictionary<int,int> (5);
 
         static void WriteInfo()
         {
@@ -30,47 +30,40 @@ namespace ExampleApp
 
         static void Main()
         {
-            int order = 6;
-            // Create a tree of low order to keep the output small:
-            tree = new BtreeDictionary<int, int> (order);
-
-            // Build a 3-level tree:
-            for (int i = 2; i <= 92; i += 2)
+            Console.WriteLine ("Sequentially loaded tree of order 5 is dense:");
+            for (int i = 2; i <= 66; i += 2)
                 tree.Add (i, i + 100);
+            WriteInfo();
 
-            // Prepare for examples by thinning the tree:
-            for (int i = 2; i <= 22; i += 2)
+            Console.WriteLine ("Thin the tree by removing several keys:");
+            foreach (int i in new int[] { 4,6,14,16,18,20,22,24,26,30,36,38,46 })
                 tree.Remove (i);
-            foreach (int i in new int[] { 34, 38, 44, 46, 48, 54, 56, 60, 66, 68, 74, 76, 78 })
-                tree.Remove (i);
-
-            Console.WriteLine ("A BtreeDictionary weighted to the right of the root.  Order = " + order + ":");
             WriteInfo();
 
-            Console.WriteLine ("Coalesce leaves, balance branches by deleting 24:");
-            tree.Remove (24);
+            Console.WriteLine ("Coalesce leaves, balance branches by removing 12:");
+            tree.Remove (12);
             WriteInfo();
 
-            Console.WriteLine ("Update a branch key by deleting 32:");
-            tree.Remove (32);
+            Console.WriteLine ("Change a branch by removing 10:");
+            tree.Remove (10);
             WriteInfo();
 
-            Console.WriteLine ("Update the root branch key by deleting 62:");
-            tree.Remove (62);
+            Console.WriteLine ("Change the root by removing 42:");
+            tree.Remove (42);
             WriteInfo();
 
-            Console.WriteLine ("Coalesce leaves by deleting 58:");
-            tree.Remove (58);
+            Console.WriteLine ("Coalesce leaves by removing 40:");
+            tree.Remove (40);
             WriteInfo();
 
-            Console.WriteLine ("Delete rightmost branches by deleting 92:");
-            Console.WriteLine ("(Any rightmost node may contain as few as 1 element.)");
-            tree.Remove (92);
+            Console.WriteLine ("Prune rightmost leaf by removing 66:");
+            tree.Remove (66);
             WriteInfo();
 
-            Console.WriteLine ("Coalesce leaf, coalesce branches, prune root by deleting 36:");
-            tree.Remove (36);
+            Console.WriteLine ("Coalesce leaves and branches, prune root by removing 8:");
+            tree.Remove (8);
             WriteInfo();
+
 #if DEBUG
             Console.Write ("---- height = " + tree.GetHeight());
             Console.Write (", branch fill = " + tree.BranchSlotsUsed * 100 / tree.BranchSlotCount + "%");
@@ -78,51 +71,56 @@ namespace ExampleApp
 #endif
         }
 
-        /* Output:
+        /* Debug output:
 
-        A BtreeDictionary weighted to the right of the root.  Order = 6:
+        Sequentially loaded tree of order 5 is dense:
+
+        L0: 34
+        L1: 10,18,26 | 42,50,58,66
+        L2: 2,4,6,8|10,12,14,16|18,20,22,24|26,28,30,32 | 34,36,38,40|42,44,46,48|50,52,54,56|58,60,62,64|66
+
+        Thin the tree by removing several keys:
+
+        L0: 34
+        L1: 10,28 | 42,50,58,66
+        L2: 2,8|10,12|28,32 | 34,40|42,44,48|50,52,54,56|58,60,62,64|66
+
+        Coalesce leaves, balance branches by removing 12:
 
         L0: 42
-        L1: 28,32 | 52,62,72,82,92
-        L2: 24,26|28,30|32,36,40 | 42,50|52,58|62,64,70|72,80|82,84,86,88,90|92
+        L1: 10,34 | 50,58,66
+        L2: 2,8|10,28,32|34,40 | 42,44,48|50,52,54,56|58,60,62,64|66
 
-        Coalesce leaves, balance branches by deleting 24:
+        Change a branch by removing 10:
 
-        L0: 62
-        L1: 32,42,52 | 72,82,92
-        L2: 26,28,30|32,36,40|42,50|52,58 | 62,64,70|72,80|82,84,86,88,90|92
+        L0: 42
+        L1: 28,34 | 50,58,66
+        L2: 2,8|28,32|34,40 | 42,44,48|50,52,54,56|58,60,62,64|66
 
-        Update a branch key by deleting 32:
+        Change the root by removing 42:
 
-        L0: 62
-        L1: 36,42,52 | 72,82,92
-        L2: 26,28,30|36,40|42,50|52,58 | 62,64,70|72,80|82,84,86,88,90|92
+        L0: 44
+        L1: 28,34 | 50,58,66
+        L2: 2,8|28,32|34,40 | 44,48|50,52,54,56|58,60,62,64|66
 
-        Update the root branch key by deleting 62:
+        Coalesce leaves by removing 40:
 
-        L0: 64
-        L1: 36,42,52 | 72,82,92
-        L2: 26,28,30|36,40|42,50|52,58 | 64,70|72,80|82,84,86,88,90|92
+        L0: 50
+        L1: 28,34 | 58,66
+        L2: 2,8|28,32|34,44,48 | 50,52,54,56|58,60,62,64|66
 
-        Coalesce leaves by deleting 58:
+        Prune rightmost leaf by removing 66:
 
-        L0: 72
-        L1: 36,42,52 | 82,92
-        L2: 26,28,30|36,40|42,50|52,64,70 | 72,80|82,84,86,88,90|92
+        L0: 50
+        L1: 28,34 | 58
+        L2: 2,8|28,32|34,44,48 | 50,52,54,56|58,60,62,64
 
-        Delete rightmost branches by deleting 92:
-        (Any rightmost node may contain as few as 1 element.)
+        Coalesce leaves, coalesce branches, prune root by removing 8:
 
-        L0: 72
-        L1: 36,42,52 | 82
-        L2: 26,28,30|36,40|42,50|52,64,70 | 72,80|82,84,86,88,90
+        L0: 34,50,58
+        L1: 2,28,32|34,44,48|50,52,54,56|58,60,62,64
 
-        Coalesce leaf, coalesce branches, prune root by deleting 36:
-
-        L0: 40,52,72,82
-        L1: 26,28,30|40,42,50|52,64,70|72,80|82,84,86,88,90
-
-        ---- height = 2, branch fill = 80%, leaf fill = 64% ----
+        ---- height = 2, branch fill = 75%, leaf fill = 87% ----
 
         */
     }
