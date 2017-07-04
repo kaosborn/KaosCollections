@@ -156,8 +156,8 @@ namespace Kaos.Collections
             { get { return values.Count; } }
 
 
-            public KeyValuePair<TKey, TValue> GetPair (int pairIndex)
-            { return new KeyValuePair<TKey, TValue> (keys[pairIndex], values[pairIndex]); }
+            public KeyValuePair<TKey,TValue> GetPair (int pairIndex)
+            { return new KeyValuePair<TKey,TValue> (keys[pairIndex], values[pairIndex]); }
 
 
             public TValue GetValue (int valueIndex)

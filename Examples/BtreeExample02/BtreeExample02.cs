@@ -13,7 +13,7 @@ namespace ExampleApp
     {
         static void Main()
         {
-            var tree = new BtreeDictionary<int, int>();
+            var tree = new BtreeDictionary<int,int>();
 
             tree.Add (36, 360);
             tree.Add (12, 120);

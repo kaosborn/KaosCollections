@@ -35,7 +35,7 @@ namespace Kaos.Collections
             if (! (value is TValue))
                 throw new ArgumentException ("Parameter '" + nameof (value) + "' is not of type '" + typeof (TValue) + "'.");
 
-            var genCol = (IDictionary<TKey, TValue>) this;
+            var genCol = (IDictionary<TKey,TValue>) this;
             genCol.Add ((TKey) key, (TValue) value);
         }
 

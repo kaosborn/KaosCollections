@@ -24,11 +24,11 @@ namespace Kaos.Collections
     /// with the addition of the methods
     /// <see cref="BetweenKeys"/>, <see cref="SkipUntilKey"/>, and <see cref="Last"/>.
     /// </remarks>
-    public sealed partial class BtreeDictionary<TKey, TValue> :
-        IDictionary<TKey, TValue>,
+    public sealed partial class BtreeDictionary<TKey,TValue> :
+        IDictionary<TKey,TValue>,
         IDictionary
 #if NETSTANDARD1_0
-        , IReadOnlyDictionary<TKey, TValue>
+        , IReadOnlyDictionary<TKey,TValue>
 #endif
         where TKey : IComparable
     {
@@ -98,7 +98,7 @@ namespace Kaos.Collections
         /// </summary>
         /// <param name="dictionary">The source of the contents of the new
         /// <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>.</param>
-        public BtreeDictionary (IDictionary<TKey, TValue> dictionary) : this (dictionary, null)
+        public BtreeDictionary (IDictionary<TKey,TValue> dictionary) : this (dictionary, null)
         { }
 
 
@@ -110,12 +110,12 @@ namespace Kaos.Collections
         /// <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>.</param>
         /// <param name="comparer">Comparison operator for keys.</param>
         /// <exception cref="ArgumentNullException">When <em>dictionary</em> is <b>null</b>.</exception>
-        public BtreeDictionary (IDictionary<TKey, TValue> dictionary, IComparer<TKey> comparer) : this (comparer)
+        public BtreeDictionary (IDictionary<TKey,TValue> dictionary, IComparer<TKey> comparer) : this (comparer)
         {
             if (dictionary == null)
                 throw new ArgumentNullException (nameof (dictionary));
 
-            foreach (KeyValuePair<TKey, TValue> pair in dictionary)
+            foreach (KeyValuePair<TKey,TValue> pair in dictionary)
                 Add (pair.Key, pair.Value);
         }
 
@@ -219,7 +219,7 @@ namespace Kaos.Collections
 
         /// <summary>Gets an enumerator that iterates thru the collection.</summary>
         /// <returns>An enumerator for the collection.</returns>
-        /// <remarks>Implements IEnumerable&lt;KeyValuePair&lt;TKey, TValue&gt;&gt;.</remarks>
+        /// <remarks>Implements IEnumerable&lt;KeyValuePair&lt;TKey,TValue&gt;&gt;.</remarks>
         public IEnumerator<KeyValuePair<TKey,TValue>> GetEnumerator()
         { return new Enumerator (this); }
 
@@ -419,7 +419,7 @@ namespace Kaos.Collections
         /// <param name="keyValuePair">Contains the key and value of the element to add.</param>
         /// <exception cref="ArgumentException">When supplied <em>key</em>
         /// has already been added.</exception>
-        void ICollection<KeyValuePair<TKey, TValue>>.Add (KeyValuePair<TKey, TValue> keyValuePair)
+        void ICollection<KeyValuePair<TKey,TValue>>.Add (KeyValuePair<TKey,TValue> keyValuePair)
         {
             var path = new NodeVector (this, keyValuePair.Key);
             if (path.IsFound)
@@ -433,7 +433,7 @@ namespace Kaos.Collections
         /// <param name="pair">Key/value pair to find.</param>
         /// <returns><b>true</b> if the collection contains the specified pair;
         /// otherwise <b>false</b>.</returns>
-        bool ICollection<KeyValuePair<TKey, TValue>>.Contains (KeyValuePair<TKey, TValue> pair)
+        bool ICollection<KeyValuePair<TKey,TValue>>.Contains (KeyValuePair<TKey,TValue> pair)
         {
             var leaf = Find (pair.Key, out int index);
             if (index < 0)
@@ -443,21 +443,21 @@ namespace Kaos.Collections
 
 
         /// <summary>Indicate that this collection may be modified.</summary>
-        bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly
+        bool ICollection<KeyValuePair<TKey,TValue>>.IsReadOnly
         { get { return false; } }
 
 
         /// <summary>Get the collection of keys from this key/value the collection.</summary>
         /// <remarks>The keys given by this collection are sorted according to the
         /// <see cref="Comparer"/> property.</remarks>
-        ICollection<TKey> IDictionary<TKey, TValue>.Keys
+        ICollection<TKey> IDictionary<TKey,TValue>.Keys
         { get { return (ICollection<TKey>) keys; } }
 
 #if NETSTANDARD1_0
-        IEnumerable<TKey> IReadOnlyDictionary<TKey, TValue>.Keys
+        IEnumerable<TKey> IReadOnlyDictionary<TKey,TValue>.Keys
         { get { return Keys; } }
 
-        IEnumerable<TValue> IReadOnlyDictionary<TKey, TValue>.Values
+        IEnumerable<TValue> IReadOnlyDictionary<TKey,TValue>.Values
         { get { return Values; } }
 #endif
 
@@ -479,7 +479,7 @@ namespace Kaos.Collections
         /// <summary>Get the collection of values from this key/value collection.</summary>
         /// <remarks>The values given by this collection are sorted in the same
         /// order as their respective keys in the <see cref="Keys"/> property.</remarks>
-        ICollection<TValue> IDictionary<TKey, TValue>.Values
+        ICollection<TValue> IDictionary<TKey,TValue>.Values
         { get { return (ICollection<TValue>) values; } }
 
         #endregion

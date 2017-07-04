@@ -15,7 +15,7 @@ namespace ExampleApp
     {
         static void Main()
         {
-            var sd = new BtreeDictionary<int, int> { { 3, 33 } };
+            var sd = new BtreeDictionary<int,int> { { 3, 33 } };
             sd.Add (1,11);
             sd.Add (9,99);
             sd.Add (5,55);

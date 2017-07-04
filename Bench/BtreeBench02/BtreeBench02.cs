@@ -20,7 +20,7 @@ namespace BenchApp
         long reps = 5000000;
         long f = 5;
 
-        IDictionary<long, long> tree;
+        IDictionary<long,long> tree;
 
         public Exercise() { tree = new T(); }
 
@@ -73,7 +73,7 @@ namespace BenchApp
     class BtreeBench02
     {
         static void BenchSuite<T> (string title, Exercise<T> sort)
-            where T : IDictionary<long, long>, new()
+            where T : IDictionary<long,long>, new()
         {
             long result;
             Stopwatch watch = new Stopwatch();

@@ -12,13 +12,13 @@ using System.Collections.Generic;
 
 namespace Kaos.Collections
 {
-    public partial class BtreeDictionary<TKey, TValue>
+    public partial class BtreeDictionary<TKey,TValue>
     {
         /// <summary>
         /// Get the Last key/value pair without performing a full structure scan.
         /// </summary>
         /// <returns>Key/value pair with largest key in dictionary</returns>
-        public KeyValuePair<TKey, TValue> Last()
+        public KeyValuePair<TKey,TValue> Last()
         {
             if (Count == 0)
                 throw new InvalidOperationException ("Sequence contains no elements.");
@@ -28,8 +28,8 @@ namespace Kaos.Collections
             {
                 var branch = node as Branch;
                 if (branch == null)
-                    return new KeyValuePair<TKey, TValue> (node.GetKey (node.KeyCount - 1),
-                                                           ((Leaf) node).GetValue (node.KeyCount - 1));
+                    return new KeyValuePair<TKey,TValue> (node.GetKey (node.KeyCount - 1),
+                                                          ((Leaf) node).GetValue (node.KeyCount - 1));
 
                 node = branch.GetChild (node.KeyCount);
             }
@@ -42,7 +42,7 @@ namespace Kaos.Collections
         /// <param name="key">Minimum value of range.</param>
         /// <returns>An enumerator for the collection for key values greater than or equal to <em>key</em>.</returns>
         /// <exception cref="ArgumentNullException">When supplied key is <b>null</b>.</exception>
-        public IEnumerable<KeyValuePair<TKey, TValue>> SkipUntilKey (TKey key)
+        public IEnumerable<KeyValuePair<TKey,TValue>> SkipUntilKey (TKey key)
         {
             if (key == null)
                 throw new ArgumentNullException (nameof (key));
@@ -84,7 +84,7 @@ namespace Kaos.Collections
         /// <example>
         /// <code source="..\Examples\BtreeExample03\BtreeExample03.cs" lang="cs" />
         /// </example>
-        public IEnumerable<KeyValuePair<TKey, TValue>> BetweenKeys (TKey startKey, TKey endKey)
+        public IEnumerable<KeyValuePair<TKey,TValue>> BetweenKeys (TKey startKey, TKey endKey)
         {
             int index;
             Leaf leaf = Find (startKey, out index);
