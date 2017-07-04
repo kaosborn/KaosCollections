@@ -275,7 +275,7 @@ namespace Kaos.Collections
         /// <summary>Provides sequential access to the TKey/TValue collection.</summary>
         public sealed class Enumerator : IEnumerator<KeyValuePair<TKey,TValue>>, IDictionaryEnumerator
         {
-            private readonly BtreeDictionary<TKey, TValue> tree;
+            private readonly BtreeDictionary<TKey,TValue> tree;
             private Leaf currentLeaf;
             private int leafIndex;
             private bool isGeneric;
@@ -334,10 +334,8 @@ namespace Kaos.Collections
 
                     currentLeaf = currentLeaf.RightLeaf;
                     if (currentLeaf != null)
-                    {
-                        leafIndex = 0;
-                        return true;
-                    }
+                    { leafIndex = 0; return true; }
+
                     leafIndex = -1;
                 }
                 return false;
@@ -348,7 +346,7 @@ namespace Kaos.Collections
             { leafIndex = -1; currentLeaf = tree.firstLeaf; }
 
             /// <exclude />
-            public void Dispose() { GC.SuppressFinalize (this); }
+            public void Dispose() { }
         }
 
         #endregion

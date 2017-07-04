@@ -90,7 +90,7 @@ namespace Kaos.Collections
 
 
             /// <summary>Enumerates the sorted elements of a KeyCollection.</summary>
-            public class Enumerator : IEnumerator<TKey>
+            public sealed class Enumerator : IEnumerator<TKey>
             {
                 private readonly BtreeDictionary<TKey,TValue> tree;
                 private Leaf currentLeaf;
@@ -138,8 +138,7 @@ namespace Kaos.Collections
                     currentLeaf = tree.firstLeaf;
                 }
 
-                public void Dispose() { Dispose (true); GC.SuppressFinalize (this); }
-                protected virtual void Dispose (bool disposing) { }
+                public void Dispose() { }
             }
 
             #endregion
@@ -276,7 +275,7 @@ namespace Kaos.Collections
 
 
             /// <summary>Enumerates the elements of a ValueCollection ordered by key.</summary>
-            public class Enumerator : IEnumerator<TValue>
+            public sealed class Enumerator : IEnumerator<TValue>
             {
                 private readonly BtreeDictionary<TKey,TValue> tree;
                 private Leaf currentLeaf;
@@ -324,8 +323,7 @@ namespace Kaos.Collections
                     currentLeaf = tree.firstLeaf;
                 }
 
-                public void Dispose() { Dispose (true); GC.SuppressFinalize (this); }
-                protected virtual void Dispose (bool disposing) { }
+                public void Dispose () { }
             }
 
             #endregion
