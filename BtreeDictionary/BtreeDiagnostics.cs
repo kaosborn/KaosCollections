@@ -14,7 +14,7 @@ using System.Text;
 namespace Kaos.Collections
 {
 #if DEBUG
-    public partial class BtreeDictionary<TKey, TValue>
+    public partial class BtreeDictionary<TKey,TValue>
     {
         // Telemetry counters:
         public int BranchSlotCount { get; private set; }
@@ -36,7 +36,11 @@ namespace Kaos.Collections
             LeafSlotCount = 0;
             LeafSlotsUsed = 0;
 
-            Leaf lastLeaf = Check (root, 1, GetHeight(), true, default (TKey), null);
+            Leaf lastLeaf;
+            if (root is Branch)
+                lastLeaf = CheckBranch ((Branch) root, 1, GetHeight(), true, default (TKey), null);
+            else
+                lastLeaf = CheckLeaf ((Leaf) root, true, default (TKey), null);
 
             if (lastLeaf.RightLeaf != null)
                 throw new InvalidOperationException ("Last leaf has invalid RightLeaf");
@@ -53,19 +57,14 @@ namespace Kaos.Collections
 
         public int GetHeight()
         {
-            int depth = 2;
-            for (Branch branch = root;;)
-            {
-                Node node = branch.FirstChild;
-                if (node is Leaf)
-                    return depth;
+            int depth = 1;
+            for (Node node = root; node is Branch; node = ((Branch) node).FirstChild)
                 ++depth;
-                branch = (Branch) node;
-            }
+            return depth;
         }
 
 
-        private Leaf Check
+        private Leaf CheckBranch
         (
             Branch branch,
             int level, int height,
@@ -81,7 +80,7 @@ namespace Kaos.Collections
                 throw new InvalidOperationException ("Branch underfilled");
 
             if (branch.ChildCount != branch.KeyCount + 1)
-                throw new InvalidOperationException ("Branch ChildCount wrong");
+                throw new InvalidOperationException ("Branch mismatched ChildCount, KeyCount");
 
             for (int i = 0; i < branch.ChildCount; ++i)
             {
@@ -92,21 +91,15 @@ namespace Kaos.Collections
                         throw new InvalidOperationException ("Branch keys not ascending");
 
                 if (level + 1 < height)
-                {
-                    var child = (Branch) branch.GetChild (i);
-                    visited = Check (child, level + 1, height, isRightmost0, anchor0, visited);
-                }
+                    visited = CheckBranch ((Branch) branch.GetChild (i), level+1, height, isRightmost0, anchor0, visited);
                 else
-                {
-                    var leaf = (Leaf) branch.GetChild (i);
-                    visited = Check (leaf, isRightmost0, anchor0, visited);
-                }
+                    visited = CheckLeaf ((Leaf) branch.GetChild (i), isRightmost0, anchor0, visited);
             }
             return visited;
         }
 
 
-        private Leaf Check (Leaf leaf, bool isRightmost, TKey anchor, Leaf visited)
+        private Leaf CheckLeaf (Leaf leaf, bool isRightmost, TKey anchor, Leaf visited)
         {
             LeafSlotCount += maxKeyCount;
             LeafSlotsUsed += leaf.KeyCount;

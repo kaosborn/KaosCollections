@@ -257,7 +257,7 @@ namespace Kaos.Collections
                         // Graft new root.
                         Debug.Assert (owner.root == TopNode);
                         owner.root = new Branch (TopNode, owner.maxKeyCount);
-                        owner.root.Add (key, newNode);
+                        ((Branch) owner.root).Add (key, newNode);
                         break;
                     }
 
@@ -417,12 +417,8 @@ namespace Kaos.Collections
                     if (right == null)
                     {
                         if (branch == owner.root && branch.KeyCount == 0)
-                        {
-                            // Prune the empty root.
-                            var newRoot = branch.FirstChild as Branch;
-                            if (newRoot != null)
-                                owner.root = newRoot;
-                        }
+                            // Prune an empty root.
+                            owner.root = branch.FirstChild;
                         return;
                     }
 

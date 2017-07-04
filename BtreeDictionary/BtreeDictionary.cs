@@ -32,12 +32,12 @@ namespace Kaos.Collections
 #endif
         where TKey : IComparable
     {
-        private Branch root;
+        private Node root;
         private readonly Leaf firstLeaf;
         private readonly int maxKeyCount;
-        private readonly IComparer<TKey> comparer;
         private readonly KeyCollection keys;
         private readonly ValueCollection values;
+        private readonly IComparer<TKey> comparer;
         private const int MinimumOrder = 4;
         private const int DefaultOrder = 128;
         private const int MaximumOrder = 256;
@@ -83,10 +83,8 @@ namespace Kaos.Collections
 
             this.comparer = comparer ?? Comparer<TKey>.Default;
 
-            // Create an empty tree consisting of an empty branch and an empty leaf.
             this.maxKeyCount = order - 1;
-            this.firstLeaf = new Leaf();
-            this.root = new Branch (firstLeaf);
+            this.root = this.firstLeaf = new Leaf();
 
             // Allocate the virtual subcollections.
             this.keys = new KeyCollection (this);
@@ -149,8 +147,7 @@ namespace Kaos.Collections
         {
             firstLeaf.Truncate (0);
             firstLeaf.RightLeaf = null;
-            root.Truncate (0);
-            root.FirstChild = firstLeaf;
+            root = firstLeaf;
             Count = 0;
         }
 
