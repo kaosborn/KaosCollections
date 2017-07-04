@@ -79,7 +79,7 @@ namespace Kaos.Collections
                 throw new ArgumentOutOfRangeException (nameof (index), "Index is less than 0.");
 
             if (Count > array.Length - index)
-                throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
+                throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
 
             if (! (array is KeyValuePair<TKey,TValue>[]) && array.GetType() != typeof (Object[]))
                 throw new ArgumentException ("Target array type is not compatible with the type of items in the collection.", nameof (array));

@@ -115,7 +115,7 @@ namespace Kaos.Collections
         public BtreeDictionary (IDictionary<TKey, TValue> dictionary, IComparer<TKey> comparer) : this (comparer)
         {
             if (dictionary == null)
-                throw new ArgumentNullException ("dictionary");
+                throw new ArgumentNullException (nameof (dictionary));
 
             foreach (KeyValuePair<TKey, TValue> pair in dictionary)
                 Add (pair.Key, pair.Value);
@@ -138,7 +138,7 @@ namespace Kaos.Collections
 
             var path = new NodeVector (this, key);
             if (path.IsFound)
-                throw new ArgumentException ("An entry with the same key already exists.");
+                throw new ArgumentException ("An entry with the same key already exists.", nameof (key));
 
             path.Insert (key, value);
         }
@@ -212,7 +212,7 @@ namespace Kaos.Collections
                 throw new ArgumentOutOfRangeException (nameof (index), "Index is less than 0.");
 
             if (Count > array.Length - index)
-                throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
+                throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
 
             for (Leaf leaf = firstLeaf; leaf != null; leaf = leaf.RightLeaf)
                 for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
@@ -428,7 +428,7 @@ namespace Kaos.Collections
         {
             var path = new NodeVector (this, keyValuePair.Key);
             if (path.IsFound)
-                throw new ArgumentException ("An entry with the same key already exists.");
+                throw new ArgumentException ("An entry with the same key already exists.", nameof (keyValuePair));
 
             path.Insert (keyValuePair.Key, keyValuePair.Value);
         }
