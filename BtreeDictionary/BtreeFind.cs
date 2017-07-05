@@ -21,37 +21,27 @@ namespace Kaos.Collections
         /// <returns>Leaf holding target (found or not).</returns>
         private Leaf Find (TKey key, out int index)
         {
-            //  Method is unfolded on comparer to improve speed 5%.
+            //  Unfold on default comparer for 5% speed improvement.
             if (comparer == Comparer<TKey>.Default)
                 for (Node node = root;;)
                 {
-                    int nodeIndex = node.Search (key);
+                    index = node.Search (key);
 
-                    var branch = node as Branch;
-                    if (branch == null)
-                    {
-                        index = nodeIndex;
+                    if (node is Branch branch)
+                        node = branch.GetChild (index < 0 ? ~index : index + 1);
+                    else
                         return (Leaf) node;
-                    }
-
-                    node = branch.GetChild (nodeIndex < 0 ? ~nodeIndex : nodeIndex + 1);
                 }
             else
-            {
                 for (Node node = root;;)
                 {
-                    int nodeIndex = node.Search (key, comparer);
+                    index = node.Search (key, comparer);
 
-                    var branch = node as Branch;
-                    if (branch == null)
-                    {
-                        index = nodeIndex;
+                    if (node is Branch branch)
+                        node = branch.GetChild (index < 0 ? ~index : index + 1);
+                    else
                         return (Leaf) node;
-                    }
-
-                    node = branch.GetChild (nodeIndex < 0 ? ~nodeIndex : nodeIndex + 1);
                 }
-            }
         }
 
         #endregion
