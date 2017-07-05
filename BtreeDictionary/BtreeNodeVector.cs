@@ -371,7 +371,7 @@ namespace Kaos.Collections
                             leaf.Add (rightLeaf, 0, shifts);
                             rightLeaf.Remove (0, shifts);
                             TraverseRight();
-                            SetPivot (TopNode.Key0);
+                            SetPivot (rightLeaf.Key0);
                         }
                         else
                         {

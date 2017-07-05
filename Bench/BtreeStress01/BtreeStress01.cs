@@ -11,7 +11,7 @@ using System.Threading;
 using Kaos.Collections;
 using Kaos.Combinatorics;
 
-namespace SampleApp
+namespace BenchApp
 {
     class BtreeStress01
     {

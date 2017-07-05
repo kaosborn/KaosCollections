@@ -9,7 +9,7 @@
 using System;
 using Kaos.Collections;
 
-namespace SampleApp
+namespace BenchApp
 {
     class BtreeBench03
     {
