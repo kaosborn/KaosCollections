@@ -243,7 +243,7 @@ namespace Kaos.Collections
 
                 // Promote anchor of split leaf.
                 ++owner.Count;
-                Promote (newLeaf.GetKey (0), (Node) newLeaf, newLeaf.RightLeaf == null);
+                Promote (newLeaf.Key0, (Node) newLeaf, newLeaf.RightLeaf == null);
             }
 
 
@@ -343,7 +343,7 @@ namespace Kaos.Collections
 
                 if (leafIndex == 0)
                     if (leaf.KeyCount != 0)
-                        SetPivot (TopNode.GetKey (0));
+                        SetPivot (TopNode.Key0);
                     else
                     {
                         Debug.Assert (leaf.RightLeaf==null, "only rightmost leaf should ever be empty");
@@ -371,7 +371,7 @@ namespace Kaos.Collections
                             leaf.Add (rightLeaf, 0, shifts);
                             rightLeaf.Remove (0, shifts);
                             TraverseRight();
-                            SetPivot (TopNode.GetKey (0));
+                            SetPivot (TopNode.Key0);
                         }
                         else
                         {
@@ -401,7 +401,7 @@ namespace Kaos.Collections
                             continue;
 
                         // Rotate pivot for first pair.
-                        TKey pivot = branch.GetKey (0);
+                        TKey pivot = branch.Key0;
                         branch.RemoveKey (0);
                         branch.RemoveChild (0);
                         SetPivot (pivot);

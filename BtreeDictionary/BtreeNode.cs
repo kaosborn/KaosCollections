@@ -24,6 +24,7 @@ namespace Kaos.Collections
             { this.keys = new List<TKey> (keyCapacity); }
 
             public int KeyCount { get { return keys.Count; } }
+            public TKey Key0 { get { return keys[0]; } }
 
             public void AddKey (TKey key) { keys.Add (key); }
             public TKey GetKey (int index) { return keys[index]; }
