@@ -186,10 +186,10 @@ namespace Kaos.Collections
         { get { return false; } }
 
         ICollection IDictionary.Keys
-        { get { return (ICollection) keys; } }
+        { get { return (ICollection) Keys; } }
 
         ICollection IDictionary.Values
-        { get { return (ICollection) values; } }
+        { get { return (ICollection) Values; } }
 
         #endregion
     }

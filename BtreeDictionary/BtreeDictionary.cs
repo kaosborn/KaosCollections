@@ -33,10 +33,10 @@ namespace Kaos.Collections
         where TKey : IComparable
     {
         private Node root;
+        private KeyCollection keys;
+        private ValueCollection values;
         private readonly Leaf firstLeaf;
         private readonly int maxKeyCount;
-        private readonly KeyCollection keys;
-        private readonly ValueCollection values;
         private readonly IComparer<TKey> comparer;
         private const int MinimumOrder = 4;
         private const int DefaultOrder = 128;
@@ -82,13 +82,8 @@ namespace Kaos.Collections
                 throw new ArgumentOutOfRangeException (nameof (order), "Must be between " + MinimumOrder + " and " + MaximumOrder);
 
             this.comparer = comparer ?? Comparer<TKey>.Default;
-
             this.maxKeyCount = order - 1;
             this.root = this.firstLeaf = new Leaf();
-
-            // Allocate the virtual subcollections.
-            this.keys = new KeyCollection (this);
-            this.values = new ValueCollection (this);
         }
 
 
@@ -401,15 +396,29 @@ namespace Kaos.Collections
         /// <summary>
         /// Get the collection of keys in the <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>.
         /// </summary>
-        public ICollection<TKey> Keys
-        { get { return keys; } }
+        public KeyCollection Keys
+        {
+            get
+            {
+                if (keys == null)
+                    keys = new KeyCollection (this);
+                return keys;
+            }
+        }
 
 
         /// <summary>
         /// Get the collection of values in the <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>.
         /// </summary>
-        public ICollection<TValue> Values
-        { get { return values; } }
+        public ValueCollection Values
+        {
+            get
+            {
+                if (values == null)
+                    values = new ValueCollection (this);
+                return values;
+            }
+        }
 
         #endregion
 
@@ -451,7 +460,13 @@ namespace Kaos.Collections
         /// <remarks>The keys given by this collection are sorted according to the
         /// <see cref="Comparer"/> property.</remarks>
         ICollection<TKey> IDictionary<TKey,TValue>.Keys
-        { get { return (ICollection<TKey>) keys; } }
+        { get { return (ICollection<TKey>) Keys; } }
+
+        /// <summary>Get the collection of values from this key/value collection.</summary>
+        /// <remarks>The values given by this collection are sorted in the same
+        /// order as their respective keys in the <see cref="Keys"/> property.</remarks>
+        ICollection<TValue> IDictionary<TKey,TValue>.Values
+        { get { return (ICollection<TValue>) Values; } }
 
 #if NETSTANDARD1_0
         IEnumerable<TKey> IReadOnlyDictionary<TKey,TValue>.Keys
@@ -475,12 +490,6 @@ namespace Kaos.Collections
             path.Delete();
             return true;
         }
-
-        /// <summary>Get the collection of values from this key/value collection.</summary>
-        /// <remarks>The values given by this collection are sorted in the same
-        /// order as their respective keys in the <see cref="Keys"/> property.</remarks>
-        ICollection<TValue> IDictionary<TKey,TValue>.Values
-        { get { return (ICollection<TValue>) values; } }
 
         #endregion
     }
