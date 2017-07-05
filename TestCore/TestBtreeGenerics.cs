@@ -35,7 +35,17 @@ namespace CollectionsTest
 
             Assert.IsTrue (tree2 is System.Collections.Generic.IReadOnlyDictionary<string,int>);
             Assert.IsTrue (tree2 is System.Collections.Generic.IReadOnlyCollection<KeyValuePair<string,int>>);
+
+            Assert.IsTrue (tree2.Keys is System.Collections.Generic.ICollection<string>);
+            Assert.IsTrue (tree2.Keys is System.Collections.Generic.IEnumerable<string>);
+            Assert.IsTrue (tree2.Keys is System.Collections.IEnumerable);
+            Assert.IsTrue (tree2.Keys is System.Collections.ICollection);
             Assert.IsTrue (tree2.Keys is System.Collections.Generic.IReadOnlyCollection<string>);
+
+            Assert.IsTrue (tree2.Values is System.Collections.Generic.ICollection<int>);
+            Assert.IsTrue (tree2.Values is System.Collections.Generic.IEnumerable<int>);
+            Assert.IsTrue (tree2.Values is System.Collections.IEnumerable);
+            Assert.IsTrue (tree2.Values is System.Collections.ICollection);
             Assert.IsTrue (tree2.Values is System.Collections.Generic.IReadOnlyCollection<int>);
         }
 
@@ -627,8 +637,10 @@ namespace CollectionsTest
         public void Unit_ICollectionAddPair()
         {
             Setup();
+            var gic = (ICollection<KeyValuePair<int,int>>) tree1;
+
             var p1 = new KeyValuePair<int,int> (17, 170);
-            genCol1.Add (p1);
+            gic.Add (p1);
 
             Assert.AreEqual (1, tree1.Count);
             Assert.IsTrue (tree1.ContainsKey (17));
@@ -677,11 +689,14 @@ namespace CollectionsTest
         public void Unit_ICollectionGetEnumerator()
         {
             Setup();
+            var gic = (ICollection<KeyValuePair<int,int>>) tree1;
+
+
             foreach (int k in keys)
                 tree1.Add (k, k + 100);
 
             int actualCount = 0;
-            foreach (KeyValuePair<int,int> pair in genCol1)
+            foreach (KeyValuePair<int,int> pair in gic)
             {
                 Assert.AreEqual (pair.Key + 100, pair.Value);
                 ++actualCount;
@@ -734,8 +749,9 @@ namespace CollectionsTest
         public void Unit_ICollectionIsReadonly()
         {
             Setup();
-            Assert.IsFalse (genCol1.IsReadOnly);
-            Assert.IsFalse (genCol2.IsReadOnly);
+            var gic = (ICollection<KeyValuePair<int,int>>) tree1;
+
+            Assert.IsFalse (gic.IsReadOnly);
         }
 
 

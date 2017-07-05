@@ -388,18 +388,17 @@ namespace CollectionsTest
         {
             int n = 10;
             Setup();
+            var oid = (IDictionary) tree1;
 
             for (int k = 0; k < n; ++k)
                 tree1.Add (k, k + 1000);
 
-            int actualCount = 0;
-            foreach (object j in objCol1.Keys)
+            int expected = 0;
+            foreach (object j in oid.Keys)
             {
-                Assert.AreEqual (actualCount, (int) j);
-                ++actualCount;
+                Assert.AreEqual (expected, (int) j);
+                ++expected;
             }
-
-            Assert.AreEqual (n, actualCount);
         }
 
         // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
@@ -503,18 +502,17 @@ namespace CollectionsTest
         {
             int n = 10;
             Setup();
+            var oid = (IDictionary) tree1;
 
             for (int k = 0; k < n; ++k)
                 tree1.Add (k, k + 1000);
 
-            int actualCount = 0;
-            foreach (object j in objCol1.Values)
+            int expected = 1000;
+            foreach (object j in oid.Values)
             {
-                Assert.AreEqual (actualCount + 1000, (int) j);
-                ++actualCount;
+                Assert.AreEqual (expected, (int) j);
+                ++expected;
             }
-
-            Assert.AreEqual (n, actualCount);
         }
 
         // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----

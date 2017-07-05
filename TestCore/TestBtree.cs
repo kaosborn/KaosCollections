@@ -30,9 +30,7 @@ namespace CollectionsTest
         BtreeDictionary<string,int?> tree3;
         BtreeDictionary<int,string> tree4;
 #endif
-        ICollection<KeyValuePair<int,int>> genCol1;
         ICollection<KeyValuePair<string,int>> genCol2;
-        ICollection<int> genKeys1;
         ICollection<string> genKeys2;
         ICollection<int> genValues2;
 
@@ -61,9 +59,7 @@ namespace CollectionsTest
             Type treeType = tree1.GetType();
 
             // For testing explicit implementations.
-            genCol1 = (ICollection<KeyValuePair<int,int>>) tree1;
             genCol2 = (ICollection<KeyValuePair<string,int>>) tree2;
-            genKeys1 = (ICollection<int>) tree1.Keys;
             genKeys2 = (ICollection<string>) tree2.Keys;
             genValues2 = (ICollection<int>) tree2.Values;
             objCol1 = (System.Collections.IDictionary) tree1;

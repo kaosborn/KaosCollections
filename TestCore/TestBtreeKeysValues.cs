@@ -125,7 +125,8 @@ namespace CollectionsTest
         public void Unit_ICollectionKeysIsReadonly()
         {
             Setup();
-            Assert.IsTrue (genKeys1.IsReadOnly);
+            var gicKeys = (ICollection<int>) tree1.Keys;
+            Assert.IsTrue (gicKeys.IsReadOnly);
         }
 
 
