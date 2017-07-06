@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BtreeChart05A", "Bench\Btre
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BtreeChart04A", "Bench\BtreeChart04A\BtreeChart04A.csproj", "{3FB7D490-9398-4D5B-997B-28544D5ABC08}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BtreeChart06A", "Bench\BtreeChart06A\BtreeChart06A.csproj", "{234192EE-19EA-4C0A-9D7E-C1F3463CABAA}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		BtreeDictionary\BtreeDictionary.projitems*{04bc35f4-f0d8-47d0-ae7c-b2d62be49fc6}*SharedItemsImports = 4
@@ -95,6 +97,10 @@ Global
 		{3FB7D490-9398-4D5B-997B-28544D5ABC08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3FB7D490-9398-4D5B-997B-28544D5ABC08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3FB7D490-9398-4D5B-997B-28544D5ABC08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{234192EE-19EA-4C0A-9D7E-C1F3463CABAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{234192EE-19EA-4C0A-9D7E-C1F3463CABAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{234192EE-19EA-4C0A-9D7E-C1F3463CABAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{234192EE-19EA-4C0A-9D7E-C1F3463CABAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -110,5 +116,6 @@ Global
 		{5716ECDB-3E20-4F65-B785-D4E09D0D2620} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{FDF4F650-79E4-4C8C-886D-89A51FD8AEEF} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{3FB7D490-9398-4D5B-997B-28544D5ABC08} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
+		{234192EE-19EA-4C0A-9D7E-C1F3463CABAA} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 	EndGlobalSection
 EndGlobal
