@@ -1,5 +1,5 @@
 ﻿//
-// Program: BtreeExample01.cs
+// Program: BtreeBench01.cs
 // Purpose: Exercise BtreeDictionary.Remove() showing various tree mutation scenarios.
 //
 // Usage notes:
@@ -75,49 +75,49 @@ namespace BenchApp
 
         Sequentially loaded tree of order 5 is dense:
 
-        L0: 34
-        L1: 10,18,26 | 42,50,58,66
+        B0: 34
+        B1: 10,18,26 | 42,50,58,66
         L2: 2,4,6,8|10,12,14,16|18,20,22,24|26,28,30,32 | 34,36,38,40|42,44,46,48|50,52,54,56|58,60,62,64|66
 
         Thin the tree by removing several keys:
 
-        L0: 34
-        L1: 10,28 | 42,50,58,66
+        B0: 34
+        B1: 10,28 | 42,50,58,66
         L2: 2,8|10,12|28,32 | 34,40|42,44,48|50,52,54,56|58,60,62,64|66
 
         Coalesce leaves, balance branches by removing 12:
 
-        L0: 42
-        L1: 10,34 | 50,58,66
-        L2: 2,8|10,28,32|34,40 | 42,44,48|50,52,54,56|58,60,62,64|66
+        B0: 50
+        B1: 10,34,42 | 58,66
+        L2: 2,8|10,28,32|34,40|42,44,48 | 50,52,54,56|58,60,62,64|66
 
         Change a branch by removing 10:
 
-        L0: 42
-        L1: 28,34 | 50,58,66
-        L2: 2,8|28,32|34,40 | 42,44,48|50,52,54,56|58,60,62,64|66
+        B0: 50
+        B1: 28,34,42 | 58,66
+        L2: 2,8|28,32|34,40|42,44,48 | 50,52,54,56|58,60,62,64|66
 
         Change the root by removing 42:
 
-        L0: 44
-        L1: 28,34 | 50,58,66
-        L2: 2,8|28,32|34,40 | 44,48|50,52,54,56|58,60,62,64|66
+        B0: 50
+        B1: 28,34,44 | 58,66
+        L2: 2,8|28,32|34,40|44,48 | 50,52,54,56|58,60,62,64|66
 
         Coalesce leaves by removing 40:
 
-        L0: 50
-        L1: 28,34 | 58,66
+        B0: 50
+        B1: 28,34 | 58,66
         L2: 2,8|28,32|34,44,48 | 50,52,54,56|58,60,62,64|66
 
         Prune rightmost leaf by removing 66:
 
-        L0: 50
-        L1: 28,34 | 58
+        B0: 50
+        B1: 28,34 | 58
         L2: 2,8|28,32|34,44,48 | 50,52,54,56|58,60,62,64
 
-        Coalesce leaves, coalesce branches, prune root by removing 8:
+        Coalesce leaves and branches, prune root by removing 8:
 
-        L0: 34,50,58
+        B0: 34,50,58
         L1: 2,28,32|34,44,48|50,52,54,56|58,60,62,64
 
         ---- height = 2, branch fill = 75%, leaf fill = 87% ----

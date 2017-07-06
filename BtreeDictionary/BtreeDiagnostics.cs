@@ -146,7 +146,7 @@ namespace Kaos.Collections
 
                 var branch = (Branch) first;
 
-                sb.Append ('L');
+                sb.Append ('B');
                 sb.Append (level);
                 sb.Append (": ");
                 for (;;)
