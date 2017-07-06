@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B2E1C469-4A85-4F63-8D62-D43443A8B294}</ProjectGuid>
+    <ProjectGuid>{FDF4F650-79E4-4C8C-886D-89A51FD8AEEF}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>BtreeBench03</RootNamespace>
-    <AssemblyName>BtreeBench03</AssemblyName>
+    <RootNamespace>BtreeChart05A</RootNamespace>
+    <AssemblyName>BtreeChart05A</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,14 +40,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BtreeBench03.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="BtreeChart05A.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Collections400\Collections400.csproj">
       <Project>{04bc35f4-f0d8-47d0-ae7c-b2d62be49fc6}</Project>
       <Name>Collections400</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
