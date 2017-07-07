@@ -367,7 +367,7 @@ namespace Kaos.Collections
                         if (leaf.KeyCount + rightLeaf.KeyCount > owner.maxKeyCount)
                         {
                             // Balance leaves by shifting pairs from right leaf.
-                            int shifts = owner.maxKeyCount - (leaf.KeyCount + rightLeaf.KeyCount) / 2;
+                            int shifts = (leaf.KeyCount + rightLeaf.KeyCount + 1) / 2 - leaf.KeyCount;
                             leaf.Add (rightLeaf, 0, shifts);
                             rightLeaf.Remove (0, shifts);
                             TraverseRight();
@@ -442,12 +442,10 @@ namespace Kaos.Collections
                     // Branch underflow?
                     if (branch.KeyCount < owner.maxKeyCount / 2)
                     {
-                        int shifts = (right.KeyCount - branch.KeyCount) / 2 - 1;
-
                         // Balance branches to keep ratio.  Rotate thru the pivot.
+                        int shifts = (branch.KeyCount + right.KeyCount - 1) / 2 - branch.KeyCount;
                         branch.AddKey (GetPivot());
 
-                        // Shift pairs from right sibling.
                         for (int rightIndex = 0; ; ++rightIndex)
                         {
                             branch.Add (right.GetChild (rightIndex));
