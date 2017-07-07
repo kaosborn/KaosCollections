@@ -127,8 +127,20 @@ namespace Kaos.Collections
         }
 
 
+        public string GetTreeStatsText()
+        {
+            SanityCheck();
+            string result = "--- height = " + GetHeight();
+
+            if (BranchSlotCount != 0)
+                result += ", branch fill = " + BranchSlotsUsed * 100 / BranchSlotCount + "%";
+
+            return result + ", leaf fill = " + LeafSlotsUsed * 100 / LeafSlotCount + "%";
+        }
+
+
         /// <summary>
-        /// Display contents of tree by level (breadth first).
+        /// Generate contents of tree by level (breadth first).
         /// </summary>
         /// </exclude>
         public IEnumerable<string> GenerateTreeText()
