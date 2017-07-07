@@ -1,9 +1,9 @@
 ﻿//
-// Program: BtreeBench05.cs
-// Purpose: 
+// Program: BtreeChart04A.cs
+// Purpose: Show various tree mutation scenarios.
 //
 // Usage notes:
-// • To include diagnostics and tree charts, run Debug build.
+// • To include diagnostics and charts, run Debug build.
 //
 
 using System;
@@ -15,7 +15,7 @@ namespace ChartApp
     {
         static BtreeDictionary<int,int> tree = new BtreeDictionary<int,int> (4);
 
-        static void WriteInfo()
+        static void WriteInfo (bool showStats=false)
         {
             Console.WriteLine();
 #if DEBUG
@@ -24,29 +24,25 @@ namespace ChartApp
 
             tree.SanityCheck();
             Console.WriteLine();
+
+            if (showStats)
+            {
+                Console.WriteLine (tree.GetTreeStatsText());
+                Console.WriteLine();
+            }
 #endif
         }
 
-        static void WriteStats()
-        {
-#if DEBUG
-            Console.Write ("--- height = " + tree.GetHeight());
-            Console.Write (", branch fill = " + tree.BranchSlotsUsed * 100 / tree.BranchSlotCount + "%");
-            Console.WriteLine (", leaf fill = " + tree.LeafSlotsUsed * 100 / tree.LeafSlotCount + "%");
-#endif
-        }
 
         static void Main()
         {
             Console.WriteLine ("Empty tree is a single leaf:");
-            WriteInfo();
+            WriteInfo (true);
 
-            Console.WriteLine ("Sequentially loaded tree of order 4:");
+            Console.WriteLine ("Create sequentially loaded tree of order 4:");
             for (int i = 2; i <= 24; i+=2)
                 tree.Add (i, i + 100);
-            WriteInfo();
-            WriteStats();
-            Console.WriteLine();
+            WriteInfo (true);
 
             Console.WriteLine ("Cascade split by adding 17:");
                 tree.Add (17, 117);
@@ -63,8 +59,6 @@ namespace ChartApp
             Console.WriteLine ("Cascade coalesce by removing 2:");
                 tree.Remove (2);
             WriteInfo();
-
-            WriteStats();
         }
 
         /* Debug output:
@@ -72,6 +66,8 @@ namespace ChartApp
         Empty tree is a single leaf:
 
         L0:
+
+        --- height = 1, leaf fill = 0%
 
         Sequentially loaded tree of order 4:
 
@@ -103,8 +99,6 @@ namespace ChartApp
         B0: 17
         B1: 8,10,14 | 20
         L2: 3,4,6|8,9|10,12|14,16 | 17,18|20,22,24
-
-        --- height = 3, branch fill = 55%, leaf fill = 77%
 
         */
     }
