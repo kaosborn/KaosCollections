@@ -1,17 +1,17 @@
 ﻿//
-// Program: BtreeBench01.cs
-// Purpose: Exercise BtreeDictionary.Remove() showing various tree mutation scenarios.
+// Program: BtreeChart05A.cs
+// Purpose: Show various tree mutation scenarios.
 //
 // Usage notes:
-// • To include diagnostics and tree dumps, run Debug build.
+// • To include diagnostics and charts, run Debug build.
 //
 
 using System;
 using Kaos.Collections;
 
-namespace BenchApp
+namespace ChartApp
 {
-    class BtreeBench03
+    class BtreeChart05A
     {
         static BtreeDictionary<int,int> tree = new BtreeDictionary<int,int> (5);
 
@@ -30,7 +30,7 @@ namespace BenchApp
 
         static void Main()
         {
-            Console.WriteLine ("Sequentially loaded tree of order 5 is dense:");
+            Console.WriteLine ("Create tree by sequentially loading, order 5:");
             for (int i = 2; i <= 66; i += 2)
                 tree.Add (i, i + 100);
             WriteInfo();
@@ -48,8 +48,8 @@ namespace BenchApp
             tree.Remove (10);
             WriteInfo();
 
-            Console.WriteLine ("Change the root by removing 42:");
-            tree.Remove (42);
+            Console.WriteLine ("Change the root by removing 50:");
+            tree.Remove (50);
             WriteInfo();
 
             Console.WriteLine ("Coalesce leaves by removing 40:");
@@ -65,15 +65,15 @@ namespace BenchApp
             WriteInfo();
 
 #if DEBUG
-            Console.Write ("---- height = " + tree.GetHeight());
+            Console.Write ("--- height = " + tree.GetHeight());
             Console.Write (", branch fill = " + tree.BranchSlotsUsed * 100 / tree.BranchSlotCount + "%");
-            Console.WriteLine (", leaf fill = " + tree.LeafSlotsUsed * 100 / tree.LeafSlotCount + "% ----");
+            Console.WriteLine (", leaf fill = " + tree.LeafSlotsUsed * 100 / tree.LeafSlotCount + "%");
 #endif
         }
 
         /* Debug output:
 
-        Sequentially loaded tree of order 5 is dense:
+        Create tree by sequentially loading, order 5:
 
         B0: 34
         B1: 10,18,26 | 42,50,58,66
@@ -97,30 +97,30 @@ namespace BenchApp
         B1: 28,34,42 | 58,66
         L2: 2,8|28,32|34,40|42,44,48 | 50,52,54,56|58,60,62,64|66
 
-        Change the root by removing 42:
+        Change the root by removing 50:
 
-        B0: 50
-        B1: 28,34,44 | 58,66
-        L2: 2,8|28,32|34,40|44,48 | 50,52,54,56|58,60,62,64|66
+        B0: 52
+        B1: 28,34,42 | 58,66
+        L2: 2,8|28,32|34,40|42,44,48 | 52,54,56|58,60,62,64|66
 
         Coalesce leaves by removing 40:
 
-        B0: 50
+        B0: 52
         B1: 28,34 | 58,66
-        L2: 2,8|28,32|34,44,48 | 50,52,54,56|58,60,62,64|66
+        L2: 2,8|28,32|34,42,44,48 | 52,54,56|58,60,62,64|66
 
         Prune rightmost leaf by removing 66:
 
-        B0: 50
+        B0: 52
         B1: 28,34 | 58
-        L2: 2,8|28,32|34,44,48 | 50,52,54,56|58,60,62,64
+        L2: 2,8|28,32|34,42,44,48 | 52,54,56|58,60,62,64
 
         Coalesce leaves and branches, prune root by removing 8:
 
-        B0: 34,50,58
-        L1: 2,28,32|34,44,48|50,52,54,56|58,60,62,64
+        B0: 34,52,58
+        L1: 2,28,32|34,42,44,48|52,54,56|58,60,62,64
 
-        ---- height = 2, branch fill = 75%, leaf fill = 87% ----
+        --- height = 2, branch fill = 75%, leaf fill = 87%
 
         */
     }
