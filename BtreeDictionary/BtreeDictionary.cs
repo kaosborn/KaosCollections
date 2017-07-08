@@ -249,8 +249,7 @@ namespace Kaos.Collections
             if (key == null)
                 throw new ArgumentNullException (nameof (key));
 
-            int index;
-            Leaf leaf = Find (key, out index);
+            Leaf leaf = Find (key, out int index);
             if (index >= 0)
             {
                 value = leaf.GetValue (index);
@@ -373,8 +372,7 @@ namespace Kaos.Collections
                 if (key == null)
                     throw new ArgumentNullException (nameof (key));
 
-                int index;
-                Leaf leaf = Find (key, out index);
+                Leaf leaf = Find (key, out int index);
                 if (index < 0)
                     throw new KeyNotFoundException ("The given key was not present in the dictionary.");
                 return leaf.GetValue (index);
