@@ -58,7 +58,7 @@ namespace Kaos.Collections
         public int GetHeight()
         {
             int depth = 1;
-            for (Node node = root; node is Branch; node = ((Branch) node).FirstChild)
+            for (Node node = root; node is Branch; node = ((Branch) node).Child0)
                 ++depth;
             return depth;
         }
@@ -146,17 +146,17 @@ namespace Kaos.Collections
         public IEnumerable<string> GenerateTreeText()
         {
             int level = 0;
-            Node first;
+            Node leftmost;
             var sb = new StringBuilder();
 
             for (;;)
             {
                 var branchPath = new NodeVector (this, level);
-                first = branchPath.TopNode;
-                if (first is Leaf)
+                leftmost = branchPath.TopNode;
+                if (leftmost is Leaf)
                     break;
 
-                var branch = (Branch) first;
+                var branch = (Branch) leftmost;
 
                 sb.Append ('B');
                 sb.Append (level);
@@ -179,14 +179,14 @@ namespace Kaos.Collections
             sb.Append ('L');
             sb.Append (level);
             sb.Append (": ");
-            for (var leaf = (Leaf) first;;)
+            for (var leaf = (Leaf) leftmost;;)
             {
                 leaf.Append (sb);
                 leaf = (Leaf) leafPath.TraverseRight();
                 if (leaf == null)
                     break;
 
-                if (leafPath.IsFirstChild)
+                if (leafPath.Child0)
                     sb.Append (" | ");
                 else
                     sb.Append ('|');

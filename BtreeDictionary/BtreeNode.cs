@@ -82,7 +82,7 @@ namespace Kaos.Collections
             public Node GetChild (int childIndex)
             { return childNodes[childIndex]; }
 
-            public Node FirstChild
+            public Node Child0
             { get { return childNodes[0]; } set { childNodes[0] = value; } }
 
             public void RemoveChild (int index)

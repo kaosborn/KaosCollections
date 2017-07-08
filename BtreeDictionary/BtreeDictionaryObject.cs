@@ -84,7 +84,7 @@ namespace Kaos.Collections
             if (! (array is KeyValuePair<TKey,TValue>[]) && array.GetType() != typeof (Object[]))
                 throw new ArgumentException ("Target array type is not compatible with the type of items in the collection.", nameof (array));
 
-            for (Leaf leaf = firstLeaf; leaf != null; leaf = leaf.RightLeaf)
+            for (Leaf leaf = leftmostLeaf; leaf != null; leaf = leaf.RightLeaf)
                 for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
                 {
                     array.SetValue (new KeyValuePair<TKey,TValue>(leaf.GetKey (leafIndex), leaf.GetValue (leafIndex)), index);

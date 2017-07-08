@@ -35,7 +35,7 @@ namespace Kaos.Collections
         private Node root;
         private KeyCollection keys;
         private ValueCollection values;
-        private readonly Leaf firstLeaf;
+        private readonly Leaf leftmostLeaf;
         private readonly int maxKeyCount;
         private readonly IComparer<TKey> comparer;
         private const int MinimumOrder = 4;
@@ -83,7 +83,7 @@ namespace Kaos.Collections
 
             this.comparer = comparer ?? Comparer<TKey>.Default;
             this.maxKeyCount = order - 1;
-            this.root = this.firstLeaf = new Leaf();
+            this.root = this.leftmostLeaf = new Leaf();
         }
 
 
@@ -140,9 +140,9 @@ namespace Kaos.Collections
         /// <summary>Remove all TKey/TValue pairs from the collection.</summary>
         public void Clear()
         {
-            firstLeaf.Truncate (0);
-            firstLeaf.RightLeaf = null;
-            root = firstLeaf;
+            leftmostLeaf.Truncate (0);
+            leftmostLeaf.RightLeaf = null;
+            root = leftmostLeaf;
             Count = 0;
         }
 
@@ -174,13 +174,13 @@ namespace Kaos.Collections
             if (value != null)
             {
                 var comparer = EqualityComparer<TValue>.Default;
-                for (Leaf leaf = firstLeaf; leaf != null; leaf = leaf.RightLeaf)
+                for (Leaf leaf = leftmostLeaf; leaf != null; leaf = leaf.RightLeaf)
                     for (int vix = 0; vix < leaf.ValueCount; ++vix)
                         if (comparer.Equals (leaf.GetValue (vix), value))
                             return true;
             }
             else
-                for (Leaf leaf = firstLeaf; leaf != null; leaf = leaf.RightLeaf)
+                for (Leaf leaf = leftmostLeaf; leaf != null; leaf = leaf.RightLeaf)
                     for (int vix = 0; vix < leaf.ValueCount; ++vix)
                         if (leaf.GetValue (vix) == null)
                             return true;
@@ -206,7 +206,7 @@ namespace Kaos.Collections
             if (Count > array.Length - index)
                 throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
 
-            for (Leaf leaf = firstLeaf; leaf != null; leaf = leaf.RightLeaf)
+            for (Leaf leaf = leftmostLeaf; leaf != null; leaf = leaf.RightLeaf)
                 for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
                     array[index++] = new KeyValuePair<TKey,TValue> (leaf.GetKey (leafIndex), leaf.GetValue (leafIndex));
         }
@@ -338,7 +338,7 @@ namespace Kaos.Collections
 
             /// <summary>Move the enumerator back to its initial location.</summary>
             void IEnumerator.Reset()
-            { leafIndex = -1; currentLeaf = tree.firstLeaf; }
+            { leafIndex = -1; currentLeaf = tree.leftmostLeaf; }
 
             /// <exclude />
             public void Dispose() { }

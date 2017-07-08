@@ -192,7 +192,7 @@ namespace Kaos.Collections
                             Push (node, 0);
                             if (indexStack.Count >= height)
                                 break;
-                            node = ((Branch) node).FirstChild;
+                            node = ((Branch) node).Child0;
                         }
                         break;
                     }
@@ -418,7 +418,7 @@ namespace Kaos.Collections
                     {
                         if (branch == owner.root && branch.KeyCount == 0)
                             // Prune an empty root.
-                            owner.root = branch.FirstChild;
+                            owner.root = branch.Child0;
                         return;
                     }
 
@@ -468,7 +468,7 @@ namespace Kaos.Collections
 
 #if DEBUG
             /// <summary>Returns <b>true</b> if no left sibling.</summary>
-            public bool IsFirstChild
+            public bool Child0
             { get { return this.indexStack[Height - 2] == 0; } }
 
 
