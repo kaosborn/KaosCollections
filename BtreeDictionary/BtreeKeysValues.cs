@@ -112,9 +112,14 @@ namespace Kaos.Collections
                     }
                 }
 
+                /// <summary>
+                /// Gets the element at the current position of the enumerator.
+                /// </summary>
                 public TKey Current
                 { get { return leafIndex < 0? default (TKey) : currentLeaf.GetKey (leafIndex); } }
 
+                /// <summary>Advances the enumerator to the next element in the collection.</summary>
+                /// <returns><b>true</b> if the enumerator was successfully advanced to the next element; <b>false</b> if the enumerator has passed the end of the collection.</returns>
                 public bool MoveNext()
                 {
                     if (currentLeaf != null)
@@ -138,6 +143,7 @@ namespace Kaos.Collections
                     currentLeaf = tree.leftmostLeaf;
                 }
 
+                /// <summary>Releases all resources used by the Enumerator.</summary>
                 public void Dispose() { }
             }
 
@@ -297,9 +303,14 @@ namespace Kaos.Collections
                     }
                 }
 
+                /// <summary>
+                /// Gets the element at the current position of the enumerator.
+                /// </summary>
                 public TValue Current
                 { get { return leafIndex < 0? default (TValue) : currentLeaf.GetValue (leafIndex); } }
 
+                /// <summary>Advances the enumerator to the next element in the collection.</summary>
+                /// <returns><b>true</b> if the enumerator was successfully advanced to the next element; <b>false</b> if the enumerator has passed the end of the collection.</returns>
                 public bool MoveNext()
                 {
                     if (currentLeaf != null)
@@ -323,6 +334,7 @@ namespace Kaos.Collections
                     currentLeaf = tree.leftmostLeaf;
                 }
 
+                /// <summary>Releases all resources used by the Enumerator.</summary>
                 public void Dispose () { }
             }
 

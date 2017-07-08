@@ -276,6 +276,7 @@ namespace Kaos.Collections
 
             /// <summary>Make an iterator that will loop thru the collection in order.</summary>
             /// <param name="dictionary"><see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>containing these key/value pairs.</param>
+            /// <param name="isGeneric">Supply <b>false</b> to indicate object Current should return DictionaryEntry values.</param>
             internal Enumerator (BtreeDictionary<TKey,TValue> dictionary, bool isGeneric=true)
             {
                 this.tree = dictionary;
