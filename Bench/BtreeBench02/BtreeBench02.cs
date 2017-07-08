@@ -54,6 +54,14 @@ namespace BenchApp
             return sum;
         }
 
+        public long RunValueIterator()
+        {
+            long sum = 0;
+            foreach (long value in tree.Values)
+                sum += value;
+            return sum;
+        }
+
         public long RunKeyIterator()
         {
             long sum = 0;
@@ -92,6 +100,10 @@ namespace BenchApp
             watch.Reset(); watch.Start();
             result = sort.RunPairIterator();
             Console.WriteLine ("-Pair iterator: time={0}ms result={1}", watch.ElapsedMilliseconds, result);
+
+            watch.Reset(); watch.Start();
+            result = sort.RunValueIterator();
+            Console.WriteLine ("-Value iterator: time={0}ms result={1}", watch.ElapsedMilliseconds, result);
 
             sort.Clear();
             watch.Reset(); watch.Start();
