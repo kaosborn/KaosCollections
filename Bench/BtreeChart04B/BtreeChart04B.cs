@@ -65,6 +65,30 @@ namespace ChartApp
             Console.WriteLine ("Remove 38:");
             tree.Remove (38);
             WriteInfo();
+
+            Console.WriteLine ("Remove 34,36:");
+            tree.Remove (34);
+            tree.Remove (36);
+            WriteInfo();
+
+            Console.WriteLine ("Remove 32:");
+            tree.Remove (32);
+            WriteInfo();
+
+            Console.WriteLine ("Remove 28:");
+            tree.Remove (28);
+            WriteInfo();
+
+            Console.WriteLine ("Seek 30:");
+            var isOk = tree.TryGetValue (30, out int result30);
+
+            Console.WriteLine();
+            Console.WriteLine ("Result = " + result30);
+            Console.WriteLine();
+
+            Console.WriteLine ("Remove 30:");
+            tree.Remove (30);
+            WriteInfo();
         }
 
         /* Debug output:
@@ -114,6 +138,37 @@ namespace ChartApp
         B1: 10,20 |
         B2: 4,8 | 14 | 22,26 | 32
         L3: 1,2|4,6|8,9 | 10,12|14,16,18 | 20,21|22,24|26,27 | 28,30|32,34,36
+
+        Remove 34,36:
+
+        B0: 28
+        B1: 10,20 |
+        B2: 4,8 | 14 | 22,26 | 32
+        L3: 1,2|4,6|8,9 | 10,12|14,16,18 | 20,21|22,24|26,27 | 28,30|32
+
+        Remove 32:
+
+        B0: 28
+        B1: 10,20 |
+        B2: 4,8 | 14 | 22,26 |
+        L3: 1,2|4,6|8,9 | 10,12|14,16,18 | 20,21|22,24|26,27 | 28,30
+
+        Remove 28:
+
+        B0: 30
+        B1: 10,20 |
+        B2: 4,8 | 14 | 22,26 |
+        L3: 1,2|4,6|8,9 | 10,12|14,16,18 | 20,21|22,24|26,27 | 30
+
+        Seek 30:
+
+        Result = 130
+
+        Remove 30:
+
+        B0: 10,20
+        B1: 4,8 | 14 | 22,26
+        L2: 1,2|4,6|8,9 | 10,12|14,16,18 | 20,21|22,24|26,27
 
         */
     }
