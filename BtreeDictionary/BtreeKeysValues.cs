@@ -40,7 +40,9 @@ namespace Kaos.Collections
             public KeyCollection (BtreeDictionary<TKey,TValue> dictionary)
             {
                 if (dictionary == null)
+#pragma warning disable IDE0016
                     throw new ArgumentNullException (nameof (dictionary));
+#pragma warning restore IDE0016
 
                 this.tree = dictionary;
             }
@@ -228,7 +230,9 @@ namespace Kaos.Collections
             public ValueCollection (BtreeDictionary<TKey,TValue> dictionary)
             {
                 if (dictionary == null)
+#pragma warning disable IDE0016
                     throw new ArgumentNullException (nameof (dictionary));
+#pragma warning restore IDE0016
 
                 this.tree = dictionary;
             }
