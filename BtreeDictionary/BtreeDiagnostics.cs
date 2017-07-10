@@ -17,9 +17,14 @@ namespace Kaos.Collections
     public partial class BtreeDictionary<TKey,TValue>
     {
         // Telemetry counters:
+
+        /// <summary>Maximum number of keys that the existing branches can hold.</summary>
         public int BranchSlotCount { get; private set; }
+        /// <summary>Number of keys contained in the branches.</summary>
         public int BranchSlotsUsed { get; private set; }
+        /// <summary>Maximum number of keys that the existing leaves can hold.</summary>
         public int LeafSlotCount { get; private set; }
+        /// <summary>Number of keys contained in the leaves.</summary>
         public int LeafSlotsUsed { get; private set; }
 
 
@@ -28,7 +33,6 @@ namespace Kaos.Collections
         /// in-memory managed structure, any errors would indicate a bug. Also performs space
         /// complexity diagnostics to ensure that all non-rightmost nodes maintain 50% fill.
         /// </summary>
-        /// </exclude>
         public void SanityCheck()
         {
             BranchSlotCount = 0;
@@ -51,10 +55,13 @@ namespace Kaos.Collections
 
 
         /// <summary>Maximum number of children of a branch.</summary>
+        /// <returns>Maximum number of children of a branch.</returns>
         public int GetOrder()
         { return maxKeyCount + 1; }
 
 
+        /// <summary>Return the number of levels in the tree.</summary>
+        /// <returns>Number of levels in the tree.</returns>
         public int GetHeight()
         {
             int depth = 1;
@@ -127,6 +134,8 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>Return telemetry summary.</summary>
+        /// <returns>Telemetry summary.</returns>
         public string GetTreeStatsText()
         {
             SanityCheck();
@@ -139,10 +148,8 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>
-        /// Generate contents of tree by level (breadth first).
-        /// </summary>
-        /// </exclude>
+        /// <summary>Generate contents of tree by level (breadth first).</summary>
+        /// <returns>Text lines where each line is a level of the tree.</returns>
         public IEnumerable<string> GenerateTreeText()
         {
             int level = 0;

@@ -82,7 +82,7 @@ namespace Kaos.Collections
         /// Neither <em>startKey</em> or <em>endKey</em> need to be present in the collection.
         /// </remarks>
         /// <example>
-        /// <code source="..\Examples\BtreeExample03\BtreeExample03.cs" lang="cs" />
+        /// <code source="..\Bench\BtreeExample03\BtreeExample03.cs" lang="cs" />
         /// </example>
         public IEnumerable<KeyValuePair<TKey,TValue>> BetweenKeys (TKey startKey, TKey endKey)
         {

@@ -86,7 +86,8 @@ namespace Kaos.Collections
 
             #region Iteration
 
-            /// <summary>Returns an enumerator that iterates through the KeyCollection.</summary>
+            /// <summary>Returns an enumerator that iterates thru the KeyCollection.</summary>
+            /// <returns>An enumerator for the collection.</returns>
             public IEnumerator<TKey> GetEnumerator()
             { return new Enumerator (tree); }
 
