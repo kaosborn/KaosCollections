@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.12
+VisualStudioVersion = 15.0.26430.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "BtreeDictionary", "BtreeDictionary\BtreeDictionary.shproj", "{9AAB8F38-1582-401D-A4FD-ADAE2C6CB496}"
 EndProject
@@ -38,6 +38,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BtreeChart04B", "Bench\BtreeChart04B\BtreeChart04B.csproj", "{2D0298D6-7DE2-46AB-AD99-1FDAF72A8E03}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BtreeChart05B", "Bench\BtreeChart05B\BtreeChart05B.csproj", "{21824520-2131-4BB7-9018-F241794F911B}"
+EndProject
+Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "Help", "Help\Help.shfbproj", "{CCB7FB93-229A-494D-A044-9095A523C71F}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -113,6 +115,10 @@ Global
 		{21824520-2131-4BB7-9018-F241794F911B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21824520-2131-4BB7-9018-F241794F911B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21824520-2131-4BB7-9018-F241794F911B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCB7FB93-229A-494D-A044-9095A523C71F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCB7FB93-229A-494D-A044-9095A523C71F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCB7FB93-229A-494D-A044-9095A523C71F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCB7FB93-229A-494D-A044-9095A523C71F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
