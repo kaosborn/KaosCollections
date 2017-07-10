@@ -64,10 +64,10 @@ namespace Kaos.Collections
         /// <returns>Number of levels in the tree.</returns>
         public int GetHeight()
         {
-            int depth = 1;
+            int level = 1;
             for (Node node = root; node is Branch; node = ((Branch) node).Child0)
-                ++depth;
-            return depth;
+                ++level;
+            return level;
         }
 
 

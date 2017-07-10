@@ -100,11 +100,11 @@ namespace Kaos.Collections
             {
                 Debug.Assert (indexStack.Count == nodeStack.Count);
 
-                for (int depth = indexStack.Count - 2; depth >= 0; --depth)
-                    if (indexStack[depth] > 0)
+                for (int level = indexStack.Count - 2; level >= 0; --level)
+                    if (indexStack[level] > 0)
                     {
-                        Node result = ((Branch) nodeStack[depth]).GetChild (indexStack[depth] - 1);
-                        for (; depth < indexStack.Count - 2; ++depth)
+                        Node result = ((Branch) nodeStack[level]).GetChild (indexStack[level] - 1);
+                        for (; level < indexStack.Count - 2; ++level)
                             result = ((Branch) result).GetChild (result.KeyCount);
                         return result;
                     }
@@ -118,10 +118,10 @@ namespace Kaos.Collections
             public TKey GetPivot()
             {
                 Debug.Assert (TopNode is Branch);
-                for (int depth = indexStack.Count - 2; depth >= 0; --depth)
+                for (int level = indexStack.Count - 2; level >= 0; --level)
                 {
-                    if (indexStack[depth] > 0)
-                        return nodeStack[depth].GetKey (indexStack[depth] - 1);
+                    if (indexStack[level] > 0)
+                        return nodeStack[level].GetKey (indexStack[level] - 1);
                 }
 
                 Debug.Assert (false, "no left pivot");
@@ -131,12 +131,12 @@ namespace Kaos.Collections
 
             /// <summary>Set nearest key where left child path taken.</summary>
             /// <remarks>On entry, top of vector refers to a branch.</remarks>
-            public void SetPivot (TKey pivotKey)
+            public void SetPivot (TKey key)
             {
-                for (int depth = indexStack.Count - 2; depth >= 0; --depth)
-                    if (indexStack[depth] > 0)
+                for (int level = indexStack.Count - 2; level >= 0; --level)
+                    if (indexStack[level] > 0)
                     {
-                        nodeStack[depth].SetKey (indexStack[depth] - 1, pivotKey);
+                        nodeStack[level].SetKey (indexStack[level] - 1, key);
                         return;
                     }
             }
@@ -477,16 +477,16 @@ namespace Kaos.Collections
             /// <remarks>Used only for diagnostics.</remarks>
             public NodeVector (BtreeDictionary<TKey,TValue> tree)
             {
-                indexStack = new List<int>();
-                nodeStack = new List<Node>();
-                IsFound = false;
+                this.indexStack = new List<int>();
+                this.nodeStack = new List<Node>();
+                this.IsFound = false;
                 Push (tree.root, 0);
             }
 
 
-            /// <summary>Make a path to leftmost branch or leaf at the given level.</summary>
+            /// <summary>Make a path to leftmost branch or leaf at the supplied level.</summary>
             /// <param name="tree">Target of path.</param>
-            /// <param name="level">Level of node to seek where root is level 0.</param>
+            /// <param name="level">Level of node to seek (root is level 0).</param>
             /// <remarks>Used only for diagnostics.</remarks>
             public NodeVector (BtreeDictionary<TKey,TValue> tree, int level) : this (tree)
             {

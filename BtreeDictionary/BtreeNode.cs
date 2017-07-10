@@ -29,7 +29,7 @@ namespace Kaos.Collections
             public void AddKey (TKey key) { keys.Add (key); }
             public TKey GetKey (int index) { return keys[index]; }
             public int Search (TKey key) { return keys.BinarySearch (key); }
-            public int Search (TKey key, IComparer<TKey> comp) { return keys.BinarySearch (key, comp); }
+            public int Search (TKey key, IComparer<TKey> comparer) { return keys.BinarySearch (key, comparer); }
             public void SetKey (int index, TKey key) { keys[index] = key; }
             public void RemoveKey (int index) { keys.RemoveAt (index); }
             public void RemoveKeys (int index, int count) { keys.RemoveRange (index, count); }
@@ -39,7 +39,7 @@ namespace Kaos.Collections
 #if DEBUG
             public StringBuilder Append (StringBuilder sb)
             {
-                for (int ix = 0; ix < this.KeyCount; ix++)
+                for (int ix = 0; ix < KeyCount; ix++)
                 {
                     if (ix > 0)
                         sb.Append (',');
@@ -157,16 +157,16 @@ namespace Kaos.Collections
             { get { return values.Count; } }
 
 
-            public KeyValuePair<TKey,TValue> GetPair (int pairIndex)
-            { return new KeyValuePair<TKey,TValue> (keys[pairIndex], values[pairIndex]); }
+            public KeyValuePair<TKey,TValue> GetPair (int index)
+            { return new KeyValuePair<TKey,TValue> (keys[index], values[index]); }
 
 
-            public TValue GetValue (int valueIndex)
-            { return values[valueIndex]; }
+            public TValue GetValue (int index)
+            { return values[index]; }
 
 
-            public void SetValue (int valueIndex, TValue value)
-            { values[valueIndex] = value; }
+            public void SetValue (int index, TValue value)
+            { values[index] = value; }
 
 
             public void Add (TKey key, TValue value)
