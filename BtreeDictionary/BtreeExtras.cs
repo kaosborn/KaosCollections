@@ -47,8 +47,7 @@ namespace Kaos.Collections
             if (key == null)
                 throw new ArgumentNullException (nameof (key));
 
-            int index;
-            Leaf leaf = Find (key, out index);
+            Leaf leaf = Find (key, out int index);
 
             // When the supplied start key is not be found, start with the next highest key.
             if (index < 0)
@@ -86,8 +85,7 @@ namespace Kaos.Collections
         /// </example>
         public IEnumerable<KeyValuePair<TKey,TValue>> BetweenKeys (TKey startKey, TKey endKey)
         {
-            int index;
-            Leaf leaf = Find (startKey, out index);
+            Leaf leaf = Find (startKey, out int index);
 
             // When the supplied start key is not be found, start with the next highest key.
             if (index < 0)
