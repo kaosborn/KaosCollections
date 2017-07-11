@@ -102,12 +102,11 @@ namespace Kaos.Collections
 
                 for (int level = indexStack.Count - 2; level >= 0; --level)
                     if (indexStack[level] > 0)
-                    {
-                        Node result = ((Branch) nodeStack[level]).GetChild (indexStack[level] - 1);
-                        for (; level < indexStack.Count - 2; ++level)
-                            result = ((Branch) result).GetChild (result.KeyCount);
-                        return result;
-                    }
+                        for (Node node = ((Branch) nodeStack[level]).GetChild (indexStack[level]-1);;)
+                            if (++level < indexStack.Count-1)
+                                node = ((Branch) node).GetChild (node.KeyCount);
+                            else
+                                return node;
 
                 return null;
             }
