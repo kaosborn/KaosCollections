@@ -438,15 +438,15 @@ namespace Kaos.Collections
 
 
         /// <summary>Determine if the collection contains the supplied key and value.</summary>
-        /// <param name="pair">Key/value pair to find.</param>
+        /// <param name="keyValuePair">Key/value pair to find.</param>
         /// <returns><b>true</b> if the collection contains the specified pair;
         /// otherwise <b>false</b>.</returns>
-        bool ICollection<KeyValuePair<TKey,TValue>>.Contains (KeyValuePair<TKey,TValue> pair)
+        bool ICollection<KeyValuePair<TKey,TValue>>.Contains (KeyValuePair<TKey,TValue> keyValuePair)
         {
-            var leaf = Find (pair.Key, out int index);
+            var leaf = Find (keyValuePair.Key, out int index);
             if (index < 0)
                 return false;
-            return EqualityComparer<TValue>.Default.Equals (leaf.GetValue (index), pair.Value);
+            return EqualityComparer<TValue>.Default.Equals (leaf.GetValue (index), keyValuePair.Value);
         }
 
 
