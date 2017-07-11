@@ -47,7 +47,7 @@ namespace ChartApp
             tree.Add (21, 221);
             WriteInfo();
 
-            Console.WriteLine ("Add 11:");
+            Console.WriteLine ("Add 9:");
             tree.Add (9, 111);
             WriteInfo();
 
@@ -107,7 +107,7 @@ namespace ChartApp
         B1: 4,8,14 | 22,26,32 | 44
         L2: 1,2|4,6|8,10,12|14,16,18 | 20,21|22,24|26,28,30|32,34,36 | 38,40,42|44
 
-        Add 11:
+        Add 9:
 
         B0: 10,20,38
         B1: 4,8 | 14 | 22,26,32 | 44
