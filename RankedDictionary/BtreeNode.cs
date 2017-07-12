@@ -1,6 +1,6 @@
 ﻿//
 // Library: KaosCollections
-// File:    BtreeNode.cs
+// File:    RankedDictionary.Node.cs
 // Purpose: Define nonpublic tree structure and its basic operations.
 //
 // Copyright © 2009-2017 Kasey Osborn (github.com/kaosborn)
@@ -16,7 +16,7 @@ namespace Kaos.Collections
     public partial class BtreeDictionary<TKey,TValue>
     {
         /// <summary>A page of the B+ tree. May be internal (Branch) or terminal (Leaf).</summary>
-        private class Node
+        private abstract class Node
         {
             protected readonly List<TKey> keys;
 
@@ -25,6 +25,7 @@ namespace Kaos.Collections
 
             public int KeyCount { get { return keys.Count; } }
             public TKey Key0 { get { return keys[0]; } }
+            public abstract int Weight { get; }
 
             public void AddKey (TKey key) { keys.Add (key); }
             public TKey GetKey (int index) { return keys[index]; }
@@ -58,6 +59,7 @@ namespace Kaos.Collections
         private sealed class Branch : Node
         {
             private readonly List<Node> childNodes;
+            private int weight;
 
             // Called on initialization only.
             public Branch (Leaf leaf, int keyCapacity=0) : base (keyCapacity)
@@ -70,11 +72,11 @@ namespace Kaos.Collections
                 this.childNodes = new List<Node> (keyCapacity + 1);
             }
 
-            public Branch (Node child, int keyCapacity) : base (keyCapacity)
+            public Branch (Node child, int keyCapacity, int weight=0) : base (keyCapacity)
             {
                 this.childNodes = new List<Node> (keyCapacity + 1) { child };
+                this.weight = weight;
             }
-
 
             public int ChildCount
             { get { return childNodes.Count; } }
@@ -84,6 +86,15 @@ namespace Kaos.Collections
 
             public Node Child0
             { get { return childNodes[0]; } set { childNodes[0] = value; } }
+
+            /// <summary>Number of key/value pairs in the subtree.</summary>
+            public override int Weight
+            { get { return weight; } }
+
+            /// <summary>Change count of key/value pairs in subtree.</summary>
+            /// <param name="adjustment">Change in value.</param>
+            public void AdjustWeight (int adjustment)
+            { weight += adjustment; }
 
             public void RemoveChild (int index)
             { childNodes.RemoveAt (index); }
@@ -143,6 +154,11 @@ namespace Kaos.Collections
                 this.rightLeaf = leftLeaf.rightLeaf;
                 leftLeaf.rightLeaf = this;
             }
+
+
+            /// <summary>Number of key/value pairs in the subtree.</summary>
+            public override int Weight
+            { get { return keys.Count; } }
 
 
             /// <summary>Next leaf in linked list.</summary>

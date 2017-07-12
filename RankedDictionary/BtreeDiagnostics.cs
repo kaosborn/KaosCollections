@@ -89,6 +89,7 @@ namespace Kaos.Collections
             if (branch.ChildCount != branch.KeyCount + 1)
                 throw new InvalidOperationException ("Branch mismatched ChildCount, KeyCount");
 
+            int actualWeight = 0;
             for (int i = 0; i < branch.ChildCount; ++i)
             {
                 TKey anchor0 = i == 0 ? anchor : branch.GetKey (i - 1);
@@ -101,7 +102,12 @@ namespace Kaos.Collections
                     visited = CheckBranch ((Branch) branch.GetChild (i), level+1, height, isRightmost0, anchor0, visited);
                 else
                     visited = CheckLeaf ((Leaf) branch.GetChild (i), isRightmost0, anchor0, visited);
+
+                actualWeight += branch.GetChild (i).Weight;
             }
+            if (branch.Weight != actualWeight)
+                throw new InvalidOperationException ("Branch mismatched weight");
+
             return visited;
         }
 
@@ -142,15 +148,15 @@ namespace Kaos.Collections
             string result = "--- height = " + GetHeight();
 
             if (BranchSlotCount != 0)
-                result += ", branch fill = " + BranchSlotsUsed * 100 / BranchSlotCount + "%";
+                result += ", branch fill = " + (int) (BranchSlotsUsed * 100.0 / BranchSlotCount + 0.5) + "%";
 
-            return result + ", leaf fill = " + LeafSlotsUsed * 100 / LeafSlotCount + "%";
+            return result + ", leaf fill = " + (int) (LeafSlotsUsed * 100.0 / LeafSlotCount + 0.5) + "%";
         }
 
 
         /// <summary>Generate contents of tree by level (breadth first).</summary>
         /// <returns>Text lines where each line is a level of the tree.</returns>
-        public IEnumerable<string> GenerateTreeText()
+        public IEnumerable<string> GenerateTreeText (bool showWeight=false)
         {
             int level = 0;
             Node leftmost;
@@ -171,10 +177,17 @@ namespace Kaos.Collections
                 for (;;)
                 {
                     branch.Append (sb);
-                    branch = (Branch) branchPath.TraverseRight();
+                    if (showWeight)
+                    {
+                        sb.Append (" (");
+                        sb.Append (branch.Weight);
+                        sb.Append (") ");
+                    }
 
+                    branch = (Branch) branchPath.TraverseRight();
                     if (branch == null)
                         break;
+
                     sb.Append (" | ");
                 }
                 ++level;

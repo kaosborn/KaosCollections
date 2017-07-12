@@ -1,6 +1,6 @@
 ﻿//
 // Library: KaosCollections
-// File:    BtreeNodeVector.cs
+// File:    RankedDictionary.NodeVector.cs
 // Purpose: Defines nonpublic class that stores an element traversal path.
 //
 // Copyright © 2009-2017 Kasey Osborn (github.com/kaosborn)
@@ -112,6 +112,26 @@ namespace Kaos.Collections
             }
 
 
+            public void TiltLeft (int delta)
+            {
+                for (int level = indexStack.Count-2; level >= 0; --level)
+                    if (indexStack[level] == 0)
+                        ((Branch) nodeStack[level]).AdjustWeight (- delta);
+                    else if (level >= indexStack.Count-2)
+                        return;
+                    else
+                        for (var bh = (Branch) ((Branch) nodeStack[level]).GetChild (indexStack[level]-1);;)
+                        {
+                            bh.AdjustWeight (+ delta);
+                            if (++level >= indexStack.Count-2)
+                                return;
+                            bh = (Branch) bh.GetChild (bh.KeyCount);
+                        }
+
+                Debug.Assert (false, "tilt one sided");
+            }
+
+
             /// <summary>Get nearest key where left child path taken.</summary>
             /// <remarks>On entry, top of path refers to a branch.</remarks>
             public TKey GetPivot()
@@ -201,12 +221,20 @@ namespace Kaos.Collections
             }
 
 
+            private void UpdateWeight (int delta)
+            {
+                for (int level = Height-2; level >= 0; --level)
+                    ((Branch) nodeStack[level]).AdjustWeight (+ delta);
+            }
+
+
             /// <summary>Insert element at this path.</summary>
             public void Insert (TKey key, TValue value)
             {
                 var leaf = (Leaf) TopNode;
                 int pathIndex = TopNodeIndex;
 
+                UpdateWeight (1);
                 if (leaf.KeyCount < owner.maxKeyCount)
                 {
                     leaf.Insert (pathIndex, key, value);
@@ -255,7 +283,7 @@ namespace Kaos.Collections
                     {
                         // Graft new root.
                         Debug.Assert (owner.root == TopNode);
-                        owner.root = new Branch (TopNode, owner.maxKeyCount);
+                        owner.root = new Branch (TopNode, owner.maxKeyCount, TopNode.Weight + newNode.Weight);
                         ((Branch) owner.root).Add (key, newNode);
                         break;
                     }
@@ -278,9 +306,10 @@ namespace Kaos.Collections
 
                     if (branchIndex < splitIndex)
                     {
-                        // Split with left-side insert.
+                        // Split branch with left-side insert.
                         for (int ix = splitIndex; ; ++ix)
                         {
+                            newBranch.AdjustWeight (+ branch.GetChild (ix).Weight);
                             if (ix >= branch.KeyCount)
                             {
                                 newBranch.Add (branch.GetChild (ix));
@@ -294,11 +323,13 @@ namespace Kaos.Collections
                         branch.InsertKey (branchIndex, key);
                         branch.Insert (branchIndex + 1, newNode);
                         key = newPromotion;
+                        branch.AdjustWeight (- newBranch.Weight);
                     }
                     else
                     {
                         // Split branch with right-side insert (or cascade promote).
                         int leftIndex = splitIndex;
+                        newBranch.AdjustWeight (newNode.Weight);
 
                         if (branchIndex > splitIndex)
                         {
@@ -306,6 +337,7 @@ namespace Kaos.Collections
                             {
                                 ++leftIndex;
                                 newBranch.Add (branch.GetChild (leftIndex));
+                                newBranch.AdjustWeight (+ branch.GetChild (leftIndex).Weight);
                                 if (leftIndex >= branchIndex)
                                     break;
                                 newBranch.AddKey (branch.GetKey (leftIndex));
@@ -321,9 +353,11 @@ namespace Kaos.Collections
                             newBranch.AddKey (branch.GetKey (leftIndex));
                             ++leftIndex;
                             newBranch.Add (branch.GetChild (leftIndex));
+                            newBranch.AdjustWeight (+ branch.GetChild (leftIndex).Weight);
                         }
 
                         branch.Truncate (splitIndex);
+                        branch.AdjustWeight (- newBranch.Weight);
                     }
 
                     newNode = newBranch;
@@ -339,6 +373,7 @@ namespace Kaos.Collections
 
                 leaf.Remove (leafIndex);
                 --owner.Count;
+                UpdateWeight (-1);
 
                 if (leafIndex == 0)
                     if (leaf.KeyCount != 0)
@@ -370,6 +405,7 @@ namespace Kaos.Collections
                             rightLeaf.Remove (0, shifts);
                             TraverseRight();
                             SetPivot (rightLeaf.Key0);
+                            TiltLeft (shifts);
                         }
                         else
                         {
@@ -377,6 +413,7 @@ namespace Kaos.Collections
                             leaf.Add (rightLeaf, 0, rightLeaf.KeyCount);
                             leaf.RightLeaf = rightLeaf.RightLeaf;
                             TraverseRight();
+                            TiltLeft (rightLeaf.KeyCount);
                             Demote();
                         }
                 }
@@ -432,6 +469,8 @@ namespace Kaos.Collections
                                 break;
                             branch.AddKey (right.GetKey (ix));
                         }
+                        branch.AdjustWeight (+ right.Weight);
+                        TiltLeft (+ right.Weight);
 
                         // Cascade demotion.
                         continue;
@@ -444,9 +483,11 @@ namespace Kaos.Collections
                         int shifts = (branch.KeyCount + right.KeyCount - 1) / 2 - branch.KeyCount;
                         branch.AddKey (GetPivot());
 
+                        int delta = 0;
                         for (int rightIndex = 0; ; ++rightIndex)
                         {
                             branch.Add (right.GetChild (rightIndex));
+                            delta += right.GetChild (rightIndex).Weight;
 
                             if (rightIndex >= shifts)
                                 break;
@@ -456,6 +497,9 @@ namespace Kaos.Collections
 
                         SetPivot (right.GetKey (shifts));
                         right.Remove (0, shifts + 1);
+                        branch.AdjustWeight (+ delta);
+                        right.AdjustWeight (- delta);
+                        TiltLeft (delta);
                     }
 
                     return;
