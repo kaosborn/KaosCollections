@@ -55,7 +55,7 @@ namespace Kaos.Collections
         /// <remarks>
         /// Contains copies of the first key of every leaf (except the leftmost).
         /// </remarks>
-        private class Branch : Node
+        private sealed class Branch : Node
         {
             private readonly List<Node> childNodes;
 
@@ -121,7 +121,7 @@ namespace Kaos.Collections
         /// All key/value pairs are contained in this class.
         /// Leaf is a sequential linked list also referenced by parent branches.
         /// </remarks>
-        private class Leaf : Node
+        private sealed class Leaf : Node
         {
             private readonly List<TValue> values;  // Payload.
             private Leaf rightLeaf;  // For the linked leaf list.
