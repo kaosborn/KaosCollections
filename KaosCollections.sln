@@ -45,9 +45,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BtreeBench03", "Bench\Btree
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BtreeChart04C", "Bench\BtreeChart04C\BtreeChart04C.csproj", "{7BF4F8EE-E033-48C1-9CEA-9F1EE8ABD73A}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "RankedDictionary", "RankedDictionary\RankedDictionary.shproj", "{1889D72F-B5EB-4E5F-95B2-5AA1CCCA8B40}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		BtreeDictionary\BtreeDictionary.projitems*{04bc35f4-f0d8-47d0-ae7c-b2d62be49fc6}*SharedItemsImports = 4
+		RankedDictionary\RankedDictionary.projitems*{1889d72f-b5eb-4e5f-95b2-5aa1ccca8b40}*SharedItemsImports = 13
 		BtreeDictionary\BtreeDictionary.projitems*{9aab8f38-1582-401d-a4fd-adae2c6cb496}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

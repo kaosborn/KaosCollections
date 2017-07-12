@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>1889d72f-b5eb-4e5f-95b2-5aa1ccca8b40</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>RankedDictionary</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)BtreeDiagnostics.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BtreeDictionary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BtreeDictionaryObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BtreeExtras.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BtreeFind.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BtreeKeysValues.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BtreeNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BtreeNodeVector.cs" />
+  </ItemGroup>
+</Project>
