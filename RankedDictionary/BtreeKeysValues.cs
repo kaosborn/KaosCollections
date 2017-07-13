@@ -20,6 +20,7 @@ namespace Kaos.Collections
         /// Represents a collection of keys of a <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>.
         /// </summary>
         [DebuggerDisplay ("Count = {Count}")]
+        [DebuggerTypeProxy (typeof (ICollectionKeysDebugView<,>))]
         public sealed class KeyCollection :
             ICollection<TKey>,
             ICollection
@@ -212,6 +213,7 @@ namespace Kaos.Collections
         /// Represents a collection of values of a <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>.
         /// </summary>
         [DebuggerDisplay ("Count = {Count}")]
+        [DebuggerTypeProxy (typeof (ICollectionValuesDebugView<,>))]
         public sealed class ValueCollection :
             ICollection<TValue>,
             ICollection

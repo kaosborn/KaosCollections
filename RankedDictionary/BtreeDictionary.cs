@@ -25,6 +25,7 @@ namespace Kaos.Collections
     /// with the addition of the methods
     /// <see cref="BetweenKeys"/>, <see cref="SkipUntilKey"/>, and <see cref="Last"/>.
     /// </remarks>
+    [DebuggerTypeProxy (typeof (IDictionaryDebugView<,>))]
     [DebuggerDisplay ("Count = {Count}")]
     public sealed partial class BtreeDictionary<TKey,TValue> :
         IDictionary<TKey,TValue>,

@@ -9,10 +9,80 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace Kaos.Collections
 {
+    public class IDictionaryDebugView<K,V>
+    {
+        private readonly IDictionary<K,V> target;
+
+        public IDictionaryDebugView (IDictionary<K,V> dictionary)
+        {
+            if (dictionary == null)
+                throw new ArgumentNullException (nameof (dictionary));
+            target = dictionary;
+        }
+
+        [DebuggerBrowsable (DebuggerBrowsableState.RootHidden)]
+        public KeyValuePair<K,V>[] Items
+        {
+            get
+            {
+                KeyValuePair<K,V>[] items = new KeyValuePair<K,V>[target.Count];
+                target.CopyTo (items, 0);
+                return items;
+            }
+        }
+    }
+
+    public class ICollectionKeysDebugView<K,V>
+    {
+        private readonly ICollection<K> target;
+
+        public ICollectionKeysDebugView (ICollection<K> collection)
+        {
+            if (collection == null)
+                throw new ArgumentNullException (nameof (collection));
+            target = collection;
+        }
+
+        [DebuggerBrowsable (DebuggerBrowsableState.RootHidden)]
+        public K[] Items
+        {
+            get
+            {
+                K[] items = new K[target.Count];
+                target.CopyTo (items, 0);
+                return items;
+            }
+        }
+    }
+
+    public class ICollectionValuesDebugView<K,V>
+    {
+        private readonly ICollection<V> target;
+
+        public ICollectionValuesDebugView (ICollection<V> collection)
+        {
+            if (collection == null)
+                throw new ArgumentNullException (nameof (collection));
+            target = collection;
+        }
+
+        [DebuggerBrowsable (DebuggerBrowsableState.RootHidden)]
+        public V[] Items
+        {
+            get
+            {
+                V[] items = new V[target.Count];
+                target.CopyTo (items, 0);
+                return items;
+            }
+        }
+    }
+
 #if DEBUG
     public partial class BtreeDictionary<TKey,TValue>
     {
