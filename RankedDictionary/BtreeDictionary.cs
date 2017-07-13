@@ -240,7 +240,7 @@ namespace Kaos.Collections
 
 
         /// <summary>Get the value associated with the supplied key.</summary>
-        /// <param name="key">Target of search.</param>
+        /// <param name="key">The key of the value to get.</param>
         /// <param name="value">If the key is found, its value is placed here; otherwise
         /// it will be loaded with the default value for its type.</param>
         /// <returns><b>true</b> if supplied key is found; otherwise <b>false</b>.</returns>

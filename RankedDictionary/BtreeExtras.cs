@@ -112,6 +112,10 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>Gets the index of the specified element.</summary>
+        /// <param name="key">The key of the index to get.</param>
+        /// <returns>The index of the specified element.</returns>
+        /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
         public int IndexOf (TKey key)
         {
             if (key == null)
@@ -125,6 +129,10 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>Gets the element at the specified index.</summary>
+        /// <param name="index">The zero-based index of the element to get.</param>
+        /// <returns>The element at the specified index.</returns>
+        /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
         public KeyValuePair<TKey,TValue> GetByIndex (int index)
         {
             if (index < 0 || index > Count)
@@ -148,6 +156,11 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>Gets the value and index of the specified element.</summary>
+        /// <param name="key">The key of the value and index to get.</param>
+        /// <param name="value">If the key is found, its value is placed here; otherwise it will be loaded with the default value.</param>
+        /// <param name="index">If the key is found, its index is placed here; otherwise it will be -1.</param>
+        /// <returns><b>true</b> if supplied key is found; otherwise <b>false</b>.</returns>
         public bool TryGetValueAndIndex (TKey key, out TValue value, out int index)
         {
             var path = new NodeVector (this, key);
