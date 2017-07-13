@@ -93,6 +93,26 @@ namespace Kaos.Collections
 
             #region Methods
 
+            /// <summary>Calculate the rank of the current pair.</summary>
+            /// <returns>The rank of the current pair.</returns>
+            public int GetIndex()
+            {
+                int result = TopNodeIndex;
+
+                for (int level = indexStack.Count-2; level >= 0; --level)
+                    if (indexStack[level] <= nodeStack[level].KeyCount / 2)
+                        for (int ix = 0; ix < indexStack[level]; ++ix)
+                            result += ((Branch) nodeStack[level]).GetChild (ix).Weight;
+                    else
+                    {
+                        result += nodeStack[level].Weight;
+                        for (int ix = indexStack[level]; ix <= nodeStack[level].KeyCount; ++ix)
+                            result -= ((Branch) nodeStack[level]).GetChild (ix).Weight;
+                    }
+
+                return result;
+            }
+
             /// <summary>
             /// Get the node to the immediate left of the node specified by NodeVector.
             /// </summary>

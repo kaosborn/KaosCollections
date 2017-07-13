@@ -110,5 +110,57 @@ namespace Kaos.Collections
                 index = 0;
             }
         }
+
+
+        public int IndexOf (TKey key)
+        {
+            if (key == null)
+                throw new ArgumentNullException (nameof (key));
+
+            var path = new NodeVector (this, key);
+            if (! path.IsFound)
+                return -1;
+
+            return path.GetIndex();
+        }
+
+
+        public KeyValuePair<TKey,TValue> GetByIndex (int index)
+        {
+            if (index < 0 || index > Count)
+                throw new ArgumentOutOfRangeException (nameof (index), "Specified argument was out of the range of valid values.");
+
+            Node node = root;
+            while (node is Branch)
+                for (int ix = 0; ix <= node.KeyCount; ++ix)
+                {
+                    var child = ((Branch) node).GetChild (ix);
+                    int cw = child.Weight;
+                    if (cw > index)
+                    {
+                        node = child;
+                        break;
+                    }
+                    index -= cw;
+                }
+
+            return new KeyValuePair<TKey,TValue> (((Leaf) node).GetKey (index), ((Leaf) node).GetValue (index));
+        }
+
+
+        public bool TryGetValueAndIndex (TKey key, out TValue value, out int index)
+        {
+            var path = new NodeVector (this, key);
+            if (! path.IsFound)
+            {
+                value = default (TValue);
+                index = -1;
+                return false;
+            }
+
+            value = path.LeafValue;
+            index = path.GetIndex();
+            return true;
+        }
     }
 }

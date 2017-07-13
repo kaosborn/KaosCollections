@@ -126,6 +126,74 @@ namespace CollectionsTest
 
             Assert.AreEqual (0, iterations, "SkipUntilKey shouldn't find anything");
         }
+
+
+        [TestMethod]
+        public void Unit_RankedIndexOf()
+        {
+            var tree = new BtreeDictionary<int,int>(5);
+            for (int ii = 0; ii < 500; ii+=2)
+                tree.Add (ii, ii+1000);
+
+            for (int ii = 0; ii < 500; ii+=2)
+            {
+                int ix = tree.IndexOf (ii);
+                Assert.AreEqual (ii/2, ix);
+            }
+        }
+
+        [TestMethod]
+        public void Unit_RankedGetValueIndex()
+        {
+            var tree = new BtreeDictionary<int,int>(5);
+            for (int ii = 0; ii < 500; ii+=2)
+                tree.Add (ii, ii+1000);
+
+            for (int ii = 0; ii < 500; ii+=2)
+            {
+                bool isOk = tree.TryGetValueAndIndex (ii, out int v1, out int i1);
+
+                Assert.IsTrue (isOk);
+                Assert.AreEqual (ii/2, i1);
+                Assert.AreEqual (ii+1000, v1);
+            }
+
+            bool isOkNot = tree.TryGetValueAndIndex (111, out int v2, out int i2);
+            Assert.IsFalse (isOkNot);
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void Crash_RankedGetByIndexArgumentOutOfRange_1()
+        {
+            var tree = new BtreeDictionary<int,int> (4) { { 4, 104 } };
+            KeyValuePair<int,int> pair = tree.GetByIndex (-1);
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void Crash_RankedGetByIndexArgumentOutOfRange_2()
+        {
+            var tree = new BtreeDictionary<int,int> (4);
+            KeyValuePair<int,int> pair = tree.GetByIndex (0);
+        }
+
+
+        [TestMethod]
+        public void Unit_RankedGetByIndex()
+        {
+            var tree = new BtreeDictionary<int,int> (4);
+            for (int ii = 0; ii <= 800; ii+=2)
+                tree.Add (ii, ii+100);
+
+            for (int ii = 0; ii <= 400; ii+=2)
+            {
+                KeyValuePair<int,int> pair = tree.GetByIndex (ii);
+                Assert.AreEqual (ii*2, pair.Key);
+                Assert.AreEqual (ii*2+100, pair.Value);
+            }
+        }
     }
 #endif
 }
