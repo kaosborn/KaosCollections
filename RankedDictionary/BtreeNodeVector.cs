@@ -258,7 +258,6 @@ namespace Kaos.Collections
                 if (leaf.KeyCount < owner.maxKeyCount)
                 {
                     leaf.Insert (pathIndex, key, value);
-                    ++owner.Count;
                     return;
                 }
 
@@ -289,7 +288,6 @@ namespace Kaos.Collections
                 }
 
                 // Promote anchor of split leaf.
-                ++owner.Count;
                 Promote (newLeaf.Key0, (Node) newLeaf, newLeaf.RightLeaf == null);
             }
 
@@ -392,7 +390,6 @@ namespace Kaos.Collections
                 var leaf = (Leaf) TopNode;
 
                 leaf.Remove (leafIndex);
-                --owner.Count;
                 UpdateWeight (-1);
 
                 if (leafIndex == 0)

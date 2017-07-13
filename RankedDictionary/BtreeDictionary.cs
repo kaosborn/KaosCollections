@@ -143,7 +143,6 @@ namespace Kaos.Collections
             leftmostLeaf.Truncate (0);
             leftmostLeaf.RightLeaf = null;
             root = leftmostLeaf;
-            Count = 0;
         }
 
 
@@ -357,7 +356,7 @@ namespace Kaos.Collections
 
         /// <summary>Get the number of key/value pairs in the dictionary.</summary>
         public int Count
-        { get; private set; }
+        { get { return root.Weight; } }
 
 
         /// <summary>Get or set the value associated with the supplied key.</summary>
