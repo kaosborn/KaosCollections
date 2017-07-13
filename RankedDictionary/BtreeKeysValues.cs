@@ -10,6 +10,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Kaos.Collections
 {
@@ -18,6 +19,7 @@ namespace Kaos.Collections
         /// <summary>
         /// Represents a collection of keys of a <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>.
         /// </summary>
+        [DebuggerDisplay ("Count = {Count}")]
         public sealed class KeyCollection :
             ICollection<TKey>,
             ICollection
@@ -209,6 +211,7 @@ namespace Kaos.Collections
         /// <summary>
         /// Represents a collection of values of a <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>.
         /// </summary>
+        [DebuggerDisplay ("Count = {Count}")]
         public sealed class ValueCollection :
             ICollection<TValue>,
             ICollection

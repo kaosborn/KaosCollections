@@ -10,6 +10,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 [assembly: CLSCompliant (true)]
 namespace Kaos.Collections
@@ -24,6 +25,7 @@ namespace Kaos.Collections
     /// with the addition of the methods
     /// <see cref="BetweenKeys"/>, <see cref="SkipUntilKey"/>, and <see cref="Last"/>.
     /// </remarks>
+    [DebuggerDisplay ("Count = {Count}")]
     public sealed partial class BtreeDictionary<TKey,TValue> :
         IDictionary<TKey,TValue>,
         IDictionary
