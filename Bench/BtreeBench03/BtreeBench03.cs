@@ -15,16 +15,23 @@ namespace BenchApp
 {
     public class BtreeBench03
     {
-        static int reps = 50000000;
-        static BtreeDictionary<Guid,int> tree = new BtreeDictionary<Guid,int> (128);
+        static BtreeDictionary<Guid,int> tree;
 
         static void Main (string[] args)
         {
-            for (int ii = 0; ii < reps; ++ii)
-                tree.Add (Guid.NewGuid(), ii);
+            foreach (var reps in new int[] { 100, 1000, 10000, 100000, 1000000, 10000000, 20000000, 40000000 })
+            {
+                tree = new BtreeDictionary<Guid,int> (128);
 
-            Console.WriteLine (reps);
-            Console.WriteLine (tree.GetTreeStatsText());
+                for (int ii = 0; ii < reps; ++ii)
+                    tree.Add (Guid.NewGuid(), ii);
+
+                Console.WriteLine (reps);
+#if DEBUG
+                Console.WriteLine (tree.GetTreeStatsText());
+#endif
+            }
+
         }
     }
 }
