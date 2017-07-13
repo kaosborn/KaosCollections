@@ -64,7 +64,7 @@ namespace CollectionsTest
 #if TEST_SORTEDDICTIONARY
             var tree = new SortedDictionary<string,int> (StringComparer.OrdinalIgnoreCase);
 #else
-            var tree = new BtreeDictionary<string,int> (StringComparer.OrdinalIgnoreCase);
+            var tree = new RankedDictionary<string,int> (StringComparer.OrdinalIgnoreCase);
 #endif
 
             tree.Add ("AAA", 0);
@@ -89,7 +89,7 @@ namespace CollectionsTest
 #if TEST_SORTEDDICTIONARY
             var tree = new SortedDictionary<string,int> (StringComparer.Ordinal);
 #else
-            var tree = new BtreeDictionary<string,int> (StringComparer.Ordinal);
+            var tree = new RankedDictionary<string,int> (StringComparer.Ordinal);
 #endif
             tree.Add ("AAA", 0);
             tree.Add ("CCC", 1);
@@ -115,7 +115,7 @@ namespace CollectionsTest
 #if TEST_SORTEDDICTIONARY
             IDictionary<int,int> idx = new SortedDictionary<int,int> (listArg);
 #else
-            IDictionary<int,int> idx = new BtreeDictionary<int,int> (listArg);
+            IDictionary<int,int> idx = new RankedDictionary<int,int> (listArg);
 #endif
         }
 
@@ -132,7 +132,7 @@ namespace CollectionsTest
 #if TEST_SORTEDDICTIONARY
             var tree = new SortedDictionary<string,int> (sl);
 #else
-            var tree = new BtreeDictionary<string,int> (sl);
+            var tree = new RankedDictionary<string,int> (sl);
 #endif
 
             Assert.AreEqual (1, tree["Gremlin"]);
@@ -470,7 +470,7 @@ namespace CollectionsTest
 #if TEST_SORTEDDICTIONARY
             var sd = new SortedDictionary<string,int> (StringComparer.Ordinal);
 #else
-            var sd = new BtreeDictionary<string,int> (StringComparer.Ordinal);
+            var sd = new RankedDictionary<string,int> (StringComparer.Ordinal);
 #endif
 
             for (char c = 'A'; c <= 'Z'; ++c)

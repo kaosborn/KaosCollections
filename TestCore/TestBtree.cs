@@ -25,10 +25,10 @@ namespace CollectionsTest
         SortedDictionary<string,int?> tree3;
         SortedDictionary<int,string> tree4;
 #else
-        BtreeDictionary<int,int> tree1;
-        BtreeDictionary<string,int> tree2;
-        BtreeDictionary<string,int?> tree3;
-        BtreeDictionary<int,string> tree4;
+        RankedDictionary<int,int> tree1;
+        RankedDictionary<string,int> tree2;
+        RankedDictionary<string,int?> tree3;
+        RankedDictionary<int,string> tree4;
 #endif
         ICollection<KeyValuePair<string,int>> genCol2;
         ICollection<string> genKeys2;
@@ -50,10 +50,10 @@ namespace CollectionsTest
             tree3 = new SortedDictionary<string,int?>();
             tree4 = new SortedDictionary<int,string>();
 #else
-            tree1 = new BtreeDictionary<int,int> (order);
-            tree2 = new BtreeDictionary<string,int> (order);
-            tree3 = new BtreeDictionary<string,int?> (order);
-            tree4 = new BtreeDictionary<int,string> (order);
+            tree1 = new RankedDictionary<int,int> (order);
+            tree2 = new RankedDictionary<string,int> (order);
+            tree3 = new RankedDictionary<string,int?> (order);
+            tree4 = new RankedDictionary<int,string> (order);
 #endif
 
             Type treeType = tree1.GetType();

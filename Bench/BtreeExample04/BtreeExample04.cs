@@ -13,7 +13,7 @@ namespace ExampleApp
     {
         static void Main()
         {
-            var tree1 = new BtreeDictionary<string,int> (StringComparer.InvariantCultureIgnoreCase);
+            var tree1 = new RankedDictionary<string,int> (StringComparer.InvariantCultureIgnoreCase);
             tree1.Add ("AAA", 0);
             tree1.Add ("bbb", 1);
             tree1.Add ("CCC", 2);
@@ -24,7 +24,7 @@ namespace ExampleApp
                 Console.WriteLine (pair.Key);
             Console.WriteLine();
 
-            var tree2 = new BtreeDictionary<string,int> (StringComparer.Ordinal);
+            var tree2 = new RankedDictionary<string,int> (StringComparer.Ordinal);
             tree2.Add ("AAA", 0);
             tree2.Add ("bbb", 2);
             tree2.Add ("CCC", 1);

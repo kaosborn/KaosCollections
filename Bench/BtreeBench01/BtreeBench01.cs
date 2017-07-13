@@ -56,7 +56,7 @@ namespace BenchApp
             Console.WriteLine ("supports optimized range queries with its SkipUntilKey(TKey) and");
             Console.WriteLine ("BetweenKeys(TKey,TKey) methods.\n");
 
-            var bt = new BtreeDictionary<int,int>();
+            var bt = new RankedDictionary<int,int>();
 
             Console.Write ("Loading BtreeDictionary with " + reps + " elements:\n\nLoad time = ");
 

@@ -12,7 +12,7 @@ using System.Diagnostics;
 
 namespace Kaos.Collections
 {
-    public partial class BtreeDictionary<TKey,TValue>
+    public partial class RankedDictionary<TKey,TValue>
     {
         /// <summary>Stack trace from root to leaf of a key/value pair.</summary>
         /// <remarks>
@@ -21,7 +21,7 @@ namespace Kaos.Collections
         /// </remarks>
         private class NodeVector
         {
-            private readonly BtreeDictionary<TKey,TValue> owner;
+            private readonly RankedDictionary<TKey,TValue> owner;
             private readonly List<int> indexStack;
             private readonly List<Node> nodeStack;
 
@@ -30,7 +30,7 @@ namespace Kaos.Collections
             /// <summary>Perform search and store each level of path on the stack.</summary>
             /// <param name="tree">Tree to search.</param>
             /// <param name="key">Value to find.</param>
-            public NodeVector (BtreeDictionary<TKey,TValue> tree, TKey key)
+            public NodeVector (RankedDictionary<TKey,TValue> tree, TKey key)
             {
                 this.owner = tree;
                 this.indexStack = new List<int>();
@@ -534,7 +534,7 @@ namespace Kaos.Collections
             /// <summary>Make an empty path.</summary>
             /// <param name="tree">Target of path.</param>
             /// <remarks>Used only for diagnostics.</remarks>
-            public NodeVector (BtreeDictionary<TKey,TValue> tree)
+            public NodeVector (RankedDictionary<TKey,TValue> tree)
             {
                 this.indexStack = new List<int>();
                 this.nodeStack = new List<Node>();
@@ -547,7 +547,7 @@ namespace Kaos.Collections
             /// <param name="tree">Target of path.</param>
             /// <param name="level">Level of node to seek (root is level 0).</param>
             /// <remarks>Used only for diagnostics.</remarks>
-            public NodeVector (BtreeDictionary<TKey,TValue> tree, int level) : this (tree)
+            public NodeVector (RankedDictionary<TKey,TValue> tree, int level) : this (tree)
             {
                 for (Node node = TopNode; level > 0; --level)
                 {

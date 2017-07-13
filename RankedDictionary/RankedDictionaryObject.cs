@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 namespace Kaos.Collections
 {
-    public partial class BtreeDictionary<TKey,TValue>
+    public partial class RankedDictionary<TKey,TValue>
     {
         #region Explicit object properties and methods
 

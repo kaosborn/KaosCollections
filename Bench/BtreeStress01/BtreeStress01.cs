@@ -17,7 +17,7 @@ namespace BenchApp
     {
         static void Main()
         {
-            var tree = new BtreeDictionary<int,int> (4);
+            var tree = new RankedDictionary<int,int> (4);
 
             for (int w = 1; w < 21; ++w)
             {

@@ -14,10 +14,10 @@ using System.Diagnostics;
 
 namespace Kaos.Collections
 {
-    public partial class BtreeDictionary<TKey,TValue>
+    public partial class RankedDictionary<TKey,TValue>
     {
         /// <summary>
-        /// Represents a collection of keys of a <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>.
+        /// Represents a collection of keys of a <see cref="RankedDictionary&lt;TKey,TValue&gt;"/>.
         /// </summary>
         [DebuggerDisplay ("Count = {Count}")]
         [DebuggerTypeProxy (typeof (ICollectionKeysDebugView<,>))]
@@ -28,19 +28,19 @@ namespace Kaos.Collections
             , IReadOnlyCollection<TKey>
 #endif
         {
-            private readonly BtreeDictionary<TKey,TValue> tree;
+            private readonly RankedDictionary<TKey,TValue> tree;
 
             #region Constructors
 
             /// <summary>
             /// Make a new <b>"BtreeDictionary&lt;TKey,TValue&gt;.KeyCollection</b> that
-            /// holds the keys of a <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>.
+            /// holds the keys of a <see cref="RankedDictionary&lt;TKey,TValue&gt;"/>.
             /// </summary>
             /// <param name="dictionary">
-            /// <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/> containing these keys.
+            /// <see cref="RankedDictionary&lt;TKey,TValue&gt;"/> containing these keys.
             /// </param>
             /// <exception cref="ArgumentNullException">When <em>dictionary</em> is <b>null</b>.</exception>
-            public KeyCollection (BtreeDictionary<TKey,TValue> dictionary)
+            public KeyCollection (RankedDictionary<TKey,TValue> dictionary)
             {
                 if (dictionary == null)
 #pragma warning disable IDE0016
@@ -98,11 +98,11 @@ namespace Kaos.Collections
             /// <summary>Enumerates the sorted elements of a KeyCollection.</summary>
             public sealed class Enumerator : IEnumerator<TKey>
             {
-                private readonly BtreeDictionary<TKey,TValue> tree;
+                private readonly RankedDictionary<TKey,TValue> tree;
                 private Leaf currentLeaf;
                 private int leafIndex;
 
-                internal Enumerator (BtreeDictionary<TKey,TValue> dictionary)
+                internal Enumerator (RankedDictionary<TKey,TValue> dictionary)
                 {
                     this.tree = dictionary;
                     ((IEnumerator) this).Reset();
@@ -210,7 +210,7 @@ namespace Kaos.Collections
 
 
         /// <summary>
-        /// Represents a collection of values of a <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>.
+        /// Represents a collection of values of a <see cref="RankedDictionary&lt;TKey,TValue&gt;"/>.
         /// </summary>
         [DebuggerDisplay ("Count = {Count}")]
         [DebuggerTypeProxy (typeof (ICollectionValuesDebugView<,>))]
@@ -221,19 +221,19 @@ namespace Kaos.Collections
             , IReadOnlyCollection<TValue>
 #endif
         {
-            private readonly BtreeDictionary<TKey,TValue> tree;
+            private readonly RankedDictionary<TKey,TValue> tree;
 
             #region Constructors
 
             /// <summary>
             /// Make a new <b>"BtreeDictionary&lt;TKey,TValue&gt;.ValueCollection</b> that
-            /// holds the values of a <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>.
+            /// holds the values of a <see cref="RankedDictionary&lt;TKey,TValue&gt;"/>.
             /// </summary>
             /// <param name="dictionary">
-            /// <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/> containing these keys.
+            /// <see cref="RankedDictionary&lt;TKey,TValue&gt;"/> containing these keys.
             /// </param>
             /// <exception cref="ArgumentNullException">When <em>dictionary</em> is <b>null</b>.</exception>
-            public ValueCollection (BtreeDictionary<TKey,TValue> dictionary)
+            public ValueCollection (RankedDictionary<TKey,TValue> dictionary)
             {
                 if (dictionary == null)
 #pragma warning disable IDE0016
@@ -293,11 +293,11 @@ namespace Kaos.Collections
             /// <summary>Enumerates the elements of a ValueCollection ordered by key.</summary>
             public sealed class Enumerator : IEnumerator<TValue>
             {
-                private readonly BtreeDictionary<TKey,TValue> tree;
+                private readonly RankedDictionary<TKey,TValue> tree;
                 private Leaf currentLeaf;
                 private int leafIndex;
 
-                internal Enumerator (BtreeDictionary<TKey,TValue> dictionary)
+                internal Enumerator (RankedDictionary<TKey,TValue> dictionary)
                 {
                     this.tree = dictionary;
                     ((IEnumerator) this).Reset();

@@ -15,7 +15,7 @@ namespace ChartApp
 {
     class BtreeChart04C
     {
-        static BtreeDictionary<int,int> tree = new BtreeDictionary<int,int> (4);
+        static RankedDictionary<int,int> tree = new RankedDictionary<int,int> (4);
 
         static void WriteInfo (bool showStats=false)
         {

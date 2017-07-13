@@ -14,7 +14,7 @@ namespace ExampleApp
     {
         static void Main()
         {
-            var towns = new BtreeDictionary<string,int>();
+            var towns = new RankedDictionary<string,int>();
 
             // Load sample data.
             towns.Add ("Albany", 43600);

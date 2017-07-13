@@ -13,7 +13,7 @@ using System.Text;
 
 namespace Kaos.Collections
 {
-    public partial class BtreeDictionary<TKey,TValue>
+    public partial class RankedDictionary<TKey,TValue>
     {
         /// <summary>A page of the B+ tree. May be internal (Branch) or terminal (Leaf).</summary>
         private abstract class Node

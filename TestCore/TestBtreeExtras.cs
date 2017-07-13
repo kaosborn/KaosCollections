@@ -12,14 +12,14 @@ namespace CollectionsTest
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
         public void Crash_XtraCtor1E1_ArgumentOutOfRange()
         {
-            var tree = new BtreeDictionary<int,int> (3);
+            var tree = new RankedDictionary<int,int> (3);
         }
 
 
         [TestMethod]
         public void Unit_XtraCtor1()
         {
-            var tree = new BtreeDictionary<int,int> (6);
+            var tree = new RankedDictionary<int,int> (6);
             Assert.AreEqual (0, tree.Count);
         }
 
@@ -27,7 +27,7 @@ namespace CollectionsTest
         [TestMethod]
         public void Unit_XtraBetweenKeys()
         {
-            var bt = new BtreeDictionary<int,int>();
+            var bt = new RankedDictionary<int,int>();
 
             for (int i = 90; i >= 0; i -= 10)
                 bt.Add (i, -100 - i);
@@ -48,7 +48,7 @@ namespace CollectionsTest
         [TestMethod]
         public void Unit_XtraBetweenKeysPassedEnd()
         {
-            var btree = new BtreeDictionary<int,int>();
+            var btree = new RankedDictionary<int,int>();
 
             for (int i = 0; i < 1000; ++i)
                 btree.Add (i, -i);
@@ -69,7 +69,7 @@ namespace CollectionsTest
         [TestMethod]
         public void Unit_XtraSkipUntilKey()
         {
-            var btree = new BtreeDictionary<int,int>();
+            var btree = new RankedDictionary<int,int>();
 
             for (int i = 1; i <= 1000; ++i)
                 btree.Add (i, -i);
@@ -92,7 +92,7 @@ namespace CollectionsTest
         public void Unit_XtraSkipUntilKeyMissingVal()
         {
 
-            var btree = new BtreeDictionary<int,int>();
+            var btree = new RankedDictionary<int,int>();
 
             for (int i = 0; i < 1000; i += 2)
                 btree.Add (i, -i);
@@ -115,7 +115,7 @@ namespace CollectionsTest
         [TestMethod]
         public void Unit_XtraSkipUntilKeyPassedEnd()
         {
-            var btree = new BtreeDictionary<int,int>();
+            var btree = new RankedDictionary<int,int>();
 
             for (int i = 0; i < 1000; ++i)
                 btree.Add (i, -i);
@@ -131,7 +131,7 @@ namespace CollectionsTest
         [TestMethod]
         public void Unit_RankedIndexOf()
         {
-            var tree = new BtreeDictionary<int,int>(5);
+            var tree = new RankedDictionary<int,int>(5);
             for (int ii = 0; ii < 500; ii+=2)
                 tree.Add (ii, ii+1000);
 
@@ -145,7 +145,7 @@ namespace CollectionsTest
         [TestMethod]
         public void Unit_RankedGetValueIndex()
         {
-            var tree = new BtreeDictionary<int,int>(5);
+            var tree = new RankedDictionary<int,int>(5);
             for (int ii = 0; ii < 500; ii+=2)
                 tree.Add (ii, ii+1000);
 
@@ -167,7 +167,7 @@ namespace CollectionsTest
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
         public void Crash_RankedGetByIndexArgumentOutOfRange_1()
         {
-            var tree = new BtreeDictionary<int,int> (4) { { 4, 104 } };
+            var tree = new RankedDictionary<int,int> (4) { { 4, 104 } };
             KeyValuePair<int,int> pair = tree.GetByIndex (-1);
         }
 
@@ -175,7 +175,7 @@ namespace CollectionsTest
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
         public void Crash_RankedGetByIndexArgumentOutOfRange_2()
         {
-            var tree = new BtreeDictionary<int,int> (4);
+            var tree = new RankedDictionary<int,int> (4);
             KeyValuePair<int,int> pair = tree.GetByIndex (0);
         }
 
@@ -183,7 +183,7 @@ namespace CollectionsTest
         [TestMethod]
         public void Unit_RankedGetByIndex()
         {
-            var tree = new BtreeDictionary<int,int> (4);
+            var tree = new RankedDictionary<int,int> (4);
             for (int ii = 0; ii <= 800; ii+=2)
                 tree.Add (ii, ii+100);
 

@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 namespace Kaos.Collections
 {
-    public partial class BtreeDictionary<TKey,TValue>
+    public partial class RankedDictionary<TKey,TValue>
     {
         /// <summary>
         /// Get the Last key/value pair without performing a full structure scan.

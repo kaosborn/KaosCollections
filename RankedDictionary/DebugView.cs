@@ -84,7 +84,7 @@ namespace Kaos.Collections
     }
 
 #if DEBUG
-    public partial class BtreeDictionary<TKey,TValue>
+    public partial class RankedDictionary<TKey,TValue>
     {
         // Telemetry counters:
 

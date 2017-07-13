@@ -123,13 +123,13 @@ namespace BenchApp
 
         static void Main()
         {
-            var b1 = new Exercise<BtreeDictionary<long,long>>();
+            var b1 = new Exercise<RankedDictionary<long,long>>();
             var b2 = new Exercise<SortedDictionary<long,long>>();
 
-            BenchSuite ("BtreeDictionary", b1);
+            BenchSuite ("RankedDictionary", b1);
             BenchSuite ("SortedDictionary", b2);
 
-            BenchSuite ("BtreeDictionary", b1);
+            BenchSuite ("RankedDictionary", b1);
             BenchSuite ("SortedDictionary", b2);
         }
     }

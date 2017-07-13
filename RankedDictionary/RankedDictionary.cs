@@ -27,7 +27,7 @@ namespace Kaos.Collections
     /// </remarks>
     [DebuggerTypeProxy (typeof (IDictionaryDebugView<,>))]
     [DebuggerDisplay ("Count = {Count}")]
-    public sealed partial class BtreeDictionary<TKey,TValue> :
+    public sealed partial class RankedDictionary<TKey,TValue> :
         IDictionary<TKey,TValue>,
         IDictionary
 #if NETSTANDARD1_0
@@ -51,35 +51,35 @@ namespace Kaos.Collections
         /// Make a new BTD
         /// consisting of TKey/TValue pairs.
         /// </summary>
-        public BtreeDictionary() : this (DefaultOrder, null)
+        public RankedDictionary() : this (DefaultOrder, null)
         { }
 
 
         /// <summary>
-        /// Make a new <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>
+        /// Make a new <see cref="RankedDictionary&lt;TKey,TValue&gt;"/>
         /// consisting of TKey/TValue pairs.
         /// </summary>
         /// <param name="order">Maximum number of children of a node.</param>
-        public BtreeDictionary (int order) : this (order, null)
+        public RankedDictionary (int order) : this (order, null)
         { }
 
 
         /// <summary>
-        /// Make a new <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>
+        /// Make a new <see cref="RankedDictionary&lt;TKey,TValue&gt;"/>
         /// consisting of TKey/TValue pairs sorted by the supplied key comparer.
         /// </summary>
         /// <param name="comparer">Comparison operator for keys.</param>
-        public BtreeDictionary (IComparer<TKey> comparer) : this (DefaultOrder, comparer)
+        public RankedDictionary (IComparer<TKey> comparer) : this (DefaultOrder, comparer)
         { }
 
 
         /// <summary>
-        /// Make a new <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>
+        /// Make a new <see cref="RankedDictionary&lt;TKey,TValue&gt;"/>
         /// consisting of TKey/TValue pairs sorted by the supplied key comparer.
         /// </summary>
         /// <param name="order">Maximum number of children of a node.</param>
         /// <param name="comparer">Comparison operator for keys.</param>
-        public BtreeDictionary (int order, IComparer<TKey> comparer)
+        public RankedDictionary (int order, IComparer<TKey> comparer)
         {
             if (order < MinimumOrder || order > MaximumOrder)
                 throw new ArgumentOutOfRangeException (nameof (order), "Must be between " + MinimumOrder + " and " + MaximumOrder);
@@ -91,24 +91,24 @@ namespace Kaos.Collections
 
 
         /// <summary>
-        /// Make a new <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>
+        /// Make a new <see cref="RankedDictionary&lt;TKey,TValue&gt;"/>
         /// that consists of TKey/TValue pairs from the supplied source.
         /// </summary>
         /// <param name="dictionary">The source of the contents of the new
-        /// <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>.</param>
-        public BtreeDictionary (IDictionary<TKey,TValue> dictionary) : this (dictionary, null)
+        /// <see cref="RankedDictionary&lt;TKey,TValue&gt;"/>.</param>
+        public RankedDictionary (IDictionary<TKey,TValue> dictionary) : this (dictionary, null)
         { }
 
 
         /// <summary>
-        /// Make a new <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/> consisting of
+        /// Make a new <see cref="RankedDictionary&lt;TKey,TValue&gt;"/> consisting of
         /// TKey/TValue pairs from the supplied source sorted by the supplied key comparer.
         /// </summary>
         /// <param name="dictionary">The source of the contents of the new
-        /// <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>.</param>
+        /// <see cref="RankedDictionary&lt;TKey,TValue&gt;"/>.</param>
         /// <param name="comparer">Comparison operator for keys.</param>
         /// <exception cref="ArgumentNullException">When <em>dictionary</em> is <b>null</b>.</exception>
-        public BtreeDictionary (IDictionary<TKey,TValue> dictionary, IComparer<TKey> comparer) : this (comparer)
+        public RankedDictionary (IDictionary<TKey,TValue> dictionary, IComparer<TKey> comparer) : this (comparer)
         {
             if (dictionary == null)
                 throw new ArgumentNullException (nameof (dictionary));
@@ -271,15 +271,15 @@ namespace Kaos.Collections
         /// <summary>Provides sequential access to the TKey/TValue collection.</summary>
         public sealed class Enumerator : IEnumerator<KeyValuePair<TKey,TValue>>, IDictionaryEnumerator
         {
-            private readonly BtreeDictionary<TKey,TValue> tree;
+            private readonly RankedDictionary<TKey,TValue> tree;
             private Leaf currentLeaf;
             private int leafIndex;
             private bool isGeneric;
 
             /// <summary>Make an iterator that will loop thru the collection in order.</summary>
-            /// <param name="dictionary"><see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>containing these key/value pairs.</param>
+            /// <param name="dictionary"><see cref="RankedDictionary&lt;TKey,TValue&gt;"/>containing these key/value pairs.</param>
             /// <param name="isGeneric">Supply <b>false</b> to indicate object Current should return DictionaryEntry values.</param>
-            internal Enumerator (BtreeDictionary<TKey,TValue> dictionary, bool isGeneric=true)
+            internal Enumerator (RankedDictionary<TKey,TValue> dictionary, bool isGeneric=true)
             {
                 this.tree = dictionary;
                 this.isGeneric = isGeneric;
@@ -395,7 +395,7 @@ namespace Kaos.Collections
 
 
         /// <summary>
-        /// Get the collection of keys in the <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>.
+        /// Get the collection of keys in the <see cref="RankedDictionary&lt;TKey,TValue&gt;"/>.
         /// </summary>
         public KeyCollection Keys
         {
@@ -409,7 +409,7 @@ namespace Kaos.Collections
 
 
         /// <summary>
-        /// Get the collection of values in the <see cref="BtreeDictionary&lt;TKey,TValue&gt;"/>.
+        /// Get the collection of values in the <see cref="RankedDictionary&lt;TKey,TValue&gt;"/>.
         /// </summary>
         public ValueCollection Values
         {
