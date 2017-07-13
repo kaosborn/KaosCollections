@@ -25,6 +25,6 @@
     <DocumentationFile>bin\Release\netstandard1.0\KaosCollections.xml</DocumentationFile>
   </PropertyGroup>
 
-  <Import Project="..\BtreeDictionary\BtreeDictionary.projitems" Label="Shared" />
+  <Import Project="..\RankedDictionary\RankedDictionary.projitems" Label="Shared" />
 
 </Project>

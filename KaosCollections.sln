@@ -49,7 +49,7 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "RankedDictionary", "RankedD
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		BtreeDictionary\BtreeDictionary.projitems*{04bc35f4-f0d8-47d0-ae7c-b2d62be49fc6}*SharedItemsImports = 4
+		RankedDictionary\RankedDictionary.projitems*{04bc35f4-f0d8-47d0-ae7c-b2d62be49fc6}*SharedItemsImports = 4
 		RankedDictionary\RankedDictionary.projitems*{1889d72f-b5eb-4e5f-95b2-5aa1ccca8b40}*SharedItemsImports = 13
 		BtreeDictionary\BtreeDictionary.projitems*{9aab8f38-1582-401d-a4fd-adae2c6cb496}*SharedItemsImports = 13
 	EndGlobalSection
