@@ -9,13 +9,13 @@
     <Import_RootNamespace>RankedDictionary</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)BtreeDiagnostics.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)BtreeDictionary.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)BtreeDictionaryObject.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)BtreeExtras.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)BtreeFind.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)BtreeKeysValues.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)BtreeNode.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)BtreeNodeVector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DebugView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RankedDictionaryObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RankedDictionaryExtras.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RankedDictionaryFind.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.KeysValues.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.Node.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.NodeVector.cs" />
   </ItemGroup>
 </Project>
