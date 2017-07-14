@@ -50,7 +50,8 @@
     <ContentPlacement>AboveNamespaces</ContentPlacement>
     <ProjectSummary>Free to use and share.</ProjectSummary>
     <NamespaceSummaries>
-      <NamespaceSummaryItem name="Kaos.Collections" isDocumented="True" xmlns="">Kaos.Collections summary</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Kaos.Collections" isDocumented="True">The Kaos.Collections namespace contains the class BtreeSortedDictionary which also contains several supporting nested classes.
+This namespace is intended to work alongside the System.Collections.Generic classes.</NamespaceSummaryItem>
     </NamespaceSummaries>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
