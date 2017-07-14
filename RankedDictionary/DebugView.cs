@@ -14,7 +14,8 @@ using System.Text;
 
 namespace Kaos.Collections
 {
-    public class IDictionaryDebugView<K,V>
+    /// <exclude />
+    internal class IDictionaryDebugView<K,V>
     {
         private readonly IDictionary<K,V> target;
 
@@ -37,7 +38,8 @@ namespace Kaos.Collections
         }
     }
 
-    public class ICollectionKeysDebugView<K,V>
+    /// <exclude />
+    internal class ICollectionKeysDebugView<K,V>
     {
         private readonly ICollection<K> target;
 
@@ -60,7 +62,9 @@ namespace Kaos.Collections
         }
     }
 
-    public class ICollectionValuesDebugView<K,V>
+
+    /// <exclude />
+    internal class ICollectionValuesDebugView<K,V>
     {
         private readonly ICollection<V> target;
 
