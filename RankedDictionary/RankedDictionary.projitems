@@ -18,5 +18,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.KeysValues.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Btree.Node.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Btree.NodeVector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RankedSet.cs" />
   </ItemGroup>
 </Project>
