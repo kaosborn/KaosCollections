@@ -38,10 +38,17 @@ namespace Kaos.Collections
     {
         private KeyLeaf LeftmostLeaf { get { return leftmostLeaf; } }
 
+        public RankedSet() : this (DefaultOrder, Comparer<TKey>.Default)
+        { }
+
+        public RankedSet (int order) : this (order, Comparer<TKey>.Default)
+        { }
+
         public RankedSet (int order, IComparer<TKey> comparer) : base (order, comparer, new KeyLeaf())
-        {
-            this.root = this.leftmostLeaf;
-        }
+        { this.root = this.leftmostLeaf; }
+
+        public RankedSet (IComparer<TKey> comparer) : this (DefaultOrder, comparer)
+        { }
 
 
         public int Count
