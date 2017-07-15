@@ -4,11 +4,11 @@
     <TargetFrameworks>netstandard1.0;net40;net35</TargetFrameworks>
     <AssemblyName>KaosCollections</AssemblyName>
     <RootNamespace>Kaos.Collections</RootNamespace>
-    <Version>0.3.4</Version>
+    <Version>0.3.5</Version>
     <Authors>Kasey O.</Authors>
     <Description>Collections library for .NET (sorted dictionary)</Description>
-    <AssemblyVersion>0.3.4.0</AssemblyVersion>
-    <FileVersion>0.3.4.0</FileVersion>
+    <AssemblyVersion>0.3.5.0</AssemblyVersion>
+    <FileVersion>0.3.5.0</FileVersion>
     <Company>github.com/kaosborn</Company>
     <PackageId>Kaos.Collections</PackageId>
     <Copyright>Copyright © 2009-2017 github.com/kaosborn</Copyright>
