@@ -1,7 +1,7 @@
 ﻿//
 // Library: KaosCollections
-// File:    BtreeDictionary.cs
-// Purpose: Defines BtreeDictionary generic API.
+// File:    RankedDictionary.cs
+// Purpose: Defines RankedDictionary generic API.
 //
 // Copyright © 2009-2017 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely
@@ -28,22 +28,17 @@ namespace Kaos.Collections
     [DebuggerTypeProxy (typeof (IDictionaryDebugView<,>))]
     [DebuggerDisplay ("Count = {Count}")]
     public sealed partial class RankedDictionary<TKey,TValue> :
-        IDictionary<TKey,TValue>,
+        Btree<TKey>, IDictionary<TKey,TValue>,
         IDictionary
 #if NETSTANDARD1_0
         , IReadOnlyDictionary<TKey,TValue>
 #endif
         where TKey : IComparable
     {
-        private Node root;
         private KeyCollection keys;
         private ValueCollection values;
-        private readonly Leaf leftmostLeaf;
-        private readonly int maxKeyCount;
-        private readonly IComparer<TKey> comparer;
-        private const int MinimumOrder = 4;
-        private const int DefaultOrder = 128;
-        private const int MaximumOrder = 256;
+
+        private Leaf LeftmostLeaf { get { return (Leaf) leftmostLeaf; } }
 
         #region Constructors
 
@@ -79,14 +74,12 @@ namespace Kaos.Collections
         /// </summary>
         /// <param name="order">Maximum number of children of a node.</param>
         /// <param name="comparer">Comparison operator for keys.</param>
-        public RankedDictionary (int order, IComparer<TKey> comparer)
+        public RankedDictionary (int order, IComparer<TKey> comparer) : base (order, comparer, new Leaf())
         {
             if (order < MinimumOrder || order > MaximumOrder)
                 throw new ArgumentOutOfRangeException (nameof (order), "Must be between " + MinimumOrder + " and " + MaximumOrder);
 
-            this.comparer = comparer ?? Comparer<TKey>.Default;
-            this.maxKeyCount = order - 1;
-            this.root = this.leftmostLeaf = new Leaf();
+            this.root = this.leftmostLeaf;
         }
 
 
@@ -136,7 +129,49 @@ namespace Kaos.Collections
             if (path.IsFound)
                 throw new ArgumentException ("An entry with the same key already exists.", nameof (key));
 
-            path.Insert (key, value);
+            Add2 (path, key, value);
+        }
+
+        private void Add2 (NodeVector path, TKey key, TValue value)
+        {
+            var leaf = (Leaf) path.TopNode;
+            int pathIndex = path.TopNodeIndex;
+
+            path.UpdateWeight (1);
+            if (leaf.KeyCount < maxKeyCount)
+            {
+                leaf.Insert (pathIndex, key, value);
+                return;
+            }
+
+            // Leaf is full so right split a new leaf.
+            var newLeaf = new Leaf (leaf, maxKeyCount);
+
+            if (newLeaf.RightLeaf == null && pathIndex == leaf.KeyCount)
+                newLeaf.Add (key, value);
+            else
+            {
+                int splitIndex = leaf.KeyCount / 2 + 1;
+
+                if (pathIndex < splitIndex)
+                {
+                    // Left-side insert: Copy right side to the split leaf.
+                    newLeaf.Add (leaf, splitIndex - 1, leaf.KeyCount);
+                    leaf.Truncate (splitIndex - 1);
+                    leaf.Insert (pathIndex, key, value);
+                }
+                else
+                {
+                    // Right-side insert: Copy split leaf parts and new key.
+                    newLeaf.Add (leaf, splitIndex, pathIndex);
+                    newLeaf.Add (key, value);
+                    newLeaf.Add (leaf, pathIndex, leaf.KeyCount);
+                    leaf.Truncate (splitIndex);
+                }
+            }
+
+            // Promote anchor of split leaf.
+            path.Promote (newLeaf.Key0, (Node) newLeaf, newLeaf.RightLeaf == null);
         }
 
 
@@ -144,7 +179,7 @@ namespace Kaos.Collections
         public void Clear()
         {
             leftmostLeaf.Truncate (0);
-            leftmostLeaf.RightLeaf = null;
+            leftmostLeaf.rightKeyLeaf = null;
             root = leftmostLeaf;
         }
 
@@ -161,7 +196,7 @@ namespace Kaos.Collections
             if (key == null)
                 throw new ArgumentNullException (nameof (key));
 
-            Leaf leaf = Find (key, out int index);
+            var leaf = (Leaf) Find (key, out int index);
             return index >= 0;
         }
 
@@ -176,13 +211,13 @@ namespace Kaos.Collections
             if (value != null)
             {
                 var comparer = EqualityComparer<TValue>.Default;
-                for (Leaf leaf = leftmostLeaf; leaf != null; leaf = leaf.RightLeaf)
+                for (Leaf leaf = LeftmostLeaf; leaf != null; leaf = leaf.RightLeaf)
                     for (int vix = 0; vix < leaf.ValueCount; ++vix)
                         if (comparer.Equals (leaf.GetValue (vix), value))
                             return true;
             }
             else
-                for (Leaf leaf = leftmostLeaf; leaf != null; leaf = leaf.RightLeaf)
+                for (Leaf leaf = LeftmostLeaf; leaf != null; leaf = leaf.RightLeaf)
                     for (int vix = 0; vix < leaf.ValueCount; ++vix)
                         if (leaf.GetValue (vix) == null)
                             return true;
@@ -208,7 +243,7 @@ namespace Kaos.Collections
             if (Count > array.Length - index)
                 throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
 
-            for (Leaf leaf = leftmostLeaf; leaf != null; leaf = leaf.RightLeaf)
+            for (Leaf leaf = LeftmostLeaf; leaf != null; leaf = leaf.RightLeaf)
                 for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
                     array[index++] = new KeyValuePair<TKey,TValue> (leaf.GetKey (leafIndex), leaf.GetValue (leafIndex));
         }
@@ -235,7 +270,7 @@ namespace Kaos.Collections
             if (! path.IsFound)
                 return false;
 
-            path.Delete();
+            Remove2 (path);
             return true;
         }
 
@@ -251,7 +286,7 @@ namespace Kaos.Collections
             if (key == null)
                 throw new ArgumentNullException (nameof (key));
 
-            Leaf leaf = Find (key, out int index);
+            var leaf = (Leaf) Find (key, out int index);
             if (index >= 0)
             {
                 value = leaf.GetValue (index);
@@ -340,7 +375,7 @@ namespace Kaos.Collections
 
             /// <summary>Move the enumerator back to its initial location.</summary>
             void IEnumerator.Reset()
-            { leafIndex = -1; currentLeaf = tree.leftmostLeaf; }
+            { leafIndex = -1; currentLeaf = tree.LeftmostLeaf; }
 
             /// <exclude />
             public void Dispose() { }
@@ -354,7 +389,7 @@ namespace Kaos.Collections
         /// <remarks>To override sorting based on the default comparer, supply an
         /// alternate comparer when constructed.</remarks>
         public IComparer<TKey> Comparer
-        { get { return comparer; } }
+        { get { return compareOp; } }
 
 
         /// <summary>Get the number of key/value pairs in the dictionary.</summary>
@@ -375,7 +410,7 @@ namespace Kaos.Collections
                 if (key == null)
                     throw new ArgumentNullException (nameof (key));
 
-                Leaf leaf = Find (key, out int index);
+                var leaf = (Leaf) Find (key, out int index);
                 if (index < 0)
                     throw new KeyNotFoundException ("The given key was not present in the dictionary.");
                 return leaf.GetValue (index);
@@ -387,9 +422,9 @@ namespace Kaos.Collections
 
                 var path = new NodeVector (this, key);
                 if (path.IsFound)
-                    path.LeafValue = value;
+                    Leaf.SetValue (path, value);
                 else
-                    path.Insert (key, value);
+                    Add2 (path, key, value);
             }
         }
 
@@ -435,7 +470,7 @@ namespace Kaos.Collections
             if (path.IsFound)
                 throw new ArgumentException ("An entry with the same key already exists.", nameof (keyValuePair));
 
-            path.Insert (keyValuePair.Key, keyValuePair.Value);
+            Add2 (path, keyValuePair.Key, keyValuePair.Value);
         }
 
 
@@ -445,7 +480,7 @@ namespace Kaos.Collections
         /// otherwise <b>false</b>.</returns>
         bool ICollection<KeyValuePair<TKey,TValue>>.Contains (KeyValuePair<TKey,TValue> keyValuePair)
         {
-            var leaf = Find (keyValuePair.Key, out int index);
+            var leaf = (Leaf) Find (keyValuePair.Key, out int index);
             if (index < 0)
                 return false;
             return EqualityComparer<TValue>.Default.Equals (leaf.GetValue (index), keyValuePair.Value);
@@ -485,10 +520,10 @@ namespace Kaos.Collections
         bool ICollection<KeyValuePair<TKey,TValue>>.Remove (KeyValuePair<TKey,TValue> keyValuePair)
         {
             var path = new NodeVector (this, keyValuePair.Key);
-            if (! path.IsFound || ! EqualityComparer<TValue>.Default.Equals (keyValuePair.Value, path.LeafValue))
+            if (! path.IsFound || ! EqualityComparer<TValue>.Default.Equals (keyValuePair.Value, Leaf.GetValue (path)))
                 return false;
 
-            path.Delete();
+            Remove2 (path);
             return true;
         }
 

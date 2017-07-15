@@ -1,7 +1,6 @@
 ﻿//
 // Library: KaosCollections
-// File:    RankedDictionary.NodeVector.cs
-// Purpose: Defines nonpublic class that stores an element traversal path.
+// File:    Btree.NodeVector.cs
 //
 // Copyright © 2009-2017 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely
@@ -12,16 +11,16 @@ using System.Diagnostics;
 
 namespace Kaos.Collections
 {
-    public partial class RankedDictionary<TKey,TValue>
+    public partial class Btree<TKey>
     {
-        /// <summary>Stack trace from root to leaf of a key/value pair.</summary>
+        /// <summary>Stack trace from root to leaf.</summary>
         /// <remarks>
         /// Provides traversal path to existing key or insertion point for non-existing key
         /// along with various helper methods.
         /// </remarks>
-        private class NodeVector
+        protected class NodeVector
         {
-            private readonly RankedDictionary<TKey,TValue> owner;
+            private readonly Btree<TKey> owner;
             private readonly List<int> indexStack;
             private readonly List<Node> nodeStack;
 
@@ -30,7 +29,7 @@ namespace Kaos.Collections
             /// <summary>Perform search and store each level of path on the stack.</summary>
             /// <param name="tree">Tree to search.</param>
             /// <param name="key">Value to find.</param>
-            public NodeVector (RankedDictionary<TKey,TValue> tree, TKey key)
+            public NodeVector (Btree<TKey> tree, TKey key)
             {
                 this.owner = tree;
                 this.indexStack = new List<int>();
@@ -41,9 +40,9 @@ namespace Kaos.Collections
                     Debug.Assert (node != null);
 
                     this.nodeStack.Add (node);
-                    int ix = node.Search (key, tree.comparer);
+                    int ix = node.Search (key, tree.compareOp);
 
-                    if (node is Leaf)
+                    if (! (node is Branch))
                     {
                         IsFound = ix >= 0;
                         if (! IsFound)
@@ -73,21 +72,6 @@ namespace Kaos.Collections
 
             public int Height
             { get { return indexStack.Count; } }
-
-
-            public TValue LeafValue
-            {
-                get
-                {
-                    int leafIndex = indexStack.Count - 1;
-                    return ((Leaf) nodeStack[leafIndex]).GetValue (indexStack[leafIndex]);
-                }
-                set
-                {
-                    int leafIndex = indexStack.Count - 1;
-                    ((Leaf) nodeStack[leafIndex]).SetValue (indexStack[leafIndex], value);
-                }
-            }
 
             #endregion
 
@@ -241,59 +225,15 @@ namespace Kaos.Collections
             }
 
 
-            private void UpdateWeight (int delta)
+            public void UpdateWeight (int delta)
             {
                 for (int level = Height-2; level >= 0; --level)
                     ((Branch) nodeStack[level]).AdjustWeight (+ delta);
             }
 
 
-            /// <summary>Insert element at this path.</summary>
-            public void Insert (TKey key, TValue value)
-            {
-                var leaf = (Leaf) TopNode;
-                int pathIndex = TopNodeIndex;
-
-                UpdateWeight (1);
-                if (leaf.KeyCount < owner.maxKeyCount)
-                {
-                    leaf.Insert (pathIndex, key, value);
-                    return;
-                }
-
-                // Leaf is full so right split a new leaf.
-                var newLeaf = new Leaf (leaf, owner.maxKeyCount);
-
-                if (newLeaf.RightLeaf == null && pathIndex == leaf.KeyCount)
-                    newLeaf.Add (key, value);
-                else
-                {
-                    int splitIndex = leaf.KeyCount / 2 + 1;
-
-                    if (pathIndex < splitIndex)
-                    {
-                        // Left-side insert: Copy right side to the split leaf.
-                        newLeaf.Add (leaf, splitIndex - 1, leaf.KeyCount);
-                        leaf.Truncate (splitIndex - 1);
-                        leaf.Insert (pathIndex, key, value);
-                    }
-                    else
-                    {
-                        // Right-side insert: Copy split leaf parts and new key.
-                        newLeaf.Add (leaf, splitIndex, pathIndex);
-                        newLeaf.Add (key, value);
-                        newLeaf.Add (leaf, pathIndex, leaf.KeyCount);
-                        leaf.Truncate (splitIndex);
-                    }
-                }
-
-                // Promote anchor of split leaf.
-                Promote (newLeaf.Key0, (Node) newLeaf, newLeaf.RightLeaf == null);
-            }
-
-
             // Leaf or branch has been split so insert the new anchor into a branch.
-            private void Promote (TKey key, Node newNode, bool isAppend)
+            public void Promote (TKey key, Node newNode, bool isAppend)
             {
                 for (;;)
                 {
@@ -319,7 +259,7 @@ namespace Kaos.Collections
                     }
 
                     // Branch is full so right split a new branch.
-                    var newBranch = new Branch (branch, owner.maxKeyCount);
+                    var newBranch = new Branch (owner.maxKeyCount);
                     int splitIndex = isAppend ? branch.KeyCount - 1 : (branch.KeyCount + 1) / 2;
 
                     if (branchIndex < splitIndex)
@@ -383,62 +323,8 @@ namespace Kaos.Collections
             }
 
 
-            /// <summary>Delete key/value at this path.</summary>
-            public void Delete()
-            {
-                int leafIndex = TopNodeIndex;
-                var leaf = (Leaf) TopNode;
-
-                leaf.Remove (leafIndex);
-                UpdateWeight (-1);
-
-                if (leafIndex == 0)
-                    if (leaf.KeyCount != 0)
-                        SetPivot (TopNode.Key0);
-                    else
-                    {
-                        Debug.Assert (leaf.RightLeaf==null, "only rightmost leaf should ever be empty");
-
-                        // Leaf is empty.  Prune it unless it is the only leaf in the tree.
-                        if (leaf != owner.leftmostLeaf)
-                        {
-                            ((Leaf) GetLeftNode()).RightLeaf = leaf.RightLeaf;
-                            Demote();
-                        }
-
-                        return;
-                    }
-
-                // Leaf underflow?
-                if (leaf.KeyCount < (owner.maxKeyCount + 1) / 2)
-                {
-                    Leaf rightLeaf = leaf.RightLeaf;
-                    if (rightLeaf != null)
-                        if (leaf.KeyCount + rightLeaf.KeyCount > owner.maxKeyCount)
-                        {
-                            // Balance leaves by shifting pairs from right leaf.
-                            int shifts = (leaf.KeyCount + rightLeaf.KeyCount + 1) / 2 - leaf.KeyCount;
-                            leaf.Add (rightLeaf, 0, shifts);
-                            rightLeaf.Remove (0, shifts);
-                            TraverseRight();
-                            SetPivot (rightLeaf.Key0);
-                            TiltLeft (shifts);
-                        }
-                        else
-                        {
-                            // Coalesce right leaf to current leaf and prune right leaf.
-                            leaf.Add (rightLeaf, 0, rightLeaf.KeyCount);
-                            leaf.RightLeaf = rightLeaf.RightLeaf;
-                            TraverseRight();
-                            TiltLeft (rightLeaf.KeyCount);
-                            Demote();
-                        }
-                }
-            }
-
-
             // Leaf has been emptied so non-lazy delete its pivot.
-            private void Demote()
+            public void Demote()
             {
                 for (;;)
                 {
@@ -523,7 +409,7 @@ namespace Kaos.Collections
                 }
             }
 
-            #endregion
+#endregion
 
 #if DEBUG
             /// <summary>Returns <b>true</b> if no left sibling.</summary>
@@ -534,7 +420,7 @@ namespace Kaos.Collections
             /// <summary>Make an empty path.</summary>
             /// <param name="tree">Target of path.</param>
             /// <remarks>Used only for diagnostics.</remarks>
-            public NodeVector (RankedDictionary<TKey,TValue> tree)
+            public NodeVector (Btree<TKey> tree)
             {
                 this.indexStack = new List<int>();
                 this.nodeStack = new List<Node>();
@@ -547,7 +433,7 @@ namespace Kaos.Collections
             /// <param name="tree">Target of path.</param>
             /// <param name="level">Level of node to seek (root is level 0).</param>
             /// <remarks>Used only for diagnostics.</remarks>
-            public NodeVector (RankedDictionary<TKey,TValue> tree, int level) : this (tree)
+            public NodeVector (Btree<TKey> tree, int level) : this (tree)
             {
                 for (Node node = TopNode; level > 0; --level)
                 {

@@ -1,7 +1,7 @@
 ﻿//
 // Library: KaosCollections
-// File:    BtreeDiagnostics.cs
-// Purpose: Define BtreeDictionary API for Debug build only.
+// File:    DebugView.cs
+// Purpose: Define API for Debug telemetry and debugger helpers.
 //
 // Copyright © 2009-2017 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely

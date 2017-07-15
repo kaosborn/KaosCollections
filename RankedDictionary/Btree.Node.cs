@@ -1,7 +1,6 @@
 ﻿//
 // Library: KaosCollections
-// File:    RankedDictionary.Node.cs
-// Purpose: Define nonpublic tree structure and its basic operations.
+// File:    Btree.Node.cs
 //
 // Copyright © 2009-2017 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely
@@ -13,14 +12,14 @@ using System.Text;
 
 namespace Kaos.Collections
 {
-    public partial class RankedDictionary<TKey,TValue>
+    public partial class Btree<TKey>
     {
         /// <summary>A page of the B+ tree. May be internal (Branch) or terminal (Leaf).</summary>
-        private abstract class Node
+        protected abstract class Node
         {
             protected readonly List<TKey> keys;
 
-            protected Node (int keyCapacity)
+            public Node (int keyCapacity)
             { this.keys = new List<TKey> (keyCapacity); }
 
             public int KeyCount { get { return keys.Count; } }
@@ -56,18 +55,12 @@ namespace Kaos.Collections
         /// <remarks>
         /// Contains copies of the first key of every leaf (except the leftmost).
         /// </remarks>
-        private sealed class Branch : Node
+        protected sealed class Branch : Node
         {
             private readonly List<Node> childNodes;
             private int weight;
 
-            // Called on initialization only.
-            public Branch (Leaf leaf, int keyCapacity=0) : base (keyCapacity)
-            {
-                this.childNodes = new List<Node> (keyCapacity) { leaf };
-            }
-
-            public Branch (Branch leftBranch, int keyCapacity) : base (keyCapacity)
+            public Branch (int keyCapacity) : base (keyCapacity)
             {
                 this.childNodes = new List<Node> (keyCapacity + 1);
             }
@@ -126,103 +119,64 @@ namespace Kaos.Collections
             }
         }
 
-
-        /// <summary>An terminal B+ tree page.</summary>
-        /// <remarks>
-        /// All key/value pairs are contained in this class.
-        /// Leaf is a sequential linked list also referenced by parent branches.
-        /// </remarks>
-        private sealed class Leaf : Node
+        protected class KeyLeaf : Node
         {
-            private readonly List<TValue> values;  // Payload.
-            private Leaf rightLeaf;  // For the linked leaf list.
-
-            public Leaf (int capacity=0) : base (capacity)
+            public KeyLeaf rightKeyLeaf;
+            
+            public KeyLeaf (int capacity=0) : base (capacity)
             {
-                this.values = new List<TValue> (capacity);
-                this.rightLeaf = null;
+                this.rightKeyLeaf = null;
             }
 
-            /// <summary>Splice a leaf to right of <paramref name="leftLeaf"/>.</summary>
-            /// <param name="leftLeaf">Provides linked list insert point.</param>
-            /// <param name="capacity">The initial number of elements the page can store.</param>
-            public Leaf (Leaf leftLeaf, int capacity) : base (capacity)
+            public KeyLeaf (KeyLeaf leftLeaf, int capacity) : base (capacity)
             {
-                this.values = new List<TValue> (capacity);
-
                 // Linked list insertion.
-                this.rightLeaf = leftLeaf.rightLeaf;
-                leftLeaf.rightLeaf = this;
+                this.rightKeyLeaf = leftLeaf.rightKeyLeaf;
+                leftLeaf.rightKeyLeaf = this;
             }
+
+            public KeyLeaf RightLeaf
+            { get { return rightKeyLeaf; } }
 
 
             /// <summary>Number of key/value pairs in the subtree.</summary>
             public override int Weight
             { get { return keys.Count; } }
 
-
-            /// <summary>Next leaf in linked list.</summary>
-            public Leaf RightLeaf
-            {
-                get { return rightLeaf; }
-                set { rightLeaf = value; }
-            }
-
-
-            public int ValueCount
-            { get { return values.Count; } }
-
-
-            public KeyValuePair<TKey,TValue> GetPair (int index)
-            { return new KeyValuePair<TKey,TValue> (keys[index], values[index]); }
-
-
-            public TValue GetValue (int index)
-            { return values[index]; }
-
-
-            public void SetValue (int index, TValue value)
-            { values[index] = value; }
-
-
-            public void Add (TKey key, TValue value)
-            {
-                AddKey (key);
-                values.Add (value);
-            }
-
-            public void Add (Leaf source, int sourceStart, int sourceStop)
+            public void Add (KeyLeaf source, int sourceStart, int sourceStop)
             {
                 for (int ix = sourceStart; ix < sourceStop; ++ix)
-                    Add (source.GetKey (ix), source.GetValue (ix));
+                    keys.Add (source.GetKey (ix));
             }
 
-            public void Insert (int index, TKey key, TValue value)
+            public virtual void Coalesce()
             {
-                Debug.Assert (index >= 0 && index <= ValueCount);
+                for (int ix = 0; ix < rightKeyLeaf.KeyCount; ++ix)
+                    keys.Add (rightKeyLeaf.keys[ix]);
+                rightKeyLeaf = rightKeyLeaf.rightKeyLeaf;
+            }
+
+            public void Insert (int index, TKey key)
+            {
+                Debug.Assert (index >= 0 && index <= keys.Count);
                 InsertKey (index, key);
-                values.Insert (index, value);
             }
 
-            public void Remove (int index)
+            public virtual void Remove (int index)
             {
-                Debug.Assert (index >= 0 && index <= ValueCount);
-                RemoveKey (index);
-                values.RemoveAt (index);
+                keys.RemoveAt (index);
             }
 
-            public void Remove (int index, int count)
+            public virtual void Shift (int shiftCount)
             {
-                Debug.Assert (index >= 0 && index + count <= ValueCount);
-                RemoveKeys (index, count);
-                values.RemoveRange (index, count);
+                for (int ix = 0; ix < shiftCount; ++ix)
+                    keys.Add (rightKeyLeaf.keys[ix]);
+                rightKeyLeaf.keys.RemoveRange (0, shiftCount);
             }
 
-            public void Truncate (int index)
+            public virtual void Truncate (int index)
             {
-                Debug.Assert (index >= 0 && (ValueCount == 0 || index < ValueCount));
-                RemoveKeys (index, KeyCount - index);
-                values.RemoveRange (index, ValueCount - index);
+                keys.RemoveRange (index, keys.Count-index);
             }
         }
     }

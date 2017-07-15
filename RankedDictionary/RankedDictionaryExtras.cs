@@ -1,6 +1,6 @@
 ﻿//
 // Library: KaosCollections
-// File:    BtreeExtras.cs
+// File:    RankedDictionaryExtras.cs
 // Purpose: Define methods that do not have corresponding definitions in SortedDictionary.
 //
 // Copyright © 2009-2017 Kasey Osborn (github.com/kaosborn)
@@ -47,7 +47,7 @@ namespace Kaos.Collections
             if (key == null)
                 throw new ArgumentNullException (nameof (key));
 
-            Leaf leaf = Find (key, out int index);
+            var leaf = (Leaf) Find (key, out int index);
 
             // When the supplied start key is not be found, start with the next highest key.
             if (index < 0)
@@ -85,7 +85,7 @@ namespace Kaos.Collections
         /// </example>
         public IEnumerable<KeyValuePair<TKey,TValue>> BetweenKeys (TKey startKey, TKey endKey)
         {
-            Leaf leaf = Find (startKey, out int index);
+            var leaf = (Leaf) Find (startKey, out int index);
 
             // When the supplied start key is not be found, start with the next highest key.
             if (index < 0)
@@ -171,7 +171,7 @@ namespace Kaos.Collections
                 return false;
             }
 
-            value = path.LeafValue;
+            value = Leaf.GetValue (path);
             index = path.GetIndex();
             return true;
         }

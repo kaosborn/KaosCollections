@@ -1,7 +1,7 @@
 //
 // Library: KaosCollections
-// File:    BtreeDictionaryObject.cs
-// Purpose: Defines nongeneric API for BtreeDictionary and its Keys and Values subclasses.
+// File:    RankedDictionaryObject.cs
+// Purpose: Defines nongeneric API for RankedDictionary and its Keys and Values subclasses.
 //
 // Copyright © 2009-2017 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely
@@ -52,8 +52,8 @@ namespace Kaos.Collections
             if (! (key is TKey))
                 return false;
 
-            Leaf leaf = Find ((TKey) key, out int lix);
-            return lix >= 0;
+            KeyLeaf leaf = Find ((TKey) key, out int ix);
+            return ix >= 0;
         }
 
 
@@ -84,7 +84,7 @@ namespace Kaos.Collections
             if (! (array is KeyValuePair<TKey,TValue>[]) && array.GetType() != typeof (Object[]))
                 throw new ArgumentException ("Target array type is not compatible with the type of items in the collection.", nameof (array));
 
-            for (Leaf leaf = leftmostLeaf; leaf != null; leaf = leaf.RightLeaf)
+            for (Leaf leaf = LeftmostLeaf; leaf != null; leaf = leaf.RightLeaf)
                 for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
                 {
                     array.SetValue (new KeyValuePair<TKey,TValue>(leaf.GetKey (leafIndex), leaf.GetValue (leafIndex)), index);
@@ -118,7 +118,7 @@ namespace Kaos.Collections
 
             var path = new NodeVector (this, (TKey) key);
             if (path.IsFound)
-                path.Delete();
+                Remove2 (path);
         }
 
 
@@ -141,7 +141,7 @@ namespace Kaos.Collections
 
                 if (key is TKey)
                 {
-                    Leaf leaf = Find ((TKey) key, out int index);
+                    var leaf = (Leaf) Find ((TKey) key, out int index);
                     if (index >= 0)
                         return leaf.GetValue (index);
                 }
@@ -163,9 +163,9 @@ namespace Kaos.Collections
                 {
                     var path = new NodeVector (this, (TKey) key);
                     if (path.IsFound)
-                        path.LeafValue = (TValue) value;
+                        Leaf.SetValue (path, (TValue) value);
                     else
-                        path.Insert ((TKey) key, (TValue) value);
+                        Add2 (path, (TKey) key, (TValue) value);
                 }
                 catch (InvalidCastException)
                 {
