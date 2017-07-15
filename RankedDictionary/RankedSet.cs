@@ -34,7 +34,7 @@ namespace Kaos.Collections
 #if NETSTANDARD1_0
         , IReadOnlyCollection<TKey>
 #endif
-        where TKey : IComparable
+        where TKey : IComparable  //TODO remove where
     {
         private KeyLeaf LeftmostLeaf { get { return leftmostLeaf; } }
 
@@ -69,11 +69,9 @@ namespace Kaos.Collections
             root = leftmostLeaf;
         }
 
+
         public bool Add (TKey item)
         {
-            if (item == null)
-                throw new ArgumentNullException (nameof (item));
-
             var path = new NodeVector (this, item);
             if (path.IsFound)
                 return false;
@@ -130,14 +128,18 @@ namespace Kaos.Collections
 
         public bool Contains (TKey key)
         {
-            if (key == null)
-                throw new ArgumentNullException (nameof (key));
-
             KeyLeaf leaf = Find (key, out int index);
             return index >= 0;
         }
 
+
+        public void CopyTo (TKey[] array)
+        { CopyTo (array, 0, Count); }
+
         public void CopyTo (TKey[] array, int index)
+        { CopyTo (array, index, Count); }
+
+        public void CopyTo (TKey[] array, int index, int count)
         {
             if (array == null)
                 throw new ArgumentNullException (nameof (array));
@@ -145,21 +147,55 @@ namespace Kaos.Collections
             if (index < 0)
                 throw new ArgumentOutOfRangeException (nameof (index), index, "Specified argument was out of the range of valid values.");
 
+            if (count < 0)
+                throw new ArgumentOutOfRangeException (nameof (count), count, "Specified argument was out of the range of valid values.");
+
             if (Count > array.Length - index)
                 throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
 
             for (KeyLeaf leaf = LeftmostLeaf; leaf != null; leaf = leaf.RightLeaf)
-                for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
-                    array[index++] = leaf.GetKey (leafIndex);
+                for (int klix = 0; klix < leaf.KeyCount; ++klix)
+                    array[index++] = leaf.GetKey (klix);
         }
 
         void ICollection.CopyTo (Array array, int index)
         {
-            int ix = 0;
-            var obArray = array as object[];
-            foreach (var item in this)
-                obArray[ix++] = item;
+            if (array == null)
+                throw new ArgumentNullException (nameof (array));
+
+            if (array.Rank != 1)
+                throw new ArgumentException ("Multidimension array is not supported on this operation.", nameof (array));
+
+            if (array.GetLowerBound (0) != 0)
+                throw new ArgumentException ("Target array has non-zero lower bound.", nameof (array));
+
+            if (index < 0)
+                throw new ArgumentOutOfRangeException (nameof (index), "Non-negative number required.");
+
+            if (Count > array.Length - index)
+                throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
+
+            if (array is TKey[] genArray)
+            {
+                CopyTo (genArray, index);
+                return;
+            }
+
+            if (array is object[] obArray)
+            {
+                try
+                {
+                    int ix = 0;
+                    foreach (var item in this)
+                        obArray[ix++] = item;
+                }
+                catch (ArrayTypeMismatchException)
+                { throw new ArgumentException ("Mismatched array type.", nameof (array)); }
+            }
+            else
+                throw new ArgumentException ("Invalid array type.", nameof (array));
         }
+
 
         public bool Remove (TKey key)
         {
