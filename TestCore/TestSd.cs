@@ -237,5 +237,35 @@ namespace CollectionsTest
 
             setSo.CopyTo (s1, 0);
         }
+
+
+        [TestMethod]
+        public void UnitSd_ReverseEmpty()
+        {
+            int total = 0;
+            Setup (5);
+
+            foreach (var countdown in setI.Reverse())
+               ++total;
+
+            Assert.AreEqual (0, total);
+        }
+
+
+        [TestMethod]
+        public void UnitSd_Reverse()
+        {
+            int expected = 500;
+            Setup (5);
+            for (int ii=1; ii <= expected; ++ii)
+                setI.Add (ii);
+
+            foreach (var actual in setI.Reverse())
+            {
+                Assert.AreEqual (expected, actual);
+                --expected;
+            }
+            Assert.AreEqual (0, expected);
+        }
     }
 }

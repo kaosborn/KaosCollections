@@ -234,6 +234,16 @@ namespace Kaos.Collections
             return true;
         }
 
+
+
+        public IEnumerable<TKey> Reverse()
+        {
+            Enumerator enor = new Enumerator (this, reverse:true);
+            while (enor.MoveNext())
+                yield return enor.Current;
+        }
+
+
         IEnumerator<TKey> IEnumerable<TKey>.GetEnumerator()
         {
             return new Enumerator (this);
@@ -324,12 +334,14 @@ namespace Kaos.Collections
         public sealed class Enumerator : IEnumerator<TKey>
         {
             private readonly RankedSet<TKey> tree;
+            private readonly bool isReverse;
             private KeyLeaf currentLeaf;
             private int leafIndex;
 
-            internal Enumerator (RankedSet<TKey> set)
+            internal Enumerator (RankedSet<TKey> set, bool reverse=false)
             {
                 this.tree = set;
+                this.isReverse = reverse;
                 ((IEnumerator) this).Reset();
             }
 
@@ -354,24 +366,33 @@ namespace Kaos.Collections
             public bool MoveNext()
             {
                 if (currentLeaf != null)
-                {
-                    if (++leafIndex < currentLeaf.KeyCount)
-                        return true;
+                    if (isReverse)
+                    {
+                        if (--leafIndex >= 0)
+                            return true;
 
-                    currentLeaf = currentLeaf.RightLeaf;
-                    if (currentLeaf != null)
-                    { leafIndex = 0; return true; }
+                        currentLeaf = currentLeaf.LeftLeaf;
+                        if (currentLeaf != null)
+                        { leafIndex = currentLeaf.KeyCount - 1; return true; }
+                    }
+                    else
+                    {
+                        if (++leafIndex < currentLeaf.KeyCount)
+                            return true;
 
-                    leafIndex = -1;
-                }
+                        currentLeaf = currentLeaf.RightLeaf;
+                        if (currentLeaf != null)
+                        { leafIndex = 0; return true; }
+                    }
 
+                leafIndex = -1;
                 return false;
             }
 
             void IEnumerator.Reset()
             {
-                leafIndex = -1;
-                currentLeaf = tree.LeftmostLeaf;
+                currentLeaf = isReverse? tree.GetRightmost() : tree.LeftmostLeaf;
+                leafIndex = isReverse? currentLeaf.KeyCount : -1;
             }
 
             /// <summary>Releases all resources used by the Enumerator.</summary>
