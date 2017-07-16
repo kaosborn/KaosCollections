@@ -129,6 +129,24 @@ namespace CollectionsTest
 
 
         [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRd_RankedIndexOf_ArgumentOutOfRange1()
+        {
+            var tree = new RankedDictionary<int,int>();
+            KeyValuePair<int,int> pair = tree.GetByIndex (-1);
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRd_RankedIndexOf_ArgumentOutOfRange2()
+        {
+            var tree = new RankedDictionary<int,int>();
+            KeyValuePair<int,int> pair = tree.GetByIndex (0);
+        }
+
+
+        [TestMethod]
         public void Unit_RankedIndexOf()
         {
             var tree = new RankedDictionary<int,int>(5);
