@@ -19,7 +19,6 @@ namespace CollectionsTest
 
         #region Test properties
 
-
         [TestMethod]
         public void UnitSd_Max()
         {
@@ -50,7 +49,6 @@ namespace CollectionsTest
                 setI.Add (ii);
             Assert.AreEqual (1, setI.Min);
         }
-
 
         #endregion
 
@@ -236,6 +234,26 @@ namespace CollectionsTest
             var setSo = (System.Collections.ICollection) setS;
 
             setSo.CopyTo (s1, 0);
+        }
+
+
+        [TestMethod]
+        public void UnitSd_Remove()
+        {
+            bool isOk;
+            Setup (4);
+
+            foreach (int x1 in keys)
+                setI.Add (x1);
+            int count0 = setI.Count;
+
+            isOk = setI.Remove (18);
+            Assert.IsTrue (isOk);
+            Assert.AreEqual (count0-1, setI.Count);
+
+            isOk = setI.Remove (18);
+            Assert.IsFalse (isOk);
+            Assert.AreEqual (count0-1, setI.Count);
         }
 
 
