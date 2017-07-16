@@ -73,6 +73,29 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>Perform traverse to leaf at index.</summary>
+        /// <param name="index">On entry, holds index of set; on exit holds index of leaf.</returns>
+        /// <returns>Leaf holding item at index position.</returns>
+        protected Node Find (ref int index)
+        {
+            Node node = root;
+            while (node is Branch branch)
+                for (int ix = 0; ix <= node.KeyCount; ++ix)
+                {
+                    Node child = branch.GetChild (ix);
+                    int cw = child.Weight;
+                    if (cw > index)
+                    {
+                        node = child;
+                        break;
+                    }
+                    index -= cw;
+                }
+
+            return node;
+        }
+
+
         protected void Remove2 (NodeVector nv)
         {
             int leafIndex = nv.TopNodeIndex;

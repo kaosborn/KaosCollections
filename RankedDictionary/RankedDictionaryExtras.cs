@@ -132,27 +132,14 @@ namespace Kaos.Collections
         /// <summary>Gets the element at the specified index.</summary>
         /// <param name="index">The zero-based index of the element to get.</param>
         /// <returns>The element at the specified index.</returns>
-        /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or greater than or equal to the number of keys.</exception>
         public KeyValuePair<TKey,TValue> GetByIndex (int index)
         {
-            if (index < 0 || index > Count)
+            if (index < 0 || index >= Count)
                 throw new ArgumentOutOfRangeException (nameof (index), "Specified argument was out of the range of valid values.");
 
-            Node node = root;
-            while (node is Branch)
-                for (int ix = 0; ix <= node.KeyCount; ++ix)
-                {
-                    var child = ((Branch) node).GetChild (ix);
-                    int cw = child.Weight;
-                    if (cw > index)
-                    {
-                        node = child;
-                        break;
-                    }
-                    index -= cw;
-                }
-
-            return new KeyValuePair<TKey,TValue> (((Leaf) node).GetKey (index), ((Leaf) node).GetValue (index));
+            var leaf = (Leaf) Find (ref index);
+            return new KeyValuePair<TKey,TValue> (leaf.GetKey (index), leaf.GetValue (index));
         }
 
 

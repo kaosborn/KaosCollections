@@ -254,8 +254,8 @@ namespace Kaos.Collections
         }
 
         #region ISET implementation
-
         #if ! NET35
+
         public void ExceptWith (IEnumerable<TKey> other)
         {
             if (other == null)
@@ -326,7 +326,7 @@ namespace Kaos.Collections
             throw new NotImplementedException ();
         }
 
-#endif
+        #endif
         #endregion
 
         /// <summary>Enumerates the sorted elements of a KeyCollection.</summary>
@@ -397,6 +397,36 @@ namespace Kaos.Collections
             /// <summary>Releases all resources used by the Enumerator.</summary>
             public void Dispose() { }
         }
+
+        #region Bonus methods
+
+        /// <summary>Gets the key at the specified index.</summary>
+        /// <param name="index">The zero-based index of the key to get.</param>
+        /// <returns>The key at the specified index.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or greater than or equal to the number of keys.</exception>
+        public TKey GetByIndex (int index)
+        {
+            if (index < 0 || index >= Count)
+                throw new ArgumentOutOfRangeException (nameof (index), "Specified argument was out of the range of valid values.");
+
+            var leaf = (KeyLeaf) Find (ref index);
+            return leaf.GetKey (index);
+        }
+
+
+        /// <summary>Gets the index of the specified item.</summary>
+        /// <param name="item">The item of the index to get.</param>
+        /// <returns>The index of the specified item if found; -1 if not found.</returns>
+        public int IndexOf (TKey item)
+        {
+            var path = new NodeVector (this, item);
+            if (! path.IsFound)
+                return -1;
+
+            return path.GetIndex();
+        }
+
+        #endregion
 
     }
 }
