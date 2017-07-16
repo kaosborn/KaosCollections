@@ -23,22 +23,19 @@ namespace Kaos.Collections
         {
             private readonly List<TValue> values;  // Payload.
 
+            /// <summary>Create a siblingless leaf.</summary>
+            /// <param name="capacity">The initial number of elements the page can store.</param>
             public Leaf (int capacity=0) : base (capacity)
             {
                 this.values = new List<TValue> (capacity);
-                this.rightKeyLeaf = null;
             }
 
-            /// <summary>Splice a leaf to right of <paramref name="leftLeaf"/>.</summary>
+            /// <summary>Splice this leaf to right of <paramref name="leftLeaf"/>.</summary>
             /// <param name="leftLeaf">Provides linked list insert point.</param>
             /// <param name="capacity">The initial number of elements the page can store.</param>
-            public Leaf (Leaf leftLeaf, int capacity) : base (capacity)
+            public Leaf (Leaf leftLeaf, int capacity) : base (leftLeaf, capacity)
             {
                 this.values = new List<TValue> (capacity);
-
-                // Linked list insertion.
-                this.rightKeyLeaf = leftLeaf.rightKeyLeaf;
-                leftLeaf.rightKeyLeaf = this;
             }
 
             /// <summary>Next leaf in linked list.</summary>

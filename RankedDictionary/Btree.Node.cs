@@ -121,22 +121,33 @@ namespace Kaos.Collections
 
         protected class KeyLeaf : Node
         {
+            public KeyLeaf leftKeyLeaf;
+            public KeyLeaf LeftLeaf { get { return leftKeyLeaf; } }
+
             public KeyLeaf rightKeyLeaf;
-            
+            public KeyLeaf RightLeaf { get { return rightKeyLeaf; } }
+
+
+            /// <summary>Create a siblingless leaf.</summary>
+            /// <param name="capacity">The initial number of elements the page can store.</param>
             public KeyLeaf (int capacity=0) : base (capacity)
             {
-                this.rightKeyLeaf = null;
+                this.leftKeyLeaf = this.rightKeyLeaf = null;
             }
 
+
+            /// <summary>Splice this leaf to right of <paramref name="leftLeaf"/>.</summary>
+            /// <param name="leftLeaf">Provides linked list insert point.</param>
+            /// <param name="capacity">The initial number of elements the page can store.</param>
             public KeyLeaf (KeyLeaf leftLeaf, int capacity) : base (capacity)
             {
-                // Linked list insertion.
+                // Doubly linked list insertion.
                 this.rightKeyLeaf = leftLeaf.rightKeyLeaf;
                 leftLeaf.rightKeyLeaf = this;
+                this.leftKeyLeaf = leftLeaf;
+                if (this.rightKeyLeaf != null)
+                    this.rightKeyLeaf.leftKeyLeaf = this;
             }
-
-            public KeyLeaf RightLeaf
-            { get { return rightKeyLeaf; } }
 
 
             /// <summary>Number of key/value pairs in the subtree.</summary>
@@ -153,7 +164,10 @@ namespace Kaos.Collections
             {
                 for (int ix = 0; ix < rightKeyLeaf.KeyCount; ++ix)
                     keys.Add (rightKeyLeaf.keys[ix]);
+
                 rightKeyLeaf = rightKeyLeaf.rightKeyLeaf;
+                if (rightKeyLeaf != null)
+                    rightKeyLeaf.leftKeyLeaf = this;
             }
 
             public void Insert (int index, TKey key)
