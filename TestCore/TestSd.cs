@@ -17,6 +17,42 @@ namespace CollectionsTest
             Assert.AreEqual (0, setTS1.Count);
         }
 
+        #region Test properties
+
+
+        [TestMethod]
+        public void UnitSd_Max()
+        {
+            Setup (5);
+            Assert.AreEqual (default (int), setI.Max);
+
+            setI.Add (2);
+            setI.Add (1);
+            Assert.AreEqual (2, setI.Max);
+
+            for (int ii = 996; ii >= 3; --ii)
+                setI.Add (ii);
+            Assert.AreEqual (996, setI.Max);
+        }
+
+
+        [TestMethod]
+        public void UnitSd_Min()
+        {
+            Setup (4);
+            Assert.AreEqual (default (int), setI.Min);
+
+            setI.Add (97);
+            setI.Add (98);
+            Assert.AreEqual (97, setI.Min);
+
+            for (int ii = 96; ii >= 1; --ii)
+                setI.Add (ii);
+            Assert.AreEqual (1, setI.Min);
+        }
+
+
+        #endregion
 
         [TestMethod]
         public void UnitSd_AddNull()

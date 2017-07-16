@@ -31,6 +31,18 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>Get the rightmost leaf of the tree.</summary>
+        /// <returns>Rightmost leaf.</returns>
+        protected KeyLeaf GetRightmost()
+        {
+            for (Node node = root;;)
+                if (node is Branch branch)
+                    node = branch.GetChild (branch.KeyCount);
+                else
+                    return (KeyLeaf) node;
+        }
+
+
         /// <summary>Perform lite search for key.</summary>
         /// <param name="key">Target of search.</param>
         /// <param name="index">When found, holds index of returned Leaf; else ~index of nearest greater key.</param>

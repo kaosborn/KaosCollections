@@ -50,6 +50,7 @@ namespace Kaos.Collections
         public RankedSet (IComparer<TKey> comparer) : this (DefaultOrder, comparer)
         { }
 
+        #region Public properties
 
         public int Count
         { get { return root.Weight; } }
@@ -60,7 +61,30 @@ namespace Kaos.Collections
         bool ICollection.IsSynchronized
         { get { return false; } }
 
+        public TKey Max
+        {
+            get
+            {
+                if (Count == 0)
+                    return default (TKey);
+                KeyLeaf rightmost = GetRightmost();
+                return rightmost.GetKey (rightmost.KeyCount-1);
+            }
+        }
+
+        public TKey Min
+        {
+            get
+            {
+                if (Count == 0)
+                    return default (TKey);
+                return LeftmostLeaf.Key0;
+            }
+        }
+
         object ICollection.SyncRoot => throw new NotImplementedException ();
+
+        #endregion
 
         public void Clear()
         {
