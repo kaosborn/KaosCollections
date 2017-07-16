@@ -121,10 +121,10 @@ namespace Kaos.Collections
 
         protected class KeyLeaf : Node
         {
-            public KeyLeaf leftKeyLeaf;
+            private KeyLeaf leftKeyLeaf;
             public KeyLeaf LeftLeaf { get { return leftKeyLeaf; } }
 
-            public KeyLeaf rightKeyLeaf;
+            private KeyLeaf rightKeyLeaf;
             public KeyLeaf RightLeaf { get { return rightKeyLeaf; } }
 
 
@@ -160,6 +160,12 @@ namespace Kaos.Collections
                     keys.Add (source.GetKey (ix));
             }
 
+            public void Chop()
+            {
+                Truncate (0);
+                rightKeyLeaf = null;
+            }
+
             public virtual void Coalesce()
             {
                 for (int ix = 0; ix < rightKeyLeaf.KeyCount; ++ix)
@@ -174,6 +180,13 @@ namespace Kaos.Collections
             {
                 Debug.Assert (index >= 0 && index <= keys.Count);
                 InsertKey (index, key);
+            }
+
+            public void Prune()
+            {
+                leftKeyLeaf.rightKeyLeaf = rightKeyLeaf;
+                if (rightKeyLeaf != null)
+                    rightKeyLeaf.leftKeyLeaf = leftKeyLeaf;
             }
 
             public virtual void Remove (int index)

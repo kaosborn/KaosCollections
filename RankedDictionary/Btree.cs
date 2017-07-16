@@ -88,10 +88,10 @@ namespace Kaos.Collections
                 {
                     Debug.Assert (leaf.RightLeaf==null, "only rightmost leaf should ever be empty");
 
-                    // Leaf is empty.  Prune it unless it is the only leaf in the tree.
-                    if (leaf != leftmostLeaf)
+                    // The leaf is empty so prune unless it is leftmost (therefore the only leaf).
+                    if (leaf.LeftLeaf != null)
                     {
-                        ((KeyLeaf) nv.GetLeftNode()).rightKeyLeaf = leaf.RightLeaf;
+                        leaf.Prune();
                         nv.Demote();
                     }
 

@@ -40,7 +40,7 @@ namespace Kaos.Collections
 
             /// <summary>Next leaf in linked list.</summary>
             public new Leaf RightLeaf
-            { get { return (Leaf) rightKeyLeaf; } }
+            { get { return (Leaf) base.RightLeaf; } }
 
 
             public int ValueCount
@@ -86,7 +86,7 @@ namespace Kaos.Collections
 
             public override void Coalesce()
             {
-                var right = (Leaf) rightKeyLeaf;
+                Leaf right = RightLeaf;
                 for (int ix = 0; ix < right.values.Count; ++ix)
                     values.Add (right.values[ix]);
                 base.Coalesce();
@@ -94,7 +94,7 @@ namespace Kaos.Collections
 
             public override void Shift (int shiftCount)
             {
-                var right = (Leaf) rightKeyLeaf;
+                Leaf right = RightLeaf;
                 for (int ix = 0; ix < shiftCount; ++ix)
                     values.Add (right.values[ix]);
                 base.Shift (shiftCount);

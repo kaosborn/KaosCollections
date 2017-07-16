@@ -178,8 +178,7 @@ namespace Kaos.Collections
         /// <summary>Remove all TKey/TValue pairs from the collection.</summary>
         public void Clear()
         {
-            leftmostLeaf.Truncate (0);
-            leftmostLeaf.rightKeyLeaf = null;
+            leftmostLeaf.Chop();
             root = leftmostLeaf;
         }
 

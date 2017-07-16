@@ -88,8 +88,7 @@ namespace Kaos.Collections
 
         public void Clear()
         {
-            leftmostLeaf.Truncate (0);
-            leftmostLeaf.rightKeyLeaf = null;
+            leftmostLeaf.Chop();
             root = leftmostLeaf;
         }
 
