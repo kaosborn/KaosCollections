@@ -256,10 +256,13 @@ namespace Kaos.Collections
         #region ISET implementation
         #if ! NET35
 
+        /// <summary>Removes all items that are in a specified collection.</summary>
+        /// <param name="other">The collection of items to remove.</param>
+        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         public void ExceptWith (IEnumerable<TKey> other)
         {
             if (other == null)
-                throw new ArgumentNullException (nameof(other));
+                throw new ArgumentNullException (nameof (other));
 
             if (Count == 0)
                 return;
@@ -270,16 +273,11 @@ namespace Kaos.Collections
                 return;
             }
 
-            SortedSet<TKey> other2 = other as SortedSet<TKey>;
-
-            if (other2 == null)
-            {
-                Clear();
-                return;
-            }
-
-            throw new NotImplementedException();
+            foreach (TKey item in other)
+                if (Contains (item))
+                    Remove (item);
         }
+
 
         public void IntersectWith (IEnumerable<TKey> other)
         {

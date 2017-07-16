@@ -285,5 +285,33 @@ namespace CollectionsTest
             }
             Assert.AreEqual (0, expected);
         }
+
+        #region ISet tests
+
+        [TestMethod]
+        public void UnitSd_ExceptWith()
+        {
+            Setup();
+            foreach (var v1 in keys)
+                setI.Add (v1);
+
+            var list1 = new System.Collections.Generic.List<int> (keys);
+            var list2 = new System.Collections.Generic.List<int> (iVals2);
+
+            setI.ExceptWith (iVals2);
+
+            int expectedCount = keys.Length;
+            foreach (int i2 in iVals2)
+                if (list1.Contains (i2))
+                    --expectedCount;
+
+            foreach (int ii in setI)
+                if (list2.Contains (ii))
+                    Assert.Fail ("Unexpected = " + ii);
+
+            Assert.AreEqual (expectedCount, setI.Count);
+        }
+
+        #endregion
     }
 }
