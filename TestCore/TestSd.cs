@@ -272,6 +272,30 @@ namespace CollectionsTest
         }
 
 
+        static bool IsEven (int val) { return val % 2 == 0; }
+        static bool IsTrue (int val) { return true; }
+
+        [TestMethod]
+        public void UnitSd_RemoveWhere()
+        {
+            Setup (4);
+
+            foreach (int x1 in keys)
+                setI.Add (x1);
+
+            int removeCount = setI.RemoveWhere (IsEven);
+            Assert.AreEqual (4, removeCount);
+            Assert.AreEqual (3, setI.Count);
+
+            removeCount = setI.RemoveWhere (IsTrue);
+            Assert.AreEqual (3, removeCount);
+            Assert.AreEqual (0, setI.Count);
+
+            removeCount = setI.RemoveWhere (IsTrue);
+            Assert.AreEqual (0, removeCount);
+        }
+
+
         [TestMethod]
         public void UnitSd_ReverseEmpty()
         {

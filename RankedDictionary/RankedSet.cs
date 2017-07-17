@@ -289,6 +289,33 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>Removes all items that match the condition defined by the specified predicate.</summary>
+        /// <param name="match">The condition of the items to remove.</param>
+        /// <returns>The number of elements removed.</returns>
+        /// <exception cref="ArgumentNullException">When <em>array</em> is <b>match</b>.</exception>
+        public int RemoveWhere (Predicate<TKey> match)
+        {
+            int delCount = 0;
+
+            if (match == null)
+                throw new ArgumentNullException (nameof (match));
+
+            for (KeyLeaf leaf = GetRightmost(); leaf != null; leaf = leaf.LeftLeaf)
+                for (int ix = leaf.KeyCount-1; ix >= 0; --ix)
+                {
+                    TKey key = leaf.GetKey (ix);
+                    bool isMatch = match (key);
+                    if (isMatch)
+                    {
+                        ++delCount;
+                        bool isOk = Remove (key);
+                    }
+                }
+
+            return delCount;
+        }
+
+
         /// <summary>Returns an IEnumerable that iterates over the set in reverse order.</summary>
         /// <returns>An enumerator that reverse iterates over the set.</returns>
         public IEnumerable<TKey> Reverse()
