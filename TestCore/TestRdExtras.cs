@@ -147,7 +147,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_RankedIndexOf()
+        public void UnitRd_RankedIndexOf()
         {
             var tree = new RankedDictionary<int,int>(5);
             for (int ii = 0; ii < 500; ii+=2)
@@ -158,7 +158,14 @@ namespace CollectionsTest
                 int ix = tree.IndexOf (ii);
                 Assert.AreEqual (ii/2, ix);
             }
+
+            int iw = tree.IndexOf (-1);
+            Assert.AreEqual (~0, iw);
+
+            int iy = tree.IndexOf (500);
+            Assert.AreEqual (~250, iy);
         }
+
 
         [TestMethod]
         public void Unit_RankedGetValueIndex()

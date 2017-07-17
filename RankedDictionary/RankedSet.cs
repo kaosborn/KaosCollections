@@ -497,14 +497,12 @@ namespace Kaos.Collections
 
         /// <summary>Gets the index of the specified item.</summary>
         /// <param name="item">The item of the index to get.</param>
-        /// <returns>The index of the specified item if found; -1 if not found.</returns>
+        /// <returns>The index of the specified item if found; otherwise the bitwise complement of the insert point.</returns>
         public int IndexOf (TKey item)
         {
             var path = new NodeVector (this, item);
-            if (! path.IsFound)
-                return -1;
-
-            return path.GetIndex();
+            int result = path.GetIndex();
+            return path.IsFound ? result : ~result;
         }
 
         #endregion

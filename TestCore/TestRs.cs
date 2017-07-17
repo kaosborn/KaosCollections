@@ -352,5 +352,27 @@ namespace CollectionsTest
         }
 
         #endregion
+
+#if ! TEST_SORTEDDICTIONARY
+
+        [TestMethod]
+        public void UnitSd_IndexOf()
+        {
+            Setup (4);
+            for (int ii = 0; ii < 50; ++ii)
+                setI.Add (ii*2);
+
+            var iz = setI.IndexOf (-1);
+            var i0 = setI.IndexOf (0);
+            var i8 = setI.IndexOf (8);
+            var i100 = setI.IndexOf (100);
+
+            Assert.AreEqual (~0, iz);
+            Assert.AreEqual (0, i0);
+            Assert.AreEqual (4, i8);
+            Assert.AreEqual (~50, i100);
+        }
+
+#endif
     }
 }

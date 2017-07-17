@@ -112,9 +112,9 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Gets the index of the specified element.</summary>
+        /// <summary>Gets the index of the specified key.</summary>
         /// <param name="key">The key of the index to get.</param>
-        /// <returns>The index of the specified element.</returns>
+        /// <returns>The index of the specified item if found; otherwise the bitwise complement of the insert point.</returns>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
         public int IndexOf (TKey key)
         {
@@ -122,10 +122,8 @@ namespace Kaos.Collections
                 throw new ArgumentNullException (nameof (key));
 
             var path = new NodeVector (this, key);
-            if (! path.IsFound)
-                return -1;
-
-            return path.GetIndex();
+            int result = path.GetIndex();
+            return path.IsFound ? result : ~result;
         }
 
 
