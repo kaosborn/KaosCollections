@@ -17,6 +17,21 @@ namespace CollectionsTest
             Assert.AreEqual (0, setTS1.Count);
         }
 
+
+        [TestMethod]
+        public void UnitSd_Ctor6()
+        {
+#if TEST_SORTED_DICTIONARY
+            var set1 = new SortedSet<int> (keys);
+            var set3 = new SortedSet<int> (iVals3);
+#else
+            var set1 = new RankedSet<int> (keys);
+            var set3 = new RankedSet<int> (iVals3);
+#endif
+            Assert.AreEqual (keys.Length, set1.Count);
+            Assert.AreEqual (4, set3.Count);
+        }
+
         #region Test properties
 
         [TestMethod]

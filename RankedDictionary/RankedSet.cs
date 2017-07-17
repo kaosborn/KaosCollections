@@ -14,15 +14,13 @@ using System.Diagnostics;
 
 namespace Kaos.Collections
 {
-    /// <summary>Represents a collection of key/value pairs that are sorted on the key.
+    /// <summary>Represents a collection of sorted, unique items.
     /// </summary>
-    /// <typeparam name="TKey">The type of the keys in the dictionary.</typeparam>
-    /// <typeparam name="TValue">The type of the values in the dictionary.</typeparam>
+    /// <typeparam name="TKey">The type of the items in the set.</typeparam>
     /// <remarks>
     /// This class is a functional equivalent of the
-    /// <see cref="System.Collections.Generic.SortedDictionary&lt;TKey,TValue&gt;"/>
-    /// with the addition of the methods
-    /// <see cref="BetweenKeys"/>, <see cref="SkipUntilKey"/>, and <see cref="Last"/>.
+    /// <see cref="System.Collections.Generic.SortedSet&lt;TKey&gt;"/> class
+    /// with additional capabilities.
     /// </remarks>
     [DebuggerDisplay ("Count = {Count}")]
     public partial class RankedSet<TKey> : Btree<TKey>,
@@ -31,27 +29,58 @@ namespace Kaos.Collections
 #endif
         ICollection<TKey>,
         ICollection
-#if NETSTANDARD1_0
+#if ! NET35 && ! NET40
         , IReadOnlyCollection<TKey>
 #endif
-        where TKey : IComparable  //TODO remove where
+        where TKey : IComparable
     {
         private KeyLeaf LeftmostLeaf { get { return leftmostLeaf; } }
 
+        #region Constructors
+
+        /// <summary>Initializes a new set of sorted items.</summary>
         public RankedSet() : this (DefaultOrder, Comparer<TKey>.Default)
         { }
 
+        /// <summary>Initializes a new set of sorted items.</summary>
+        /// <param name="order">Maximum number of children of a branch.</param>
         public RankedSet (int order) : this (order, Comparer<TKey>.Default)
         { }
 
+        /// <summary>Initializes a new set of sorted items.</summary>
+        /// <param name="order">Maximum number of children of a branch.</param>
+        /// <param name="comparer">The comparer to use for sorting items.</param>
         public RankedSet (int order, IComparer<TKey> comparer) : base (order, comparer, new KeyLeaf())
         { this.root = this.leftmostLeaf; }
 
+        /// <summary>Initializes a new set of sorted items.</summary>
+        /// <param name="comparer">The comparer to use for sorting items.</param>
         public RankedSet (IComparer<TKey> comparer) : this (DefaultOrder, comparer)
         { }
 
+        /// <summary>Initializes a new set that contains items copied from the specified collection.</summary>
+        /// <param name="collection">The enumerable collection to be copied. </param>
+        public RankedSet (IEnumerable<TKey> collection) : this (collection, Comparer<TKey>.Default)
+        { }
+
+        /// <summary>Initializes a new set that contains items copied from the specified collection.</summary>
+        /// <param name="collection">The enumerable collection to be copied. </param>
+        /// <param name="comparer">The comparer to use for sorting items.</param>
+        /// <exception cref="ArgumentNullException">When <em>collection</em> is <b>null</b>.</exception>
+        public RankedSet (IEnumerable<TKey> collection, IComparer<TKey> comparer) : this (comparer)
+        {
+            if (collection == null)
+                throw new ArgumentNullException (nameof (collection));
+
+            foreach (TKey item in collection)
+                Add (item);
+        }
+
+        #endregion
+
         #region Public properties
 
+        /// <summary>Gets the number of items in the set.</summary>
         public int Count
         { get { return root.Weight; } }
 
@@ -61,6 +90,7 @@ namespace Kaos.Collections
         bool ICollection.IsSynchronized
         { get { return false; } }
 
+        /// <summary>Gets the maximum value in the set per the comparer.</summary>
         public TKey Max
         {
             get
@@ -72,6 +102,7 @@ namespace Kaos.Collections
             }
         }
 
+        /// <summary>Gets the minimum value in the set per the comparer.</summary>
         public TKey Min
         {
             get
@@ -86,6 +117,7 @@ namespace Kaos.Collections
 
         #endregion
 
+        /// <summary>Removes all elements from the set.</summary>
         public void Clear()
         {
             leftmostLeaf.Chop();
@@ -93,6 +125,9 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>Adds an item to the set and returns a success indicator.</summary>
+        /// <param name="item">The item to add.</param>
+        /// <returns><b>true</b> if the item was added to the set; otherwise <b>false</b>.</returns>
         public bool Add (TKey item)
         {
             var path = new NodeVector (this, item);
@@ -149,19 +184,39 @@ namespace Kaos.Collections
         }
 
 
-        public bool Contains (TKey key)
+        /// <summary>Determines whether the set contains a specific item.</summary>
+        /// <param name="item">The item to check for existence in the set.</param>
+        /// <returns><b>true</b> if the set contains the item; otherwise <b>false</b>.</returns>
+        public bool Contains (TKey item)
         {
-            KeyLeaf leaf = Find (key, out int index);
+            KeyLeaf leaf = Find (item, out int index);
             return index >= 0;
         }
 
 
+        /// <summary>Copies the set to a compatible array, starting at the beginning of the target array.</summary>
+        /// <param name="array">A one-dimensional array that is the destination of the items to copy from the set.</param>
+        /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
+        /// <exception cref="ArgumentException">When not enough space is given for the copy.</exception>
         public void CopyTo (TKey[] array)
         { CopyTo (array, 0, Count); }
 
+        /// <summary>Copies the set to a compatible array, starting at the beginning of the target array.</summary>
+        /// <param name="array">A one-dimensional array that is the destination of the items to copy from the set.</param>
+        /// <param name="index">The zero-based starting position.</param>
+        /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero.</exception>
+        /// <exception cref="ArgumentException">When not enough space is given for the copy.</exception>
         public void CopyTo (TKey[] array, int index)
         { CopyTo (array, index, Count); }
 
+        /// <summary>Copies the set to a compatible array, starting at the specified position.</summary>
+        /// <param name="array">A one-dimensional array that is the destination of the items to copy from the set.</param>
+        /// <param name="index">The zero-based starting position.</param>
+        /// <param name="count">The number of items to copy.</param>
+        /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> or <em>count</em> is less than zero.</exception>
+        /// <exception cref="ArgumentException">When not enough space is given for the copy.</exception>
         public void CopyTo (TKey[] array, int index, int count)
         {
             if (array == null)
@@ -220,12 +275,12 @@ namespace Kaos.Collections
         }
 
 
-        public bool Remove (TKey key)
+        /// <summary>Removes a specified item from the set.</summary>
+        /// <param name="item"></param>
+        /// <returns><b>true</b> if the item was found and removed; otherwise <b>false</b>.</returns>
+        public bool Remove (TKey item)
         {
-            if (key == null)
-                throw new ArgumentNullException (nameof (key));
-
-            var path = new NodeVector (this, key);
+            var path = new NodeVector (this, item);
             if (! path.IsFound)
                 return false;
 
@@ -234,7 +289,8 @@ namespace Kaos.Collections
         }
 
 
-
+        /// <summary>Returns an IEnumerable that iterates over the set in reverse order.</summary>
+        /// <returns>An enumerator that reverse iterates over the set.</returns>
         public IEnumerable<TKey> Reverse()
         {
             Enumerator enor = new Enumerator (this, reverse:true);

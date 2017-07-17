@@ -62,6 +62,7 @@ namespace CollectionsTest
         // Must not contain value 50.
         static int[] keys = new int[] { 12, 28, 15, 18, 14, 19, 25 };
         static int[] iVals2 = new int[] { 10, 28, 14, 50 };
+        static int[] iVals3 = new int[] { 13, 22, 51, 22, 33 };
 
         public void Setup() { Setup (5); }
 
