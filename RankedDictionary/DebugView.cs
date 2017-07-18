@@ -194,7 +194,7 @@ namespace Kaos.Collections
                 TKey anchor0 = i == 0 ? anchor : branch.GetKey (i - 1);
                 bool isRightmost0 = isRightmost && i < branch.ChildCount;
                 if (i < branch.KeyCount - 1)
-                    if (branch.GetKey (i).CompareTo (branch.GetKey (i + 1)) >= 0)
+                    if (Comparer.Compare (branch.GetKey (i), branch.GetKey (i + 1)) >= 0)
                         throw new InvalidOperationException ("Branch keys not ascending");
 
                 if (level + 1 < height)
@@ -223,7 +223,7 @@ namespace Kaos.Collections
                 throw new InvalidOperationException ("Leaf has wrong anchor");
 
             for (int i = 0; i < leaf.KeyCount; ++i)
-                if (i < leaf.KeyCount - 1 && leaf.GetKey (i).CompareTo (leaf.GetKey (i + 1)) >= 0)
+                if (i < leaf.KeyCount - 1 && Comparer.Compare (leaf.GetKey (i), leaf.GetKey (i + 1)) >= 0)
                     throw new InvalidOperationException ("Leaf keys not ascending");
 
             if (visited == null)

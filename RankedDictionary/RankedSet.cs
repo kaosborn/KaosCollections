@@ -33,7 +33,6 @@ namespace Kaos.Collections
 #if ! NET35 && ! NET40
         , IReadOnlyCollection<TKey>
 #endif
-        where TKey : IComparable
     {
         private KeyLeaf LeftmostLeaf { get { return leftmostLeaf; } }
 

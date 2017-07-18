@@ -12,7 +12,7 @@ using System.Diagnostics;
 
 namespace Kaos.Collections
 {
-    public partial class Btree<TKey>
+    public abstract partial class Btree<TKey>
     {
         protected Node root;
         protected readonly KeyLeaf leftmostLeaf;

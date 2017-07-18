@@ -11,7 +11,7 @@ using System.Diagnostics;
 
 namespace Kaos.Collections
 {
-    public partial class Btree<TKey>
+    public abstract partial class Btree<TKey>
     {
         /// <summary>Stack trace from root to leaf.</summary>
         /// <remarks>

@@ -95,7 +95,7 @@ namespace Kaos.Collections
             {
                 if (index < leaf.KeyCount)
                 {
-                    if (leaf.GetKey (index).CompareTo (endKey) > 0)
+                    if (Comparer.Compare (leaf.GetKey (index), endKey) > 0)
                         yield break;
 
                     yield return leaf.GetPair (index);

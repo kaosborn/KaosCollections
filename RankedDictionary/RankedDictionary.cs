@@ -30,10 +30,9 @@ namespace Kaos.Collections
     public sealed partial class RankedDictionary<TKey,TValue> :
         Btree<TKey>, IDictionary<TKey,TValue>,
         IDictionary
-#if NETSTANDARD1_0
+#if ! NET35 && ! NET40
         , IReadOnlyDictionary<TKey,TValue>
 #endif
-        where TKey : IComparable
     {
         private KeyCollection keys;
         private ValueCollection values;

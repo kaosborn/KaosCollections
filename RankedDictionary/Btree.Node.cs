@@ -12,9 +12,9 @@ using System.Text;
 
 namespace Kaos.Collections
 {
-    public partial class Btree<TKey>
+    public abstract partial class Btree<TKey>
     {
-        /// <summary>A page of the B+ tree. May be internal (Branch) or terminal (Leaf).</summary>
+        /// <summary>Base page of the B+ tree. May be internal (Branch) or terminal (Leaf).</summary>
         protected abstract class Node
         {
             protected readonly List<TKey> keys;
