@@ -12,8 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.Leaf.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DebugView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RankedDictionaryObject.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RankedDictionaryExtras.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.Values.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Btree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.Keys.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Btree.Node.cs" />

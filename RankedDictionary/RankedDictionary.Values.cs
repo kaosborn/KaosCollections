@@ -1,7 +1,7 @@
 ﻿//
 // Library: KaosCollections
-// File:    RankedDictionary.Keys.cs
-// Purpose: Define Keys nested class.
+// File:    RankedDictionary.Values.cs
+// Purpose: Define Values nested class.
 //
 // Copyright © 2009-2017 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely
@@ -17,15 +17,15 @@ namespace Kaos.Collections
     public partial class RankedDictionary<TKey,TValue>
     {
         /// <summary>
-        /// Represents a collection of keys of a <see cref="RankedDictionary&lt;TKey,TValue&gt;"/>.
+        /// Represents a collection of values of a <see cref="RankedDictionary&lt;TKey,TValue&gt;"/>.
         /// </summary>
-        [DebuggerTypeProxy (typeof (ICollectionKeysDebugView<,>))]
+        [DebuggerTypeProxy (typeof (ICollectionValuesDebugView<,>))]
         [DebuggerDisplay ("Count = {Count}")]
-        public sealed class KeyCollection :
-            ICollection<TKey>,
+        public sealed class ValueCollection :
+            ICollection<TValue>,
             ICollection
 #if NETSTANDARD1_0
-            , IReadOnlyCollection<TKey>
+            , IReadOnlyCollection<TValue>
 #endif
         {
             private readonly RankedDictionary<TKey,TValue> tree;
@@ -33,14 +33,14 @@ namespace Kaos.Collections
             #region Constructors
 
             /// <summary>
-            /// Make a new <b>"BtreeDictionary&lt;TKey,TValue&gt;.KeyCollection</b> that
-            /// holds the keys of a <see cref="RankedDictionary&lt;TKey,TValue&gt;"/>.
+            /// Make a new <b>"BtreeDictionary&lt;TKey,TValue&gt;.ValueCollection</b> that
+            /// holds the values of a <see cref="RankedDictionary&lt;TKey,TValue&gt;"/>.
             /// </summary>
             /// <param name="dictionary">
             /// <see cref="RankedDictionary&lt;TKey,TValue&gt;"/> containing these keys.
             /// </param>
             /// <exception cref="ArgumentNullException">When <em>dictionary</em> is <b>null</b>.</exception>
-            public KeyCollection (RankedDictionary<TKey,TValue> dictionary)
+            public ValueCollection (RankedDictionary<TKey,TValue> dictionary)
             {
                 if (dictionary == null)
 #pragma warning disable IDE0016
@@ -55,7 +55,7 @@ namespace Kaos.Collections
             #region Properties
 
             /// <summary>
-            /// Get the number of keys in the collection.
+            /// Get the number of values in the collection.
             /// </summary>
             public int Count
             { get { return tree.Count; } }
@@ -65,11 +65,11 @@ namespace Kaos.Collections
             #region Methods
 
             /// <summary>
-            /// Copy keys to a target array starting as position <em>index</em> in the target.
+            /// Copy values to a target array starting as position <em>index</em> in the target.
             /// </summary>
             /// <param name="array">Array to modify.</param>
             /// <param name="index">Starting position in <em>array</em>.</param>
-            public void CopyTo (TKey[] array, int index)
+            public void CopyTo (TValue[] array, int index)
             {
                 if (array == null)
                     throw new ArgumentNullException (nameof (array));
@@ -82,21 +82,23 @@ namespace Kaos.Collections
 
                 for (Leaf leaf = tree.LeftmostLeaf; leaf != null; leaf = leaf.RightLeaf)
                     for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
-                        array[index++] = leaf.GetKey (leafIndex);
+                        array[index++] = leaf.GetValue (leafIndex);
             }
 
 
-            /// <summary>Returns an enumerator that iterates thru the KeyCollection.</summary>
+            /// <summary>
+            /// Returns an enumerator that iterates through the ValueCollection.
+            /// </summary>
             /// <returns>An enumerator for the collection.</returns>
-            public IEnumerator<TKey> GetEnumerator()
+            public IEnumerator<TValue> GetEnumerator()
             { return new Enumerator (tree); }
 
             #endregion
 
             #region Enumerator
 
-            /// <summary>Enumerates the sorted elements of a KeyCollection.</summary>
-            public sealed class Enumerator : IEnumerator<TKey>
+            /// <summary>Enumerates the elements of a ValueCollection ordered by key.</summary>
+            public sealed class Enumerator : IEnumerator<TValue>
             {
                 private readonly RankedDictionary<TKey,TValue> tree;
                 private Leaf currentLeaf;
@@ -121,8 +123,8 @@ namespace Kaos.Collections
                 /// <summary>
                 /// Gets the element at the current position of the enumerator.
                 /// </summary>
-                public TKey Current
-                { get { return leafIndex < 0? default (TKey) : currentLeaf.GetKey (leafIndex); } }
+                public TValue Current
+                { get { return leafIndex < 0? default (TValue) : currentLeaf.GetValue (leafIndex); } }
 
                 /// <summary>Advances the enumerator to the next element in the collection.</summary>
                 /// <returns><b>true</b> if the enumerator was successfully advanced to the next element; <b>false</b> if the enumerator has passed the end of the collection.</returns>
@@ -150,14 +152,14 @@ namespace Kaos.Collections
                 }
 
                 /// <summary>Releases all resources used by the Enumerator.</summary>
-                public void Dispose() { }
+                public void Dispose () { }
             }
 
             #endregion
 
             #region Explicit properties and methods interface implementations
 
-            bool ICollection<TKey>.IsReadOnly
+            bool ICollection<TValue>.IsReadOnly
             { get { return true; } }
 
             bool ICollection.IsSynchronized
@@ -166,14 +168,14 @@ namespace Kaos.Collections
             object ICollection.SyncRoot
             { get { return ((ICollection) tree).SyncRoot; } }
 
-            void ICollection<TKey>.Add (TKey key)
+            void ICollection<TValue>.Add (TValue value)
             { throw new NotSupportedException(); }
 
-            void ICollection<TKey>.Clear()
+            void ICollection<TValue>.Clear()
             { throw new NotSupportedException(); }
 
-            bool ICollection<TKey>.Contains (TKey key)
-            { return tree.ContainsKey (key); }
+            bool ICollection<TValue>.Contains (TValue value)
+            { return tree.ContainsValue (value); }
 
             void ICollection.CopyTo (Array array, int index)
             {
@@ -184,7 +186,7 @@ namespace Kaos.Collections
                     throw new ArgumentException ("Multidimension array is not supported on this operation.", nameof (array));
 
                 if (index < 0)
-                    throw new ArgumentOutOfRangeException (nameof (index), "Index is less than 0.");
+                    throw new ArgumentOutOfRangeException (nameof (index), index, "Index is less than 0.");
 
                 if (Count > array.Length - index)
                     throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
@@ -192,17 +194,15 @@ namespace Kaos.Collections
                 for (Leaf leaf = tree.LeftmostLeaf; leaf != null; leaf = leaf.RightLeaf)
                     for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
                     {
-                        array.SetValue (leaf.GetKey (leafIndex), index);
+                        array.SetValue (leaf.GetValue (leafIndex), index);
                         ++index;
                     }
             }
 
-            /// <summary>Gets an enumerator that iterates thru the collection.</summary>
-            /// <returns>An enumerator for the collection.</returns>
             IEnumerator IEnumerable.GetEnumerator()
             { return GetEnumerator(); }
 
-            bool ICollection<TKey>.Remove (TKey key)
+            bool ICollection<TValue>.Remove (TValue value)
             { throw new NotSupportedException(); }
 
             #endregion

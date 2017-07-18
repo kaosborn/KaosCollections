@@ -111,6 +111,81 @@ namespace Kaos.Collections
 
         #endregion
 
+        #region Properties
+
+        /// <summary>Used to order keys in the sorted dictionary.</summary>
+        /// <remarks>To override sorting based on the default comparer, supply an
+        /// alternate comparer when constructed.</remarks>
+        public IComparer<TKey> Comparer
+        { get { return compareOp; } }
+
+
+        /// <summary>Get the number of key/value pairs in the dictionary.</summary>
+        public int Count
+        { get { return root.Weight; } }
+
+
+        /// <summary>Get or set the value associated with the supplied key.</summary>
+        /// <param name="key">The key of the association.</param>
+        /// <returns>Value associated with the specified key.</returns>
+        /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
+        /// <exception cref="KeyNotFoundException">When getting a value for a non-existant key.</exception>
+        /// <remarks>Setting a value for a non-existant key performs an insert operation.</remarks>
+        public TValue this[TKey key]
+        {
+            get
+            {
+                if (key == null)
+                    throw new ArgumentNullException (nameof (key));
+
+                var leaf = (Leaf) Find (key, out int index);
+                if (index < 0)
+                    throw new KeyNotFoundException ("The given key was not present in the dictionary.");
+                return leaf.GetValue (index);
+            }
+            set
+            {
+                if (key == null)
+                    throw new ArgumentNullException (nameof (key));
+
+                var path = new NodeVector (this, key);
+                if (path.IsFound)
+                    Leaf.SetValue (path, value);
+                else
+                    Add2 (path, key, value);
+            }
+        }
+
+
+        /// <summary>
+        /// Get the collection of keys in the <see cref="RankedDictionary&lt;TKey,TValue&gt;"/>.
+        /// </summary>
+        public KeyCollection Keys
+        {
+            get
+            {
+                if (keys == null)
+                    keys = new KeyCollection (this);
+                return keys;
+            }
+        }
+
+
+        /// <summary>
+        /// Get the collection of values in the <see cref="RankedDictionary&lt;TKey,TValue&gt;"/>.
+        /// </summary>
+        public ValueCollection Values
+        {
+            get
+            {
+                if (values == null)
+                    values = new ValueCollection (this);
+                return values;
+            }
+        }
+
+        #endregion
+
         #region Methods
 
         /// <summary>Adds an element with the specified key and value.</summary>
@@ -299,7 +374,7 @@ namespace Kaos.Collections
 
         #endregion
 
-        #region Enumerator class
+        #region Enumerator
 
         /// <summary>Provides sequential access to the TKey/TValue collection.</summary>
         public sealed class Enumerator : IEnumerator<KeyValuePair<TKey,TValue>>, IDictionaryEnumerator
@@ -381,82 +456,7 @@ namespace Kaos.Collections
 
         #endregion
 
-        #region Properties
-
-        /// <summary>Used to order keys in the sorted dictionary.</summary>
-        /// <remarks>To override sorting based on the default comparer, supply an
-        /// alternate comparer when constructed.</remarks>
-        public IComparer<TKey> Comparer
-        { get { return compareOp; } }
-
-
-        /// <summary>Get the number of key/value pairs in the dictionary.</summary>
-        public int Count
-        { get { return root.Weight; } }
-
-
-        /// <summary>Get or set the value associated with the supplied key.</summary>
-        /// <param name="key">The key of the association.</param>
-        /// <returns>Value associated with the specified key.</returns>
-        /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
-        /// <exception cref="KeyNotFoundException">When getting a value for a non-existant key.</exception>
-        /// <remarks>Setting a value for a non-existant key performs an insert operation.</remarks>
-        public TValue this[TKey key]
-        {
-            get
-            {
-                if (key == null)
-                    throw new ArgumentNullException (nameof (key));
-
-                var leaf = (Leaf) Find (key, out int index);
-                if (index < 0)
-                    throw new KeyNotFoundException ("The given key was not present in the dictionary.");
-                return leaf.GetValue (index);
-            }
-            set
-            {
-                if (key == null)
-                    throw new ArgumentNullException (nameof (key));
-
-                var path = new NodeVector (this, key);
-                if (path.IsFound)
-                    Leaf.SetValue (path, value);
-                else
-                    Add2 (path, key, value);
-            }
-        }
-
-
-        /// <summary>
-        /// Get the collection of keys in the <see cref="RankedDictionary&lt;TKey,TValue&gt;"/>.
-        /// </summary>
-        public KeyCollection Keys
-        {
-            get
-            {
-                if (keys == null)
-                    keys = new KeyCollection (this);
-                return keys;
-            }
-        }
-
-
-        /// <summary>
-        /// Get the collection of values in the <see cref="RankedDictionary&lt;TKey,TValue&gt;"/>.
-        /// </summary>
-        public ValueCollection Values
-        {
-            get
-            {
-                if (values == null)
-                    values = new ValueCollection (this);
-                return values;
-            }
-        }
-
-        #endregion
-
-        #region Explicit methods
+        #region Explicit generic properties and methods interface implementations
 
         /// <summary>Adds an element with the specified key/value pair.</summary>
         /// <param name="keyValuePair">Contains the key and value of the element to add.</param>
@@ -522,6 +522,335 @@ namespace Kaos.Collections
                 return false;
 
             Remove2 (path);
+            return true;
+        }
+
+        #endregion
+
+        #region Explicit object properties interface implementations
+
+        /// <summary>Get or set the value associated with the supplied key.</summary>
+        /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
+        object IDictionary.this[object key]
+        {
+            get
+            {
+                if (key == null)
+                    throw new ArgumentNullException (nameof (key));
+
+                if (key is TKey)
+                {
+                    var leaf = (Leaf) Find ((TKey) key, out int index);
+                    if (index >= 0)
+                        return leaf.GetValue (index);
+                }
+
+                return null;
+            }
+            set
+            {
+                if (key == null)
+                    throw new ArgumentNullException (nameof (key));
+
+                if (value == null && default (TValue) != null)
+                    throw new ArgumentNullException (nameof (value));
+
+                if (! (key is TKey))
+                    throw new ArgumentException ("Parameter '" + nameof (key) + "' is not of type '" + typeof (TKey) + "'.");
+
+                try
+                {
+                    var path = new NodeVector (this, (TKey) key);
+                    if (path.IsFound)
+                        Leaf.SetValue (path, (TValue) value);
+                    else
+                        Add2 (path, (TKey) key, (TValue) value);
+                }
+                catch (InvalidCastException)
+                {
+                    // Can't use 'is' for this because it won't handle null.
+                    throw new ArgumentException ("Parameter 'value' is not of type '" + typeof (TValue) + "'.");
+                }
+            }
+        }
+
+        bool IDictionary.IsFixedSize
+        { get { return false; } }
+
+        /// <summary>Indicate that structure may be modified.</summary>
+        bool IDictionary.IsReadOnly
+        { get { return false; } }
+
+        bool ICollection.IsSynchronized
+        { get { return false; } }
+
+        ICollection IDictionary.Keys
+        { get { return (ICollection) Keys; } }
+
+        ICollection IDictionary.Values
+        { get { return (ICollection) Values; } }
+
+        #endregion
+
+        #region Explicit object methods interface implementations
+
+        /// <summary>Adds the specified key and value to the dictionary.</summary>
+        /// <param name="key">The key of the element to add.</param>
+        /// <param name="value">The value of the element to add.</param>
+        /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
+        /// <exception cref="ArgumentException">When an element with the same key already exists in the Dictionary.</exception>
+        /// <exception cref="ArgumentException">When <em>key</em> is not a TKey.</exception>
+        /// <exception cref="ArgumentException">When <em>value</em> is not a TValue.</exception>
+        void IDictionary.Add (object key, object value)
+        {
+            if (key == null)
+                throw new ArgumentNullException (nameof (key));
+
+            if (! (key is TKey))
+                throw new ArgumentException ("Parameter '" + nameof (key) + "' is not of type '" + typeof (TKey) + "'.");
+
+            if (! (value is TValue))
+                throw new ArgumentException ("Parameter '" + nameof (value) + "' is not of type '" + typeof (TValue) + "'.");
+
+            var genCol = (IDictionary<TKey,TValue>) this;
+            genCol.Add ((TKey) key, (TValue) value);
+        }
+
+
+        /// <summary>Determines whether the dictionary contains an element with the specified key.</summary>
+        /// <param name="key">The key to locate in the dictionary.</param>
+        /// <returns><b>true</b> if the collection contains the supplied key; otherwise <b>false</b>.</returns>
+        /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
+        bool IDictionary.Contains (object key)
+        {
+            if (key == null)
+                throw new ArgumentNullException (nameof (key));
+
+            if (! (key is TKey))
+                return false;
+
+            KeyLeaf leaf = Find ((TKey) key, out int ix);
+            return ix >= 0;
+        }
+
+
+        /// <summary>Copies the elements of the dictionary to an array, starting at the specified array index.</summary>
+        /// <param name="array">The destination array of the copy.</param>
+        /// <param name="index">The zero-based index in array at which copying begins.</param>
+        /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than 0.</exception>
+        /// <exception cref="ArgumentException">
+        /// When array is multidimensional,
+        /// the number of elements in the source is greater than the available space,
+        /// or the type of the source cannot be cast for the destination.
+        /// </exception>
+        void ICollection.CopyTo (Array array, int index)
+        {
+            if (array == null)
+                throw new ArgumentNullException (nameof (array));
+
+            if (array.Rank > 1)
+                throw new ArgumentException ("Multidimension array is not supported on this operation.", nameof (array));
+
+            if (index < 0)
+                throw new ArgumentOutOfRangeException (nameof (index), "Index is less than 0.");
+
+            if (Count > array.Length - index)
+                throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
+
+            if (! (array is KeyValuePair<TKey,TValue>[]) && array.GetType() != typeof (Object[]))
+                throw new ArgumentException ("Target array type is not compatible with the type of items in the collection.", nameof (array));
+
+            for (Leaf leaf = LeftmostLeaf; leaf != null; leaf = leaf.RightLeaf)
+                for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
+                {
+                    array.SetValue (new KeyValuePair<TKey,TValue>(leaf.GetKey (leafIndex), leaf.GetValue (leafIndex)), index);
+                    ++index;
+                }
+        }
+
+
+        /// <summary>Gets an enumerator that iterates thru the collection.</summary>
+        /// <returns>An enumerator for the collection.</returns>
+        IDictionaryEnumerator IDictionary.GetEnumerator()
+        { return new Enumerator (this, false); }
+
+
+        /// <summary>Gets an enumerator that iterates thru the collection.</summary>
+        /// <returns>An enumerator for the collection.</returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        { return new Enumerator (this); }
+
+
+        /// <summary>Remove the supplied key and its associated value from the collection.</summary>
+        /// <param name="key">Key to remove.</param>
+        /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
+        void IDictionary.Remove (object key)
+        {
+            if (key == null)
+                throw new ArgumentNullException (nameof (key));
+
+            if (! (key is TKey))
+                return;
+
+            var path = new NodeVector (this, (TKey) key);
+            if (path.IsFound)
+                Remove2 (path);
+        }
+
+
+        /// <summary>Deprecated.</summary>
+        object ICollection.SyncRoot
+        { get { return new Object(); } }
+
+        #endregion
+
+        #region Bonus methods
+
+        /// <summary>
+        /// Get the Last key/value pair without performing a full structure scan.
+        /// </summary>
+        /// <returns>Key/value pair with largest key in dictionary</returns>
+        public KeyValuePair<TKey,TValue> Last()
+        {
+            if (Count == 0)
+                throw new InvalidOperationException ("Sequence contains no elements.");
+
+            // Take rightmost child until no more.
+            for (Node node = root;;)
+            {
+                var branch = node as Branch;
+                if (branch == null)
+                    return new KeyValuePair<TKey,TValue> (node.GetKey (node.KeyCount - 1),
+                                                          ((Leaf) node).GetValue (node.KeyCount - 1));
+
+                node = branch.GetChild (node.KeyCount);
+            }
+        }
+
+
+        /// <summary>
+        /// This iterator provides range query support with ordered results.
+        /// </summary>
+        /// <param name="key">Minimum value of range.</param>
+        /// <returns>An enumerator for the collection for key values greater than or equal to <em>key</em>.</returns>
+        /// <exception cref="ArgumentNullException">When supplied key is <b>null</b>.</exception>
+        public IEnumerable<KeyValuePair<TKey,TValue>> SkipUntilKey (TKey key)
+        {
+            if (key == null)
+                throw new ArgumentNullException (nameof (key));
+
+            var leaf = (Leaf) Find (key, out int index);
+
+            // When the supplied start key is not be found, start with the next highest key.
+            if (index < 0)
+                index = ~index;
+
+            for (;;)
+            {
+                if (index < leaf.KeyCount)
+                {
+                    yield return leaf.GetPair (index);
+                    ++index;
+                    continue;
+                }
+
+                leaf = leaf.RightLeaf;
+                if (leaf == null)
+                    yield break;
+
+                index = 0;
+            }
+        }
+
+
+        /// <summary>
+        /// This iterator provides range query support.
+        /// </summary>
+        /// <param name="startKey">Minimum inclusive key value of range.</param>
+        /// <param name="endKey">Maximum inclusive key value of range.</param>
+        /// <returns>An enumerator for all key/value pairs between startKey and endKey.</returns>
+        /// <remarks>
+        /// Neither <em>startKey</em> or <em>endKey</em> need to be present in the collection.
+        /// </remarks>
+        /// <example>
+        /// <code source="..\Bench\BtreeExample03\BtreeExample03.cs" lang="cs" />
+        /// </example>
+        public IEnumerable<KeyValuePair<TKey,TValue>> BetweenKeys (TKey startKey, TKey endKey)
+        {
+            var leaf = (Leaf) Find (startKey, out int index);
+
+            // When the supplied start key is not be found, start with the next highest key.
+            if (index < 0)
+                index = ~index;
+
+            for (;;)
+            {
+                if (index < leaf.KeyCount)
+                {
+                    if (Comparer.Compare (leaf.GetKey (index), endKey) > 0)
+                        yield break;
+
+                    yield return leaf.GetPair (index);
+                    ++index;
+                    continue;
+                }
+
+                leaf = leaf.RightLeaf;
+                if (leaf == null)
+                    yield break;
+
+                index = 0;
+            }
+        }
+
+
+        /// <summary>Gets the index of the specified key.</summary>
+        /// <param name="key">The key of the index to get.</param>
+        /// <returns>The index of the specified item if found; otherwise the bitwise complement of the insert point.</returns>
+        /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
+        public int IndexOf (TKey key)
+        {
+            if (key == null)
+                throw new ArgumentNullException (nameof (key));
+
+            var path = new NodeVector (this, key);
+            int result = path.GetIndex();
+            return path.IsFound ? result : ~result;
+        }
+
+
+        /// <summary>Gets the element at the specified index.</summary>
+        /// <param name="index">The zero-based index of the element to get.</param>
+        /// <returns>The element at the specified index.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or greater than or equal to the number of keys.</exception>
+        public KeyValuePair<TKey,TValue> GetByIndex (int index)
+        {
+            if (index < 0 || index >= Count)
+                throw new ArgumentOutOfRangeException (nameof (index), "Specified argument was out of the range of valid values.");
+
+            var leaf = (Leaf) Find (ref index);
+            return new KeyValuePair<TKey,TValue> (leaf.GetKey (index), leaf.GetValue (index));
+        }
+
+
+        /// <summary>Gets the value and index of the specified element.</summary>
+        /// <param name="key">The key of the value and index to get.</param>
+        /// <param name="value">If the key is found, its value is placed here; otherwise it will be loaded with the default value.</param>
+        /// <param name="index">If the key is found, its index is placed here; otherwise it will be -1.</param>
+        /// <returns><b>true</b> if supplied key is found; otherwise <b>false</b>.</returns>
+        public bool TryGetValueAndIndex (TKey key, out TValue value, out int index)
+        {
+            var path = new NodeVector (this, key);
+            if (! path.IsFound)
+            {
+                value = default (TValue);
+                index = -1;
+                return false;
+            }
+
+            value = Leaf.GetValue (path);
+            index = path.GetIndex();
             return true;
         }
 
