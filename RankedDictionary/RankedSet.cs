@@ -22,6 +22,7 @@ namespace Kaos.Collections
     /// <see cref="System.Collections.Generic.SortedSet&lt;TKey&gt;"/> class
     /// with additional capabilities.
     /// </remarks>
+    [DebuggerTypeProxy (typeof (ICollectionDebugView<>))]
     [DebuggerDisplay ("Count = {Count}")]
     public partial class RankedSet<TKey> : Btree<TKey>,
 #if ! NET35

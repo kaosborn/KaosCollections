@@ -87,6 +87,31 @@ namespace Kaos.Collections
         }
     }
 
+    /// <exclude />
+    internal class ICollectionDebugView<T>
+    {
+        private readonly ICollection<T> target;
+
+        public ICollectionDebugView (ICollection<T> dictionary)
+        {
+            if (dictionary == null)
+                throw new ArgumentNullException (nameof (dictionary));
+            target = dictionary;
+        }
+
+        [DebuggerBrowsable (DebuggerBrowsableState.RootHidden)]
+        public T[] Items
+        {
+            get
+            {
+                T[] items = new T[target.Count];
+                target.CopyTo (items, 0);
+                return items;
+            }
+        }
+    }
+
+
 #if DEBUG
     public partial class RankedDictionary<TKey,TValue>
     {
