@@ -382,9 +382,19 @@ namespace Kaos.Collections
             throw new NotImplementedException ();
         }
 
+        /// <summary>Determines whether a set is a superset of the specified collection.</summary>
+        /// <param name="other">The items to compare to the current set.</param>
+        /// <returns><b>true</b> if the set is a superset of <em>other</em>; otherwise <b>false</b>.</returns>
         public bool IsSupersetOf (IEnumerable<TKey> other)
         {
-            throw new NotImplementedException ();
+            if (other == null)
+                throw new ArgumentNullException (nameof (other));
+
+            foreach (TKey item in other)
+                if (! Contains (item))
+                    return false;
+
+            return true;
         }
 
         public bool Overlaps (IEnumerable<TKey> other)

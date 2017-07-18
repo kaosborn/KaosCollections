@@ -351,6 +351,27 @@ namespace CollectionsTest
             Assert.AreEqual (expectedCount, setI.Count);
         }
 
+
+        [TestMethod]
+        public void UnitSd_IsSupersetOf()
+        {
+            bool isSuper;
+            Setup();
+
+            isSuper = setI.IsSupersetOf (new int[0]);
+            Assert.IsTrue (isSuper);
+
+            foreach (int item in keys)
+                setI.Add (item);
+            Assert.IsTrue (isSuper);
+
+            isSuper = setI.IsSupersetOf (iVals4);
+            Assert.IsTrue (isSuper);
+
+            isSuper = setI.IsSupersetOf (iVals2);
+            Assert.IsFalse (isSuper);
+        }
+
         #endregion
 
 #if ! TEST_SORTEDDICTIONARY
