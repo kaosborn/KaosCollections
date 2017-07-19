@@ -3,20 +3,15 @@
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <HasSharedItems>true</HasSharedItems>
-    <SharedGUID>1889d72f-b5eb-4e5f-95b2-5aa1ccca8b40</SharedGUID>
+    <SharedGUID>f46832d9-2950-47b9-bb68-42ee79668f61</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>RankedDictionary</Import_RootNamespace>
+    <Import_RootNamespace>Btree</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.Leaf.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DebugView.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.Values.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Btree.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.Keys.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Btree.Node.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Btree.NodeVector.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RankedSet.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DebugView.cs" />
   </ItemGroup>
 </Project>

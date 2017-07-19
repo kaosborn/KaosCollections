@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>d1e37c27-b068-4f2e-8603-f8f5495b3330</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>RankedDictionary</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.Keys.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.Leaf.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.Values.cs" />
+  </ItemGroup>
+</Project>

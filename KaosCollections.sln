@@ -45,13 +45,23 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BtreeBench03", "Bench\Btree
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BtreeChart04C", "Bench\BtreeChart04C\BtreeChart04C.csproj", "{7BF4F8EE-E033-48C1-9CEA-9F1EE8ABD73A}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "RankedDictionary", "RankedDictionary\RankedDictionary.shproj", "{1889D72F-B5EB-4E5F-95B2-5AA1CCCA8B40}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{FE32F6EA-9179-43FB-82C5-2D010EC41842}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Btree", "Source\Btree\Btree.shproj", "{F46832D9-2950-47B9-BB68-42EE79668F61}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "RankedDictionary", "Source\RankedDictionary\RankedDictionary.shproj", "{D1E37C27-B068-4F2E-8603-F8F5495B3330}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "RankedSet", "Source\RankedSet\RankedSet.shproj", "{C39A213B-5AAE-4C05-8CA8-946331511D0D}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		RankedDictionary\RankedDictionary.projitems*{04bc35f4-f0d8-47d0-ae7c-b2d62be49fc6}*SharedItemsImports = 4
-		RankedDictionary\RankedDictionary.projitems*{1889d72f-b5eb-4e5f-95b2-5aa1ccca8b40}*SharedItemsImports = 13
+		Source\Btree\Btree.projitems*{04bc35f4-f0d8-47d0-ae7c-b2d62be49fc6}*SharedItemsImports = 4
+		Source\RankedDictionary\RankedDictionary.projitems*{04bc35f4-f0d8-47d0-ae7c-b2d62be49fc6}*SharedItemsImports = 4
+		Source\RankedSet\RankedSet.projitems*{04bc35f4-f0d8-47d0-ae7c-b2d62be49fc6}*SharedItemsImports = 4
 		BtreeDictionary\BtreeDictionary.projitems*{9aab8f38-1582-401d-a4fd-adae2c6cb496}*SharedItemsImports = 13
+		Source\RankedSet\RankedSet.projitems*{c39a213b-5aae-4c05-8ca8-946331511d0d}*SharedItemsImports = 13
+		Source\RankedDictionary\RankedDictionary.projitems*{d1e37c27-b068-4f2e-8603-f8f5495b3330}*SharedItemsImports = 13
+		Source\Btree\Btree.projitems*{f46832d9-2950-47b9-bb68-42ee79668f61}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -153,5 +163,8 @@ Global
 		{21824520-2131-4BB7-9018-F241794F911B} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{3F4AED5A-F626-4A49-A52E-9BD8897AB798} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{7BF4F8EE-E033-48C1-9CEA-9F1EE8ABD73A} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
+		{F46832D9-2950-47B9-BB68-42EE79668F61} = {FE32F6EA-9179-43FB-82C5-2D010EC41842}
+		{D1E37C27-B068-4F2E-8603-F8F5495B3330} = {FE32F6EA-9179-43FB-82C5-2D010EC41842}
+		{C39A213B-5AAE-4C05-8CA8-946331511D0D} = {FE32F6EA-9179-43FB-82C5-2D010EC41842}
 	EndGlobalSection
 EndGlobal

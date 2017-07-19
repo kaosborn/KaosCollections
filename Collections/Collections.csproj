@@ -25,6 +25,10 @@
     <DocumentationFile>bin\Release\netstandard1.0\KaosCollections.xml</DocumentationFile>
   </PropertyGroup>
 
-  <Import Project="..\RankedDictionary\RankedDictionary.projitems" Label="Shared" />
+  <Import Project="..\Source\RankedSet\RankedSet.projitems" Label="Shared" />
+
+  <Import Project="..\Source\RankedDictionary\RankedDictionary.projitems" Label="Shared" />
+
+  <Import Project="..\Source\Btree\Btree.projitems" Label="Shared" />
 
 </Project>
