@@ -686,7 +686,7 @@ namespace Kaos.Collections
 
         /// <summary>Deprecated.</summary>
         object ICollection.SyncRoot
-        { get { return new Object(); } }
+        { get { return GetSyncRoot(); } }
 
         #endregion
 

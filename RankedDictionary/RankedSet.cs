@@ -116,7 +116,8 @@ namespace Kaos.Collections
             }
         }
 
-        object ICollection.SyncRoot => throw new NotImplementedException ();
+        /// <summary>Deprecated.</summary>
+        object ICollection.SyncRoot => GetSyncRoot();
 
         #endregion
 

@@ -166,7 +166,7 @@ namespace Kaos.Collections
             { get { return false; } }
 
             object ICollection.SyncRoot
-            { get { return ((ICollection) tree).SyncRoot; } }
+            { get { return tree.GetSyncRoot(); } }
 
             void ICollection<TValue>.Add (TValue value)
             { throw new NotSupportedException(); }

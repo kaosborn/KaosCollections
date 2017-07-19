@@ -144,5 +144,14 @@ namespace Kaos.Collections
                     }
             }
         }
+
+
+        private object syncRoot = null;
+        protected object GetSyncRoot()
+        {
+            if (syncRoot == null)
+                System.Threading.Interlocked.CompareExchange (ref syncRoot, new object(), null);
+            return syncRoot;
+        }
     }
 }
