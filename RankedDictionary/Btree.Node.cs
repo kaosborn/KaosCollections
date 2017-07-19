@@ -65,7 +65,7 @@ namespace Kaos.Collections
                 this.childNodes = new List<Node> (keyCapacity + 1);
             }
 
-            public Branch (Node child, int keyCapacity, int weight=0) : base (keyCapacity)
+            public Branch (int keyCapacity, Node child, int weight = 0) : base (keyCapacity)
             {
                 this.childNodes = new List<Node> (keyCapacity + 1) { child };
                 this.weight = weight;

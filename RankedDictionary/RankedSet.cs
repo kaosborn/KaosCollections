@@ -41,21 +41,6 @@ namespace Kaos.Collections
         public RankedSet() : this (DefaultOrder, Comparer<TKey>.Default)
         { }
 
-        /// <summary>Initializes a new set of sorted items.</summary>
-        /// <param name="order">Maximum number of children of a branch.</param>
-        /// <remarks>This constuctor is provided for experimental purposes
-        /// and its use may result in degraded performance.</remarks>
-        public RankedSet (int order) : this (order, Comparer<TKey>.Default)
-        { }
-
-        /// <summary>Initializes a new set of sorted items.</summary>
-        /// <param name="order">Maximum number of children of a branch.</param>
-        /// <param name="comparer">The comparer to use for sorting items.</param>
-        /// <remarks>This constuctor is provided for experimental purposes
-        /// and its use may result in degraded performance.</remarks>
-        public RankedSet (int order, IComparer<TKey> comparer) : base (order, comparer, new KeyLeaf())
-        { this.root = this.leftmostLeaf; }
-
         /// <summary>Initializes a new set of sorted items that uses the supplied comparer.</summary>
         /// <param name="comparer">The comparer to use for sorting items.</param>
         public RankedSet (IComparer<TKey> comparer) : this (DefaultOrder, comparer)
@@ -79,9 +64,24 @@ namespace Kaos.Collections
                 Add (item);
         }
 
+        /// <summary>Initializes a new set of sorted items.</summary>
+        /// <param name="order">Maximum number of children of a branch.</param>
+        /// <remarks>This constuctor is provided for experimental purposes
+        /// and its use may result in degraded performance.</remarks>
+        public RankedSet (int order) : this (order, Comparer<TKey>.Default)
+        { }
+
+        /// <summary>Initializes a new set of sorted items.</summary>
+        /// <param name="order">Maximum number of children of a branch.</param>
+        /// <param name="comparer">The comparer to use for sorting items.</param>
+        /// <remarks>This constuctor is provided for experimental purposes
+        /// and its use may result in degraded performance.</remarks>
+        public RankedSet (int order, IComparer<TKey> comparer) : base (order, comparer, new KeyLeaf())
+        { this.root = this.leftmostLeaf; }
+
         #endregion
 
-        #region Public properties
+        #region Properties
 
         /// <summary>Gets the number of items in the set.</summary>
         public int Count
@@ -120,6 +120,8 @@ namespace Kaos.Collections
         object ICollection.SyncRoot => GetSyncRoot();
 
         #endregion
+
+        #region Methods
 
         /// <summary>Removes all items from the set.</summary>
         public void Clear()
@@ -340,7 +342,9 @@ namespace Kaos.Collections
             return new Enumerator (this);
         }
 
-        #region ISET implementation
+        #endregion
+
+        #region ISet methods implementation
         #if ! NET35
 
         /// <summary>Removes all items that are in a specified collection.</summary>
@@ -424,6 +428,8 @@ namespace Kaos.Collections
         #endif
         #endregion
 
+        #region Enumerator
+
         /// <summary>Enumerates the sorted elements of a KeyCollection.</summary>
         public sealed class Enumerator : IEnumerator<TKey>
         {
@@ -493,6 +499,8 @@ namespace Kaos.Collections
             public void Dispose() { }
         }
 
+        #endregion
+
         #region Bonus methods
 
         /// <summary>Gets the key at the specified index.</summary>
@@ -520,6 +528,5 @@ namespace Kaos.Collections
         }
 
         #endregion
-
     }
 }

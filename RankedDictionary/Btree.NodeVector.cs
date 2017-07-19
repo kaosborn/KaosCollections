@@ -241,7 +241,7 @@ namespace Kaos.Collections
                     {
                         // Graft new root.
                         Debug.Assert (owner.root == TopNode);
-                        owner.root = new Branch (TopNode, owner.maxKeyCount, TopNode.Weight + newNode.Weight);
+                        owner.root = new Branch (owner.maxKeyCount, TopNode, TopNode.Weight + newNode.Weight);
                         ((Branch) owner.root).Add (key, newNode);
                         break;
                     }

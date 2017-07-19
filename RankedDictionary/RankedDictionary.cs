@@ -44,18 +44,35 @@ namespace Kaos.Collections
         public RankedDictionary() : this (DefaultOrder, null)
         { }
 
+        /// <summary>Initializes a new dictionary of key/value pairs that are sorted on unique keys using the supplied key comparer.</summary>
+        /// <param name="comparer">Comparison operator for keys.</param>
+        public RankedDictionary (IComparer<TKey> comparer) : this (DefaultOrder, comparer)
+        { }
+
+        /// <summary>Initializes a new dictionary that contains key/value pairs copied from the supplied dictionary and sorted by the default comparer.</summary>
+        /// <param name="dictionary">The dictionary to be copied.</param>
+        /// <exception cref="ArgumentNullException">When <em>dictionary</em> is <b>null</b>.</exception>
+        public RankedDictionary (IDictionary<TKey,TValue> dictionary) : this (dictionary, null)
+        { }
+
+        /// <summary>Initializes a new dictionary that contains key/value pairs copied from the supplied dictionary and sorted by the supplied comparer.</summary>
+        /// <param name="dictionary">The dictionary to be copied.</param>
+        /// <param name="comparer">Comparison operator for keys.</param>
+        /// <exception cref="ArgumentNullException">When <em>dictionary</em> is <b>null</b>.</exception>
+        public RankedDictionary (IDictionary<TKey,TValue> dictionary, IComparer<TKey> comparer) : this (DefaultOrder, comparer)
+        {
+            if (dictionary == null)
+                throw new ArgumentNullException (nameof (dictionary));
+
+            foreach (KeyValuePair<TKey,TValue> pair in dictionary)
+                Add (pair.Key, pair.Value);
+        }
 
         /// <summary>Initializes a new dictionary of key/value pairs that are sorted on unique keys using the default key comparer.</summary>
         /// <param name="order">Maximum number of children of a node.</param>
         /// <remarks>This constuctor is provided for experimental purposes
         /// and its use may result in degraded performance.</remarks>
         public RankedDictionary (int order) : this (order, null)
-        { }
-
-
-        /// <summary>Initializes a new dictionary of key/value pairs that are sorted on unique keys using the supplied key comparer.</summary>
-        /// <param name="comparer">Comparison operator for keys.</param>
-        public RankedDictionary (IComparer<TKey> comparer) : this (DefaultOrder, comparer)
         { }
 
 
@@ -70,27 +87,6 @@ namespace Kaos.Collections
                 throw new ArgumentOutOfRangeException (nameof (order), "Must be between " + MinimumOrder + " and " + MaximumOrder);
 
             this.root = this.leftmostLeaf;
-        }
-
-
-        /// <summary>Initializes a new dictionary that contains key/value pairs copied from the supplied dictionary and sorted by the default comparer.</summary>
-        /// <param name="dictionary">The dictionary to be copied.</param>
-        /// <exception cref="ArgumentNullException">When <em>dictionary</em> is <b>null</b>.</exception>
-        public RankedDictionary (IDictionary<TKey,TValue> dictionary) : this (dictionary, null)
-        { }
-
-
-        /// <summary>Initializes a new dictionary that contains key/value pairs copied from the supplied dictionary and sorted by the supplied comparer.</summary>
-        /// <param name="dictionary">The dictionary to be copied.</param>
-        /// <param name="comparer">Comparison operator for keys.</param>
-        /// <exception cref="ArgumentNullException">When <em>dictionary</em> is <b>null</b>.</exception>
-        public RankedDictionary (IDictionary<TKey,TValue> dictionary, IComparer<TKey> comparer) : this (DefaultOrder, comparer)
-        {
-            if (dictionary == null)
-                throw new ArgumentNullException (nameof (dictionary));
-
-            foreach (KeyValuePair<TKey,TValue> pair in dictionary)
-                Add (pair.Key, pair.Value);
         }
 
         #endregion
