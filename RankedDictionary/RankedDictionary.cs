@@ -72,6 +72,7 @@ namespace Kaos.Collections
         /// <param name="order">Maximum number of children of a node.</param>
         /// <remarks>This constuctor is provided for experimental purposes
         /// and its use may result in degraded performance.</remarks>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>order</em> is too big or too small.</exception>
         public RankedDictionary (int order) : this (order, null)
         { }
 
@@ -81,6 +82,7 @@ namespace Kaos.Collections
         /// <param name="comparer">Comparison operator for keys.</param>
         /// <remarks>This constuctor is provided for experimental purposes
         /// and its use may result in degraded performance.</remarks>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>order</em> is too big or too small.</exception>
         public RankedDictionary (int order, IComparer<TKey> comparer) : base (order, comparer, new Leaf())
         {
             if (order < MinimumOrder || order > MaximumOrder)

@@ -15,6 +15,8 @@ using System.Threading;
 [assembly: CLSCompliant (true)]
 namespace Kaos.Collections
 {
+    /// <summary>Abstract base for ranked dictionaries and ranked sets.</summary>
+    /// <typeparam name="TKey">The type of the keys.</typeparam>
     public abstract partial class Btree<TKey>
     {
         protected Node root;

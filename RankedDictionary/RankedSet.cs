@@ -48,6 +48,7 @@ namespace Kaos.Collections
 
         /// <summary>Initializes a new set that contains items copied from the specified collection.</summary>
         /// <param name="collection">The enumerable collection to be copied.</param>
+        /// <exception cref="ArgumentNullException">When <em>collection</em> is <b>null</b>.</exception>
         public RankedSet (IEnumerable<TKey> collection) : this (collection, Comparer<TKey>.Default)
         { }
 
@@ -55,7 +56,7 @@ namespace Kaos.Collections
         /// <param name="collection">The enumerable collection to be copied. </param>
         /// <param name="comparer">The comparer to use for item sorting.</param>
         /// <exception cref="ArgumentNullException">When <em>collection</em> is <b>null</b>.</exception>
-        public RankedSet (IEnumerable<TKey> collection, IComparer<TKey> comparer) : this (comparer)
+        public RankedSet (IEnumerable<TKey> collection, IComparer<TKey> comparer) : this (DefaultOrder, comparer)
         {
             if (collection == null)
                 throw new ArgumentNullException (nameof (collection));
@@ -68,6 +69,7 @@ namespace Kaos.Collections
         /// <param name="order">Maximum number of children of a branch.</param>
         /// <remarks>This constuctor is provided for experimental purposes
         /// and its use may result in degraded performance.</remarks>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>order</em> is too big or too small.</exception>
         public RankedSet (int order) : this (order, Comparer<TKey>.Default)
         { }
 
@@ -76,8 +78,14 @@ namespace Kaos.Collections
         /// <param name="comparer">The comparer to use for sorting items.</param>
         /// <remarks>This constuctor is provided for experimental purposes
         /// and its use may result in degraded performance.</remarks>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>order</em> is too big or too small.</exception>
         public RankedSet (int order, IComparer<TKey> comparer) : base (order, comparer, new KeyLeaf())
-        { this.root = this.leftmostLeaf; }
+        {
+            if (order < MinimumOrder || order > MaximumOrder)
+                throw new ArgumentOutOfRangeException (nameof (order), "Must be between " + MinimumOrder + " and " + MaximumOrder);
+
+            this.root = this.leftmostLeaf;
+        }
 
         #endregion
 
@@ -282,7 +290,7 @@ namespace Kaos.Collections
 
 
         /// <summary>Removes a specified item from the set.</summary>
-        /// <param name="item"></param>
+        /// <param name="item">The item to remove.</param>
         /// <returns><b>true</b> if the item was found and removed; otherwise <b>false</b>.</returns>
         public bool Remove (TKey item)
         {
@@ -370,25 +378,28 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>Not yet implemented.</summary>
+        /// <param name="other">The collection to compare to this set.</param>
         public void IntersectWith (IEnumerable<TKey> other)
-        {
-            throw new NotImplementedException ();
-        }
+        { throw new NotImplementedException(); }
 
+        /// <summary>Not yet implemented.</summary>
+        /// <param name="other">The collection to compare to this set.</param>
+        /// <returns><b>true</b> if the set is a proper subset of <em>other</em>; otherwise <b>false</b>.</returns>
         public bool IsProperSubsetOf (IEnumerable<TKey> other)
-        {
-            throw new NotImplementedException ();
-        }
+        { throw new NotImplementedException(); }
 
+        /// <summary>Not yet implemented.</summary>
+        /// <param name="other">The collection to compare to this set.</param>
+        /// <returns><b>true</b> if the set is a proper superset of <em>other</em>; otherwise <b>false</b>.</returns>
         public bool IsProperSupersetOf (IEnumerable<TKey> other)
-        {
-            throw new NotImplementedException ();
-        }
+        { throw new NotImplementedException(); }
 
+        /// <summary>Not yet implemented.</summary>
+        /// <param name="other">The collection to compare to this set.</param>
+        /// <returns><b>true</b> if the set is a subset of <em>other</em>; otherwise <b>false</b>.</returns>
         public bool IsSubsetOf (IEnumerable<TKey> other)
-        {
-            throw new NotImplementedException ();
-        }
+        { throw new NotImplementedException(); }
 
         /// <summary>Determines whether a set is a superset of the specified collection.</summary>
         /// <param name="other">The items to compare to the current set.</param>
@@ -405,25 +416,27 @@ namespace Kaos.Collections
             return true;
         }
 
+        /// <summary>Not yet implemented.</summary>
+        /// <param name="other">The collection to compare to this set.</param>
+        /// <returns><b>true</b> if the set overlaps <em>other</em>; otherwise <b>false</b>.</returns>
         public bool Overlaps (IEnumerable<TKey> other)
-        {
-            throw new NotImplementedException ();
-        }
+        { throw new NotImplementedException(); }
 
+        /// <summary>Not yet implemented.</summary>
+        /// <param name="other">The collection to compare to this set.</param>
+        /// <returns><b>true</b> if the set equals <em>other</em>; otherwise <b>false</b>.</returns>
         public bool SetEquals (IEnumerable<TKey> other)
-        {
-            throw new NotImplementedException ();
-        }
+        { throw new NotImplementedException(); }
 
+        /// <summary>Not yet implemented.</summary>
+        /// <param name="other">The collection to compare to this set.</param>
         public void SymmetricExceptWith (IEnumerable<TKey> other)
-        {
-            throw new NotImplementedException ();
-        }
+        { throw new NotImplementedException(); }
 
+        /// <summary>Not yet implemented.</summary>
+        /// <param name="other">The collection to compare to this set.</param>
         public void UnionWith (IEnumerable<TKey> other)
-        {
-            throw new NotImplementedException ();
-        }
+        { throw new NotImplementedException(); }
 
         #endif
         #endregion
