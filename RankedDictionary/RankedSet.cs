@@ -18,9 +18,8 @@ namespace Kaos.Collections
     /// </summary>
     /// <typeparam name="TKey">The type of the items in the set.</typeparam>
     /// <remarks>
-    /// This class is a functional equivalent of the
-    /// <see cref="System.Collections.Generic.SortedSet&lt;TKey&gt;"/> class
-    /// with additional capabilities.
+    /// This class emulates and augments the
+    /// <see cref="System.Collections.Generic.SortedSet&lt;TKey&gt;"/> class.
     /// </remarks>
     [DebuggerTypeProxy (typeof (ICollectionDebugView<>))]
     [DebuggerDisplay ("Count = {Count}")]
@@ -38,34 +37,38 @@ namespace Kaos.Collections
 
         #region Constructors
 
-        /// <summary>Initializes a new set of sorted items.</summary>
+        /// <summary>Initializes a new set of sorted items that uses the default item comparer.</summary>
         public RankedSet() : this (DefaultOrder, Comparer<TKey>.Default)
         { }
 
         /// <summary>Initializes a new set of sorted items.</summary>
         /// <param name="order">Maximum number of children of a branch.</param>
+        /// <remarks>This constuctor is provided for experimental purposes
+        /// and its use may result in degraded performance.</remarks>
         public RankedSet (int order) : this (order, Comparer<TKey>.Default)
         { }
 
         /// <summary>Initializes a new set of sorted items.</summary>
         /// <param name="order">Maximum number of children of a branch.</param>
         /// <param name="comparer">The comparer to use for sorting items.</param>
+        /// <remarks>This constuctor is provided for experimental purposes
+        /// and its use may result in degraded performance.</remarks>
         public RankedSet (int order, IComparer<TKey> comparer) : base (order, comparer, new KeyLeaf())
         { this.root = this.leftmostLeaf; }
 
-        /// <summary>Initializes a new set of sorted items.</summary>
+        /// <summary>Initializes a new set of sorted items that uses the supplied comparer.</summary>
         /// <param name="comparer">The comparer to use for sorting items.</param>
         public RankedSet (IComparer<TKey> comparer) : this (DefaultOrder, comparer)
         { }
 
         /// <summary>Initializes a new set that contains items copied from the specified collection.</summary>
-        /// <param name="collection">The enumerable collection to be copied. </param>
+        /// <param name="collection">The enumerable collection to be copied.</param>
         public RankedSet (IEnumerable<TKey> collection) : this (collection, Comparer<TKey>.Default)
         { }
 
         /// <summary>Initializes a new set that contains items copied from the specified collection.</summary>
         /// <param name="collection">The enumerable collection to be copied. </param>
-        /// <param name="comparer">The comparer to use for sorting items.</param>
+        /// <param name="comparer">The comparer to use for item sorting.</param>
         /// <exception cref="ArgumentNullException">When <em>collection</em> is <b>null</b>.</exception>
         public RankedSet (IEnumerable<TKey> collection, IComparer<TKey> comparer) : this (comparer)
         {
@@ -117,7 +120,7 @@ namespace Kaos.Collections
 
         #endregion
 
-        /// <summary>Removes all elements from the set.</summary>
+        /// <summary>Removes all items from the set.</summary>
         public void Clear()
         {
             leftmostLeaf.Chop();

@@ -74,7 +74,7 @@ namespace Kaos.Collections
 
 
         /// <summary>Perform traverse to leaf at index.</summary>
-        /// <param name="index">On entry, holds index of set; on exit holds index of leaf.</returns>
+        /// <param name="index">On entry, holds index of set; on exit holds index of leaf.</param>
         /// <returns>Leaf holding item at index position.</returns>
         protected Node Find (ref int index)
         {

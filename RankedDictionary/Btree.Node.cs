@@ -51,9 +51,9 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>An internal B+ tree page.</summary>
+        /// <summary>An non-leaf B+ tree page.</summary>
         /// <remarks>
-        /// Contains copies of the first key of every leaf (except the leftmost).
+        /// Contains copies of the first key ('anchor') of every leaf except the leftmost.
         /// </remarks>
         protected sealed class Branch : Node
         {

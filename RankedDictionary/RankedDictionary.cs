@@ -15,13 +15,13 @@ using System.Diagnostics;
 [assembly: CLSCompliant (true)]
 namespace Kaos.Collections
 {
-    /// <summary>Represents a collection of key/value pairs that are sorted on the key.
+    /// <summary>Represents a collection of key/value pairs that are sorted on unique keys.
     /// </summary>
     /// <typeparam name="TKey">The type of the keys in the dictionary.</typeparam>
     /// <typeparam name="TValue">The type of the values in the dictionary.</typeparam>
     /// <remarks>
-    /// This class is a functional equivalent of the
-    /// <see cref="System.Collections.Generic.SortedDictionary&lt;TKey,TValue&gt;"/>
+    /// This class emulates and augments the
+    /// <see cref="System.Collections.Generic.SortedDictionary&lt;TKey,TValue&gt;"/> class
     /// with the addition of the methods
     /// <see cref="BetweenKeys"/>, <see cref="SkipUntilKey"/>, and <see cref="Last"/>.
     /// </remarks>
@@ -41,38 +41,30 @@ namespace Kaos.Collections
 
         #region Constructors
 
-        /// <summary>
-        /// Make a new BTD
-        /// consisting of TKey/TValue pairs.
-        /// </summary>
+        /// <summary>Initializes a new dictionary of key/value pairs that are sorted on unique keys using the default key comparer.</summary>
         public RankedDictionary() : this (DefaultOrder, null)
         { }
 
 
-        /// <summary>
-        /// Make a new <see cref="RankedDictionary&lt;TKey,TValue&gt;"/>
-        /// consisting of TKey/TValue pairs.
-        /// </summary>
+        /// <summary>Initializes a new dictionary of key/value pairs that are sorted on unique keys using the default key comparer.</summary>
         /// <param name="order">Maximum number of children of a node.</param>
+        /// <remarks>This constuctor is provided for experimental purposes
+        /// and its use may result in degraded performance.</remarks>
         public RankedDictionary (int order) : this (order, null)
         { }
 
 
-        /// <summary>
-        /// Make a new <see cref="RankedDictionary&lt;TKey,TValue&gt;"/>
-        /// consisting of TKey/TValue pairs sorted by the supplied key comparer.
-        /// </summary>
+        /// <summary>Initializes a new dictionary of key/value pairs that are sorted on unique keys using the supplied key comparer.</summary>
         /// <param name="comparer">Comparison operator for keys.</param>
         public RankedDictionary (IComparer<TKey> comparer) : this (DefaultOrder, comparer)
         { }
 
 
-        /// <summary>
-        /// Make a new <see cref="RankedDictionary&lt;TKey,TValue&gt;"/>
-        /// consisting of TKey/TValue pairs sorted by the supplied key comparer.
-        /// </summary>
+        /// <summary>Initializes a new dictionary of key/value pairs that are sorted on unique keys using the supplied key comparer.</summary>
         /// <param name="order">Maximum number of children of a node.</param>
         /// <param name="comparer">Comparison operator for keys.</param>
+        /// <remarks>This constuctor is provided for experimental purposes
+        /// and its use may result in degraded performance.</remarks>
         public RankedDictionary (int order, IComparer<TKey> comparer) : base (order, comparer, new Leaf())
         {
             if (order < MinimumOrder || order > MaximumOrder)
@@ -82,25 +74,18 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>
-        /// Make a new <see cref="RankedDictionary&lt;TKey,TValue&gt;"/>
-        /// that consists of TKey/TValue pairs from the supplied source.
-        /// </summary>
-        /// <param name="dictionary">The source of the contents of the new
-        /// <see cref="RankedDictionary&lt;TKey,TValue&gt;"/>.</param>
+        /// <summary>Initializes a new dictionary that contains key/value pairs copied from the supplied dictionary and sorted by the default comparer.</summary>
+        /// <param name="dictionary">The dictionary to be copied.</param>
+        /// <exception cref="ArgumentNullException">When <em>dictionary</em> is <b>null</b>.</exception>
         public RankedDictionary (IDictionary<TKey,TValue> dictionary) : this (dictionary, null)
         { }
 
 
-        /// <summary>
-        /// Make a new <see cref="RankedDictionary&lt;TKey,TValue&gt;"/> consisting of
-        /// TKey/TValue pairs from the supplied source sorted by the supplied key comparer.
-        /// </summary>
-        /// <param name="dictionary">The source of the contents of the new
-        /// <see cref="RankedDictionary&lt;TKey,TValue&gt;"/>.</param>
+        /// <summary>Initializes a new dictionary that contains key/value pairs copied from the supplied dictionary and sorted by the supplied comparer.</summary>
+        /// <param name="dictionary">The dictionary to be copied.</param>
         /// <param name="comparer">Comparison operator for keys.</param>
         /// <exception cref="ArgumentNullException">When <em>dictionary</em> is <b>null</b>.</exception>
-        public RankedDictionary (IDictionary<TKey,TValue> dictionary, IComparer<TKey> comparer) : this (comparer)
+        public RankedDictionary (IDictionary<TKey,TValue> dictionary, IComparer<TKey> comparer) : this (DefaultOrder, comparer)
         {
             if (dictionary == null)
                 throw new ArgumentNullException (nameof (dictionary));
