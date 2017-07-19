@@ -23,7 +23,7 @@ namespace Kaos.Collections
     /// </remarks>
     [DebuggerTypeProxy (typeof (ICollectionDebugView<>))]
     [DebuggerDisplay ("Count = {Count}")]
-    public partial class RankedSet<TKey> : Btree<TKey>,
+    public sealed class RankedSet<TKey> : Btree<TKey>,
 #if ! NET35
         ISet<TKey>,
 #endif

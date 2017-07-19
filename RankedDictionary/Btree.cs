@@ -7,9 +7,12 @@
 // MIT License - Use and redistribute freely
 //
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
 
+[assembly: CLSCompliant (true)]
 namespace Kaos.Collections
 {
     public abstract partial class Btree<TKey>
@@ -150,7 +153,7 @@ namespace Kaos.Collections
         protected object GetSyncRoot()
         {
             if (syncRoot == null)
-                System.Threading.Interlocked.CompareExchange (ref syncRoot, new object(), null);
+                Interlocked.CompareExchange (ref syncRoot, new object(), null);
             return syncRoot;
         }
     }

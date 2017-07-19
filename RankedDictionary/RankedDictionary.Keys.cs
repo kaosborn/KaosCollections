@@ -24,7 +24,7 @@ namespace Kaos.Collections
         public sealed class KeyCollection :
             ICollection<TKey>,
             ICollection
-#if NETSTANDARD1_0
+#if ! NET35 && ! NET40
             , IReadOnlyCollection<TKey>
 #endif
         {

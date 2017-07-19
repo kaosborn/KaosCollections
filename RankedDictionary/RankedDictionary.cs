@@ -12,7 +12,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-[assembly: CLSCompliant (true)]
 namespace Kaos.Collections
 {
     /// <summary>Represents a collection of key/value pairs that are sorted on unique keys.
@@ -487,7 +486,7 @@ namespace Kaos.Collections
         ICollection<TValue> IDictionary<TKey,TValue>.Values
         { get { return (ICollection<TValue>) Values; } }
 
-#if NETSTANDARD1_0
+#if ! NET35 && ! NET40
         IEnumerable<TKey> IReadOnlyDictionary<TKey,TValue>.Keys
         { get { return Keys; } }
 
