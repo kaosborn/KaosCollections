@@ -353,9 +353,9 @@ namespace Kaos.Collections
         #endregion
 
         #region ISet methods implementation
-        #if ! NET35
+#if ! NET35
 
-        /// <summary>Removes all items that are in a specified collection.</summary>
+        /// <summary>Removes all items that are in a supplied collection.</summary>
         /// <param name="other">The collection of items to remove.</param>
         /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         public void ExceptWith (IEnumerable<TKey> other)
@@ -363,47 +363,113 @@ namespace Kaos.Collections
             if (other == null)
                 throw new ArgumentNullException (nameof (other));
 
-            if (Count == 0)
-                return;
+            if (Count > 0)
+                if (other == this)
+                    Clear();
+                else
+                    foreach (TKey item in other)
+                        Remove (item);
+        }
 
-            if (other == this)
+
+        /// <summary>Removes all items that are not in a supplied collection.</summary>
+        /// <param name="other">The collection of items to intersect.</param>
+        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
+        public void IntersectWith (IEnumerable<TKey> other)
+        {
+            if (other == null)
+                throw new ArgumentNullException (nameof (other));
+
+            var oSet = other as RankedSet<TKey> ?? new RankedSet<TKey> (other);
+
+            if (oSet.Count == 0)
             {
                 Clear();
                 return;
             }
 
-            foreach (TKey item in other)
-                if (Contains (item))
-                    Remove (item);
+            for (KeyLeaf leaf = LeftmostLeaf; leaf != null; leaf = leaf.RightLeaf)
+                for (int ix = 0; ix < leaf.KeyCount; )
+                {
+                    var key = leaf.GetKey (ix);
+                    if (! oSet.Contains (key))
+                        Remove (key);
+                    else
+                        ++ix;
+                }
         }
 
 
-        /// <summary>Not yet implemented.</summary>
-        /// <param name="other">The collection to compare to this set.</param>
-        public void IntersectWith (IEnumerable<TKey> other)
-        { throw new NotImplementedException(); }
-
-        /// <summary>Not yet implemented.</summary>
+        /// <summary>Determines whether the set is a proper subset of the supplied collection..</summary>
         /// <param name="other">The collection to compare to this set.</param>
         /// <returns><b>true</b> if the set is a proper subset of <em>other</em>; otherwise <b>false</b>.</returns>
+        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         public bool IsProperSubsetOf (IEnumerable<TKey> other)
-        { throw new NotImplementedException(); }
+        {
+            if (other == null)
+                throw new ArgumentNullException (nameof (other));
 
-        /// <summary>Not yet implemented.</summary>
+            var oSet = other as RankedSet<TKey> ?? new RankedSet<TKey> (other);
+
+            if (Count >= oSet.Count)
+                return false;
+
+            foreach (var item in this)
+                if (! oSet.Contains (item))
+                    return false;
+
+            return true;
+        }
+
+
+        /// <summary>Determines whether the set is a proper superset of the supplied collection..</summary>
         /// <param name="other">The collection to compare to this set.</param>
         /// <returns><b>true</b> if the set is a proper superset of <em>other</em>; otherwise <b>false</b>.</returns>
+        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         public bool IsProperSupersetOf (IEnumerable<TKey> other)
-        { throw new NotImplementedException(); }
+        {
+            if (other == null)
+                throw new ArgumentNullException (nameof (other));
 
-        /// <summary>Not yet implemented.</summary>
+            var oSet = other as RankedSet<TKey> ?? new RankedSet<TKey> (other);
+
+            if (Count <= oSet.Count)
+                return false;
+
+            foreach (var item in other)
+                if (! Contains (item))
+                    return false;
+
+            return true;
+        }
+
+
+        /// <summary>Determines whether the set is a subset of the supplied collection..</summary>
         /// <param name="other">The collection to compare to this set.</param>
         /// <returns><b>true</b> if the set is a subset of <em>other</em>; otherwise <b>false</b>.</returns>
+        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         public bool IsSubsetOf (IEnumerable<TKey> other)
-        { throw new NotImplementedException(); }
+        {
+            if (other == null)
+                throw new ArgumentNullException (nameof (other));
+
+            var oSet = other as RankedSet<TKey> ?? new RankedSet<TKey> (other);
+
+            if (Count > oSet.Count)
+                return false;
+
+            foreach (var item in this)
+                if (! oSet.Contains (item))
+                    return false;
+
+            return true;
+        }
+
 
         /// <summary>Determines whether a set is a superset of the specified collection.</summary>
         /// <param name="other">The items to compare to the current set.</param>
         /// <returns><b>true</b> if the set is a superset of <em>other</em>; otherwise <b>false</b>.</returns>
+        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         public bool IsSupersetOf (IEnumerable<TKey> other)
         {
             if (other == null)
@@ -416,29 +482,93 @@ namespace Kaos.Collections
             return true;
         }
 
-        /// <summary>Not yet implemented.</summary>
+
+        /// <summary>Determines whether the set and a supplied collection share common elements.</summary>
         /// <param name="other">The collection to compare to this set.</param>
-        /// <returns><b>true</b> if the set overlaps <em>other</em>; otherwise <b>false</b>.</returns>
+        /// <returns><b>true</b> if the set and <em>other</em> share at least one common item; otherwise <b>false</b>.</returns>
+        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         public bool Overlaps (IEnumerable<TKey> other)
-        { throw new NotImplementedException(); }
+        {
+            if (other == null)
+                throw new ArgumentNullException (nameof (other));
 
-        /// <summary>Not yet implemented.</summary>
+            if (Count == 0)
+                return false;
+
+            if (other is RankedSet<TKey> oSet)
+            {
+                if (compareOp.Compare (oSet.Max, Min) < 0)
+                    return false;
+                if (compareOp.Compare (oSet.Min, Max) > 0)
+                    return false;
+
+                foreach (var item in oSet.GetBetween (Min, Max))
+                    if (Contains (item))
+                        return true;
+
+                return false;
+            }
+
+            foreach (var item in other)
+                if (Contains (item))
+                    return true;
+
+            return false;
+        }
+
+
+        /// <summary>Determines whether the set and the supplied collection contain the same items.</summary>
         /// <param name="other">The collection to compare to this set.</param>
-        /// <returns><b>true</b> if the set equals <em>other</em>; otherwise <b>false</b>.</returns>
+        /// <returns><b>true</b> if the set is equal to <em>other</em>; otherwise <b>false</b>.</returns>
+        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         public bool SetEquals (IEnumerable<TKey> other)
-        { throw new NotImplementedException(); }
+        {
+            if (other == null)
+                throw new ArgumentNullException (nameof (other));
 
-        /// <summary>Not yet implemented.</summary>
+            var oSet = other as RankedSet<TKey> ?? new RankedSet<TKey> (other);
+
+            if (Count != oSet.Count)
+                return false;
+
+            foreach (var item in oSet)
+                if (! Contains (item))
+                    return false;
+
+            return true;
+        }
+
+
+        /// <summary>Modifies the set so that it contains only items that are present either in itself or in the supplied collection, but not both.</summary>
         /// <param name="other">The collection to compare to this set.</param>
+        /// <remarks>Not yet implemented.</remarks>
+        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         public void SymmetricExceptWith (IEnumerable<TKey> other)
-        { throw new NotImplementedException(); }
+        {
+            if (other == null)
+                throw new ArgumentNullException (nameof (other));
 
-        /// <summary>Not yet implemented.</summary>
-        /// <param name="other">The collection to compare to this set.</param>
+            var oSet = other as RankedSet<TKey> ?? new RankedSet<TKey> (other);
+            if (oSet.Count == 0)
+                return;
+
+            throw new NotImplementedException();
+        }
+
+
+        /// <summary>Add all items in <em>other</em> to this set that are not already in this set.</summary>
+        /// <param name="other">The collection to add to this set.</param>
+        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         public void UnionWith (IEnumerable<TKey> other)
-        { throw new NotImplementedException(); }
+        {
+            if (other == null)
+                throw new ArgumentNullException (nameof (other));
 
-        #endif
+            foreach (var item in other)
+                Add (item);
+        }
+
+#endif
         #endregion
 
         #region Enumerator
@@ -515,6 +645,42 @@ namespace Kaos.Collections
         #endregion
 
         #region Bonus methods
+
+        /// <summary>Returns a subset range.</summary>
+        /// <param name="lower">Minimum item value of range.</param>
+        /// <param name="upper">Maximum item value of range.</param>
+        /// <returns>An enumerator for all items between <em>lower</em> and <em>upper</em> inclusive.</returns>
+        /// <remarks>
+        /// Neither <em>lower</em> or <em>upper</em> need to be present in the collection.
+        /// </remarks>
+        public IEnumerable<TKey> GetBetween (TKey lower, TKey upper)
+        {
+            var leaf = (KeyLeaf) Find (lower, out int index);
+
+            // When the supplied start key is not be found, start with the next highest key.
+            if (index < 0)
+                index = ~index;
+
+            for (;;)
+            {
+                if (index < leaf.KeyCount)
+                {
+                    if (compareOp.Compare (leaf.GetKey (index), upper) > 0)
+                        yield break;
+
+                    yield return leaf.GetKey (index);
+                    ++index;
+                    continue;
+                }
+
+                leaf = leaf.RightLeaf;
+                if (leaf == null)
+                    yield break;
+
+                index = 0;
+            }
+        }
+
 
         /// <summary>Gets the key at the specified index.</summary>
         /// <param name="index">The zero-based index of the key to get.</param>
