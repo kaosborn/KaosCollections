@@ -9,6 +9,7 @@
     <Import_RootNamespace>RankedDictionary</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)IDictionaryDebugView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.Keys.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.Leaf.cs" />

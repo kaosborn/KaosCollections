@@ -12,6 +12,5 @@
     <Compile Include="$(MSBuildThisFileDirectory)Btree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Btree.Node.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Btree.NodeVector.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DebugView.cs" />
   </ItemGroup>
 </Project>
