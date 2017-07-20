@@ -1,5 +1,5 @@
 ﻿//
-// File: TestBtreeLinq.cs
+// File: TestRdLinq.cs
 //
 // Exercise some of the LINQ API derived from Enumerable. This is a partial sample and only
 // Last() is required for coverage testing.

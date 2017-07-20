@@ -1,4 +1,9 @@
-﻿using System;
+﻿//
+// Library: KaosCollections
+// File:    TestRs.cs
+//
+
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #if TEST_SORTEDDICTIONARY
 using System.Collections.Generic;
@@ -10,18 +15,49 @@ namespace CollectionsTest
 {
     public partial class Test_Btree
     {
+        #region Test constructors
+
         [TestMethod]
-        public void UnitSd_Ctor1()
+        public void UnitSd_Ctor0A1()
         {
             Setup();
             Assert.AreEqual (0, setTS1.Count);
         }
 
+        [TestMethod]
+#if TEST_SORTEDDICTIONARY
+        [ExpectedException (typeof (ArgumentException))]
+#else
+        [ExpectedException (typeof (InvalidOperationException))]
+#endif
+        public void UnitSd_Ctor1B_InvalidOperation()
+        {
+#if TEST_SORTEDDICTIONARY
+            var sansComparer = new SortedSet<Person>();
+#else
+            var sansComparer = new RankedSet<Person>();
+#endif
+            foreach (var name in Person.names)
+                sansComparer.Add (new Person (name));
+        }
 
         [TestMethod]
-        public void UnitSd_Ctor6()
+        public void UnitSd_Ctor1B1()
         {
-#if TEST_SORTED_DICTIONARY
+            Setup();
+
+            foreach (var name in Person.names) personSet.Add (new Person (name));
+            personSet.Add (null);
+            personSet.Add (new Person ("Zed"));
+
+            Assert.AreEqual (Person.names.Length+2, personSet.Count);
+        }
+
+
+        [TestMethod]
+        public void UnitSd_Ctor1B()
+        {
+#if TEST_SORTEDDICTIONARY
             var set1 = new SortedSet<int> (keys);
             var set3 = new SortedSet<int> (iVals3);
 #else
@@ -31,6 +67,23 @@ namespace CollectionsTest
             Assert.AreEqual (keys.Length, set1.Count);
             Assert.AreEqual (4, set3.Count);
         }
+
+
+        [TestMethod]
+        public void UnitSd_Ctor2A()
+        {
+            var pa = new System.Collections.Generic.List<Person>();
+            foreach (var name in Person.names) pa.Add (new Person (name));
+
+#if TEST_SORTEDDICTIONARY
+            var people = new SortedSet<Person> (pa, new PersonComparer());
+#else
+            var people = new RankedSet<Person> (pa, new PersonComparer());
+#endif
+            Assert.AreEqual (Person.names.Length, people.Count);
+        }
+
+        #endregion
 
         #region Test properties
 
@@ -66,6 +119,8 @@ namespace CollectionsTest
         }
 
         #endregion
+
+        #region Test methods
 
         [TestMethod]
         public void UnitSd_AddNull()
@@ -325,7 +380,9 @@ namespace CollectionsTest
             Assert.AreEqual (0, expected);
         }
 
-        #region ISet tests
+        #endregion
+
+        #region Test ISet methods
 
         [TestMethod]
         public void UnitSd_ExceptWith()
@@ -374,7 +431,8 @@ namespace CollectionsTest
 
         #endregion
 
-#if ! TEST_SORTEDDICTIONARY
+        #region Test bonus methods
+#if !TEST_SORTEDDICTIONARY
 
         [TestMethod]
         public void UnitSd_IndexOf()
@@ -395,5 +453,6 @@ namespace CollectionsTest
         }
 
 #endif
+        #endregion
     }
 }

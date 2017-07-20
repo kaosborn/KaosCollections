@@ -31,11 +31,27 @@ namespace CollectionsTest
         public int CompareTo (object ob) { return this.K1 - ((TS1)ob).K1; }
     }
 
+    public class Person
+    {
+        public static string[] names = new string[]
+        { "Walter", "Bob", "Trent", "Chuck", "Alice" , "Maynard", "Frank", "Sybil", "Eve" };
+
+        public string Name { get; private set; }
+        public Person (string name) { Name = name; }
+        public override string ToString() { return Name; }
+    }
+
+    public class PersonComparer : System.Collections.Generic.Comparer<Person>
+    {
+        public override int Compare (Person x, Person y)
+        { return x==null? (y==null? 0 : -1) : (y==null? 1 : String.Compare (x.Name, y.Name)); }
+    }
+
 
     [TestClass]
     public partial class Test_Btree
     {
-#if TEST_SORTEDDICTIONARY
+        #if TEST_SORTEDDICTIONARY
         SortedDictionary<int,int> tree1;
         SortedDictionary<string,int> tree2;
         SortedDictionary<string,int?> tree3;
@@ -43,6 +59,7 @@ namespace CollectionsTest
         SortedSet<int> setI;
         SortedSet<string> setS;
         SortedSet<TS1> setTS1;
+        SortedSet<Person> personSet;
 #else
         RankedDictionary<int,int> tree1;
         RankedDictionary<string,int> tree2;
@@ -51,6 +68,7 @@ namespace CollectionsTest
         RankedSet<int> setI;
         RankedSet<string> setS;
         RankedSet<TS1> setTS1;
+        RankedSet<Person> personSet;
 #endif
         ICollection<KeyValuePair<string,int>> genCol2;
         ICollection<string> genKeys2;
@@ -77,6 +95,7 @@ namespace CollectionsTest
             setI = new SortedSet<int>();
             setS = new SortedSet<string>();
             setTS1 = new SortedSet<TS1>();
+            personSet = new SortedSet<Person> (new PersonComparer());
 #else
             tree1 = new RankedDictionary<int,int> (order);
             tree2 = new RankedDictionary<string,int> (order);
@@ -85,6 +104,7 @@ namespace CollectionsTest
             setI = new RankedSet<int>(order);
             setS = new RankedSet<string>(order);
             setTS1 = new RankedSet<TS1>(order);
+            personSet = new RankedSet<Person> (new PersonComparer());
 #endif
 
             Type treeType = tree1.GetType();

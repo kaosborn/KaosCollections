@@ -1,5 +1,6 @@
 ﻿//
-// File: TestBtreeGenerics.cs
+// Library: KaosCollections
+// File:    TestRd.cs
 //
 
 using System;
@@ -11,6 +12,8 @@ namespace CollectionsTest
 {
     public partial class Test_Btree
     {
+        #region Test constructors
+
         [TestMethod]
         public void Unit_Inheritance()
         {
@@ -59,7 +62,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_Ctor2A()
+        public void Unit_Ctor1A1()
         {
 #if TEST_SORTEDDICTIONARY
             var tree = new SortedDictionary<string,int> (StringComparer.OrdinalIgnoreCase);
@@ -84,7 +87,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_Ctor2B()
+        public void Unit_Ctor1A2()
         {
 #if TEST_SORTEDDICTIONARY
             var tree = new SortedDictionary<string,int> (StringComparer.Ordinal);
@@ -109,7 +112,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void Crash_Ctor_ArgumentNull()
+        public void Crash_Ctor1B_ArgumentNull()
         {
             IDictionary<int,int> listArg = null;
 #if TEST_SORTEDDICTIONARY
@@ -121,7 +124,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_CtorIDictionary()
+        public void Unit_Ctor1B()
         {
             Setup();
 
@@ -139,6 +142,25 @@ namespace CollectionsTest
             Assert.AreEqual (2, tree["Pacer"]);
         }
 
+        [TestMethod]
+        public void Unit_Ctor2A()
+        {
+            IDictionary<Person,int> empDary = new SortedDictionary<Person,int>(new PersonComparer());
+            empDary.Add (new KeyValuePair<Person,int> (new Person ("fay"), 1));
+            empDary.Add (new KeyValuePair<Person,int> (new Person ("ann"), 2));
+            empDary.Add (new KeyValuePair<Person,int> (new Person ("sam"), 3));
+
+#if TEST_SORTEDDICTIONARY
+            var people = new SortedDictionary<Person,int> (empDary, new PersonComparer());
+#else
+            var people = new RankedDictionary<Person,int> (empDary, new PersonComparer());
+#endif
+            Assert.AreEqual (3, people.Count);
+        }
+
+#endregion
+
+#region Test methods
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
@@ -607,9 +629,9 @@ namespace CollectionsTest
 
         // Keys, Values property testing is implicit in their API tests.
 
+#endregion
 
-        // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
-
+#region Test ICollection implementation
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
@@ -830,5 +852,6 @@ namespace CollectionsTest
             Assert.AreEqual (2, count);
         }
 
+#endregion
     }
 }
