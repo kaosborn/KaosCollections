@@ -74,7 +74,7 @@ namespace BenchApp
             var time22 = watch2.ElapsedMilliseconds;
 
             // Range query: Sum the middle 100 values.
-            var rangeVals = bt.BetweenKeys (reps/2-50, reps/2+50).Sum (x => x.Value);
+            var rangeVals = bt.GetBetween (reps/2-50, reps/2+50).Sum (x => x.Value);
 
             var time23 = watch2.ElapsedMilliseconds;
 

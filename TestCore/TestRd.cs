@@ -64,7 +64,7 @@ namespace CollectionsTest
         [TestMethod]
         public void Unit_Ctor1A1()
         {
-#if TEST_SORTEDDICTIONARY
+#if TEST_BCL
             var tree = new SortedDictionary<string,int> (StringComparer.OrdinalIgnoreCase);
 #else
             var tree = new RankedDictionary<string,int> (StringComparer.OrdinalIgnoreCase);
@@ -89,7 +89,7 @@ namespace CollectionsTest
         [TestMethod]
         public void Unit_Ctor1A2()
         {
-#if TEST_SORTEDDICTIONARY
+#if TEST_BCL
             var tree = new SortedDictionary<string,int> (StringComparer.Ordinal);
 #else
             var tree = new RankedDictionary<string,int> (StringComparer.Ordinal);
@@ -115,7 +115,7 @@ namespace CollectionsTest
         public void Crash_Ctor1B_ArgumentNull()
         {
             IDictionary<int,int> listArg = null;
-#if TEST_SORTEDDICTIONARY
+#if TEST_BCL
             IDictionary<int,int> idx = new SortedDictionary<int,int> (listArg);
 #else
             IDictionary<int,int> idx = new RankedDictionary<int,int> (listArg);
@@ -132,7 +132,7 @@ namespace CollectionsTest
             sl.Add ("Gremlin", 1);
             sl.Add ("Pacer", 2);
 
-#if TEST_SORTEDDICTIONARY
+#if TEST_BCL
             var tree = new SortedDictionary<string,int> (sl);
 #else
             var tree = new RankedDictionary<string,int> (sl);
@@ -150,7 +150,7 @@ namespace CollectionsTest
             empDary.Add (new KeyValuePair<Person,int> (new Person ("ann"), 2));
             empDary.Add (new KeyValuePair<Person,int> (new Person ("sam"), 3));
 
-#if TEST_SORTEDDICTIONARY
+#if TEST_BCL
             var people = new SortedDictionary<Person,int> (empDary, new PersonComparer());
 #else
             var people = new RankedDictionary<Person,int> (empDary, new PersonComparer());
@@ -289,7 +289,7 @@ namespace CollectionsTest
         public void Crash_CopyTo_ArgumentNull()
         {
             Setup();
-            var target = new KeyValuePair<int,int>[keys.Length];
+            var target = new KeyValuePair<int,int>[iVals1.Length];
             tree1.CopyTo (null, -1);
         }
 
@@ -299,7 +299,7 @@ namespace CollectionsTest
         public void Crash_CopyTo_ArgumentOutOfRange_1()
         {
             Setup();
-            var target = new KeyValuePair<int,int>[keys.Length];
+            var target = new KeyValuePair<int,int>[iVals1.Length];
             tree1.CopyTo (target, -1);
         }
 
@@ -364,8 +364,8 @@ namespace CollectionsTest
         {
             Setup();
 
-            for (int i = 0; i < keys.Length; ++i)
-                tree1.Add (keys[i], keys[i] + 1000);
+            for (int i = 0; i < iVals1.Length; ++i)
+                tree1.Add (iVals1[i], iVals1[i] + 1000);
 
             int actualCount = 0;
 
@@ -375,7 +375,7 @@ namespace CollectionsTest
                 Assert.AreEqual (pair.Key + 1000, pair.Value);
             }
 
-            Assert.AreEqual (keys.Length, actualCount);
+            Assert.AreEqual (iVals1.Length, actualCount);
         }
 
 
@@ -440,12 +440,12 @@ namespace CollectionsTest
         {
             Setup();
 
-            foreach (int key in keys)
+            foreach (int key in iVals1)
                 tree1.Add (key, key + 1000);
 
             int c0 = tree1.Count;
-            bool isRemoved1 = tree1.Remove (keys[3]);
-            bool isRemoved2 = tree1.Remove (keys[3]);
+            bool isRemoved1 = tree1.Remove (iVals1[3]);
+            bool isRemoved2 = tree1.Remove (iVals1[3]);
 
             Assert.IsTrue (isRemoved1);
             Assert.IsFalse (isRemoved2);
@@ -489,7 +489,7 @@ namespace CollectionsTest
         [TestMethod]
         public void Unit_TryGetValueForUnfoundKeyString()
         {
-#if TEST_SORTEDDICTIONARY
+#if TEST_BCL
             var sd = new SortedDictionary<string,int> (StringComparer.Ordinal);
 #else
             var sd = new RankedDictionary<string,int> (StringComparer.Ordinal);
@@ -518,13 +518,13 @@ namespace CollectionsTest
         {
             Setup();
 
-            foreach (int key in keys)
+            foreach (int key in iVals1)
                 tree1.Add (key, key + 1000);
 
             int resultValue;
-            tree1.TryGetValue (keys[0], out resultValue);
+            tree1.TryGetValue (iVals1[0], out resultValue);
 
-            Assert.AreEqual (keys[0] + 1000, resultValue);
+            Assert.AreEqual (iVals1[0] + 1000, resultValue);
 
             tree1.TryGetValue (50, out resultValue);
             Assert.AreEqual (default (int), resultValue);
@@ -557,17 +557,17 @@ namespace CollectionsTest
         {
             Setup();
 
-            for (int i = 0; i < keys.Length; ++i)
+            for (int i = 0; i < iVals1.Length; ++i)
             {
                 Assert.AreEqual (i, tree1.Count);
-                tree1.Add (keys[i], keys[i] * 10);
+                tree1.Add (iVals1[i], iVals1[i] * 10);
             }
-            Assert.AreEqual (keys.Length, tree1.Count);
+            Assert.AreEqual (iVals1.Length, tree1.Count);
 
-            for (int i = 0; i < keys.Length; ++i)
+            for (int i = 0; i < iVals1.Length; ++i)
             {
-                tree1.Remove (keys[i]);
-                Assert.AreEqual (keys.Length - i - 1, tree1.Count);
+                tree1.Remove (iVals1[i]);
+                Assert.AreEqual (iVals1.Length - i - 1, tree1.Count);
             }
         }
 
@@ -714,7 +714,7 @@ namespace CollectionsTest
             var gic = (ICollection<KeyValuePair<int,int>>) tree1;
 
 
-            foreach (int k in keys)
+            foreach (int k in iVals1)
                 tree1.Add (k, k + 100);
 
             int actualCount = 0;
@@ -724,7 +724,7 @@ namespace CollectionsTest
                 ++actualCount;
             }
 
-            Assert.AreEqual (keys.Length, actualCount);
+            Assert.AreEqual (iVals1.Length, actualCount);
         }
 
 
@@ -732,7 +732,7 @@ namespace CollectionsTest
         public void Unit_IEnumerablePairGetEnumerator()
         {
             Setup();
-            foreach (int k in keys)
+            foreach (int k in iVals1)
                 tree1.Add (k, k + 100);
 
             var x = (IEnumerable<KeyValuePair<int,int>>) tree1;
@@ -744,7 +744,7 @@ namespace CollectionsTest
                 ++actualCount;
             }
 
-            Assert.AreEqual (keys.Length, actualCount);
+            Assert.AreEqual (iVals1.Length, actualCount);
         }
 
 

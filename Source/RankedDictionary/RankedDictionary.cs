@@ -1,7 +1,6 @@
 ﻿//
 // Library: KaosCollections
 // File:    RankedDictionary.cs
-// Purpose: Defines RankedDictionary generic API.
 //
 // Copyright © 2009-2017 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely
@@ -22,7 +21,7 @@ namespace Kaos.Collections
     /// This class emulates and augments the
     /// <see cref="System.Collections.Generic.SortedDictionary&lt;TKey,TValue&gt;"/> class
     /// with the addition of the methods
-    /// <see cref="BetweenKeys"/>, <see cref="SkipUntilKey"/>, and <see cref="Last"/>.
+    /// <see cref="GetBetween"/>, <see cref="SkipUntilKey"/>, and <see cref="Last"/>.
     /// </remarks>
     [DebuggerTypeProxy (typeof (IDictionaryDebugView<,>))]
     [DebuggerDisplay ("Count = {Count}")]
@@ -749,18 +748,18 @@ namespace Kaos.Collections
         /// <summary>
         /// This iterator provides range query support.
         /// </summary>
-        /// <param name="startKey">Minimum inclusive key value of range.</param>
-        /// <param name="endKey">Maximum inclusive key value of range.</param>
-        /// <returns>An enumerator for all key/value pairs between startKey and endKey.</returns>
+        /// <param name="lower">Minimum inclusive key value of range.</param>
+        /// <param name="upper">Maximum inclusive key value of range.</param>
+        /// <returns>An enumerator for all key/value pairs between lower and upper.</returns>
         /// <remarks>
-        /// Neither <em>startKey</em> or <em>endKey</em> need to be present in the collection.
+        /// Neither <em>lower</em> or <em>upper</em> need to be present in the collection.
         /// </remarks>
         /// <example>
         /// <code source="..\Bench\BtreeExample03\BtreeExample03.cs" lang="cs" />
         /// </example>
-        public IEnumerable<KeyValuePair<TKey,TValue>> BetweenKeys (TKey startKey, TKey endKey)
+        public IEnumerable<KeyValuePair<TKey,TValue>> GetBetween (TKey lower, TKey upper)
         {
-            var leaf = (Leaf) Find (startKey, out int index);
+            var leaf = (Leaf) Find (lower, out int index);
 
             // When the supplied start key is not be found, start with the next highest key.
             if (index < 0)
@@ -770,7 +769,7 @@ namespace Kaos.Collections
             {
                 if (index < leaf.KeyCount)
                 {
-                    if (Comparer.Compare (leaf.GetKey (index), endKey) > 0)
+                    if (Comparer.Compare (leaf.GetKey (index), upper) > 0)
                         yield break;
 
                     yield return leaf.GetPair (index);

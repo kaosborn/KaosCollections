@@ -1,16 +1,16 @@
 ﻿//
 // File: TestInit.cs
 //
-// Run BtreeDictionary's suite against SortedDictionary to demonstrate identical behavior
-// between the two API's.  To perform baseline test against SortedDictionary, add the
-// TEST_SORTEDDICTIONARY compilation symbol.
+// Run this suite against SortedDictionary and SortedSet to demonstrate identical
+// behavior between the two API's.  To perform baseline test against BCL, add the
+// TEST_BCL compilation symbol in project properties.
 //
 
 using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-#if ! TEST_SORTEDDICTIONARY
+#if ! TEST_BCL
 using Kaos.Collections;
 #endif
 
@@ -51,7 +51,7 @@ namespace CollectionsTest
     [TestClass]
     public partial class Test_Btree
     {
-        #if TEST_SORTEDDICTIONARY
+        #if TEST_BCL
         SortedDictionary<int,int> tree1;
         SortedDictionary<string,int> tree2;
         SortedDictionary<string,int?> tree3;
@@ -78,7 +78,7 @@ namespace CollectionsTest
 
 
         // Must not contain value 50.
-        static int[] keys = new int[] { 12, 28, 15, 18, 14, 19, 25 };
+        static int[] iVals1 = new int[] { 12, 28, 15, 18, 14, 19, 25 };
         static int[] iVals2 = new int[] { 10, 28, 14, 50 };
         static int[] iVals3 = new int[] { 13, 22, 51, 22, 33 };
         static int[] iVals4 = new int[] { 14, 15, 19 };
@@ -87,7 +87,7 @@ namespace CollectionsTest
 
         public void Setup (int order)
         {
-#if TEST_SORTEDDICTIONARY
+#if TEST_BCL
             tree1 = new SortedDictionary<int,int>();
             tree2 = new SortedDictionary<string,int>();
             tree3 = new SortedDictionary<string,int?>();

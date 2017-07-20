@@ -1,7 +1,6 @@
 ﻿//
 // Library: KaosCollections
 // File:    RankedSet.cs
-// Purpose: Defines BtreeDictionary generic API.
 //
 // Copyright © 2009-2017 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely
@@ -14,8 +13,7 @@ using System.Diagnostics;
 
 namespace Kaos.Collections
 {
-    /// <summary>Represents a collection of sorted, unique items.
-    /// </summary>
+    /// <summary>Represents a collection of sorted, unique items.</summary>
     /// <typeparam name="TKey">The type of the items in the set.</typeparam>
     /// <remarks>
     /// This class emulates and augments the
@@ -155,12 +153,12 @@ namespace Kaos.Collections
         void ICollection<TKey>.Add (TKey item)
         { Add (item); }
 
-        private void Add2 (NodeVector nv, TKey key)
+        private void Add2 (NodeVector path, TKey key)
         {
-            var leaf = (KeyLeaf) nv.TopNode;
-            int pathIndex = nv.TopNodeIndex;
+            var leaf = (KeyLeaf) path.TopNode;
+            int pathIndex = path.TopNodeIndex;
 
-            nv.UpdateWeight (1);
+            path.UpdateWeight (1);
             if (leaf.KeyCount < maxKeyCount)
             {
                 leaf.Insert (pathIndex, key);
@@ -194,7 +192,7 @@ namespace Kaos.Collections
             }
 
             // Promote anchor of split leaf.
-            nv.Promote (newLeaf.Key0, (Node) newLeaf, newLeaf.RightLeaf == null);
+            path.Promote (newLeaf.Key0, (Node) newLeaf, newLeaf.RightLeaf == null);
         }
 
 

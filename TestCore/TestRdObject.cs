@@ -13,10 +13,10 @@ namespace CollectionsTest
         {
             Setup();
 
-            foreach (int key in keys)
+            foreach (int key in iVals1)
                 tree1.Add (key, key + 1000);
 
-            Assert.IsTrue (objCol1.Contains (keys[0]));
+            Assert.IsTrue (objCol1.Contains (iVals1[0]));
             Assert.IsFalse (objCol1.Contains (-1));
             Assert.IsFalse (objCol1.Contains ("foo"));
         }
@@ -36,7 +36,7 @@ namespace CollectionsTest
         public void Crash_ObjectCopyTo_ArgumentNull()
         {
             Setup();
-            var target = new KeyValuePair<int,int>[keys.Length];
+            var target = new KeyValuePair<int,int>[iVals1.Length];
             objCol1.CopyTo (null, -1);
         }
 
@@ -46,7 +46,7 @@ namespace CollectionsTest
         public void Crash_ObjectCopyTo_ArgumentOutOfRange()
         {
             Setup();
-            var target = new KeyValuePair<int,int>[keys.Length];
+            var target = new KeyValuePair<int,int>[iVals1.Length];
             objCol1.CopyTo (target, -1);
         }
 
@@ -56,7 +56,7 @@ namespace CollectionsTest
         public void Crash_ObjectCopyTo_Argument_1()
         {
             Setup();
-            var target = new KeyValuePair<int,int>[keys.Length,2];
+            var target = new KeyValuePair<int,int>[iVals1.Length,2];
             objCol1.CopyTo (target, 0);
         }
 
@@ -90,14 +90,14 @@ namespace CollectionsTest
         public void Unit_ObjectCopyTo()
         {
             Setup();
-            foreach (int key in keys)
+            foreach (int key in iVals1)
                 tree1.Add (key, key + 1000);
 
-            var target = new KeyValuePair<int,int>[keys.Length];
+            var target = new KeyValuePair<int,int>[iVals1.Length];
 
             objCol1.CopyTo (target, 0);
 
-            for (int i = 0; i < keys.Length; ++i)
+            for (int i = 0; i < iVals1.Length; ++i)
                 Assert.AreEqual (target[i].Key + 1000, target[i].Value);
         }
 
@@ -125,7 +125,7 @@ namespace CollectionsTest
         {
             Setup();
 
-            foreach (int k in keys)
+            foreach (int k in iVals1)
                 tree1.Add (k, k + 1000);
 
             int actualCount = 0;
@@ -135,7 +135,7 @@ namespace CollectionsTest
                 ++actualCount;
             }
 
-            Assert.AreEqual (keys.Length, actualCount);
+            Assert.AreEqual (iVals1.Length, actualCount);
         }
 
 

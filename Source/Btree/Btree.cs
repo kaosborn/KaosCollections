@@ -1,7 +1,7 @@
 ﻿//
 // Library: KaosCollections
 // File:    Btree.cs
-// Purpose: Define base functionality.
+// Purpose: Define base functionality for RankedDictionary, RankedSet.
 //
 // Copyright © 2009-2017 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely
@@ -103,17 +103,17 @@ namespace Kaos.Collections
         }
 
 
-        protected void Remove2 (NodeVector nv)
+        protected void Remove2 (NodeVector path)
         {
-            int leafIndex = nv.TopNodeIndex;
-            var leaf = (KeyLeaf) nv.TopNode;
+            int leafIndex = path.TopNodeIndex;
+            var leaf = (KeyLeaf) path.TopNode;
 
             leaf.Remove (leafIndex);
-            nv.UpdateWeight (-1);
+            path.UpdateWeight (-1);
 
             if (leafIndex == 0)
                 if (leaf.KeyCount != 0)
-                    nv.SetPivot (nv.TopNode.Key0);
+                    path.SetPivot (path.TopNode.Key0);
                 else
                 {
                     Debug.Assert (leaf.RightLeaf==null, "only rightmost leaf should ever be empty");
@@ -122,7 +122,7 @@ namespace Kaos.Collections
                     if (leaf.LeftLeaf != null)
                     {
                         leaf.Prune();
-                        nv.Demote();
+                        path.Demote();
                     }
 
                     return;
@@ -138,16 +138,16 @@ namespace Kaos.Collections
                         // Balance leaves by shifting pairs from right leaf.
                         int shifts = (leaf.KeyCount + rightLeaf.KeyCount + 1) / 2 - leaf.KeyCount;
                         leaf.Shift (shifts);
-                        nv.TraverseRight();
-                        nv.SetPivot (rightLeaf.Key0);
-                        nv.TiltLeft (shifts);
+                        path.TraverseRight();
+                        path.SetPivot (rightLeaf.Key0);
+                        path.TiltLeft (shifts);
                     }
                     else
                     {
                         leaf.Coalesce();
-                        nv.TraverseRight();
-                        nv.TiltLeft (rightLeaf.KeyCount);
-                        nv.Demote();
+                        path.TraverseRight();
+                        path.TiltLeft (rightLeaf.KeyCount);
+                        path.Demote();
                     }
             }
         }

@@ -5,7 +5,7 @@
 
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-#if TEST_SORTEDDICTIONARY
+#if TEST_BCL
 using System.Collections.Generic;
 #else
 using Kaos.Collections;
@@ -25,14 +25,14 @@ namespace CollectionsTest
         }
 
         [TestMethod]
-#if TEST_SORTEDDICTIONARY
+#if TEST_BCL
         [ExpectedException (typeof (ArgumentException))]
 #else
         [ExpectedException (typeof (InvalidOperationException))]
 #endif
         public void UnitSd_Ctor1B_InvalidOperation()
         {
-#if TEST_SORTEDDICTIONARY
+#if TEST_BCL
             var sansComparer = new SortedSet<Person>();
 #else
             var sansComparer = new RankedSet<Person>();
@@ -57,14 +57,14 @@ namespace CollectionsTest
         [TestMethod]
         public void UnitSd_Ctor1B()
         {
-#if TEST_SORTEDDICTIONARY
-            var set1 = new SortedSet<int> (keys);
+#if TEST_BCL
+            var set1 = new SortedSet<int> (iVals1);
             var set3 = new SortedSet<int> (iVals3);
 #else
-            var set1 = new RankedSet<int> (keys);
+            var set1 = new RankedSet<int> (iVals1);
             var set3 = new RankedSet<int> (iVals3);
 #endif
-            Assert.AreEqual (keys.Length, set1.Count);
+            Assert.AreEqual (iVals1.Length, set1.Count);
             Assert.AreEqual (4, set3.Count);
         }
 
@@ -75,7 +75,7 @@ namespace CollectionsTest
             var pa = new System.Collections.Generic.List<Person>();
             foreach (var name in Person.names) pa.Add (new Person (name));
 
-#if TEST_SORTEDDICTIONARY
+#if TEST_BCL
             var people = new SortedSet<Person> (pa, new PersonComparer());
 #else
             var people = new RankedSet<Person> (pa, new PersonComparer());
@@ -313,7 +313,7 @@ namespace CollectionsTest
             bool isOk;
             Setup (4);
 
-            foreach (int x1 in keys)
+            foreach (int x1 in iVals1)
                 setI.Add (x1);
             int count0 = setI.Count;
 
@@ -335,7 +335,7 @@ namespace CollectionsTest
         {
             Setup (4);
 
-            foreach (int x1 in keys)
+            foreach (int x1 in iVals1)
                 setI.Add (x1);
 
             int removeCount = setI.RemoveWhere (IsEven);
@@ -388,15 +388,15 @@ namespace CollectionsTest
         public void UnitSd_ExceptWith()
         {
             Setup();
-            foreach (var v1 in keys)
+            foreach (var v1 in iVals1)
                 setI.Add (v1);
 
-            var list1 = new System.Collections.Generic.List<int> (keys);
+            var list1 = new System.Collections.Generic.List<int> (iVals1);
             var list2 = new System.Collections.Generic.List<int> (iVals2);
 
             setI.ExceptWith (iVals2);
 
-            int expectedCount = keys.Length;
+            int expectedCount = iVals1.Length;
             foreach (int i2 in iVals2)
                 if (list1.Contains (i2))
                     --expectedCount;
@@ -418,7 +418,7 @@ namespace CollectionsTest
             isSuper = setI.IsSupersetOf (new int[0]);
             Assert.IsTrue (isSuper);
 
-            foreach (int item in keys)
+            foreach (int item in iVals1)
                 setI.Add (item);
             Assert.IsTrue (isSuper);
 
@@ -432,7 +432,7 @@ namespace CollectionsTest
         #endregion
 
         #region Test bonus methods
-#if !TEST_SORTEDDICTIONARY
+#if ! TEST_BCL
 
         [TestMethod]
         public void UnitSd_IndexOf()

@@ -22,7 +22,7 @@ namespace CollectionsTest
         public void Crash_KeysCopyToOfValidValues_ArgumentOutOfRange()
         {
             Setup();
-            var target = new int[keys.Length];
+            var target = new int[iVals1.Length];
             tree1.Keys.CopyTo (target, -1);
         }
 
@@ -83,10 +83,10 @@ namespace CollectionsTest
         public void Unit_KeysCount()
         {
             Setup();
-            foreach (int key in keys)
+            foreach (int key in iVals1)
                 tree1.Add (key, key + 1000);
 
-            Assert.AreEqual (keys.Length, tree1.Keys.Count);
+            Assert.AreEqual (iVals1.Length, tree1.Keys.Count);
         }
 
         // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
@@ -176,7 +176,7 @@ namespace CollectionsTest
         public void Crash_ValuesCopyTo_ArgumentNull()
         {
             Setup();
-            var target = new int[keys.Length];
+            var target = new int[iVals1.Length];
             tree1.Values.CopyTo (null, -1);
         }
 
@@ -260,10 +260,10 @@ namespace CollectionsTest
         public void Unit_ValuesCount()
         {
             Setup();
-            foreach (int key in keys)
+            foreach (int key in iVals1)
                 tree1.Add (key, key + 1000);
 
-            Assert.AreEqual (keys.Length, tree1.Values.Count);
+            Assert.AreEqual (iVals1.Length, tree1.Values.Count);
         }
 
         // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----

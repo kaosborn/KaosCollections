@@ -5,19 +5,19 @@ using Kaos.Collections;
 
 namespace CollectionsTest
 {
-#if ! TEST_SORTEDDICTIONARY
+#if ! TEST_BCL
     public partial class Test_Btree
     {
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void Crash_XtraCtor1E1_ArgumentOutOfRange()
+        public void CrashRd_XtraCtor1E1_ArgumentOutOfRange()
         {
             var tree = new RankedDictionary<int,int> (3);
         }
 
 
         [TestMethod]
-        public void Unit_XtraCtor1()
+        public void UnitRd_XtraCtor1()
         {
             var tree = new RankedDictionary<int,int> (6);
             Assert.AreEqual (0, tree.Count);
@@ -25,7 +25,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_XtraBetweenKeys()
+        public void UnitRd_XtraGetBetween()
         {
             var bt = new RankedDictionary<int,int>();
 
@@ -34,7 +34,7 @@ namespace CollectionsTest
 
             int iterations = 0;
             int sumVals = 0;
-            foreach (var kv in bt.BetweenKeys (35, 55))
+            foreach (var kv in bt.GetBetween (35, 55))
             {
                 ++iterations;
                 sumVals += kv.Value;
@@ -46,7 +46,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_XtraBetweenKeysPassedEnd()
+        public void UnitRd_XtraGetBetweenPassedEnd()
         {
             var btree = new RankedDictionary<int,int>();
 
@@ -55,7 +55,7 @@ namespace CollectionsTest
 
             int iterations = 0;
             int sumVals = 0;
-            foreach (KeyValuePair<int,int> e in btree.BetweenKeys (500, 1500))
+            foreach (KeyValuePair<int,int> e in btree.GetBetween (500, 1500))
             {
                 ++iterations;
                 sumVals += e.Value;
@@ -67,7 +67,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_XtraSkipUntilKey()
+        public void UnitRd_XtraSkipUntilKey()
         {
             var btree = new RankedDictionary<int,int>();
 
@@ -89,7 +89,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_XtraSkipUntilKeyMissingVal()
+        public void UnitRd_XtraSkipUntilKeyMissingVal()
         {
 
             var btree = new RankedDictionary<int,int>();
@@ -113,7 +113,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_XtraSkipUntilKeyPassedEnd()
+        public void UnitRd_XtraSkipUntilKeyPassedEnd()
         {
             var btree = new RankedDictionary<int,int>();
 
@@ -168,7 +168,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_RankedGetValueIndex()
+        public void UnitRd_RankedGetValueIndex()
         {
             var tree = new RankedDictionary<int,int>(5);
             for (int ii = 0; ii < 500; ii+=2)
@@ -190,7 +190,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void Crash_RankedGetByIndexArgumentOutOfRange_1()
+        public void CrashRd_RankedGetByIndexArgumentOutOfRange_1()
         {
             var tree = new RankedDictionary<int,int> (4) { { 4, 104 } };
             KeyValuePair<int,int> pair = tree.GetByIndex (-1);
@@ -198,7 +198,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void Crash_RankedGetByIndexArgumentOutOfRange_2()
+        public void CrashRd_RankedGetByIndexArgumentOutOfRange_2()
         {
             var tree = new RankedDictionary<int,int> (4);
             KeyValuePair<int,int> pair = tree.GetByIndex (0);
@@ -206,7 +206,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_RankedGetByIndex()
+        public void UnitRd_RankedGetByIndex()
         {
             var tree = new RankedDictionary<int,int> (4);
             for (int ii = 0; ii <= 800; ii+=2)

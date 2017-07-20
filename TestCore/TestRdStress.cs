@@ -38,7 +38,7 @@ namespace CollectionsTest
                 {
                     tree1.Remove (i);
 
-#if (! TEST_SORTEDDICTIONARY && DEBUG)
+#if (! TEST_BCL && DEBUG)
                     tree1.SanityCheck();
 #endif
                 }
@@ -63,7 +63,7 @@ namespace CollectionsTest
                         for (int i = a; i <= b; ++i)
                             tree1.Remove (i);
 
-#if (! TEST_SORTEDDICTIONARY && DEBUG)
+#if (! TEST_BCL && DEBUG)
                         tree1.SanityCheck();
 #endif
                     }
@@ -96,7 +96,7 @@ namespace CollectionsTest
             {
                 tree1.Remove (key);
 
-#if (! TEST_SORTEDDICTIONARY && DEBUG)
+#if (! TEST_BCL && DEBUG)
                 tree1.SanityCheck();
 #endif
             }
@@ -131,7 +131,7 @@ namespace CollectionsTest
             tree1.Add (18, 118);
             tree1.Add (11, 111);
 
-#if (! TEST_SORTEDDICTIONARY && DEBUG)
+#if (! TEST_BCL && DEBUG)
             tree1.SanityCheck();
 #endif
         }

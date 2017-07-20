@@ -1,7 +1,7 @@
 ﻿//
 // Library: KaosCollections
 // File:    RankedDictionary.Leaf.cs
-// Purpose: Define nonpublic tree structure and its basic operations.
+// Purpose: Define Leaf nested class.
 //
 // Copyright © 2009-2017 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely

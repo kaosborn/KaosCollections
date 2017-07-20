@@ -61,7 +61,7 @@ namespace ExampleApp
             //
 
             // BtreeDictionary range operator: O(log n)
-            IEnumerable<KeyValuePair<string,int>> r3 = towns.BetweenKeys ("K", "M");
+            IEnumerable<KeyValuePair<string,int>> r3 = towns.GetBetween ("K", "M");
 
             Console.WriteLine ("\nTowns K-L:");
             foreach (KeyValuePair<string,int> town in r3)
