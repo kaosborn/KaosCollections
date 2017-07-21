@@ -94,11 +94,6 @@ namespace Kaos.Collections
 
         #region Properties
 
-        /// <summary>Get the number of key/value pairs in the dictionary.</summary>
-        public int Count
-        { get { return root.Weight; } }
-
-
         /// <summary>Get or set the value associated with the supplied key.</summary>
         /// <param name="key">The key of the association.</param>
         /// <returns>Value associated with the specified key.</returns>

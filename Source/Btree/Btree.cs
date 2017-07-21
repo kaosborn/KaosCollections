@@ -36,12 +36,19 @@ namespace Kaos.Collections
             this.leftmostLeaf = leftmostLeaf;
         }
 
+        #region Properties
+
+        /// <summary>Gets the number of elements in the collection.</summary>
+        public int Count
+        { get { return root.Weight; } }
+
         /// <summary>The method used to order elements in the sorted collection.</summary>
         /// <remarks>To override sorting based on the default comparer, supply an
         /// alternate comparer when constructing the collection.</remarks>
         public IComparer<TKey> Comparer
         { get { return compareOp; } }
 
+        #endregion
 
         #region Nonpublic methods
 

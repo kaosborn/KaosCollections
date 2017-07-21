@@ -89,10 +89,6 @@ namespace Kaos.Collections
 
         #region Properties
 
-        /// <summary>Gets the number of items in the set.</summary>
-        public int Count
-        { get { return root.Weight; } }
-
         bool ICollection<TKey>.IsReadOnly
         { get { return false; } }
 
