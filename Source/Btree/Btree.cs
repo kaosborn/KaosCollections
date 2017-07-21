@@ -16,8 +16,9 @@ using System.Threading;
 [assembly: CLSCompliant (true)]
 namespace Kaos.Collections
 {
-    /// <summary>Abstract base for ranked dictionaries and ranked sets.</summary>
+    /// <summary>Provides base functionality for other classes in this library.</summary>
     /// <typeparam name="TKey">The type of the keys.</typeparam>
+    /// <remarks>This class cannot be directly instantiated.</remarks>
     public abstract partial class Btree<TKey>
     {
         protected Node root;
@@ -193,11 +194,11 @@ namespace Kaos.Collections
         public int LeafSlotsUsed { get; private set; }
 
 
-        /// <summary>
-        /// Perform diagnostics check for data structure sanity errors. Since this is an
-        /// in-memory managed structure, any errors would indicate a bug. Also performs space
-        /// complexity diagnostics to ensure that all non-rightmost nodes maintain 50% fill.
-        /// </summary>
+        /// <summary>Perform diagnostics check for data structure sanity errors.</summary>
+        /// <remarks>
+        /// Since this is an in-memory managed structure, any errors would indicate a bug.
+        /// Also performs space complexity diagnostics to ensure that all non-rightmost nodes maintain 50% fill.
+        /// </remarks>
         public void SanityCheck()
         {
             BranchSlotCount = 0;
@@ -219,13 +220,13 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Maximum number of children of a branch.</summary>
+        /// <summary>Gets maximum number of children of a branch.</summary>
         /// <returns>Maximum number of children of a branch.</returns>
         public int GetOrder()
         { return maxKeyCount + 1; }
 
 
-        /// <summary>Return the number of levels in the tree.</summary>
+        /// <summary>Gets the number of levels in the tree.</summary>
         /// <returns>Number of levels in the tree.</returns>
         public int GetHeight()
         {
@@ -305,7 +306,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Return telemetry summary.</summary>
+        /// <summary>Gets telemetry summary.</summary>
         /// <returns>Telemetry summary.</returns>
         public string GetTreeStatsText()
         {
@@ -319,7 +320,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Generate contents of tree by level (breadth first).</summary>
+        /// <summary>Generates content of tree by level (breadth first).</summary>
         /// <returns>Text lines where each line is a level of the tree.</returns>
         public IEnumerable<string> GenerateTreeText (bool showWeight=false)
         {

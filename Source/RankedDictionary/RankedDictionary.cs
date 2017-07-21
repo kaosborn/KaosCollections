@@ -213,7 +213,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Remove all TKey/TValue pairs from the collection.</summary>
+        /// <summary>Removes all elements from the collection.</summary>
         public void Clear()
         {
             leftmostLeaf.Chop();
@@ -221,12 +221,9 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>
-        /// Determine if the collection contains the supplied key.
-        /// </summary>
+        /// <summary>Determines if the collection contains the supplied key.</summary>
         /// <param name="key">Key to find.</param>
-        /// <returns><b>true</b> if the collection contains the supplied key;
-        /// otherwise <b>false</b>.</returns>
+        /// <returns><b>true</b> if the collection contains the supplied key; otherwise <b>false</b>.</returns>
         /// <exception cref="ArgumentNullException">When supplied key is <b>null</b>.</exception>
         public bool ContainsKey (TKey key)
         {
@@ -238,11 +235,10 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Determine if the collection contains the supplied value.</summary>
+        /// <summary>Determines if the collection contains the supplied value.</summary>
         /// <remarks>This operation performs a sequential search.</remarks>
         /// <param name="value">Value to find.</param>
-        /// <returns><b>true</b> if the collection contains the specified value;
-        /// otherwise <b>false</b>.</returns>
+        /// <returns><b>true</b> if the collection contains the specified value; otherwise <b>false</b>.</returns>
         public bool ContainsValue (TValue value)
         {
             if (value != null)
@@ -263,7 +259,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Copy the collection to the specified array offset.</summary>
+        /// <summary>Copies the collection to the specified array offset.</summary>
         /// <param name="array">Destionation of copy.</param>
         /// <param name="index">Copy starts at this location.</param>
         /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
@@ -293,10 +289,9 @@ namespace Kaos.Collections
         { return new Enumerator (this); }
 
 
-        /// <summary>Remove the key/value pair from the dictionary.</summary>
+        /// <summary>Removes the element with the specified key from the dictionary.</summary>
         /// <param name="key">The key of the element to remove.</param>
-        /// <returns><b>true</b> if the element was successfully found and removed;
-        /// otherwise <b>false</b>.</returns>
+        /// <returns><b>true</b> if the element was successfully found and removed; otherwise <b>false</b>.</returns>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
         public bool Remove (TKey key)
         {
@@ -312,11 +307,13 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Get the value associated with the supplied key.</summary>
+        /// <summary>Gets the value associated with the supplied key.</summary>
         /// <param name="key">The key of the value to get.</param>
-        /// <param name="value">If the key is found, its value is placed here; otherwise
-        /// it will be loaded with the default value for its type.</param>
-        /// <returns><b>true</b> if supplied key is found; otherwise <b>false</b>.</returns>
+        /// <param name="value">
+        /// If the key is found, its value is placed here;
+        /// otherwise it will be loaded with the default value for its type.
+        /// </param>
+        /// <returns><b>true</b> if <em>key</em> is found; otherwise <b>false</b>.</returns>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
         public bool TryGetValue (TKey key, out TValue value)
         {
@@ -340,7 +337,7 @@ namespace Kaos.Collections
 
         #region Enumerator
 
-        /// <summary>Provides sequential access to the TKey/TValue collection.</summary>
+        /// <summary>Provides sequential access to the dictionary.</summary>
         public sealed class Enumerator : IEnumerator<KeyValuePair<TKey,TValue>>, IDictionaryEnumerator
         {
             private readonly RankedDictionary<TKey,TValue> tree;
@@ -387,12 +384,12 @@ namespace Kaos.Collections
                 }
             }
 
-            /// <summary>Get the key/value pair at the current location.</summary>
+            /// <summary>Gets the key/value pair at the current location.</summary>
             public KeyValuePair<TKey,TValue> Current
             { get { return leafIndex < 0? new KeyValuePair<TKey,TValue> (default (TKey), default (TValue))
                                         : currentLeaf.GetPair (leafIndex); } }
 
-            /// <summary>Advance the enumerator to the next location.</summary>
+            /// <summary>Advances the enumerator to the next location.</summary>
             /// <returns><b>false</b> if no more data; otherwise <b>true</b>.</returns>
             public bool MoveNext()
             {
@@ -410,7 +407,7 @@ namespace Kaos.Collections
                 return false;
             }
 
-            /// <summary>Move the enumerator back to its initial location.</summary>
+            /// <summary>Moves the enumerator back to its initial location.</summary>
             void IEnumerator.Reset()
             { leafIndex = -1; currentLeaf = tree.LeftmostLeaf; }
 
@@ -675,10 +672,8 @@ namespace Kaos.Collections
 
         #region Bonus methods
 
-        /// <summary>
-        /// Get the Last key/value pair without performing a full structure scan.
-        /// </summary>
-        /// <returns>Key/value pair with largest key in dictionary</returns>
+        /// <summary>Gets the Last key/value pair without performing a full structure scan.</summary>
+        /// <returns>Key/value pair with largest key in dictionary.</returns>
         public KeyValuePair<TKey,TValue> Last()
         {
             if (Count == 0)
@@ -697,12 +692,10 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>
-        /// This iterator provides range query support with ordered results.
-        /// </summary>
+        /// <summary>Provides range query support with ordered results.</summary>
         /// <param name="key">Minimum value of range.</param>
         /// <returns>An enumerator for the collection for key values greater than or equal to <em>key</em>.</returns>
-        /// <exception cref="ArgumentNullException">When supplied key is <b>null</b>.</exception>
+        /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
         public IEnumerable<KeyValuePair<TKey,TValue>> SkipUntilKey (TKey key)
         {
             if (key == null)
@@ -732,12 +725,10 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>
-        /// This iterator provides range query support.
-        /// </summary>
+        /// <summary>Provides range query support.</summary>
         /// <param name="lower">Minimum inclusive key value of range.</param>
         /// <param name="upper">Maximum inclusive key value of range.</param>
-        /// <returns>An enumerator for all key/value pairs between lower and upper.</returns>
+        /// <returns>An enumerator for all elements between lower and upper.</returns>
         /// <remarks>
         /// Neither <em>lower</em> or <em>upper</em> need to be present in the collection.
         /// </remarks>
