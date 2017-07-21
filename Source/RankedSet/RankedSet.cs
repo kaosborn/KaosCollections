@@ -555,7 +555,49 @@ namespace Kaos.Collections
             if (oSet.Count == 0)
                 return;
 
-            throw new NotImplementedException();
+            Enumerator oNum = oSet.GetEnumerator();
+            oNum.MoveNext();
+            TKey oKey = oNum.Current;
+
+            for (KeyLeaf leaf = LeftmostLeaf; leaf != null; leaf = leaf.RightLeaf)
+                for (int klix = 0; klix < leaf.KeyCount; )
+                    for (TKey key = leaf.GetKey (klix);;)
+                    {
+                        int diff = Comparer.Compare (oKey, key);
+                        if (diff >= 0)
+                        {
+                            if (diff > 0)
+                                ++klix;
+                            else
+                            {
+                                Remove (key);
+                                if (! oNum.MoveNext())
+                                    return;
+                                oKey = oNum.Current;
+                            }
+                            break;
+                        }
+
+                        Add (oKey);
+                        if (! oNum.MoveNext())
+                            return;
+                        oKey = oNum.Current;
+
+                        if (klix >= leaf.KeyCount)
+                        {
+                            leaf = leaf.RightLeaf;
+                            klix -= leaf.KeyCount;
+                            break;
+                        }
+                    }
+
+            for (;;)
+            {
+                Add (oKey);
+                if (! oNum.MoveNext())
+                    return;
+                oKey = oNum.Current;
+            }
         }
 
 
