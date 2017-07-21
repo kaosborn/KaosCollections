@@ -306,7 +306,7 @@ namespace Kaos.Collections
         /// <summary>Gets an enumerator that iterates thru the collection.</summary>
         /// <returns>An enumerator for the collection.</returns>
         /// <remarks>Implements IEnumerable&lt;KeyValuePair&lt;TKey,TValue&gt;&gt;.</remarks>
-        public IEnumerator<KeyValuePair<TKey,TValue>> GetEnumerator()
+        public Enumerator GetEnumerator()
         { return new Enumerator (this); }
 
 
@@ -464,6 +464,10 @@ namespace Kaos.Collections
                 return false;
             return EqualityComparer<TValue>.Default.Equals (leaf.GetValue (index), keyValuePair.Value);
         }
+
+
+        IEnumerator<KeyValuePair<TKey,TValue>> IEnumerable<KeyValuePair<TKey,TValue>>.GetEnumerator()
+        { return new Enumerator (this); }
 
 
         /// <summary>Indicate that this collection may be modified.</summary>

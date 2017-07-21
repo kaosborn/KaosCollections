@@ -287,6 +287,11 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>Returns an enumerator that iterates thru the set.</summary>
+        /// <returns>An enumerator that iterates thru the set in sorted order.</returns>
+        public Enumerator GetEnumerator() => new Enumerator (this);
+
+
         /// <summary>Removes a specified item from the set.</summary>
         /// <param name="item">The item to remove.</param>
         /// <returns><b>true</b> if the item was found and removed; otherwise <b>false</b>.</returns>

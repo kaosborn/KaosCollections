@@ -360,6 +360,51 @@ namespace CollectionsTest
 
 
         [TestMethod]
+        public void UnitRd_GetEnumeratorOnEmpty()
+        {
+            int actual=0;
+            Setup();
+
+            using (var e1 = tree2.GetEnumerator())
+            {
+                while (e1.MoveNext())
+                    ++actual;
+                var junk = e1.Current;
+            }
+
+            Assert.AreEqual (0, actual);
+        }
+
+
+        [TestMethod]
+        public void UnitRd_GetEnumeratorPastEnd()
+        {
+            bool isMoved;
+            int actual1=0, total1=0;
+
+            Setup();
+            tree2.Add ("three", 3);
+            tree2.Add ("one", 1);
+            tree2.Add ("five", 5);
+
+            using (var e1 = tree2.GetEnumerator())
+            {
+                while (e1.MoveNext())
+                {
+                    ++actual1;
+                    total1 += e1.Current.Value;
+                }
+
+                isMoved = e1.MoveNext();
+            }
+
+            Assert.AreEqual (3, actual1);
+            Assert.AreEqual (9, total1);
+            Assert.IsFalse (isMoved);
+        }
+
+
+        [TestMethod]
         public void Unit_EnumeratorIteration()
         {
             Setup();
