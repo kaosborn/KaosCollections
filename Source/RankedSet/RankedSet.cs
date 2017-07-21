@@ -36,12 +36,12 @@ namespace Kaos.Collections
         #region Constructors
 
         /// <summary>Initializes a new set of sorted items that uses the default item comparer.</summary>
-        public RankedSet() : this (DefaultOrder, Comparer<TKey>.Default)
+        public RankedSet() : this (defaultOrder, Comparer<TKey>.Default)
         { }
 
         /// <summary>Initializes a new set of sorted items that uses the supplied comparer.</summary>
         /// <param name="comparer">The comparer to use for sorting items.</param>
-        public RankedSet (IComparer<TKey> comparer) : this (DefaultOrder, comparer)
+        public RankedSet (IComparer<TKey> comparer) : this (defaultOrder, comparer)
         { }
 
         /// <summary>Initializes a new set that contains items copied from the specified collection.</summary>
@@ -54,7 +54,7 @@ namespace Kaos.Collections
         /// <param name="collection">The enumerable collection to be copied. </param>
         /// <param name="comparer">The comparer to use for item sorting.</param>
         /// <exception cref="ArgumentNullException">When <em>collection</em> is <b>null</b>.</exception>
-        public RankedSet (IEnumerable<TKey> collection, IComparer<TKey> comparer) : this (DefaultOrder, comparer)
+        public RankedSet (IEnumerable<TKey> collection, IComparer<TKey> comparer) : this (defaultOrder, comparer)
         {
             if (collection == null)
                 throw new ArgumentNullException (nameof (collection));
@@ -78,12 +78,7 @@ namespace Kaos.Collections
         /// and its use may result in degraded performance.</remarks>
         /// <exception cref="ArgumentOutOfRangeException">When <em>order</em> is too big or too small.</exception>
         public RankedSet (int order, IComparer<TKey> comparer) : base (order, comparer, new KeyLeaf())
-        {
-            if (order < MinimumOrder || order > MaximumOrder)
-                throw new ArgumentOutOfRangeException (nameof (order), "Must be between " + MinimumOrder + " and " + MaximumOrder);
-
-            this.root = this.leftmostLeaf;
-        }
+        { }
 
         #endregion
 

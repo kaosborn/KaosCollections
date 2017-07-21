@@ -24,16 +24,18 @@ namespace Kaos.Collections
         protected readonly KeyLeaf leftmostLeaf;
         protected readonly int maxKeyCount;
         protected readonly IComparer<TKey> compareOp;
-
-        protected const int MinimumOrder = 4;
-        protected const int DefaultOrder = 128;
-        protected const int MaximumOrder = 256;
+        protected const int minimumOrder = 4;
+        protected const int defaultOrder = 128;
+        protected const int maximumOrder = 256;
 
         protected Btree (int order, IComparer<TKey> comparer, KeyLeaf leftmostLeaf)
         {
+            if (order < minimumOrder || order > maximumOrder)
+                throw new ArgumentOutOfRangeException (nameof (order), "Must be between " + minimumOrder + " and " + maximumOrder);
+
             this.compareOp = comparer ?? Comparer<TKey>.Default;
             this.maxKeyCount = order - 1;
-            this.leftmostLeaf = leftmostLeaf;
+            this.root = this.leftmostLeaf = leftmostLeaf;
         }
 
         #region Properties

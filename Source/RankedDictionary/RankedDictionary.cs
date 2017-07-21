@@ -40,12 +40,12 @@ namespace Kaos.Collections
         #region Constructors
 
         /// <summary>Initializes a new dictionary of key/value pairs that are sorted on unique keys using the default key comparer.</summary>
-        public RankedDictionary() : this (DefaultOrder, null)
+        public RankedDictionary() : this (defaultOrder, null)
         { }
 
         /// <summary>Initializes a new dictionary of key/value pairs that are sorted on unique keys using the supplied key comparer.</summary>
         /// <param name="comparer">Comparison operator for keys.</param>
-        public RankedDictionary (IComparer<TKey> comparer) : this (DefaultOrder, comparer)
+        public RankedDictionary (IComparer<TKey> comparer) : this (defaultOrder, comparer)
         { }
 
         /// <summary>Initializes a new dictionary that contains key/value pairs copied from the supplied dictionary and sorted by the default comparer.</summary>
@@ -58,7 +58,7 @@ namespace Kaos.Collections
         /// <param name="dictionary">The dictionary to be copied.</param>
         /// <param name="comparer">Comparison operator for keys.</param>
         /// <exception cref="ArgumentNullException">When <em>dictionary</em> is <b>null</b>.</exception>
-        public RankedDictionary (IDictionary<TKey,TValue> dictionary, IComparer<TKey> comparer) : this (DefaultOrder, comparer)
+        public RankedDictionary (IDictionary<TKey,TValue> dictionary, IComparer<TKey> comparer) : this (defaultOrder, comparer)
         {
             if (dictionary == null)
                 throw new ArgumentNullException (nameof (dictionary));
@@ -83,12 +83,7 @@ namespace Kaos.Collections
         /// and its use may result in degraded performance.</remarks>
         /// <exception cref="ArgumentOutOfRangeException">When <em>order</em> is too big or too small.</exception>
         public RankedDictionary (int order, IComparer<TKey> comparer) : base (order, comparer, new Leaf())
-        {
-            if (order < MinimumOrder || order > MaximumOrder)
-                throw new ArgumentOutOfRangeException (nameof (order), "Must be between " + MinimumOrder + " and " + MaximumOrder);
-
-            this.root = this.leftmostLeaf;
-        }
+        { }
 
         #endregion
 
