@@ -36,6 +36,13 @@ namespace Kaos.Collections
             this.leftmostLeaf = leftmostLeaf;
         }
 
+        /// <summary>The method used to order elements in the sorted collection.</summary>
+        /// <remarks>To override sorting based on the default comparer, supply an
+        /// alternate comparer when constructing the collection.</remarks>
+        public IComparer<TKey> Comparer
+        { get { return compareOp; } }
+
+
         #region Nonpublic methods
 
         /// <summary>Get the rightmost leaf of the tree.</summary>

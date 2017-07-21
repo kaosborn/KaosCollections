@@ -94,13 +94,6 @@ namespace Kaos.Collections
 
         #region Properties
 
-        /// <summary>Used to order keys in the sorted dictionary.</summary>
-        /// <remarks>To override sorting based on the default comparer, supply an
-        /// alternate comparer when constructed.</remarks>
-        public IComparer<TKey> Comparer
-        { get { return compareOp; } }
-
-
         /// <summary>Get the number of key/value pairs in the dictionary.</summary>
         public int Count
         { get { return root.Weight; } }
