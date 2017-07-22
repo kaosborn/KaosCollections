@@ -1,33 +1,52 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="90402bce-1f31-45f8-b0ea-0a73408bd45a" revisionNumber="1">
-	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
-		<introduction>
-			<para>The topics in this section describe the various changes made to the [TODO: Project Title] over the
-life of the project.</para>
-		</introduction>
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>Each section on this page describes a product release of KaosCollections.</para>
+    </introduction>
 
-		<section>
-			<title>Version History</title>
-			<content>
-				<para>Select a version below to see a description of its changes.</para>
+    <section>
+      <title>History</title>
+      <content>
+        <para>Version 3.0.0 (2017-??-??)</para>
+        <list class="bullet">
+          <listItem>
+            <para>Changed product name from KwCollections to KaosCollections</para>
+          </listItem>
+          <listItem>
+            <para>Add order statistic support (i.e. indexing)</para>
+          </listItem>
+          <listItem>
+            <para>Rename BtreeDictionary class to RankedDictionary with improved SortedDictionary emulation</para>
+          </listItem>
+          <listItem>
+            <para>Add RankedSet class which emulates SortedSet with order statistic support</para>
+          </listItem>
+        </list>
+        <para>Version 2.1.1 (2012-03-28)</para>
+        <list class="bullet">
+          <listItem>
+            <para>Remove possible code coverage artifacts from .dll file</para>
+          </listItem>
+          <listItem>
+            <para>Initial release of documentation</para>
+          </listItem>
+        </list>
+        <para>Version 2.1.0 (2012-03-06)</para>
+        <list class="bullet">
+          <listItem>
+            <para>Add support for range queries</para>
+          </listItem>
+          <listItem>
+            <para>Add optimized implementation of Last()</para>
+          </listItem>
+        </list>
+      </content>
+    </section>
 
-				<list class="bullet">
-					<listItem>
-						<para><link xlink:href="dcee3a32-a0c6-4dcc-b254-57cb41331274" /></para>
-					</listItem>
+    <relatedTopics>
+      <link xlink:href="bd99e66d-09ef-4adc-89eb-db2aaf89e8ad" />
+    </relatedTopics>
 
-					<listItem>
-						<para>[TODO: Add links to each specific version page]</para>
-					</listItem>
-
-				</list>
-
-			</content>
-		</section>
-
-		<relatedTopics>
-			<link xlink:href="bd99e66d-09ef-4adc-89eb-db2aaf89e8ad" />
-		</relatedTopics>
-
-	</developerConceptualDocument>
+  </developerConceptualDocument>
 </topic>
