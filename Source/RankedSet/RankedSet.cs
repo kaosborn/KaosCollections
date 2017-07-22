@@ -17,7 +17,7 @@ namespace Kaos.Collections
     /// <typeparam name="TKey">The type of the items in the set.</typeparam>
     /// <remarks>
     /// This class emulates and augments the
-    /// <see cref="System.Collections.Generic.SortedSet&lt;TKey&gt;"/> class.
+    /// <see cref="System.Collections.Generic.SortedSet{TKey}"/> class.
     /// </remarks>
     [DebuggerTypeProxy (typeof (ICollectionDebugView<>))]
     [DebuggerDisplay ("Count = {Count}")]

@@ -17,7 +17,7 @@ namespace Kaos.Collections
     public partial class RankedDictionary<TKey,TValue>
     {
         /// <summary>
-        /// Represents a collection of keys of a <see cref="RankedDictionary&lt;TKey,TValue&gt;"/>.
+        /// Represents a collection of keys of a <see cref="RankedDictionary{TKey,TValue}"/>.
         /// </summary>
         [DebuggerTypeProxy (typeof (ICollectionKeysDebugView<,>))]
         [DebuggerDisplay ("Count = {Count}")]
@@ -34,10 +34,10 @@ namespace Kaos.Collections
 
             /// <summary>
             /// Make a new <b>"BtreeDictionary&lt;TKey,TValue&gt;.KeyCollection</b> that
-            /// holds the keys of a <see cref="RankedDictionary&lt;TKey,TValue&gt;"/>.
+            /// holds the keys of a <see cref="RankedDictionary{TKey,TValue}"/>.
             /// </summary>
             /// <param name="dictionary">
-            /// <see cref="RankedDictionary&lt;TKey,TValue&gt;"/> containing these keys.
+            /// <see cref="RankedDictionary{TKey,TValue}"/> containing these keys.
             /// </param>
             /// <exception cref="ArgumentNullException">When <em>dictionary</em> is <b>null</b>.</exception>
             public KeyCollection (RankedDictionary<TKey,TValue> dictionary)

@@ -19,7 +19,7 @@ namespace Kaos.Collections
     /// <typeparam name="TValue">The type of the values in the dictionary.</typeparam>
     /// <remarks>
     /// This class emulates and augments the
-    /// <see cref="System.Collections.Generic.SortedDictionary&lt;TKey,TValue&gt;"/> class
+    /// <see cref="System.Collections.Generic.SortedDictionary{TKey,TValue}"/> class
     /// with the addition of the methods
     /// <see cref="GetBetween"/>, <see cref="SkipUntilKey"/>, and <see cref="Last"/>.
     /// </remarks>
@@ -122,7 +122,7 @@ namespace Kaos.Collections
 
 
         /// <summary>
-        /// Get the collection of keys in the <see cref="RankedDictionary&lt;TKey,TValue&gt;"/>.
+        /// Get the collection of keys in the <see cref="RankedDictionary{TKey,TValue}"/>.
         /// </summary>
         public KeyCollection Keys
         {
@@ -136,7 +136,7 @@ namespace Kaos.Collections
 
 
         /// <summary>
-        /// Get the collection of values in the <see cref="RankedDictionary&lt;TKey,TValue&gt;"/>.
+        /// Get the collection of values in the <see cref="RankedDictionary{TKey,TValue}"/>.
         /// </summary>
         public ValueCollection Values
         {
@@ -284,7 +284,6 @@ namespace Kaos.Collections
 
         /// <summary>Gets an enumerator that iterates thru the collection.</summary>
         /// <returns>An enumerator for the collection.</returns>
-        /// <remarks>Implements IEnumerable&lt;KeyValuePair&lt;TKey,TValue&gt;&gt;.</remarks>
         public Enumerator GetEnumerator()
         { return new Enumerator (this); }
 
@@ -346,7 +345,7 @@ namespace Kaos.Collections
             private bool isGeneric;
 
             /// <summary>Make an iterator that will loop thru the collection in order.</summary>
-            /// <param name="dictionary"><see cref="RankedDictionary&lt;TKey,TValue&gt;"/>containing these key/value pairs.</param>
+            /// <param name="dictionary"><see cref="RankedDictionary{TKey,TValue}"/>containing these key/value pairs.</param>
             /// <param name="isGeneric">Supply <b>false</b> to indicate object Current should return DictionaryEntry values.</param>
             internal Enumerator (RankedDictionary<TKey,TValue> dictionary, bool isGeneric=true)
             {
