@@ -1,18 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Topics>
-  <Topic id="bd99e66d-09ef-4adc-89eb-db2aaf89e8ad" visible="True" isDefault="true" isSelected="true" title="Welcome to the [TODO: Add project name]">
+  <Topic id="bd99e66d-09ef-4adc-89eb-db2aaf89e8ad" visible="True" isDefault="true" isSelected="true" title="Welcome to KaosCollections">
     <HelpKeywords>
       <HelpKeyword index="K" term="Welcome" />
     </HelpKeywords>
   </Topic>
-  <Topic id="90402bce-1f31-45f8-b0ea-0a73408bd45a" visible="True" isExpanded="true" title="Version History">
+  <Topic id="90402bce-1f31-45f8-b0ea-0a73408bd45a" visible="True" title="Release History">
     <HelpKeywords>
       <HelpKeyword index="K" term="version, history" />
     </HelpKeywords>
-    <Topic id="dcee3a32-a0c6-4dcc-b254-57cb41331274" visible="True" title="Version 1.0.0.0">
-      <HelpKeywords>
-        <HelpKeyword index="K" term="version, 1.0.0.0" />
-      </HelpKeywords>
-    </Topic>
   </Topic>
 </Topics>

@@ -36,7 +36,7 @@
     <KeepLogFile>True</KeepLogFile>
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
     <CleanIntermediates>True</CleanIntermediates>
-    <HelpFileVersion>0.3.5.0</HelpFileVersion>
+    <HelpFileVersion>0.3.5</HelpFileVersion>
     <MaximumGroupParts>2</MaximumGroupParts>
     <NamespaceGrouping>False</NamespaceGrouping>
     <SyntaxFilters>C#</SyntaxFilters>
@@ -50,8 +50,8 @@
     <ContentPlacement>AboveNamespaces</ContentPlacement>
     <ProjectSummary>Free to use and share.</ProjectSummary>
     <NamespaceSummaries>
-      <NamespaceSummaryItem name="Kaos.Collections" isDocumented="True">The Kaos.Collections namespace contains the class BtreeSortedDictionary which also contains several supporting nested classes.
-This namespace is intended to work alongside the System.Collections.Generic classes.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="Kaos.Collections" isDocumented="True">The Kaos.Collections namespace contains the classes RankedDictionary and SortedDictionary along with several supporting nested classes.
+This namespace is intended to work alongside classes contained in the System.Collections.Generic namespace.</NamespaceSummaryItem>
     </NamespaceSummaries>
     <VisibleItems>InheritedMembers, InheritedFrameworkMembers, ProtectedInternalAsProtected</VisibleItems>
   </PropertyGroup>
@@ -75,13 +75,11 @@ This namespace is intended to work alongside the System.Collections.Generic clas
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Content" />
-    <Folder Include="Content\VersionHistory" />
     <Folder Include="icons" />
     <Folder Include="media" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\VersionHistory\v1.0.0.0.aml" />
-    <None Include="Content\VersionHistory\VersionHistory.aml" />
+    <None Include="Content\VersionHistory.aml" />
     <None Include="Content\Welcome.aml" />
   </ItemGroup>
   <ItemGroup>
