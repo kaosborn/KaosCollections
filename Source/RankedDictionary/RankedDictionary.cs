@@ -40,25 +40,25 @@ namespace Kaos.Collections
         #region Constructors
 
         /// <summary>Initializes a new dictionary of key/value pairs that are sorted on unique keys using the default key comparer.</summary>
-        public RankedDictionary() : this (defaultOrder, null)
+        public RankedDictionary() : base (Comparer<TKey>.Default, new Leaf())
         { }
 
         /// <summary>Initializes a new dictionary of key/value pairs that are sorted on unique keys using the supplied key comparer.</summary>
         /// <param name="comparer">Comparison operator for keys.</param>
-        public RankedDictionary (IComparer<TKey> comparer) : this (defaultOrder, comparer)
+        public RankedDictionary (IComparer<TKey> comparer) : base (comparer, new Leaf())
         { }
 
         /// <summary>Initializes a new dictionary that contains key/value pairs copied from the supplied dictionary and sorted by the default comparer.</summary>
         /// <param name="dictionary">The dictionary to be copied.</param>
         /// <exception cref="ArgumentNullException">When <em>dictionary</em> is <b>null</b>.</exception>
-        public RankedDictionary (IDictionary<TKey,TValue> dictionary) : this (dictionary, null)
+        public RankedDictionary (IDictionary<TKey,TValue> dictionary) : this (dictionary, Comparer<TKey>.Default)
         { }
 
         /// <summary>Initializes a new dictionary that contains key/value pairs copied from the supplied dictionary and sorted by the supplied comparer.</summary>
         /// <param name="dictionary">The dictionary to be copied.</param>
         /// <param name="comparer">Comparison operator for keys.</param>
         /// <exception cref="ArgumentNullException">When <em>dictionary</em> is <b>null</b>.</exception>
-        public RankedDictionary (IDictionary<TKey,TValue> dictionary, IComparer<TKey> comparer) : this (defaultOrder, comparer)
+        public RankedDictionary (IDictionary<TKey,TValue> dictionary, IComparer<TKey> comparer) : this (comparer)
         {
             if (dictionary == null)
                 throw new ArgumentNullException (nameof (dictionary));
@@ -67,31 +67,13 @@ namespace Kaos.Collections
                 Add (pair.Key, pair.Value);
         }
 
-        /// <summary>Initializes a new dictionary of key/value pairs that are sorted on unique keys using the default key comparer.</summary>
-        /// <param name="order">Maximum number of children of a node.</param>
-        /// <remarks>This constuctor is provided for experimental purposes
-        /// and its use may result in degraded performance.</remarks>
-        /// <exception cref="ArgumentOutOfRangeException">When <em>order</em> is too big or too small.</exception>
-        public RankedDictionary (int order) : this (order, null)
-        { }
-
-
-        /// <summary>Initializes a new dictionary of key/value pairs that are sorted on unique keys using the supplied key comparer.</summary>
-        /// <param name="order">Maximum number of children of a node.</param>
-        /// <param name="comparer">Comparison operator for keys.</param>
-        /// <remarks>This constuctor is provided for experimental purposes
-        /// and its use may result in degraded performance.</remarks>
-        /// <exception cref="ArgumentOutOfRangeException">When <em>order</em> is too big or too small.</exception>
-        public RankedDictionary (int order, IComparer<TKey> comparer) : base (order, comparer, new Leaf())
-        { }
-
         #endregion
 
         #region Properties
 
         /// <summary>Get or set the value associated with the supplied key.</summary>
         /// <param name="key">The key of the association.</param>
-        /// <returns>Value associated with the specified key.</returns>
+        /// <returns>Value associated with the supplied key.</returns>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
         /// <exception cref="KeyNotFoundException">When getting a value for a non-existant key.</exception>
         /// <remarks>Setting a value for a non-existant key performs an insert operation.</remarks>

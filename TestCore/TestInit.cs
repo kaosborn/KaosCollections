@@ -97,13 +97,14 @@ namespace CollectionsTest
             setTS1 = new SortedSet<TS1>();
             personSet = new SortedSet<Person> (new PersonComparer());
 #else
-            tree1 = new RankedDictionary<int,int> (order);
-            tree2 = new RankedDictionary<string,int> (order);
-            tree3 = new RankedDictionary<string,int?> (order);
-            tree4 = new RankedDictionary<int,string> (order);
-            setI = new RankedSet<int>(order);
-            setS = new RankedSet<string>(order);
-            setTS1 = new RankedSet<TS1>(order);
+            Btree.TreeOrder = order;
+            tree1 = new RankedDictionary<int,int>();
+            tree2 = new RankedDictionary<string,int>();
+            tree3 = new RankedDictionary<string,int?>();
+            tree4 = new RankedDictionary<int,string>();
+            setI = new RankedSet<int>();
+            setS = new RankedSet<string>();
+            setTS1 = new RankedSet<TS1>();
             personSet = new RankedSet<Person> (new PersonComparer());
 #endif
 

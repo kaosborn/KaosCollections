@@ -16,6 +16,34 @@ using System.Threading;
 [assembly: CLSCompliant (true)]
 namespace Kaos.Collections
 {
+    /// <summary>Provides configuration setting for all Btree derived classes.</summary>
+    /// <remarks>
+    /// The TreeOrder property is provided for experimental purposes only.
+    /// The default value should be used in typical scenarios and changing
+    /// this property may cause performance degradation.
+    /// Changes made to TreeOrder will only impact subsequent instantiations
+    /// and will not affect any existing instances.
+    /// </remarks>
+    public static class Btree
+    {
+        private const int MinimumOrder = 4;
+        private const int DefaultOrder = 128;
+        private const int MaximumOrder = 256;
+        private static int treeOrder = DefaultOrder;
+
+        /// <summary>Configures the order of subsequently constructed trees.</summary>
+        public static int TreeOrder
+        {
+            get { return treeOrder; }
+            set
+            {
+                if (value < MinimumOrder || value > MaximumOrder)
+                    throw new ArgumentOutOfRangeException ("Must be between " + MinimumOrder + " and " + MaximumOrder);
+                treeOrder = value;
+            }
+        }
+    }
+
     /// <summary>Provides base functionality for other classes in this library.</summary>
     /// <typeparam name="TKey">The type of the keys.</typeparam>
     /// <remarks>This class cannot be directly instantiated.</remarks>
@@ -25,17 +53,11 @@ namespace Kaos.Collections
         protected readonly KeyLeaf leftmostLeaf;
         protected readonly int maxKeyCount;
         private readonly IComparer<TKey> comparer;
-        protected const int minimumOrder = 4;
-        protected const int defaultOrder = 128;
-        protected const int maximumOrder = 256;
 
-        protected Btree (int order, IComparer<TKey> comparer, KeyLeaf leftmostLeaf)
+        protected Btree (IComparer<TKey> comparer, KeyLeaf leftmostLeaf)
         {
-            if (order < minimumOrder || order > maximumOrder)
-                throw new ArgumentOutOfRangeException (nameof (order), "Must be between " + minimumOrder + " and " + maximumOrder);
-
             this.comparer = comparer ?? Comparer<TKey>.Default;
-            this.maxKeyCount = order - 1;
+            this.maxKeyCount = Btree.TreeOrder - 1;
             this.root = this.leftmostLeaf = leftmostLeaf;
         }
 

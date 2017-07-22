@@ -21,7 +21,8 @@ namespace BenchApp
         {
             foreach (var reps in new int[] { 100, 1000, 10000, 100000, 1000000, 10000000, 20000000, 40000000 })
             {
-                tree = new RankedDictionary<Guid,int> (128);
+                Btree.TreeOrder = 128;
+                tree = new RankedDictionary<Guid,int>();
 
                 for (int ii = 0; ii < reps; ++ii)
                     tree.Add (Guid.NewGuid(), ii);

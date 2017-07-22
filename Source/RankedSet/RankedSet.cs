@@ -36,25 +36,25 @@ namespace Kaos.Collections
         #region Constructors
 
         /// <summary>Initializes a new set of sorted items that uses the default item comparer.</summary>
-        public RankedSet() : this (defaultOrder, Comparer<TKey>.Default)
+        public RankedSet() : base (Comparer<TKey>.Default, new KeyLeaf())
         { }
 
         /// <summary>Initializes a new set of sorted items that uses the supplied comparer.</summary>
         /// <param name="comparer">The comparer to use for sorting items.</param>
-        public RankedSet (IComparer<TKey> comparer) : this (defaultOrder, comparer)
+        public RankedSet (IComparer<TKey> comparer) : base (comparer, new KeyLeaf())
         { }
 
-        /// <summary>Initializes a new set that contains items copied from the specified collection.</summary>
+        /// <summary>Initializes a new set that contains items copied from the supplied collection.</summary>
         /// <param name="collection">The enumerable collection to be copied.</param>
         /// <exception cref="ArgumentNullException">When <em>collection</em> is <b>null</b>.</exception>
         public RankedSet (IEnumerable<TKey> collection) : this (collection, Comparer<TKey>.Default)
         { }
 
-        /// <summary>Initializes a new set that contains items copied from the specified collection.</summary>
+        /// <summary>Initializes a new set that contains items copied from the supplied collection.</summary>
         /// <param name="collection">The enumerable collection to be copied. </param>
         /// <param name="comparer">The comparer to use for item sorting.</param>
         /// <exception cref="ArgumentNullException">When <em>collection</em> is <b>null</b>.</exception>
-        public RankedSet (IEnumerable<TKey> collection, IComparer<TKey> comparer) : this (defaultOrder, comparer)
+        public RankedSet (IEnumerable<TKey> collection, IComparer<TKey> comparer) : this (comparer)
         {
             if (collection == null)
                 throw new ArgumentNullException (nameof (collection));
@@ -62,23 +62,6 @@ namespace Kaos.Collections
             foreach (TKey item in collection)
                 Add (item);
         }
-
-        /// <summary>Initializes a new set of sorted items.</summary>
-        /// <param name="order">Maximum number of children of a branch.</param>
-        /// <remarks>This constuctor is provided for experimental purposes
-        /// and its use may result in degraded performance.</remarks>
-        /// <exception cref="ArgumentOutOfRangeException">When <em>order</em> is too big or too small.</exception>
-        public RankedSet (int order) : this (order, Comparer<TKey>.Default)
-        { }
-
-        /// <summary>Initializes a new set of sorted items.</summary>
-        /// <param name="order">Maximum number of children of a branch.</param>
-        /// <param name="comparer">The comparer to use for sorting items.</param>
-        /// <remarks>This constuctor is provided for experimental purposes
-        /// and its use may result in degraded performance.</remarks>
-        /// <exception cref="ArgumentOutOfRangeException">When <em>order</em> is too big or too small.</exception>
-        public RankedSet (int order, IComparer<TKey> comparer) : base (order, comparer, new KeyLeaf())
-        { }
 
         #endregion
 

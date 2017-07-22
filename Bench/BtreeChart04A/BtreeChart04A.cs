@@ -38,7 +38,8 @@ namespace ChartApp
 
         static void Main()
         {
-            tree = new RankedDictionary<int,int> (4);
+            Btree.TreeOrder = 4;
+            tree = new RankedDictionary<int,int>();
 
             Console.WriteLine ("Empty tree is a single leaf:");
             WriteInfo (true);

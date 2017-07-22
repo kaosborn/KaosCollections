@@ -39,7 +39,8 @@ namespace BenchApp
 
             for (int order=32; order <= 256; order+=16)
             {
-                var bt = new RankedDictionary<Guid,int> (order);
+                Btree.TreeOrder = order;
+                var bt = new RankedDictionary<Guid,int>();
                 Console.Write ("\nLoading BtreeDictionary (order="+order+") with " + reps + " elements:\n\nLoad time = ");
 
                 Stopwatch watch2 = new Stopwatch();
