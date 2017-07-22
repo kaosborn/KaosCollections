@@ -40,7 +40,7 @@ namespace Kaos.Collections
                     Debug.Assert (node != null);
 
                     this.nodeStack.Add (node);
-                    int ix = node.Search (key, tree.compareOp);
+                    int ix = node.Search (key, tree.Comparer);
 
                     if (! (node is Branch))
                     {

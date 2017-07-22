@@ -457,7 +457,7 @@ namespace Kaos.Collections
 
         /// <summary>Get the collection of keys from this key/value the collection.</summary>
         /// <remarks>The keys given by this collection are sorted according to the
-        /// <see cref="Comparer"/> property.</remarks>
+        /// <see cref="Btree{TKey}.Comparer"/> property.</remarks>
         ICollection<TKey> IDictionary<TKey,TValue>.Keys
         { get { return (ICollection<TKey>) Keys; } }
 

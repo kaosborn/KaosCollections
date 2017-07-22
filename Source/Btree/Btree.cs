@@ -24,7 +24,7 @@ namespace Kaos.Collections
         protected Node root;
         protected readonly KeyLeaf leftmostLeaf;
         protected readonly int maxKeyCount;
-        protected readonly IComparer<TKey> compareOp;
+        private readonly IComparer<TKey> comparer;
         protected const int minimumOrder = 4;
         protected const int defaultOrder = 128;
         protected const int maximumOrder = 256;
@@ -34,7 +34,7 @@ namespace Kaos.Collections
             if (order < minimumOrder || order > maximumOrder)
                 throw new ArgumentOutOfRangeException (nameof (order), "Must be between " + minimumOrder + " and " + maximumOrder);
 
-            this.compareOp = comparer ?? Comparer<TKey>.Default;
+            this.comparer = comparer ?? Comparer<TKey>.Default;
             this.maxKeyCount = order - 1;
             this.root = this.leftmostLeaf = leftmostLeaf;
         }
@@ -49,7 +49,7 @@ namespace Kaos.Collections
         /// <remarks>To override sorting based on the default comparer, supply an
         /// alternate comparer when constructing the collection.</remarks>
         public IComparer<TKey> Comparer
-        { get { return compareOp; } }
+        { get { return comparer; } }
 
         #endregion
 
@@ -74,7 +74,7 @@ namespace Kaos.Collections
         protected KeyLeaf Find (TKey key, out int index)
         {
             //  Unfold on default comparer for 5% speed improvement.
-            if (compareOp == Comparer<TKey>.Default)
+            if (Comparer == Comparer<TKey>.Default)
                 for (Node node = root;;)
                 {
                     index = node.Search (key);
@@ -87,7 +87,7 @@ namespace Kaos.Collections
             else
                 for (Node node = root;;)
                 {
-                    index = node.Search (key, compareOp);
+                    index = node.Search (key, Comparer);
 
                     if (node is Branch branch)
                         node = branch.GetChild (index < 0 ? ~index : index + 1);
@@ -261,7 +261,7 @@ namespace Kaos.Collections
                 TKey anchor0 = i == 0 ? anchor : branch.GetKey (i - 1);
                 bool isRightmost0 = isRightmost && i < branch.ChildCount;
                 if (i < branch.KeyCount - 1)
-                    if (compareOp.Compare (branch.GetKey (i), branch.GetKey (i + 1)) >= 0)
+                    if (Comparer.Compare (branch.GetKey (i), branch.GetKey (i + 1)) >= 0)
                         throw new InvalidOperationException ("Branch keys not ascending");
 
                 if (level + 1 < height)
@@ -290,7 +290,7 @@ namespace Kaos.Collections
                 throw new InvalidOperationException ("Leaf has wrong anchor");
 
             for (int i = 0; i < leaf.KeyCount; ++i)
-                if (i < leaf.KeyCount - 1 && compareOp.Compare (leaf.GetKey (i), leaf.GetKey (i + 1)) >= 0)
+                if (i < leaf.KeyCount - 1 && Comparer.Compare (leaf.GetKey (i), leaf.GetKey (i + 1)) >= 0)
                     throw new InvalidOperationException ("Leaf keys not ascending");
 
             if (visited == null)

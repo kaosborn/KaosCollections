@@ -491,9 +491,9 @@ namespace Kaos.Collections
 
             if (other is RankedSet<TKey> oSet)
             {
-                if (compareOp.Compare (oSet.Max, Min) < 0)
+                if (Comparer.Compare (oSet.Max, Min) < 0)
                     return false;
-                if (compareOp.Compare (oSet.Min, Max) > 0)
+                if (Comparer.Compare (oSet.Min, Max) > 0)
                     return false;
 
                 foreach (var item in oSet.GetBetween (Min, Max))
@@ -701,7 +701,7 @@ namespace Kaos.Collections
             {
                 if (index < leaf.KeyCount)
                 {
-                    if (compareOp.Compare (leaf.GetKey (index), upper) > 0)
+                    if (Comparer.Compare (leaf.GetKey (index), upper) > 0)
                         yield break;
 
                     yield return leaf.GetKey (index);
