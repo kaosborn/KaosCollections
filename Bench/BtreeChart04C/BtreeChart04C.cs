@@ -15,7 +15,7 @@ namespace ChartApp
 {
     class BtreeChart04C
     {
-        static RankedDictionary<int,int> tree = new RankedDictionary<int,int> (4);
+        static RankedDictionary<int,int> tree;
 
         static void WriteInfo (bool showStats=false)
         {
@@ -37,6 +37,8 @@ namespace ChartApp
 
         static void Main()
         {
+            tree = new RankedDictionary<int,int> (4);
+
             Console.WriteLine ("Create tree of order 4:");
             for (int i = 2; i <= 50; i+=2)
                 tree.Add (i, i + 100);

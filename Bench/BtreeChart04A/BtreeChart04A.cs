@@ -15,7 +15,7 @@ namespace ChartApp
 {
     class BtreeChart04A
     {
-        static RankedDictionary<int,int> tree = new RankedDictionary<int,int> (4);
+        static RankedDictionary<int,int> tree;
 
         static void WriteInfo (bool showStats=false)
         {
@@ -38,6 +38,8 @@ namespace ChartApp
 
         static void Main()
         {
+            tree = new RankedDictionary<int,int> (4);
+
             Console.WriteLine ("Empty tree is a single leaf:");
             WriteInfo (true);
 
