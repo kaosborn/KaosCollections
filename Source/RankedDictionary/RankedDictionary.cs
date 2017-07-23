@@ -103,9 +103,11 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>
-        /// Get the collection of keys in the <see cref="RankedDictionary{TKey,TValue}"/>.
-        /// </summary>
+        /// <summary>Gets the collection of keys in the <see cref="RankedDictionary{TKey,TValue}"/>.</summary>
+        /// <example>
+        /// This trivial example shows how to enumerate the keys of a dictionary.
+        /// <code source="..\Bench\RdExample02\RdExample02.cs" lang="cs" />
+        /// </example>
         public KeyCollection Keys
         {
             get
@@ -117,9 +119,11 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>
-        /// Get the collection of values in the <see cref="RankedDictionary{TKey,TValue}"/>.
-        /// </summary>
+        /// <summary>Gets the collection of values in the <see cref="RankedDictionary{TKey,TValue}"/>.</summary>
+        /// <example>
+        /// This trivial example shows how to enumerate the values of a dictionary.
+        /// <code source="..\Bench\RdExample02\RdExample02.cs" lang="cs" />
+        /// </example>
         public ValueCollection Values
         {
             get

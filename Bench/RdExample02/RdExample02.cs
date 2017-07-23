@@ -1,10 +1,4 @@
-﻿//
-// Program: RdExample02.cs
-// Purpose: Trivial example of iterating over subcollections Keys, Values.
-//
-
-using System;
-using System.Collections.Generic;
+﻿using System;
 using Kaos.Collections;
 
 namespace ExampleApp
@@ -13,21 +7,27 @@ namespace ExampleApp
     {
         static void Main()
         {
-            var tree = new RankedDictionary<int,int>();
-
-            tree.Add (36, 360);
-            tree.Add (12, 120);
-
-            ICollection<int> keyList = tree.Keys;
-            ICollection<int> valList = tree.Values;
+            var d2 = new RankedDictionary<int,int>()
+            { [36] = 360, [12] = 120 };
 
             Console.WriteLine ("Keys:");
-            foreach (int n in keyList)
-                Console.WriteLine (n);
+            foreach (var key in d2.Keys)
+                Console.WriteLine (key);
 
             Console.WriteLine ("Values:");
-            foreach (int v in tree.Values)
-                Console.WriteLine (v);
+            foreach (var val in d2.Values)
+                Console.WriteLine (val);
         }
+
+        /* Output:
+
+        Keys:
+        12
+        36
+        Values:
+        120
+        360
+
+        */
     }
 }
