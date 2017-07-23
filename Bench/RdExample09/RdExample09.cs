@@ -1,5 +1,5 @@
 ﻿//
-// Program: BtreeExample09.cs
+// Program: RdExample09.cs
 // Purpose: Demonstrate FxCore usage.
 //
 // Usage:
@@ -11,7 +11,7 @@ using Kaos.Collections;
 
 namespace ExampleApp
 {
-    class BtreeExample09
+    class RdExample09
     {
         static void Main()
         {

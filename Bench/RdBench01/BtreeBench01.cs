@@ -1,5 +1,5 @@
 ﻿//
-// Program: BtreeBench01.cs
+// Program: RdBench01.cs
 // Purpose: Benchmark SortedDictionary and BtreeDictionary comparisons with range query narrative.
 //
 // Usage notes:
@@ -16,7 +16,7 @@ using Kaos.Collections;
 
 namespace BenchApp
 {
-    class BtreeBench01
+    class RdBench01
     {
         static void Main()
         {

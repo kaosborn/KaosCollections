@@ -1,5 +1,5 @@
 ﻿//
-// Program: BtreeBench02.cs
+// Program: RdBench02.cs
 // Purpose: Perform comparison benchmarks on BtreeDictionary & SortedDictionary.
 //
 // Usage notes:
@@ -78,7 +78,7 @@ namespace BenchApp
     }
 
 
-    class BtreeBench02
+    class RdBench02
     {
         static void BenchSuite<T> (string title, Exercise<T> sort)
             where T : IDictionary<long,long>, new()

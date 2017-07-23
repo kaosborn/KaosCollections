@@ -1,5 +1,5 @@
 ﻿//
-// Program: BtreeExample03.cs
+// Program: RdExample03.cs
 // Purpose: Demonstrate LINQ usage and range query.
 //
 
@@ -10,7 +10,7 @@ using Kaos.Collections;
 
 namespace ExampleApp
 {
-    class BtreeExample03
+    class RdExample03
     {
         static void Main()
         {

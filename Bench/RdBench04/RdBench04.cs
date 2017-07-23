@@ -1,5 +1,5 @@
 ﻿//
-// Program: BtreeBench04.cs
+// Program: RdBench04.cs
 // Purpose: Performance benchmark GUID adds
 //
 // Usage notes:
@@ -14,7 +14,7 @@ using Kaos.Collections;
 
 namespace BenchApp
 {
-    class BtreeBench04
+    class RdBench04
     {
         static void Main()
         {

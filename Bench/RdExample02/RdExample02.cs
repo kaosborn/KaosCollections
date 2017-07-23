@@ -1,5 +1,5 @@
 ﻿//
-// Program: BtreeExample02.cs
+// Program: RdExample02.cs
 // Purpose: Trivial example of iterating over subcollections Keys, Values.
 //
 
@@ -9,7 +9,7 @@ using Kaos.Collections;
 
 namespace ExampleApp
 {
-    class BtreeExample02
+    class RdExample02
     {
         static void Main()
         {

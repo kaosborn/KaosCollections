@@ -1,5 +1,5 @@
 ﻿//
-// Program: BtreeBench03.cs
+// Program: RdBench03.cs
 // Purpose: Benchmark BtreeDictionary fill percent.
 //
 // Usage notes:
@@ -13,7 +13,7 @@ using Kaos.Collections;
 
 namespace BenchApp
 {
-    public class BtreeBench03
+    public class RdBench03
     {
         static RankedDictionary<Guid,int> tree;
 

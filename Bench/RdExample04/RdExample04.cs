@@ -1,5 +1,5 @@
 ﻿//
-// Program: BtreeExample04.cs
+// Program: RdExample04.cs
 // Purpose: Exercise BtreeDictionary with a supplied comparer.
 //
 
@@ -9,7 +9,7 @@ using Kaos.Collections;
 
 namespace ExampleApp
 {
-    class BtreeExample04
+    class RdExample04
     {
         static void Main()
         {

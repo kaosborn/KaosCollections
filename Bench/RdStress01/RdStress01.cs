@@ -1,5 +1,5 @@
 ﻿//
-// Program: BtreeStress02.cs
+// Program: RdStress01.cs
 // Purpose: Stress BtreeDictionary with permutation deletes.
 //
 // Usage notes:
@@ -13,7 +13,7 @@ using Kaos.Combinatorics;
 
 namespace BenchApp
 {
-    class BtreeStress01
+    class RdStress01
     {
         static void Main()
         {
