@@ -23,6 +23,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard1.0|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard1.0\KaosCollections.xml</DocumentationFile>
+    <NoWarn>1701;1702;1705;1591</NoWarn>
   </PropertyGroup>
 
   <Import Project="..\Source\RankedSet\RankedSet.projitems" Label="Shared" />
