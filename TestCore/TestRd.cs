@@ -15,7 +15,7 @@ namespace CollectionsTest
         #region Test constructors
 
         [TestMethod]
-        public void Unit_Inheritance()
+        public void UnitRd_Inheritance()
         {
             Setup();
 
@@ -25,16 +25,6 @@ namespace CollectionsTest
             Assert.IsTrue (tree2 is System.Collections.IEnumerable);
             Assert.IsTrue (tree2 is System.Collections.IDictionary);
             Assert.IsTrue (tree2 is System.Collections.ICollection);
-
-            Assert.IsTrue (tree2.Keys is System.Collections.Generic.ICollection<string>);
-            Assert.IsTrue (tree2.Keys is System.Collections.Generic.IEnumerable<string>);
-            Assert.IsTrue (tree2.Keys is System.Collections.IEnumerable);
-            Assert.IsTrue (tree2.Keys is System.Collections.ICollection);
-
-            Assert.IsTrue (tree2.Values is System.Collections.Generic.ICollection<int>);
-            Assert.IsTrue (tree2.Values is System.Collections.Generic.IEnumerable<int>);
-            Assert.IsTrue (tree2.Values is System.Collections.IEnumerable);
-            Assert.IsTrue (tree2.Values is System.Collections.ICollection);
 
             Assert.IsTrue (tree2 is System.Collections.Generic.IReadOnlyDictionary<string,int>);
             Assert.IsTrue (tree2 is System.Collections.Generic.IReadOnlyCollection<KeyValuePair<string,int>>);

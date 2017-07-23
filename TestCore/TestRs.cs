@@ -4,6 +4,7 @@
 //
 
 using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #if TEST_BCL
 using System.Collections.Generic;
@@ -16,6 +17,39 @@ namespace CollectionsTest
     public partial class Test_Btree
     {
         #region Test constructors
+
+        [TestMethod]
+        public void UnitRs_Inheritance()
+        {
+            Setup();
+            setI.Add (42); setI.Add (21); setI.Add (63);
+
+            var toISetI = setI as System.Collections.Generic.ISet<int>;
+            var toIColI = setI as System.Collections.Generic.ICollection<int>;
+            var toIEnuI = setI as System.Collections.Generic.IEnumerable<int>;
+            var toIEnuO = setI as System.Collections.IEnumerable;
+            var toIColO = setI as System.Collections.ICollection;
+            var toIRocI = setI as System.Collections.Generic.IReadOnlyCollection<int>;
+
+            Assert.IsNotNull (toISetI);
+            Assert.IsNotNull (toIColI);
+            Assert.IsNotNull (toIEnuI);
+            Assert.IsNotNull (toIEnuO);
+            Assert.IsNotNull (toIColO);
+            Assert.IsNotNull (toIRocI);
+
+            int ObjEnumCount = 0;
+            for (var oe = toIEnuO.GetEnumerator(); oe.MoveNext(); )
+                ++ObjEnumCount;
+
+            Assert.AreEqual (3, toISetI.Count);
+            Assert.AreEqual (3, toIColI.Count);
+            Assert.AreEqual (3, toIEnuI.Count());
+            Assert.AreEqual (3, ObjEnumCount);
+            Assert.AreEqual (3, toIColO.Count);
+            Assert.AreEqual (3, toIRocI.Count);
+        }
+
 
         [TestMethod]
         public void UnitSd_Ctor0A1()
