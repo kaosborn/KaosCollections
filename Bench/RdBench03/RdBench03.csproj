@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8D3A6449-A8BC-49B9-A8C3-9821CBDCDC8F}</ProjectGuid>
+    <ProjectGuid>{F1CD6891-A2A0-4443-9960-27E2A24D87F1}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>BtreeStress01</RootNamespace>
-    <AssemblyName>BtreeStress01</AssemblyName>
+    <RootNamespace>RdBench03</RootNamespace>
+    <AssemblyName>RdBench03</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="KaosCombinatorics, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Kaos.Combinatorics.5.0.0\lib\net40\KaosCombinatorics.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,8 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BtreeStress01.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RdBench03.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Collections400\Collections400.csproj">
@@ -53,7 +49,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

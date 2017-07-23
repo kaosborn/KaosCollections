@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E59375A2-9D83-4F7F-BC82-54F57CC1B76D}</ProjectGuid>
+    <ProjectGuid>{28FB4E26-9A24-40AD-B189-EFE9CCAB460D}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>BtreeBench01</RootNamespace>
-    <AssemblyName>BtreeBench01</AssemblyName>
+    <RootNamespace>RdExample02</RootNamespace>
+    <AssemblyName>RdExample02</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,7 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BtreeBench01.cs" />
+    <Compile Include="RdExample02.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

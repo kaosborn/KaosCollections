@@ -714,7 +714,7 @@ namespace Kaos.Collections
         /// Neither <em>lower</em> or <em>upper</em> need to be present in the collection.
         /// </remarks>
         /// <example>
-        /// <code source="..\Bench\BtreeExample03\BtreeExample03.cs" lang="cs" />
+        /// <code source="..\Bench\RdExample03\RdExample03.cs" lang="cs" />
         /// </example>
         public IEnumerable<KeyValuePair<TKey,TValue>> GetBetween (TKey lower, TKey upper)
         {

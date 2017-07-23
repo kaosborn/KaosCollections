@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AA43DEB7-E073-490A-98C3-153692F7D1C9}</ProjectGuid>
+    <ProjectGuid>{4565C87C-65AB-4E69-8285-FB36FA2F5558}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>BtreeExample03</RootNamespace>
-    <AssemblyName>BtreeExample03</AssemblyName>
+    <RootNamespace>RdBench04</RootNamespace>
+    <AssemblyName>RdBench04</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,14 +40,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BtreeExample03.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RdBench04.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Collections400\Collections400.csproj">
       <Project>{04bc35f4-f0d8-47d0-ae7c-b2d62be49fc6}</Project>
       <Name>Collections400</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
