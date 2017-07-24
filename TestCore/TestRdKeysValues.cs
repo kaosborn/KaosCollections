@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+//using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Kaos.Collections;
 
@@ -7,9 +7,11 @@ namespace CollectionsTest
 {
     public partial class Test_Btree
     {
+        #region Test Keys subclass
+
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void Crash_KeysCopyTo_ArgumentNull()
+        public void CrashRd_KeysCopyTo_ArgumentNull()
         {
             Setup();
             var target = new int[10];
@@ -19,7 +21,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void Crash_KeysCopyToOfValidValues_ArgumentOutOfRange()
+        public void CrashRd_KeysCopyToOfValidValues_ArgumentOutOfRange()
         {
             Setup();
             var target = new int[iVals1.Length];
@@ -29,7 +31,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void Crash_KeysCopyToNotLongEnough_Argument()
+        public void CrashRd_KeysCopyToNotLongEnough_Argument()
         {
             Setup();
             for (int key = 1; key < 10; ++key)
@@ -41,7 +43,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_KeysCopyTo()
+        public void UnitRd_KeysCopyTo()
         {
             int n = 10;
             int offset = 5;
@@ -56,10 +58,9 @@ namespace CollectionsTest
                 Assert.AreEqual (k, target[k + offset]);
         }
 
-        ////
 
         [TestMethod]
-        public void Unit_KeysGetEnumerator()
+        public void UnitRd_KeysGetEnumerator()
         {
             int n = 100;
             Setup();
@@ -80,7 +81,7 @@ namespace CollectionsTest
         // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
         [TestMethod]
-        public void Unit_KeysCount()
+        public void UnitRd_KeysCount()
         {
             Setup();
             foreach (int key in iVals1)
@@ -92,7 +93,7 @@ namespace CollectionsTest
         // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
         [TestMethod]
-        public void Unit_ICollectionKeysContains()
+        public void UnitRd_ICollectionKeysContains()
         {
             Setup();
             tree2.Add ("alpha", 10);
@@ -104,7 +105,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_ICollectionKeysCopyTo()
+        public void UnitRd_ICollectionKeysCopyTo()
         {
             Setup();
             tree2.Add ("alpha", 1);
@@ -122,17 +123,17 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_ICollectionKeysIsReadonly()
+        public void UnitRd_ICollectionKeysIsReadonly()
         {
             Setup();
-            var gicKeys = (ICollection<int>) tree1.Keys;
+            var gicKeys = (System.Collections.Generic.ICollection<int>) tree1.Keys;
             Assert.IsTrue (gicKeys.IsReadOnly);
         }
 
 
         [TestMethod]
         [ExpectedException (typeof (NotSupportedException))]
-        public void Crash_ICollectionKeysAdd_NotSupported()
+        public void CrashRd_ICollectionKeysAdd_NotSupported()
         {
             Setup();
             genKeys2.Add ("omega");
@@ -141,7 +142,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (NotSupportedException))]
-        public void Crash_ICollectionKeysClear_NotSupported()
+        public void CrashRd_ICollectionKeysClear_NotSupported()
         {
             Setup();
             genKeys2.Clear();
@@ -150,7 +151,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (NotSupportedException))]
-        public void Crash_ICollectionKeysRemove_NotSupported()
+        public void CrashRd_ICollectionKeysRemove_NotSupported()
         {
             Setup();
             genKeys2.Remove ("omega");
@@ -159,7 +160,7 @@ namespace CollectionsTest
         ////
 
         [TestMethod]
-        public void Unit_KeysSyncRoot()
+        public void UnitRd_KeysSyncRoot()
         {
             Setup();
 
@@ -169,11 +170,13 @@ namespace CollectionsTest
             Assert.IsTrue (sr is object);
         }
 
-        // ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== =====
+        #endregion
+
+        #region test Values subclass
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void Crash_ValuesCopyTo_ArgumentNull()
+        public void CrashRd_ValuesCopyTo_ArgumentNull()
         {
             Setup();
             var target = new int[iVals1.Length];
@@ -183,7 +186,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void Crash_ValuesCopyToOfValidValues_ArgumentOutOfRange()
+        public void CrashRd_ValuesCopyToOfValidValues_ArgumentOutOfRange()
         {
             Setup();
             var target = new int[10];
@@ -193,7 +196,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void Crash_ValuesCopyToNotLongEnough_Argument()
+        public void CrashRd_ValuesCopyToNotLongEnough_Argument()
         {
             Setup();
 
@@ -206,7 +209,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_ValuesCopyTo()
+        public void UnitRd_ValuesCopyTo()
         {
             int n = 10;
             int offset = 5;
@@ -223,7 +226,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_ValuesGetEnumerator()
+        public void UnitRd_ValuesGetEnumerator()
         {
             int n = 100;
             Setup();
@@ -244,7 +247,7 @@ namespace CollectionsTest
         ////
 
         [TestMethod]
-        public void Unit_ValuesSyncRoot()
+        public void UnitRd_ValuesSyncRoot()
         {
             Setup();
 
@@ -257,7 +260,7 @@ namespace CollectionsTest
         // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
         [TestMethod]
-        public void Unit_ValuesCount()
+        public void UnitRd_ValuesCount()
         {
             Setup();
             foreach (int key in iVals1)
@@ -269,7 +272,7 @@ namespace CollectionsTest
         // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
         [TestMethod]
-        public void Unit_ICollectionValuesContains()
+        public void UnitRd_ICollectionValuesContains()
         {
             Setup();
             tree2.Add ("alpha", 10);
@@ -281,7 +284,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_ICollectionValuesCopyTo()
+        public void UnitRd_ICollectionValuesCopyTo()
         {
             Setup();
             tree2.Add ("alpha", 1);
@@ -299,17 +302,17 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_ICollectionValuesCollectionIsReadonly()
+        public void UnitRd_ICollectionValuesCollectionIsReadonly()
         {
             Setup();
-            ICollection<int> ic = (ICollection<int>) tree1.Values;
+            var ic = (System.Collections.Generic.ICollection<int>) tree1.Values;
             Assert.IsTrue (ic.IsReadOnly);
         }
 
 
         [TestMethod]
         [ExpectedException (typeof (NotSupportedException))]
-        public void Crash_ICollectionValuesAdd_NotSupported()
+        public void CrashRd_ICollectionValuesAdd_NotSupported()
         {
             Setup();
             genValues2.Add (9);
@@ -318,7 +321,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (NotSupportedException))]
-        public void Crash_ICollectionValuesClear_NotSupported()
+        public void CrashRd_ICollectionValuesClear_NotSupported()
         {
             Setup();
             genValues2.Clear();
@@ -327,10 +330,12 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (NotSupportedException))]
-        public void Crash_ICollectionValuesRemove_NotSupported()
+        public void CrashRd_ICollectionValuesRemove_NotSupported()
         {
             Setup();
             genValues2.Remove (9);
         }
+
+        #endregion
     }
 }

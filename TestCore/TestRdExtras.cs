@@ -130,7 +130,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRd_RankedIndexOf_ArgumentOutOfRange1()
+        public void CrashRd_RankedIndexOf1_ArgumentOutOfRange()
         {
             var tree = new RankedDictionary<int,int>();
             KeyValuePair<int,int> pair = tree.GetByIndex (-1);
@@ -139,7 +139,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRd_RankedIndexOf_ArgumentOutOfRange2()
+        public void CrashRd_RankedIndexOf2_ArgumentOutOfRange()
         {
             var tree = new RankedDictionary<int,int>();
             KeyValuePair<int,int> pair = tree.GetByIndex (0);
@@ -192,7 +192,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRd_RankedGetByIndexArgumentOutOfRange_1()
+        public void CrashRd_RankedGetByIndex1_ArgumentOutOfRange()
         {
             Btree.TreeOrder = 4;
             var tree = new RankedDictionary<int,int>() { { 4, 104 } };
@@ -201,7 +201,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRd_RankedGetByIndexArgumentOutOfRange_2()
+        public void CrashRd_RankedGetByIndex2_ArgumentOutOfRange()
         {
             Btree.TreeOrder = 4;
             var tree = new RankedDictionary<int,int>();

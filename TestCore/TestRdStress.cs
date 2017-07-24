@@ -5,7 +5,7 @@ namespace CollectionsTest
     public partial class Test_Btree
     {
         [TestMethod]
-        public void Stress_WithLongPermutations()
+        public void StressRd_WithLongPermutations()
         {
             for (int order = 5; order < 9; ++order)
             {
@@ -25,7 +25,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Stress_RemoveForLongBranchShift()
+        public void StressRd_RemoveForLongBranchShift()
         {
             Setup (6);
 
@@ -47,7 +47,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Stress_RemoveSlidingWindowForCoalesce()
+        public void StressRd_RemoveSlidingWindowForCoalesce()
         {
             Setup (5);
 
@@ -72,7 +72,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Stress_RemoveSpanForNontrivialCoalesce()
+        public void StressRd_RemoveSpanForNontrivialCoalesce()
         {
             Setup();
 
@@ -85,7 +85,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Stress_RemoveSpanForBranchBalancing()
+        public void StressRd_RemoveSpanForBranchBalancing()
         {
             Setup (6);
 
@@ -104,7 +104,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Stress_AddForSplits()
+        public void StressRd_AddForSplits()
         {
             Setup (5);
 

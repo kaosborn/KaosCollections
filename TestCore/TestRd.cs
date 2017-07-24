@@ -44,7 +44,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_Ctor0()
+        public void UnitRd_Ctor0()
         {
             Setup();
             Assert.AreEqual (0, tree1.Count);
@@ -52,7 +52,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_Ctor1A1()
+        public void UnitRd_Ctor1A1()
         {
 #if TEST_BCL
             var tree = new SortedDictionary<string,int> (StringComparer.OrdinalIgnoreCase);
@@ -77,7 +77,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_Ctor1A2()
+        public void UnitRd_Ctor1A2()
         {
 #if TEST_BCL
             var tree = new SortedDictionary<string,int> (StringComparer.Ordinal);
@@ -102,7 +102,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void Crash_Ctor1B_ArgumentNull()
+        public void CrashRd_Ctor1B_ArgumentNull()
         {
             IDictionary<int,int> listArg = null;
 #if TEST_BCL
@@ -114,7 +114,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_Ctor1B()
+        public void UnitRd_Ctor1B()
         {
             Setup();
 
@@ -133,7 +133,7 @@ namespace CollectionsTest
         }
 
         [TestMethod]
-        public void Unit_Ctor2A()
+        public void UnitRd_Ctor2A()
         {
             IDictionary<Person,int> empDary = new SortedDictionary<Person,int>(new PersonComparer());
             empDary.Add (new KeyValuePair<Person,int> (new Person ("fay"), 1));
@@ -148,13 +148,105 @@ namespace CollectionsTest
             Assert.AreEqual (3, people.Count);
         }
 
-#endregion
+        #endregion
 
-#region Test methods
+        #region Test properties
+
+        [TestMethod]
+        public void UnitRd_Comparer()
+        {
+            Setup();
+
+            IComparer<string> result = tree2.Comparer;
+
+            Assert.AreEqual (Comparer<string>.Default, result);
+        }
+
+
+        [TestMethod]
+        public void UnitRd_Count()
+        {
+            Setup();
+
+            for (int i = 0; i < iVals1.Length; ++i)
+            {
+                Assert.AreEqual (i, tree1.Count);
+                tree1.Add (iVals1[i], iVals1[i] * 10);
+            }
+            Assert.AreEqual (iVals1.Length, tree1.Count);
+
+            for (int i = 0; i < iVals1.Length; ++i)
+            {
+                tree1.Remove (iVals1[i]);
+                Assert.AreEqual (iVals1.Length - i - 1, tree1.Count);
+            }
+        }
+
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void Crash_Add_ArgumentNull()
+        public void CrashRd_Item1_ArgumentNull()
+        {
+            Setup();
+            tree2[null] = 42;
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRd_Item2_ArgumentNull()
+        {
+            Setup();
+            int x = tree2[null];
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (KeyNotFoundException))]
+        public void CrashRd_Item1_KeyNotFound()
+        {
+            Setup();
+            tree2.Add ("pi", 9);
+
+            int x = tree2["omicron"];
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (KeyNotFoundException))]
+        public void CrashRd_Item2_KeyNotFound()
+        {
+            Setup();
+            tree1.Add (23, 230);
+
+            int val = tree1[9];
+        }
+
+
+        [TestMethod]
+        public void UnitRd_Item()
+        {
+            Setup();
+
+            tree2["seven"] = 7;
+            tree2["eleven"] = 111;
+
+            Assert.AreEqual (7, tree2["seven"]);
+            Assert.AreEqual (111, tree2["eleven"]);
+
+            tree2["eleven"] = 11;
+            Assert.AreEqual (11, tree2["eleven"]);
+        }
+
+        // Keys, Values property testing is implicit in their API tests.
+
+        #endregion
+
+        #region Test methods
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRd_Add_ArgumentNull()
         {
             Setup();
             tree2.Add (null, 0);
@@ -163,7 +255,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void Crash_AddEntryAlreadyExists_Argument()
+        public void CrashRd_AddEntryAlreadyExists_Argument()
         {
             Setup();
             tree2.Add ("foo", 1);
@@ -172,7 +264,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_AddCount()
+        public void UnitRd_AddCount()
         {
             Setup();
 
@@ -184,7 +276,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_Clear()
+        public void UnitRd_Clear()
         {
             Setup();
 
@@ -204,7 +296,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void Crash_ContainsKey_ArgumentNull()
+        public void CrashRd_ContainsKey_ArgumentNull()
         {
             Setup();
 
@@ -214,7 +306,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_ContainsKey()
+        public void UnitRd_ContainsKey()
         {
             Setup();
 
@@ -228,7 +320,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_ContainsValue()
+        public void UnitRd_ContainsValue()
         {
             Setup();
 
@@ -244,7 +336,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_ContainsValueNullStruct()
+        public void UnitRd_ContainsValueNullStruct()
         {
             Setup();
 
@@ -258,7 +350,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_ContainsValueNullRef()
+        public void UnitRd_ContainsValueNullRef()
         {
             Setup();
 
@@ -276,7 +368,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void Crash_CopyTo_ArgumentNull()
+        public void CrashRd_CopyTo_ArgumentNull()
         {
             Setup();
             var target = new KeyValuePair<int,int>[iVals1.Length];
@@ -286,7 +378,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void Crash_CopyTo_ArgumentOutOfRange_1()
+        public void CrashRd_CopyTo1_ArgumentOutOfRange()
         {
             Setup();
             var target = new KeyValuePair<int,int>[iVals1.Length];
@@ -297,7 +389,7 @@ namespace CollectionsTest
         // MS docs incorrectly state ArgumentOutOfRangeException for this case.
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void Crash_CopyTo_Argument_1()
+        public void CrashRd_CopyTo1_Argument()
         {
             Setup();
             for (int key = 1; key < 10; ++key)
@@ -310,7 +402,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void Crash_CopyTo_Argument_2()
+        public void CrashRd_CopyTo2_Argument()
         {
             Setup();
             for (int key = 1; key < 10; ++key)
@@ -322,7 +414,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_CopyTo()
+        public void UnitRd_CopyTo()
         {
             Setup();
             int offset = 1;
@@ -395,7 +487,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_EnumeratorIteration()
+        public void UnitRd_EnumeratorIteration()
         {
             Setup();
 
@@ -416,7 +508,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (InvalidOperationException))]
-        public void Crash_EnumeratorObjectPair1_InvalidOperation()
+        public void CrashRd_EnumeratorObjectPair1_InvalidOperation()
         {
             Setup();
             tree2.Add ("cc", 3);
@@ -428,7 +520,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (InvalidOperationException))]
-        public void Crash_EnumeratorObjectPair2_InvalidOperation()
+        public void CrashRd_EnumeratorObjectPair2_InvalidOperation()
         {
             Setup();
             tree2.Add ("cc", 3);
@@ -441,7 +533,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_EnumeratorPair()
+        public void UnitRd_EnumeratorPair()
         {
             Setup();
             tree2.Add ("nine", 9);
@@ -461,7 +553,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void Crash_Remove_ArgumentNull()
+        public void CrashRd_Remove_ArgumentNull()
         {
             Setup();
             tree2.Add ("delta", 4);
@@ -471,7 +563,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_Remove()
+        public void UnitRd_Remove()
         {
             Setup();
 
@@ -490,7 +582,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void Crash_TryGetValue_ArgumentNull()
+        public void CrashRd_TryGetValue_ArgumentNull()
         {
             Setup();
 
@@ -500,7 +592,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_TryGetValueOrUnfoundKeyInt()
+        public void UnitRd_TryGetValueOrUnfoundKeyInt()
         {
             Setup (5);
             for (int i = 2; i <= 50; i+=2)
@@ -522,7 +614,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_TryGetValueForUnfoundKeyString()
+        public void UnitRd_TryGetValueForUnfoundKeyString()
         {
 #if TEST_BCL
             var sd = new SortedDictionary<string,int> (StringComparer.Ordinal);
@@ -549,7 +641,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_TryGetValue()
+        public void UnitRd_TryGetValue()
         {
             Setup();
 
@@ -567,110 +659,20 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_ObjectGetEnumerator()
+        public void UnitRd_ObjectGetEnumerator()
         {
             Setup();
             var aa = (System.Collections.IEnumerable) tree1;
             var bb = aa.GetEnumerator();
         }
 
-        // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+        #endregion
 
-        [TestMethod]
-        public void Unit_Comparer()
-        {
-            Setup();
-
-            IComparer<string> result = tree2.Comparer;
-
-            Assert.AreEqual (Comparer<string>.Default, result);
-        }
-
-
-        [TestMethod]
-        public void Unit_Count()
-        {
-            Setup();
-
-            for (int i = 0; i < iVals1.Length; ++i)
-            {
-                Assert.AreEqual (i, tree1.Count);
-                tree1.Add (iVals1[i], iVals1[i] * 10);
-            }
-            Assert.AreEqual (iVals1.Length, tree1.Count);
-
-            for (int i = 0; i < iVals1.Length; ++i)
-            {
-                tree1.Remove (iVals1[i]);
-                Assert.AreEqual (iVals1.Length - i - 1, tree1.Count);
-            }
-        }
-
-
-        [TestMethod]
-        [ExpectedException (typeof (ArgumentNullException))]
-        public void Crash_Item_ArgumentNull_1()
-        {
-            Setup();
-            tree2[null] = 42;
-        }
-
-
-        [TestMethod]
-        [ExpectedException (typeof (ArgumentNullException))]
-        public void Crash_Item_ArgumentNull_2()
-        {
-            Setup();
-            int x = tree2[null];
-        }
-
-
-        [TestMethod]
-        [ExpectedException (typeof (KeyNotFoundException))]
-        public void Crash_Item_KeyNotFound_1()
-        {
-            Setup();
-            tree2.Add ("pi", 9);
-
-            int x = tree2["omicron"];
-        }
-
-
-        [TestMethod]
-        [ExpectedException (typeof (KeyNotFoundException))]
-        public void Crash_Item_KeyNotFound_2()
-        {
-            Setup();
-            tree1.Add (23, 230);
-
-            int val = tree1[9];
-        }
-
-
-        [TestMethod]
-        public void Unit_Item()
-        {
-            Setup();
-
-            tree2["seven"] = 7;
-            tree2["eleven"] = 111;
-
-            Assert.AreEqual (7, tree2["seven"]);
-            Assert.AreEqual (111, tree2["eleven"]);
-
-            tree2["eleven"] = 11;
-            Assert.AreEqual (11, tree2["eleven"]);
-        }
-
-        // Keys, Values property testing is implicit in their API tests.
-
-#endregion
-
-#region Test ICollection implementation
+        #region Test ICollection implementation
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void Crash_ICollectionAddPairEntryAlreadyExists_Argument()
+        public void CrashRd_ICollectionAddPairEntryAlreadyExists_Argument()
         {
             Setup();
             var p1 = new KeyValuePair<string,int> ("beta", 1);
@@ -691,7 +693,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_ICollectionAddPair()
+        public void UnitRd_ICollectionAddPair()
         {
             Setup();
             var gic = (ICollection<KeyValuePair<int,int>>) tree1;
@@ -705,7 +707,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_ICollectionContainsPair()
+        public void UnitRd_ICollectionContainsPair()
         {
             Setup();
             KeyValuePair<string,int> pair0 = new KeyValuePair<string,int> (null, 0);
@@ -723,7 +725,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_ICollectionCompairPairNullRef()
+        public void UnitRd_ICollectionCompairPairNullRef()
         {
             Setup();
             tree4.Add (3, "cc");
@@ -743,7 +745,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_ICollectionGetEnumerator()
+        public void UnitRd_ICollectionGetEnumerator()
         {
             Setup();
             var gic = (ICollection<KeyValuePair<int,int>>) tree1;
@@ -764,7 +766,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_IEnumerablePairGetEnumerator()
+        public void UnitRd_IEnumerablePairGetEnumerator()
         {
             Setup();
             foreach (int k in iVals1)
@@ -784,7 +786,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_IEnumerableGetEnumerator()
+        public void UnitRd_IEnumerableGetEnumerator()
         {
             Setup();
             tree4.Add (3, "cc");
@@ -803,7 +805,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_ICollectionIsReadonly()
+        public void UnitRd_ICollectionIsReadonly()
         {
             Setup();
             var gic = (ICollection<KeyValuePair<int,int>>) tree1;
@@ -813,7 +815,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_IDictionaryKeys()
+        public void UnitRd_IDictionaryKeys()
         {
             Setup();
             tree2.Add ("alpha", 1);
@@ -825,7 +827,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_ICollectionRemovePair()
+        public void UnitRd_ICollectionRemovePair()
         {
             Setup();
 
@@ -857,7 +859,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_ICollectionRemovePairNull()
+        public void UnitRd_ICollectionRemovePairNull()
         {
             Setup();
             tree4.Add (3, "cc");
@@ -877,7 +879,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void Unit_IDictionaryValues()
+        public void UnitRd_IDictionaryValues()
         {
             Setup();
             tree2.Add ("alpha", 1);
@@ -887,6 +889,6 @@ namespace CollectionsTest
             Assert.AreEqual (2, count);
         }
 
-#endregion
+        #endregion
     }
 }

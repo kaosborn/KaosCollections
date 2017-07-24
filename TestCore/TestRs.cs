@@ -52,7 +52,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void UnitSd_Ctor0A1()
+        public void UnitRs_Ctor0A1()
         {
             Setup();
             Assert.AreEqual (0, setTS1.Count);
@@ -64,7 +64,7 @@ namespace CollectionsTest
 #else
         [ExpectedException (typeof (InvalidOperationException))]
 #endif
-        public void UnitSd_Ctor1B_InvalidOperation()
+        public void UnitRs_Ctor1B_InvalidOperation()
         {
 #if TEST_BCL
             var sansComparer = new SortedSet<Person>();
@@ -76,7 +76,7 @@ namespace CollectionsTest
         }
 
         [TestMethod]
-        public void UnitSd_Ctor1B1()
+        public void UnitRs_Ctor1B1()
         {
             Setup();
 
@@ -89,7 +89,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void UnitSd_Ctor1B()
+        public void UnitRs_Ctor1B()
         {
 #if TEST_BCL
             var set1 = new SortedSet<int> (iVals1);
@@ -104,7 +104,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void UnitSd_Ctor2A()
+        public void UnitRs_Ctor2A()
         {
             var pa = new System.Collections.Generic.List<Person>();
             foreach (var name in Person.names) pa.Add (new Person (name));
@@ -122,7 +122,7 @@ namespace CollectionsTest
         #region Test properties
 
         [TestMethod]
-        public void UnitSd_Max()
+        public void UnitRs_Max()
         {
             Setup (5);
             Assert.AreEqual (default (int), setI.Max);
@@ -138,7 +138,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void UnitSd_Min()
+        public void UnitRs_Min()
         {
             Setup (4);
             Assert.AreEqual (default (int), setI.Min);
@@ -157,7 +157,7 @@ namespace CollectionsTest
         #region Test methods
 
         [TestMethod]
-        public void UnitSd_AddNull()
+        public void UnitRs_AddNull()
         {
             Setup();
 
@@ -167,7 +167,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void UnitSd_Add()
+        public void UnitRs_Add()
         {
             bool isOk;
             Setup();
@@ -186,7 +186,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void UnitSd_ContainsNull()
+        public void UnitRs_ContainsNull()
         {
             Setup();
 
@@ -196,7 +196,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void UnitSd_Contains()
+        public void UnitRs_Contains()
         {
             Setup();
 
@@ -211,7 +211,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void CrashSd_CopyTo_ArgumentNull()
+        public void CrashRs_CopyTo_ArgumentNull()
         {
             Setup();
             string[] nada = null;
@@ -221,7 +221,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashSd_CopyTo_ArgumentOutOfRange1()
+        public void CrashRs_CopyTo1_ArgumentOutOfRange()
         {
             var s1 = new string[1];
             Setup();
@@ -232,7 +232,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashSd_CopyTo_ArgumentOutOfRange2()
+        public void CrashRs_CopyTo2_ArgumentOutOfRange()
         {
             var s1 = new string[1];
             Setup();
@@ -243,7 +243,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void CrashSd_CopyTo_Argument()
+        public void CrashRs_CopyTo_Argument()
         {
             var s1 = new string[1];
             Setup();
@@ -255,7 +255,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void UnitSd_CopyTo1()
+        public void UnitRs_CopyTo1()
         {
             var s1 = new string[3];
             Setup();
@@ -267,7 +267,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void UnitSd_CopyTo2()
+        public void UnitRs_CopyTo2()
         {
             var i3 = new TS1[3];
             Setup();
@@ -281,7 +281,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void CrashSd_CopyToOb_ArgumentNull()
+        public void CrashRs_CopyToOb_ArgumentNull()
         {
             Setup();
             var setSo = (System.Collections.ICollection) setS;
@@ -292,7 +292,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void CrashSd_CopyToOb_Argument1()
+        public void CrashRs_CopyToOb1_Argument()
         {
             Setup();
             var setSo = (System.Collections.ICollection) setS;
@@ -304,7 +304,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void CrashSd_CopyToOb_Argument2()
+        public void CrashRs_CopyToOb2_Argument()
         {
             Setup();
             var setSo = (System.Collections.ICollection) setS;
@@ -316,7 +316,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashSd_CopyToOb_ArgumentOutOfRange()
+        public void CrashRs_CopyToOb_ArgumentOutOfRange()
         {
             var s1 = new string[1];
             Setup();
@@ -329,7 +329,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void CrashSd_CopyToOb_Argument3()
+        public void CrashRs_CopyToOb3_Argument()
         {
             var s1 = new string[1];
             Setup();
@@ -342,7 +342,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void UnitSd_Remove()
+        public void UnitRs_Remove()
         {
             bool isOk;
             Setup (4);
@@ -365,7 +365,7 @@ namespace CollectionsTest
         static bool IsTrue (int val) { return true; }
 
         [TestMethod]
-        public void UnitSd_RemoveWhere()
+        public void UnitRs_RemoveWhere()
         {
             Setup (4);
 
@@ -386,7 +386,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void UnitSd_ReverseEmpty()
+        public void UnitRs_ReverseEmpty()
         {
             int total = 0;
             Setup (5);
@@ -399,7 +399,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void UnitSd_Reverse()
+        public void UnitRs_Reverse()
         {
             int expected = 500;
             Setup (5);
@@ -419,7 +419,7 @@ namespace CollectionsTest
         #region Test ISet methods
 
         [TestMethod]
-        public void UnitSd_ExceptWith()
+        public void UnitRs_ExceptWith()
         {
             Setup();
             foreach (var v1 in iVals1)
@@ -444,7 +444,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void UnitSd_IsSupersetOf()
+        public void UnitRs_IsSupersetOf()
         {
             bool isSuper;
             Setup();
@@ -469,7 +469,7 @@ namespace CollectionsTest
 #if ! TEST_BCL
 
         [TestMethod]
-        public void UnitSd_IndexOf()
+        public void UnitRs_IndexOf()
         {
             Setup (4);
             for (int ii = 0; ii < 50; ++ii)
