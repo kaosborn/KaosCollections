@@ -86,7 +86,7 @@ namespace Kaos.Collections
 
             public override void Coalesce()
             {
-                Leaf right = RightLeaf;
+                var right = (Leaf) rightKeyLeaf;
                 for (int ix = 0; ix < right.values.Count; ++ix)
                     values.Add (right.values[ix]);
                 base.Coalesce();

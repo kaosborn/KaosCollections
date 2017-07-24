@@ -121,10 +121,10 @@ namespace Kaos.Collections
 
         protected class KeyLeaf : Node
         {
-            private KeyLeaf leftKeyLeaf;
+            public KeyLeaf leftKeyLeaf;
             public KeyLeaf LeftLeaf { get { return leftKeyLeaf; } }
 
-            private KeyLeaf rightKeyLeaf;
+            public KeyLeaf rightKeyLeaf;
             public KeyLeaf RightLeaf { get { return rightKeyLeaf; } }
 
 
@@ -170,10 +170,6 @@ namespace Kaos.Collections
             {
                 for (int ix = 0; ix < rightKeyLeaf.KeyCount; ++ix)
                     keys.Add (rightKeyLeaf.keys[ix]);
-
-                rightKeyLeaf = rightKeyLeaf.rightKeyLeaf;
-                if (rightKeyLeaf != null)
-                    rightKeyLeaf.leftKeyLeaf = this;
             }
 
             public void Insert (int index, TKey key)

@@ -75,26 +75,11 @@ namespace Kaos.Collections
 
         /// <summary>Gets the maximum value in the set per the comparer.</summary>
         public TKey Max
-        {
-            get
-            {
-                if (Count == 0)
-                    return default (TKey);
-                KeyLeaf rightmost = GetRightmost();
-                return rightmost.GetKey (rightmost.KeyCount-1);
-            }
-        }
+        { get { return Count==0 ? default (TKey) : rightmostLeaf.GetKey (rightmostLeaf.KeyCount-1); } }
 
         /// <summary>Gets the minimum value in the set per the comparer.</summary>
         public TKey Min
-        {
-            get
-            {
-                if (Count == 0)
-                    return default (TKey);
-                return LeftmostLeaf.Key0;
-            }
-        }
+        { get { return Count==0 ? default (TKey) : LeftmostLeaf.Key0; } }
 
         /// <summary>Deprecated.</summary>
         object ICollection.SyncRoot => GetSyncRoot();
@@ -142,27 +127,33 @@ namespace Kaos.Collections
             // Leaf is full so right split a new leaf.
             var newLeaf = new KeyLeaf (leaf, maxKeyCount);
 
-            if (newLeaf.RightLeaf == null && pathIndex == leaf.KeyCount)
-                newLeaf.AddKey (key);
+            if (newLeaf.RightLeaf == null)
+            {
+                rightmostLeaf = newLeaf;
+
+                if (pathIndex == leaf.KeyCount)
+                {
+                    newLeaf.AddKey (key);
+                    path.Promote (key, (Node) newLeaf, true);
+                    return;
+                }
+            }
+
+            int splitIndex = leaf.KeyCount / 2 + 1;
+            if (pathIndex < splitIndex)
+            {
+                // Left-side insert: Copy right side to the split leaf.
+                newLeaf.Add (leaf, splitIndex - 1, leaf.KeyCount);
+                leaf.Truncate (splitIndex - 1);
+                leaf.Insert (pathIndex, key);
+            }
             else
             {
-                int splitIndex = leaf.KeyCount / 2 + 1;
-
-                if (pathIndex < splitIndex)
-                {
-                    // Left-side insert: Copy right side to the split leaf.
-                    newLeaf.Add (leaf, splitIndex - 1, leaf.KeyCount);
-                    leaf.Truncate (splitIndex - 1);
-                    leaf.Insert (pathIndex, key);
-                }
-                else
-                {
-                    // Right-side insert: Copy split leaf parts and new key.
-                    newLeaf.Add (leaf, splitIndex, pathIndex);
-                    newLeaf.AddKey (key);
-                    newLeaf.Add (leaf, pathIndex, leaf.KeyCount);
-                    leaf.Truncate (splitIndex);
-                }
+                // Right-side insert: Copy split leaf parts and new key.
+                newLeaf.Add (leaf, splitIndex, pathIndex);
+                newLeaf.AddKey (key);
+                newLeaf.Add (leaf, pathIndex, leaf.KeyCount);
+                leaf.Truncate (splitIndex);
             }
 
             // Promote anchor of split leaf.
@@ -291,7 +282,7 @@ namespace Kaos.Collections
             if (match == null)
                 throw new ArgumentNullException (nameof (match));
 
-            for (KeyLeaf leaf = GetRightmost(); leaf != null; leaf = leaf.LeftLeaf)
+            for (KeyLeaf leaf = rightmostLeaf; leaf != null; leaf = leaf.LeftLeaf)
                 for (int ix = leaf.KeyCount-1; ix >= 0; --ix)
                 {
                     TKey key = leaf.GetKey (ix);
@@ -653,7 +644,7 @@ namespace Kaos.Collections
 
             void IEnumerator.Reset()
             {
-                currentLeaf = isReverse? tree.GetRightmost() : tree.LeftmostLeaf;
+                currentLeaf = isReverse? tree.rightmostLeaf : tree.LeftmostLeaf;
                 leafIndex = isReverse? currentLeaf.KeyCount : -1;
             }
 

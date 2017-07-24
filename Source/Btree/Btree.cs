@@ -50,6 +50,7 @@ namespace Kaos.Collections
     public abstract partial class Btree<TKey>
     {
         protected Node root;
+        protected KeyLeaf rightmostLeaf;
         protected readonly KeyLeaf leftmostLeaf;
         protected readonly int maxKeyCount;
         private readonly IComparer<TKey> comparer;
@@ -58,7 +59,7 @@ namespace Kaos.Collections
         {
             this.comparer = comparer ?? Comparer<TKey>.Default;
             this.maxKeyCount = Btree.TreeOrder - 1;
-            this.root = this.leftmostLeaf = leftmostLeaf;
+            this.root = this.rightmostLeaf = this.leftmostLeaf = leftmostLeaf;
         }
 
         #region Properties
@@ -76,18 +77,6 @@ namespace Kaos.Collections
         #endregion
 
         #region Nonpublic methods
-
-        /// <summary>Get the rightmost leaf of the tree.</summary>
-        /// <returns>Rightmost leaf.</returns>
-        protected KeyLeaf GetRightmost()
-        {
-            for (Node node = root;;)
-                if (node is Branch branch)
-                    node = branch.GetChild (branch.KeyCount);
-                else
-                    return (KeyLeaf) node;
-        }
-
 
         /// <summary>Perform lite search for key.</summary>
         /// <param name="key">Target of search.</param>
@@ -161,6 +150,8 @@ namespace Kaos.Collections
                     if (leaf.LeftLeaf != null)
                     {
                         leaf.Prune();
+                        if (leaf.RightLeaf == null)
+                            rightmostLeaf = leaf.LeftLeaf;
                         path.Demote();
                     }
 
@@ -184,6 +175,11 @@ namespace Kaos.Collections
                     else
                     {
                         leaf.Coalesce();
+                        leaf.rightKeyLeaf = rightLeaf.rightKeyLeaf;
+                        if (rightLeaf.rightKeyLeaf == null)
+                            rightmostLeaf = leaf;
+                        else
+                            rightLeaf.rightKeyLeaf.leftKeyLeaf = leaf;
                         path.TraverseRight();
                         path.TiltLeft (rightLeaf.KeyCount);
                         path.Demote();
@@ -239,6 +235,12 @@ namespace Kaos.Collections
 
             if (root.Weight != LeafSlotsUsed)
                 throw new InvalidOperationException ("Mismatched Count=" + root.Weight + ", expected=" + LeafSlotsUsed);
+
+            if (leftmostLeaf.leftKeyLeaf != null)
+                throw new InvalidOperationException ("leftmostLeaf has a left leaf");
+
+            if (rightmostLeaf.rightKeyLeaf != null)
+                throw new InvalidOperationException ("rightmostLeaf has a right leaf");
         }
 
 
