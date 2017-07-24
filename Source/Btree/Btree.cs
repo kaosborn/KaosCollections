@@ -16,7 +16,7 @@ using System.Threading;
 [assembly: CLSCompliant (true)]
 namespace Kaos.Collections
 {
-    /// <summary>Provides configuration setting for all Btree derived classes.</summary>
+    /// <summary>Provides configuration setting for all <see cref="Btree{TKey}"/> derived classes.</summary>
     /// <remarks>
     /// The TreeOrder property is provided for experimental purposes only.
     /// The default value should be used in typical scenarios and changing
@@ -67,7 +67,7 @@ namespace Kaos.Collections
         public int Count
         { get { return root.Weight; } }
 
-        /// <summary>The method used to order elements in the sorted collection.</summary>
+        /// <summary>Contains the method used to order elements in the sorted collection.</summary>
         /// <remarks>To override sorting based on the default comparer, supply an
         /// alternate comparer when constructing the collection.</remarks>
         public IComparer<TKey> Comparer

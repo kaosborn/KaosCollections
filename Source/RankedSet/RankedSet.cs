@@ -170,7 +170,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Determines whether the set contains a specific item.</summary>
+        /// <summary>Determines whether the set contains a supplied item.</summary>
         /// <param name="item">The item to check for existence in the set.</param>
         /// <returns><b>true</b> if the set contains the item; otherwise <b>false</b>.</returns>
         public bool Contains (TKey item)

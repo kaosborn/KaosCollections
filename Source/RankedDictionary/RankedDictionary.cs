@@ -71,12 +71,12 @@ namespace Kaos.Collections
 
         #region Properties
 
-        /// <summary>Get or set the value associated with the supplied key.</summary>
-        /// <param name="key">The key of the association.</param>
+        /// <summary>Gets or sets the value associated with the supplied key.</summary>
+        /// <param name="key">The key of the value to get or set.</param>
         /// <returns>Value associated with the supplied key.</returns>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
         /// <exception cref="KeyNotFoundException">When getting a value for a non-existant key.</exception>
-        /// <remarks>Setting a value for a non-existant key performs an insert operation.</remarks>
+        /// <remarks>Setting a value for a non-existent key performs an add operation.</remarks>
         public TValue this[TKey key]
         {
             get
@@ -245,7 +245,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Copies the collection to the specified array offset.</summary>
+        /// <summary>Copies the collection to the supplied array offset.</summary>
         /// <param name="array">Destionation of copy.</param>
         /// <param name="index">Copy starts at this location.</param>
         /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
@@ -418,7 +418,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Determine if the collection contains the supplied key and value.</summary>
+        /// <summary>Determines if the collection contains the supplied key and value.</summary>
         /// <param name="keyValuePair">Key/value pair to find.</param>
         /// <returns><b>true</b> if the collection contains the specified pair;
         /// otherwise <b>false</b>.</returns>
@@ -435,18 +435,18 @@ namespace Kaos.Collections
         { return new Enumerator (this); }
 
 
-        /// <summary>Indicate that this collection may be modified.</summary>
+        /// <summary>Indicates that this collection may be modified.</summary>
         bool ICollection<KeyValuePair<TKey,TValue>>.IsReadOnly
         { get { return false; } }
 
 
-        /// <summary>Get the collection of keys from this key/value the collection.</summary>
+        /// <summary>Gets the collection of keys from this key/value the collection.</summary>
         /// <remarks>The keys given by this collection are sorted according to the
         /// <see cref="Btree{TKey}.Comparer"/> property.</remarks>
         ICollection<TKey> IDictionary<TKey,TValue>.Keys
         { get { return (ICollection<TKey>) Keys; } }
 
-        /// <summary>Get the collection of values from this key/value collection.</summary>
+        /// <summary>Gets the collection of values from this key/value collection.</summary>
         /// <remarks>The values given by this collection are sorted in the same
         /// order as their respective keys in the <see cref="Keys"/> property.</remarks>
         ICollection<TValue> IDictionary<TKey,TValue>.Values
@@ -460,7 +460,7 @@ namespace Kaos.Collections
         { get { return Values; } }
 #endif
 
-        /// <summary>Delete the supplied key and its associated value from the collection.
+        /// <summary>Deletes the supplied key and its associated value from the collection.
         /// </summary>
         /// <param name="keyValuePair">Contains key and value to find and remove. No operation is taken
         /// unless both key and value match.</param>
@@ -479,7 +479,7 @@ namespace Kaos.Collections
 
         #region Explicit object properties interface implementations
 
-        /// <summary>Get or set the value associated with the supplied key.</summary>
+        /// <summary>Gets or sets the value associated with the supplied key.</summary>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
         object IDictionary.this[object key]
         {
@@ -527,7 +527,7 @@ namespace Kaos.Collections
         bool IDictionary.IsFixedSize
         { get { return false; } }
 
-        /// <summary>Indicate that structure may be modified.</summary>
+        /// <summary>Indicates that structure may be modified.</summary>
         bool IDictionary.IsReadOnly
         { get { return false; } }
 
@@ -544,7 +544,7 @@ namespace Kaos.Collections
 
         #region Explicit object methods interface implementations
 
-        /// <summary>Adds the specified key and value to the dictionary.</summary>
+        /// <summary>Adds the supplied key and value to the dictionary.</summary>
         /// <param name="key">The key of the element to add.</param>
         /// <param name="value">The value of the element to add.</param>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
@@ -632,7 +632,7 @@ namespace Kaos.Collections
         { return new Enumerator (this); }
 
 
-        /// <summary>Remove the supplied key and its associated value from the collection.</summary>
+        /// <summary>Removes the supplied key and its associated value from the collection.</summary>
         /// <param name="key">Key to remove.</param>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
         void IDictionary.Remove (object key)
