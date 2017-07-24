@@ -144,14 +144,14 @@ namespace Kaos.Collections
                     path.SetPivot (path.TopNode.Key0);
                 else
                 {
-                    Debug.Assert (leaf.RightLeaf==null, "only rightmost leaf should ever be empty");
+                    Debug.Assert (leaf.rightKeyLeaf==null, "only rightmost leaf should ever be empty");
 
                     // The leaf is empty so prune unless it is leftmost (therefore the only leaf).
-                    if (leaf.LeftLeaf != null)
+                    if (leaf.leftKeyLeaf != null)
                     {
                         leaf.Prune();
-                        if (leaf.RightLeaf == null)
-                            rightmostLeaf = leaf.LeftLeaf;
+                        if (leaf.rightKeyLeaf == null)
+                            rightmostLeaf = leaf.leftKeyLeaf;
                         path.Demote();
                     }
 
@@ -161,7 +161,7 @@ namespace Kaos.Collections
             // Leaf underflow?
             if (leaf.KeyCount < (maxKeyCount + 1) / 2)
             {
-                KeyLeaf rightLeaf = leaf.RightLeaf;
+                KeyLeaf rightLeaf = leaf.rightKeyLeaf;
                 if (rightLeaf != null)
                     if (leaf.KeyCount + rightLeaf.KeyCount > maxKeyCount)
                     {
@@ -230,7 +230,7 @@ namespace Kaos.Collections
             else
                 lastLeaf = CheckLeaf ((KeyLeaf) root, true, default (TKey), null);
 
-            if (lastLeaf.RightLeaf != null)
+            if (lastLeaf.rightKeyLeaf != null)
                 throw new InvalidOperationException ("Last leaf has invalid RightLeaf");
 
             if (root.Weight != LeafSlotsUsed)
@@ -307,7 +307,7 @@ namespace Kaos.Collections
             LeafSlotCount += maxKeyCount;
             LeafSlotsUsed += leaf.KeyCount;
 
-            if (leaf.RightLeaf != null && leaf.KeyCount < (maxKeyCount + 1) / 2)
+            if (leaf.rightKeyLeaf != null && leaf.KeyCount < (maxKeyCount + 1) / 2)
                 throw new InvalidOperationException ("Leaf underfilled");
 
             if (! anchor.Equals (default (TKey)) && ! anchor.Equals (leaf.Key0))
@@ -323,7 +323,7 @@ namespace Kaos.Collections
                     throw new InvalidOperationException ("Inconsistent visited, anchor");
             }
             else
-                if (visited.RightLeaf != leaf)
+                if (visited.rightKeyLeaf != leaf)
                     throw new InvalidOperationException ("Leaf has bad RightLeaf");
 
             return leaf;

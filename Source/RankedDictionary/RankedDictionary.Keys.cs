@@ -80,7 +80,7 @@ namespace Kaos.Collections
                 if (Count > array.Length - index)
                     throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
 
-                for (Leaf leaf = tree.LeftmostLeaf; leaf != null; leaf = leaf.RightLeaf)
+                for (var leaf = (Leaf) tree.leftmostLeaf; leaf != null; leaf = (Leaf) leaf.rightKeyLeaf)
                     for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
                         array[index++] = leaf.GetKey (leafIndex);
             }
@@ -133,7 +133,7 @@ namespace Kaos.Collections
                         if (++leafIndex < currentLeaf.KeyCount)
                             return true;
 
-                        currentLeaf = currentLeaf.RightLeaf;
+                        currentLeaf = (Leaf) currentLeaf.rightKeyLeaf;
                         if (currentLeaf != null)
                         { leafIndex = 0; return true; }
 
@@ -146,7 +146,7 @@ namespace Kaos.Collections
                 void IEnumerator.Reset()
                 {
                     leafIndex = -1;
-                    currentLeaf = tree.LeftmostLeaf;
+                    currentLeaf = (Leaf) tree.leftmostLeaf;
                 }
 
                 /// <summary>Releases all resources used by the Enumerator.</summary>
@@ -189,7 +189,7 @@ namespace Kaos.Collections
                 if (Count > array.Length - index)
                     throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
 
-                for (Leaf leaf = tree.LeftmostLeaf; leaf != null; leaf = leaf.RightLeaf)
+                for (var leaf = (Leaf) tree.leftmostLeaf; leaf != null; leaf = (Leaf) leaf.rightKeyLeaf)
                     for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
                     {
                         array.SetValue (leaf.GetKey (leafIndex), index);

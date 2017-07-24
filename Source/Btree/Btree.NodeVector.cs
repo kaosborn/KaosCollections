@@ -228,7 +228,7 @@ namespace Kaos.Collections
             public void UpdateWeight (int delta)
             {
                 for (int level = Height-2; level >= 0; --level)
-                    ((Branch) nodeStack[level]).AdjustWeight (+ delta);
+                    ((Branch) nodeStack[level]).AdjustWeight (delta);
             }
 
 

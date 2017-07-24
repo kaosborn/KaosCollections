@@ -21,7 +21,7 @@ namespace Kaos.Collections
         /// </remarks>
         private sealed class Leaf : KeyLeaf
         {
-            private readonly List<TValue> values;  // Payload.
+            private readonly List<TValue> values;
 
             /// <summary>Create a siblingless leaf.</summary>
             /// <param name="capacity">The initial number of elements the page can store.</param>
@@ -37,10 +37,6 @@ namespace Kaos.Collections
             {
                 this.values = new List<TValue> (capacity);
             }
-
-            /// <summary>Next leaf in linked list.</summary>
-            public new Leaf RightLeaf
-            { get { return (Leaf) base.RightLeaf; } }
 
 
             public int ValueCount
@@ -94,7 +90,7 @@ namespace Kaos.Collections
 
             public override void Shift (int shiftCount)
             {
-                Leaf right = RightLeaf;
+                var right = (Leaf) rightKeyLeaf;
                 for (int ix = 0; ix < shiftCount; ++ix)
                     values.Add (right.values[ix]);
                 base.Shift (shiftCount);

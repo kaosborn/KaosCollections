@@ -31,8 +31,6 @@ namespace Kaos.Collections
         , IReadOnlyCollection<TKey>
 #endif
     {
-        private KeyLeaf LeftmostLeaf { get { return leftmostLeaf; } }
-
         #region Constructors
 
         /// <summary>Initializes a new set of sorted items that uses the default item comparer.</summary>
@@ -79,7 +77,7 @@ namespace Kaos.Collections
 
         /// <summary>Gets the minimum value in the set per the comparer.</summary>
         public TKey Min
-        { get { return Count==0 ? default (TKey) : LeftmostLeaf.Key0; } }
+        { get { return Count==0 ? default (TKey) : leftmostLeaf.Key0; } }
 
         /// <summary>Deprecated.</summary>
         object ICollection.SyncRoot => GetSyncRoot();
@@ -127,7 +125,7 @@ namespace Kaos.Collections
             // Leaf is full so right split a new leaf.
             var newLeaf = new KeyLeaf (leaf, maxKeyCount);
 
-            if (newLeaf.RightLeaf == null)
+            if (newLeaf.rightKeyLeaf == null)
             {
                 rightmostLeaf = newLeaf;
 
@@ -157,7 +155,7 @@ namespace Kaos.Collections
             }
 
             // Promote anchor of split leaf.
-            path.Promote (newLeaf.Key0, (Node) newLeaf, newLeaf.RightLeaf == null);
+            path.Promote (newLeaf.Key0, (Node) newLeaf, newLeaf.rightKeyLeaf == null);
         }
 
 
@@ -208,7 +206,7 @@ namespace Kaos.Collections
             if (Count > array.Length - index)
                 throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
 
-            for (KeyLeaf leaf = LeftmostLeaf; leaf != null; leaf = leaf.RightLeaf)
+            for (KeyLeaf leaf = leftmostLeaf; leaf != null; leaf = leaf.rightKeyLeaf)
                 for (int klix = 0; klix < leaf.KeyCount; ++klix)
                     array[index++] = leaf.GetKey (klix);
         }
@@ -282,7 +280,7 @@ namespace Kaos.Collections
             if (match == null)
                 throw new ArgumentNullException (nameof (match));
 
-            for (KeyLeaf leaf = rightmostLeaf; leaf != null; leaf = leaf.LeftLeaf)
+            for (KeyLeaf leaf = rightmostLeaf; leaf != null; leaf = leaf.leftKeyLeaf)
                 for (int ix = leaf.KeyCount-1; ix >= 0; --ix)
                 {
                     TKey key = leaf.GetKey (ix);
@@ -356,7 +354,7 @@ namespace Kaos.Collections
                 return;
             }
 
-            for (KeyLeaf leaf = LeftmostLeaf; leaf != null; leaf = leaf.RightLeaf)
+            for (KeyLeaf leaf = leftmostLeaf; leaf != null; leaf = leaf.rightKeyLeaf)
                 for (int ix = 0; ix < leaf.KeyCount; )
                 {
                     var key = leaf.GetKey (ix);
@@ -524,7 +522,7 @@ namespace Kaos.Collections
             oNum.MoveNext();
             TKey oKey = oNum.Current;
 
-            for (KeyLeaf leaf = LeftmostLeaf; leaf != null; leaf = leaf.RightLeaf)
+            for (KeyLeaf leaf = leftmostLeaf; leaf != null; leaf = leaf.rightKeyLeaf)
                 for (int klix = 0; klix < leaf.KeyCount; )
                     for (TKey key = leaf.GetKey (klix);;)
                     {
@@ -550,7 +548,7 @@ namespace Kaos.Collections
 
                         if (klix >= leaf.KeyCount)
                         {
-                            leaf = leaf.RightLeaf;
+                            leaf = leaf.rightKeyLeaf;
                             klix -= leaf.KeyCount;
                             break;
                         }
@@ -624,7 +622,7 @@ namespace Kaos.Collections
                         if (--leafIndex >= 0)
                             return true;
 
-                        currentLeaf = currentLeaf.LeftLeaf;
+                        currentLeaf = currentLeaf.leftKeyLeaf;
                         if (currentLeaf != null)
                         { leafIndex = currentLeaf.KeyCount - 1; return true; }
                     }
@@ -633,7 +631,7 @@ namespace Kaos.Collections
                         if (++leafIndex < currentLeaf.KeyCount)
                             return true;
 
-                        currentLeaf = currentLeaf.RightLeaf;
+                        currentLeaf = currentLeaf.rightKeyLeaf;
                         if (currentLeaf != null)
                         { leafIndex = 0; return true; }
                     }
@@ -644,7 +642,7 @@ namespace Kaos.Collections
 
             void IEnumerator.Reset()
             {
-                currentLeaf = isReverse? tree.rightmostLeaf : tree.LeftmostLeaf;
+                currentLeaf = isReverse? tree.rightmostLeaf : tree.leftmostLeaf;
                 leafIndex = isReverse? currentLeaf.KeyCount : -1;
             }
 
@@ -683,7 +681,7 @@ namespace Kaos.Collections
                     continue;
                 }
 
-                leaf = leaf.RightLeaf;
+                leaf = leaf.rightKeyLeaf;
                 if (leaf == null)
                     yield break;
 

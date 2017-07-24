@@ -122,10 +122,7 @@ namespace Kaos.Collections
         protected class KeyLeaf : Node
         {
             public KeyLeaf leftKeyLeaf;
-            public KeyLeaf LeftLeaf { get { return leftKeyLeaf; } }
-
             public KeyLeaf rightKeyLeaf;
-            public KeyLeaf RightLeaf { get { return rightKeyLeaf; } }
 
 
             /// <summary>Create a siblingless leaf.</summary>
