@@ -664,23 +664,15 @@ namespace Kaos.Collections
 
         #region Bonus methods
 
-        /// <summary>Gets the Last key/value pair without performing a full structure scan.</summary>
-        /// <returns>Key/value pair with largest key in dictionary.</returns>
+        /// <summary>Gets the Last key/value pair without performing a full collection scan.</summary>
+        /// <returns>Key/value pair with maximum key in dictionary.</returns>
         public KeyValuePair<TKey,TValue> Last()
         {
             if (Count == 0)
                 throw new InvalidOperationException ("Sequence contains no elements.");
 
-            // Take rightmost child until no more.
-            for (Node node = root;;)
-            {
-                var branch = node as Branch;
-                if (branch == null)
-                    return new KeyValuePair<TKey,TValue> (node.GetKey (node.KeyCount - 1),
-                                                          ((Leaf) node).GetValue (node.KeyCount - 1));
-
-                node = branch.GetChild (node.KeyCount);
-            }
+            int ix = rightmostLeaf.KeyCount-1;
+            return new KeyValuePair<TKey,TValue> (rightmostLeaf.GetKey (ix), ((Leaf) rightmostLeaf).GetValue (ix));
         }
 
 

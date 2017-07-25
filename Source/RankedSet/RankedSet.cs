@@ -289,17 +289,16 @@ namespace Kaos.Collections
         /// <exception cref="ArgumentNullException">When <em>match</em> is <b>null</b>.</exception>
         public int RemoveWhere (Predicate<TKey> match)
         {
-            int delCount = 0;
-
             if (match == null)
                 throw new ArgumentNullException (nameof (match));
+
+            int delCount = 0;
 
             for (KeyLeaf leaf = rightmostLeaf; leaf != null; leaf = leaf.leftKeyLeaf)
                 for (int ix = leaf.KeyCount-1; ix >= 0; --ix)
                 {
                     TKey key = leaf.GetKey (ix);
-                    bool isMatch = match (key);
-                    if (isMatch)
+                    if (match (key))
                     {
                         ++delCount;
                         bool isOk = Remove (key);
