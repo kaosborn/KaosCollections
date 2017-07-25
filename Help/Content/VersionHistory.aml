@@ -11,13 +11,16 @@
         <para>Version 3.0.0 (2017-??-??)</para>
         <list class="bullet">
           <listItem>
-            <para>Changed product name from KwCollections to KaosCollections</para>
+            <para>Change root namespace from Kw to Kaos</para>
           </listItem>
           <listItem>
             <para>Add order statistic support (i.e. indexing)</para>
           </listItem>
           <listItem>
-            <para>Rename BtreeDictionary class to RankedDictionary with improved SortedDictionary emulation</para>
+            <para>Convert build to .Net Standard 1.0 multi-targetted to .NET 4.0 and .NET 3.5</para>
+          </listItem>
+          <listItem>
+            <para>Rename BtreeDictionary class to RankedDictionary with much improved SortedDictionary emulation</para>
           </listItem>
           <listItem>
             <para>Add RankedSet class which emulates SortedSet with order statistic support</para>

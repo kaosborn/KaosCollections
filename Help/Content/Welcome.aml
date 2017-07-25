@@ -4,27 +4,163 @@
     <introduction>
       <para>
         The KaosCollections library contains classes that complement the System.Collections.Generic classes.
-      </para>
-      <para>
-        This library is built as a .NET Standard project with multi-targeting.
-        All targeted binaries are available in the distributed NuGet package.
-        Current targets are:
+        The primary classes are:
       </para>
       <list class="bullet">
         <listItem>
           <para>
-            .NETStandard 1.0.
-            Use this for any .NET Core application or any .NET Framework application at or above .NET 4.5.
+            RankedDictionary&lt;TKey,TValue&gt; - an improved version of SortedDictionary&lt;TKey,TValue&gt;.
           </para>
         </listItem>
         <listItem>
-          <para>Full .NET Framework 4.0.</para>
-        </listItem>
-        <listItem>
-          <para>Full .NET Framework 3.5.</para>
+          <para>
+            RankedSet&lt;T&gt; - an improved version of SortedSet&lt;T&gt;.
+          </para>
         </listItem>
       </list>
+      <para>
+        All provided classes closely emulate the API of the Microsoft's classes
+        while extending capability and improving performance in many common scenarios.
+        
+        Both these classes add array-like support so that any element can be accessed by index
+        or the index of an element may be determined from the element's key.
+        
+        The perforance bump is due to the B+ tree variant used by Kaos.Collections.
+        The binary tree used by SortedDictionary and SortedSet is a binary tree
+        which greatly increases allocations and tree depth.
+
+        Also in a B+ tree, data is grouped together in leaves which improves performance due to locality.
+      </para>
     </introduction>
+
+    <section>
+      <title>API differences between System.Collections.Generic and Kaos.Collections</title>
+      <content>
+        <para>
+          The API of RankedDictionary and RankedSet closely adheres to Microsoft's generic classes with a few exceptions:
+        </para>
+        <list class="bullet">
+          <listItem>
+            <para>Both classes add the GetByIndex(int) method which returns the element at the supplied index.</para>
+          </listItem>
+          <listItem>
+            <para>Both classes add the IndexOf(TKey) method which returns the index of T.</para>
+          </listItem>
+          <listItem>
+            <para>
+              RankedDictionary adds the method SkipUntilKey(TKey) that
+              returns an iterator for elements beginning at the supplied value.
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              RankedDictionary adds the method TryGetValueAndIndex (TKey, out TValue, out int) that
+              extends GetByIndex by also retrieving the key's associated value and index in one step.
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              RankedDictionary adds the method GetBetween (T,T) that returns an enumerator over the specified range.
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              The method SortedSet.GetViewBetween(T,T) (which provides a virtual view to a subset of a SortedSet)
+              is replaced with the RankedSet.GetBetween (T,T) method which returns an enumerator.
+            </para>
+          </listItem>
+        </list>
+      </content>
+    </section>
+      
+    <section>
+      <title>Data structure used by RankedDictionary and RankedSet</title>
+      <content>
+        <para>
+          The data structure used by RankedDictionary and RankedSet is a variant of an order statistic B+ tree.
+          An order statistic tree brings two additional capabilities to a tree:
+        </para>
+        <list class="bullet">
+          <listItem>
+            <para>Select(i) — find the i'th smallest element in the tree (i.e. retrieve key by index).</para>
+          </listItem>
+          <listItem>
+            <para>
+              Rank(x) – find the rank of item x in the tree (i.e. retrieve index by key).
+              The names of the classes in the Kaos.Collections library are derived from this operation.
+            </para>
+          </listItem>
+        </list>
+        <para>
+          RankedDictionary and RankedSet store data in a B+ tree where all elements are stored in leaves at the same depth.
+          The leaf level is a sorted doubly linked list with head and tail pointers.
+          The first key of each leaf (except the leftmost) is copied to one branch for subdividing.
+          Every node (branch or leaf) keeps keys sorted to enable binary searching.
+          A tree with no elements is represented as an empty leaf.
+        </para>
+        <para>
+          This structure differs from a classic B+ tree in these ways:
+        </para>
+        <list class="bullet">
+          <listItem>
+            <para>
+              Rightmost, nonroot branches may contain as few as one child.
+              This variation optimizes the structure for bulk loading of presorted data
+              and improves seek performance for data near the end of the collection - both common operations.
+              All other branches, besides the root, maintain at least 50% capacity usage following every add and remove operation.
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              The rightmost leaf may contain as few as one item.
+              Again, this variation optimizes the structure for bulk loading of presorted data.
+              All other leaves maintain at least 50% capacity usage following every add and remove operation.
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              Every branch tracks the total number of items ('Weight') in leaves under it.
+              For example, the weight of the root is the total number of elements in all leaves.
+            </para>
+          </listItem>
+        </list>
+      </content>
+      </section>
+
+    <section>
+      <title>Distribution</title>
+      <content>
+        <para>
+          This library is built as a .NET Standard project with multi-targeting.
+          All targeted binaries are available in the distributed NuGet package.
+          Current targets are:
+        </para>
+        <list class="bullet">
+          <listItem>
+            <para>
+              .NETStandard 1.0.
+              Use this for any .NET Core application or any .NET Framework application at or above .NET 4.5.
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              Full .NET Framework 4.0.
+              This target does not include IReadOnlyDictionary or IReadOnlyCollection implementation.
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              Full .NET Framework 3.5.
+              This target does not include IReadOnlyDictionary, IReadOnlyCollection, or ISet implementation.
+            </para>
+          </listItem>
+        </list>
+        <para>
+          Documentation is currently distributed as a MS-Help 1 (.CHM) file.
+          Also, installing as a Nuget package will provide intellisense and object browser documentation.
+        </para>
+      </content>
+    </section>
 
     <section>
       <title>Build environment</title>
@@ -39,6 +175,21 @@
 
     <relatedTopics>
       <link xlink:href="90402bce-1f31-45f8-b0ea-0a73408bd45a" />
+      <externalLink>
+        <linkText>wikipedia.org/wiki/B+tree</linkText>
+        <linkAlternateText>B+ tree</linkAlternateText>
+        <linkUri>https://en.wikipedia.org/wiki/B%2Btree</linkUri>
+      </externalLink>
+      <externalLink>
+        <linkText>wikipedia.org/wiki/Order_statistic_tree</linkText>
+        <linkAlternateText>Order statistic tree</linkAlternateText>
+        <linkUri>https://en.wikipedia.org/wiki/Order_statistic_tree</linkUri>
+      </externalLink>
+      <externalLink>
+        <linkText>msdn.microsoft.com/en-us/library/system.collections.generic(v=vs.110).aspx</linkText>
+        <linkAlternateText>System.Collections.Generic Namespace</linkAlternateText>
+        <linkUri>https://msdn.microsoft.com/en-us/library/system.collections.generic(v=vs.110).aspx</linkUri>
+      </externalLink>
     </relatedTopics>
   </developerConceptualDocument>
 </topic>
