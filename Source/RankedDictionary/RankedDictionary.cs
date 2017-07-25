@@ -43,6 +43,7 @@ namespace Kaos.Collections
 
         /// <summary>Initializes a new dictionary of key/value pairs that are sorted on unique keys using the supplied key comparer.</summary>
         /// <param name="comparer">Comparison operator for keys.</param>
+        /// <exception cref="InvalidOperationException">When <em>comparer</em> is <b>null</b> and no other comparer available.</exception>
         public RankedDictionary (IComparer<TKey> comparer) : base (comparer, new Leaf())
         { }
 
@@ -56,6 +57,7 @@ namespace Kaos.Collections
         /// <param name="dictionary">The dictionary to be copied.</param>
         /// <param name="comparer">Comparison operator for keys.</param>
         /// <exception cref="ArgumentNullException">When <em>dictionary</em> is <b>null</b>.</exception>
+        /// <exception cref="InvalidOperationException">When <em>comparer</em> is <b>null</b> and no other comparer available.</exception>
         public RankedDictionary (IDictionary<TKey,TValue> dictionary, IComparer<TKey> comparer) : this (comparer)
         {
             if (dictionary == null)
@@ -204,6 +206,7 @@ namespace Kaos.Collections
 
 
         /// <summary>Removes all elements from the collection.</summary>
+        /// <remarks>This is a O(1) operation.</remarks>
         public void Clear()
         {
             leftmostLeaf.Chop();

@@ -39,11 +39,15 @@ namespace Kaos.Collections
 
         /// <summary>Initializes a new set of sorted items that uses the supplied comparer.</summary>
         /// <param name="comparer">The comparer to use for sorting items.</param>
+        /// <exception cref="InvalidOperationException">When <em>comparer</em> is <b>null</b> and no other comparer available.</exception>
         public RankedSet (IComparer<TKey> comparer) : base (comparer, new KeyLeaf())
         { }
 
         /// <summary>Initializes a new set that contains items copied from the supplied collection.</summary>
         /// <param name="collection">The enumerable collection to be copied.</param>
+        /// <remarks>
+        /// This constructor is a O(<em>n</em> log <em>n</em>) operation, where <em>n</em> is the number of items.
+        /// </remarks>
         /// <exception cref="ArgumentNullException">When <em>collection</em> is <b>null</b>.</exception>
         public RankedSet (IEnumerable<TKey> collection) : this (collection, Comparer<TKey>.Default)
         { }
@@ -51,7 +55,11 @@ namespace Kaos.Collections
         /// <summary>Initializes a new set that contains items copied from the supplied collection.</summary>
         /// <param name="collection">The enumerable collection to be copied. </param>
         /// <param name="comparer">The comparer to use for item sorting.</param>
+        /// <remarks>
+        /// This constructor is a O(<em>n</em> log <em>n</em>) operation, where <em>n</em> is the number of items.
+        /// </remarks>
         /// <exception cref="ArgumentNullException">When <em>collection</em> is <b>null</b>.</exception>
+        /// <exception cref="InvalidOperationException">When <em>comparer</em> is <b>null</b> and no other comparer available.</exception>
         public RankedSet (IEnumerable<TKey> collection, IComparer<TKey> comparer) : this (comparer)
         {
             if (collection == null)
@@ -72,10 +80,12 @@ namespace Kaos.Collections
         { get { return false; } }
 
         /// <summary>Gets the maximum value in the set per the comparer.</summary>
+        /// <remarks>This is a O(1) operation.</remarks>
         public TKey Max
         { get { return Count==0 ? default (TKey) : rightmostLeaf.GetKey (rightmostLeaf.KeyCount-1); } }
 
         /// <summary>Gets the minimum value in the set per the comparer.</summary>
+        /// <remarks>This is a O(1) operation.</remarks>
         public TKey Min
         { get { return Count==0 ? default (TKey) : leftmostLeaf.Key0; } }
 
@@ -87,6 +97,7 @@ namespace Kaos.Collections
         #region Methods
 
         /// <summary>Removes all items from the set.</summary>
+        /// <remarks>This is a O(1) operation.</remarks>
         public void Clear()
         {
             leftmostLeaf.Chop();
@@ -96,7 +107,10 @@ namespace Kaos.Collections
 
         /// <summary>Adds an item to the set and returns a success indicator.</summary>
         /// <param name="item">The item to add.</param>
-        /// <returns><b>true</b> if the item was added to the set; otherwise <b>false</b>.</returns>
+        /// <remarks>
+        /// If <em>item</em> is already in the set, this method returns false and does not throw an exception.
+        /// </remarks>
+        /// <returns><b>true</b> if <em>item</em> was added to the set; otherwise <b>false</b>.</returns>
         public bool Add (TKey item)
         {
             var path = new NodeVector (this, item);
@@ -161,7 +175,7 @@ namespace Kaos.Collections
 
         /// <summary>Determines whether the set contains a supplied item.</summary>
         /// <param name="item">The item to check for existence in the set.</param>
-        /// <returns><b>true</b> if the set contains the item; otherwise <b>false</b>.</returns>
+        /// <returns><b>true</b> if the set contains <em>item</em>; otherwise <b>false</b>.</returns>
         public bool Contains (TKey item)
         {
             KeyLeaf leaf = Find (item, out int index);
@@ -257,7 +271,7 @@ namespace Kaos.Collections
 
         /// <summary>Removes a specified item from the set.</summary>
         /// <param name="item">The item to remove.</param>
-        /// <returns><b>true</b> if the item was found and removed; otherwise <b>false</b>.</returns>
+        /// <returns><b>true</b> if <em>item</em> was found and removed; otherwise <b>false</b>.</returns>
         public bool Remove (TKey item)
         {
             var path = new NodeVector (this, item);
@@ -269,10 +283,10 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Removes all items that match the condition defined by the specified predicate.</summary>
+        /// <summary>Removes all items that match the condition defined by the supplied predicate.</summary>
         /// <param name="match">The condition of the items to remove.</param>
-        /// <returns>The number of elements removed.</returns>
-        /// <exception cref="ArgumentNullException">When <em>array</em> is <b>match</b>.</exception>
+        /// <returns>The number of items removed from the set.</returns>
+        /// <exception cref="ArgumentNullException">When <em>match</em> is <b>null</b>.</exception>
         public int RemoveWhere (Predicate<TKey> match)
         {
             int delCount = 0;
@@ -324,6 +338,10 @@ namespace Kaos.Collections
         /// <summary>Removes all items that are in a supplied collection.</summary>
         /// <param name="other">The collection of items to remove.</param>
         /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
+        /// <remarks>
+        /// Duplicate values in <em>other</em> are ignored.
+        /// Values in <em>other</em> that are not in the set are ignored.
+        /// </remarks>
         public void ExceptWith (IEnumerable<TKey> other)
         {
             if (other == null)
@@ -366,7 +384,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Determines whether the set is a proper subset of the supplied collection..</summary>
+        /// <summary>Determines whether the set is a proper subset of the supplied collection.</summary>
         /// <param name="other">The collection to compare to this set.</param>
         /// <returns><b>true</b> if the set is a proper subset of <em>other</em>; otherwise <b>false</b>.</returns>
         /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
@@ -388,7 +406,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Determines whether the set is a proper superset of the supplied collection..</summary>
+        /// <summary>Determines whether the set is a proper superset of the supplied collection.</summary>
         /// <param name="other">The collection to compare to this set.</param>
         /// <returns><b>true</b> if the set is a proper superset of <em>other</em>; otherwise <b>false</b>.</returns>
         /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
@@ -410,7 +428,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Determines whether the set is a subset of the supplied collection..</summary>
+        /// <summary>Determines whether the set is a subset of the supplied collection.</summary>
         /// <param name="other">The collection to compare to this set.</param>
         /// <returns><b>true</b> if the set is a subset of <em>other</em>; otherwise <b>false</b>.</returns>
         /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
@@ -507,7 +525,6 @@ namespace Kaos.Collections
 
         /// <summary>Modifies the set so that it contains only items that are present either in itself or in the supplied collection, but not both.</summary>
         /// <param name="other">The collection to compare to this set.</param>
-        /// <remarks>Not yet implemented.</remarks>
         /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         public void SymmetricExceptWith (IEnumerable<TKey> other)
         {

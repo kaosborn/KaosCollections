@@ -65,6 +65,7 @@ namespace Kaos.Collections
         #region Properties
 
         /// <summary>Gets the number of elements in the collection.</summary>
+        /// <remarks>This is a <em>O (1)</em> operation.</remarks>
         public int Count
         { get { return root.Weight; } }
 
