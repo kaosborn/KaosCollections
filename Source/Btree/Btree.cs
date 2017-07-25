@@ -147,12 +147,16 @@ namespace Kaos.Collections
                 {
                     Debug.Assert (leaf.rightKeyLeaf==null, "only rightmost leaf should ever be empty");
 
-                    // The leaf is empty so prune unless it is leftmost (therefore the only leaf).
+                    // Prune empty leaf unless it is leftmost (therefore the only leaf).
                     if (leaf.leftKeyLeaf != null)
                     {
-                        leaf.Prune();
-                        if (leaf.rightKeyLeaf == null)
+                        leaf.leftKeyLeaf.rightKeyLeaf = leaf.rightKeyLeaf;
+
+                        if (leaf.rightKeyLeaf != null)
+                            leaf.rightKeyLeaf.leftKeyLeaf = leaf.leftKeyLeaf;
+                        else
                             rightmostLeaf = leaf.leftKeyLeaf;
+
                         path.Demote();
                     }
 

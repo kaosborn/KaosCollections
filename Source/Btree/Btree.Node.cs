@@ -175,13 +175,6 @@ namespace Kaos.Collections
                 InsertKey (index, key);
             }
 
-            public void Prune()
-            {
-                leftKeyLeaf.rightKeyLeaf = rightKeyLeaf;
-                if (rightKeyLeaf != null)
-                    rightKeyLeaf.leftKeyLeaf = leftKeyLeaf;
-            }
-
             public virtual void Remove (int index)
             {
                 keys.RemoveAt (index);

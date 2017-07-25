@@ -210,7 +210,7 @@ namespace Kaos.Collections
         public void Clear()
         {
             leftmostLeaf.Chop();
-            root = leftmostLeaf;
+            root = rightmostLeaf = leftmostLeaf;
         }
 
 
