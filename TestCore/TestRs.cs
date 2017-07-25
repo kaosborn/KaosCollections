@@ -52,10 +52,43 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void UnitRs_Ctor0A1()
+        public void UnitRs_Ctor0Empty()
         {
             Setup();
             Assert.AreEqual (0, setTS1.Count);
+        }
+
+
+        [TestMethod]
+#if TEST_BCL
+        [ExpectedException (typeof (ArgumentException))]
+#else
+        [ExpectedException (typeof (InvalidOperationException))]
+#endif
+        public void UnitRs_Ctor1ANullMissing_InvalidOperation()
+        {
+            var comp0 = (System.Collections.Generic.Comparer<Person>) null;
+#if TEST_BCL
+            var nullComparer = new SortedSet<Person> (comp0);
+#else
+            var nullComparer = new RankedSet<Person> (comp0);
+#endif
+            nullComparer.Add (new Person ("Zed"));
+            nullComparer.Add (new Person ("Macron"));
+        }
+
+        // MS docs incorrectly state this will throw.
+        [TestMethod]
+        public void UnitRs_Ctor1ANullOk()
+        {
+            var comp0 = (System.Collections.Generic.Comparer<int>) null;
+#if TEST_BCL
+            var nullComparer = new SortedSet<int> (comp0);
+#else
+            var nullComparer = new RankedSet<int> (comp0);
+#endif
+            nullComparer.Add (4);
+            nullComparer.Add (2);
         }
 
         [TestMethod]
@@ -64,7 +97,7 @@ namespace CollectionsTest
 #else
         [ExpectedException (typeof (InvalidOperationException))]
 #endif
-        public void UnitRs_Ctor1B_InvalidOperation()
+        public void UnitRs_Ctor1A_InvalidOperation()
         {
 #if TEST_BCL
             var sansComparer = new SortedSet<Person>();
@@ -76,7 +109,7 @@ namespace CollectionsTest
         }
 
         [TestMethod]
-        public void UnitRs_Ctor1B1()
+        public void UnitRs_Ctor1A1()
         {
             Setup();
 
@@ -117,9 +150,9 @@ namespace CollectionsTest
             Assert.AreEqual (Person.names.Length, people.Count);
         }
 
-        #endregion
+#endregion
 
-        #region Test properties
+#region Test properties
 
         [TestMethod]
         public void UnitRs_Max()
@@ -152,9 +185,9 @@ namespace CollectionsTest
             Assert.AreEqual (1, setI.Min);
         }
 
-        #endregion
+#endregion
 
-        #region Test methods
+#region Test methods
 
         [TestMethod]
         public void UnitRs_AddNull()
@@ -177,11 +210,34 @@ namespace CollectionsTest
             isOk = setS.Add ("bb");
             Assert.IsTrue (isOk);
 
-            // SortedSet ignores duplicates (but SortedDictionary does not).
+            // SortedSet ignores duplicates (but SortedDictionary throws).
             isOk = setS.Add ("cc");
             Assert.IsFalse (isOk);
 
             Assert.AreEqual (3, setS.Count);
+        }
+
+
+        [TestMethod]
+        public void UnitRs_Clear()
+        {
+            Setup (4);
+            for (int ix = 0; ix < 50; ++ix)
+                setI.Add (ix);
+
+            Assert.AreEqual (50, setI.Count);
+
+            int k1 = 0;
+            foreach (var i1 in setI.Reverse())
+                ++k1;
+            Assert.AreEqual (50, k1);
+
+            setI.Clear();
+
+            int k2 = 0;
+            foreach (var i1 in setI.Reverse())
+                ++k2;
+            Assert.AreEqual (0, k2);
         }
 
 
@@ -414,9 +470,9 @@ namespace CollectionsTest
             Assert.AreEqual (0, expected);
         }
 
-        #endregion
+#endregion
 
-        #region Test ISet methods
+#region Test ISet methods
 
         [TestMethod]
         public void UnitRs_ExceptWith()
@@ -463,9 +519,9 @@ namespace CollectionsTest
             Assert.IsFalse (isSuper);
         }
 
-        #endregion
+#endregion
 
-        #region Test bonus methods
+#region Test bonus methods
 #if ! TEST_BCL
 
         [TestMethod]
@@ -487,6 +543,6 @@ namespace CollectionsTest
         }
 
 #endif
-        #endregion
+#endregion
     }
 }
