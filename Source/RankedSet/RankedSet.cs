@@ -363,22 +363,23 @@ namespace Kaos.Collections
             if (other == null)
                 throw new ArgumentNullException (nameof (other));
 
+            if (Count == 0)
+                return;
+
             var oSet = other as RankedSet<TKey> ?? new RankedSet<TKey> (other);
 
-            if (oSet.Count == 0)
+            if (oSet.Count == 0 || Comparer.Compare (oSet.Max, Min) < 0 || Comparer.Compare (oSet.Min, Max) > 0)
             {
                 Clear();
                 return;
             }
 
-            for (KeyLeaf leaf = leftmostLeaf; leaf != null; leaf = leaf.rightKeyLeaf)
-                for (int ix = 0; ix < leaf.KeyCount; )
+            for (KeyLeaf leaf = rightmostLeaf; leaf != null; leaf = leaf.leftKeyLeaf)
+                for (int ix = leaf.KeyCount-1; ix >= 0; --ix)
                 {
                     TKey key = leaf.GetKey (ix);
                     if (! oSet.Contains (key))
                         Remove (key);
-                    else
-                        ++ix;
                 }
         }
 

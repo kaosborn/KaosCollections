@@ -498,6 +498,27 @@ namespace CollectionsTest
             Assert.AreEqual (expectedCount, setI.Count);
         }
 
+        [TestMethod]
+        public void UnitRs_IntersectWith()
+        {
+            Setup(4);
+            var a1 = new int[] { 3, 5, 7, 9, 11, 13 };
+            foreach (var v1 in a1) setI.Add (v1);
+
+            setI.IntersectWith (new int[] { 1 });
+            Assert.AreEqual (0, setI.Count);
+
+            setI.Clear();
+            foreach (var v1 in a1) setI.Add (v1);
+            setI.IntersectWith (new int[] { 15 });
+            Assert.AreEqual (0, setI.Count);
+
+            setI.Clear();
+            foreach (var v1 in a1) setI.Add (v1);
+            setI.IntersectWith (new int[] { 1, 9, 15 });
+            Assert.AreEqual (1, setI.Count);
+            Assert.AreEqual (9, setI.Min);
+        }
 
         [TestMethod]
         public void UnitRs_IsSupersetOf()
