@@ -68,7 +68,7 @@ namespace ExampleApp
                 Console.WriteLine (town.Key);
 
             // BtreeDictionary range operator without upper limit: O(log n)
-            IEnumerable<KeyValuePair<string,int>> r4 = towns.SkipUntilKey ("M");
+            IEnumerable<KeyValuePair<string,int>> r4 = towns.GetStartAt ("M");
 
             Console.WriteLine ("\nTowns M-R:");
             foreach (KeyValuePair<string,int> town in r4)
@@ -79,7 +79,7 @@ namespace ExampleApp
                     Console.WriteLine (town.Key);
 
             // BtreeDictionary range operator without upper limit: O(log n)
-            IEnumerable<KeyValuePair<string,int>> r5 = towns.SkipUntilKey ("T");
+            IEnumerable<KeyValuePair<string,int>> r5 = towns.GetStartAt ("T");
 
             Console.WriteLine ("\nTowns T-Z:");
             foreach (KeyValuePair<string,int> town in r5)

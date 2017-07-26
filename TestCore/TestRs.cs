@@ -65,7 +65,7 @@ namespace CollectionsTest
 #else
         [ExpectedException (typeof (InvalidOperationException))]
 #endif
-        public void UnitRs_Ctor1ANullMissing_InvalidOperation()
+        public void CrashRs_Ctor1ANullMissing_InvalidOperation()
         {
             var comp0 = (System.Collections.Generic.Comparer<Person>) null;
 #if TEST_BCL
@@ -97,7 +97,7 @@ namespace CollectionsTest
 #else
         [ExpectedException (typeof (InvalidOperationException))]
 #endif
-        public void UnitRs_Ctor1A_InvalidOperation()
+        public void CrashRs_Ctor1A_InvalidOperation()
         {
 #if TEST_BCL
             var sansComparer = new SortedSet<Person>();
@@ -152,7 +152,7 @@ namespace CollectionsTest
 
 #endregion
 
-#region Test properties
+        #region Test properties
 
         [TestMethod]
         public void UnitRs_Max()
@@ -185,9 +185,9 @@ namespace CollectionsTest
             Assert.AreEqual (1, setI.Min);
         }
 
-#endregion
+        #endregion
 
-#region Test methods
+        #region Test methods
 
         [TestMethod]
         public void UnitRs_AddNull()
@@ -470,9 +470,9 @@ namespace CollectionsTest
             Assert.AreEqual (0, expected);
         }
 
-#endregion
+        #endregion
 
-#region Test ISet methods
+        #region Test ISet methods
 
         [TestMethod]
         public void UnitRs_ExceptWith()
@@ -519,9 +519,9 @@ namespace CollectionsTest
             Assert.IsFalse (isSuper);
         }
 
-#endregion
+        #endregion
 
-#region Test bonus methods
+        #region Test bonus methods
 #if ! TEST_BCL
 
         [TestMethod]
@@ -543,6 +543,6 @@ namespace CollectionsTest
         }
 
 #endif
-#endregion
+        #endregion
     }
 }

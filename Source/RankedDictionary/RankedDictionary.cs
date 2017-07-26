@@ -22,7 +22,7 @@ namespace Kaos.Collections
     /// <see cref="System.Collections.Generic.SortedDictionary{TKey,TValue}"/> class
     /// with the addition of the methods
     /// <see cref="GetByIndex"/>, <see cref="IndexOf"/>, <see cref="TryGetValueAndIndex"/>,
-    /// <see cref="GetBetween"/>, <see cref="SkipUntilKey"/>, and <see cref="Last"/>.
+    /// <see cref="GetBetween"/>, <see cref="GetStartAt"/>, and <see cref="Last"/>.
     /// </remarks>
     [DebuggerTypeProxy (typeof (IDictionaryDebugView<,>))]
     [DebuggerDisplay ("Count = {Count}")]
@@ -334,9 +334,9 @@ namespace Kaos.Collections
         public sealed class Enumerator : IEnumerator<KeyValuePair<TKey,TValue>>, IDictionaryEnumerator
         {
             private readonly RankedDictionary<TKey,TValue> tree;
-            private Leaf currentLeaf;
-            private int leafIndex;
             private bool isGeneric;
+            private Leaf leaf;
+            private int index;
 
             /// <summary>Make an iterator that will loop thru the collection in order.</summary>
             /// <param name="dictionary"><see cref="RankedDictionary{TKey,TValue}"/>containing these key/value pairs.</param>
@@ -352,9 +352,9 @@ namespace Kaos.Collections
             {
                 get
                 {
-                    if (leafIndex < 0)
+                    if (index < 0)
                         throw new InvalidOperationException ("Enumeration is not active.");
-                    return currentLeaf.GetKey (leafIndex);
+                    return leaf.GetKey (index);
                 }
             }
 
@@ -362,9 +362,9 @@ namespace Kaos.Collections
             {
                 get
                 {
-                    if (leafIndex < 0)
+                    if (index < 0)
                         throw new InvalidOperationException ("Enumeration is not active.");
-                    return currentLeaf.GetValue (leafIndex);
+                    return leaf.GetValue (index);
                 }
             }
 
@@ -372,9 +372,9 @@ namespace Kaos.Collections
             {
                 get
                 {
-                    if (leafIndex < 0)
+                    if (index < 0)
                         throw new InvalidOperationException ("Enumeration is not active.");
-                    return new DictionaryEntry (currentLeaf.GetKey (leafIndex), currentLeaf.GetValue (leafIndex));
+                    return new DictionaryEntry (leaf.GetKey (index), leaf.GetValue (index));
                 }
             }
 
@@ -382,13 +382,13 @@ namespace Kaos.Collections
             {
                 get
                 {
-                    if (leafIndex < 0)
+                    if (index < 0)
                         throw new InvalidOperationException ("Enumeration is not active.");
 
                     if (isGeneric)
-                        return currentLeaf.GetPair (leafIndex);
+                        return leaf.GetPair (index);
                     else
-                        return new DictionaryEntry (currentLeaf.GetKey (leafIndex), currentLeaf.GetValue (leafIndex));
+                        return new DictionaryEntry (leaf.GetKey (index), leaf.GetValue (index));
                 }
             }
 
@@ -397,8 +397,8 @@ namespace Kaos.Collections
             {
                 get
                 {
-                    return leafIndex < 0 ? new KeyValuePair<TKey,TValue> (default (TKey), default (TValue))
-                                         : currentLeaf.GetPair (leafIndex);
+                    return index < 0 ? new KeyValuePair<TKey,TValue> (default (TKey), default (TValue))
+                                         : leaf.GetPair (index);
                 }
             }
 
@@ -406,23 +406,23 @@ namespace Kaos.Collections
             /// <returns><b>false</b> if no more data; otherwise <b>true</b>.</returns>
             public bool MoveNext()
             {
-                if (currentLeaf != null)
+                if (leaf != null)
                 {
-                    if (++leafIndex < currentLeaf.KeyCount)
+                    if (++index < leaf.KeyCount)
                         return true;
 
-                    currentLeaf = (Leaf) currentLeaf.rightKeyLeaf;
-                    if (currentLeaf != null)
-                    { leafIndex = 0; return true; }
+                    leaf = (Leaf) leaf.rightKeyLeaf;
+                    if (leaf != null)
+                    { index = 0; return true; }
 
-                    leafIndex = -1;
+                    index = -1;
                 }
                 return false;
             }
 
             /// <summary>Moves the enumerator back to its initial location.</summary>
             void IEnumerator.Reset()
-            { leafIndex = -1; currentLeaf = (Leaf) tree.leftmostLeaf; }
+            { index = -1; leaf = (Leaf) tree.leftmostLeaf; }
 
             /// <exclude />
             public void Dispose() { }
@@ -743,7 +743,7 @@ namespace Kaos.Collections
         /// <param name="key">Minimum value of range.</param>
         /// <returns>An enumerator for the collection for key values greater than or equal to <em>key</em>.</returns>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
-        public IEnumerable<KeyValuePair<TKey,TValue>> SkipUntilKey (TKey key)
+        public IEnumerable<KeyValuePair<TKey,TValue>> GetStartAt (TKey key)
         {
             if (key == null)
                 throw new ArgumentNullException (nameof (key));

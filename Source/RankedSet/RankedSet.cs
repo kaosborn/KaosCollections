@@ -65,8 +65,8 @@ namespace Kaos.Collections
             if (collection == null)
                 throw new ArgumentNullException (nameof (collection));
 
-            foreach (TKey item in collection)
-                Add (item);
+            foreach (TKey key in collection)
+                Add (key);
         }
 
         #endregion
@@ -221,8 +221,8 @@ namespace Kaos.Collections
                 throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
 
             for (KeyLeaf leaf = leftmostLeaf; leaf != null; leaf = leaf.rightKeyLeaf)
-                for (int klix = 0; klix < leaf.KeyCount; ++klix)
-                    array[index++] = leaf.GetKey (klix);
+                for (int ix = 0; ix < leaf.KeyCount; ++ix)
+                    array[index++] = leaf.GetKey (ix);
         }
 
         void ICollection.CopyTo (Array array, int index)
@@ -253,8 +253,8 @@ namespace Kaos.Collections
                 try
                 {
                     int ix = 0;
-                    foreach (var item in this)
-                        obArray[ix++] = item;
+                    foreach (var key in this)
+                        obArray[ix++] = key;
                 }
                 catch (ArrayTypeMismatchException)
                 { throw new ArgumentException ("Mismatched array type.", nameof (array)); }
@@ -350,8 +350,8 @@ namespace Kaos.Collections
                 if (other == this)
                     Clear();
                 else
-                    foreach (TKey item in other)
-                        Remove (item);
+                    foreach (TKey key in other)
+                        Remove (key);
         }
 
 
@@ -374,7 +374,7 @@ namespace Kaos.Collections
             for (KeyLeaf leaf = leftmostLeaf; leaf != null; leaf = leaf.rightKeyLeaf)
                 for (int ix = 0; ix < leaf.KeyCount; )
                 {
-                    var key = leaf.GetKey (ix);
+                    TKey key = leaf.GetKey (ix);
                     if (! oSet.Contains (key))
                         Remove (key);
                     else
@@ -397,8 +397,8 @@ namespace Kaos.Collections
             if (Count >= oSet.Count)
                 return false;
 
-            foreach (var item in this)
-                if (! oSet.Contains (item))
+            foreach (TKey key in this)
+                if (! oSet.Contains (key))
                     return false;
 
             return true;
@@ -419,8 +419,8 @@ namespace Kaos.Collections
             if (Count <= oSet.Count)
                 return false;
 
-            foreach (var item in other)
-                if (! Contains (item))
+            foreach (TKey key in other)
+                if (! Contains (key))
                     return false;
 
             return true;
@@ -441,8 +441,8 @@ namespace Kaos.Collections
             if (Count > oSet.Count)
                 return false;
 
-            foreach (var item in this)
-                if (! oSet.Contains (item))
+            foreach (TKey key in this)
+                if (! oSet.Contains (key))
                     return false;
 
             return true;
@@ -458,8 +458,8 @@ namespace Kaos.Collections
             if (other == null)
                 throw new ArgumentNullException (nameof (other));
 
-            foreach (TKey item in other)
-                if (! Contains (item))
+            foreach (TKey key in other)
+                if (! Contains (key))
                     return false;
 
             return true;
@@ -485,15 +485,15 @@ namespace Kaos.Collections
                 if (Comparer.Compare (oSet.Min, Max) > 0)
                     return false;
 
-                foreach (var item in oSet.GetBetween (Min, Max))
-                    if (Contains (item))
+                foreach (TKey key in oSet.GetBetween (Min, Max))
+                    if (Contains (key))
                         return true;
 
                 return false;
             }
 
-            foreach (var item in other)
-                if (Contains (item))
+            foreach (TKey key in other)
+                if (Contains (key))
                     return true;
 
             return false;
@@ -514,8 +514,8 @@ namespace Kaos.Collections
             if (Count != oSet.Count)
                 return false;
 
-            foreach (var item in oSet)
-                if (! Contains (item))
+            foreach (TKey key in oSet)
+                if (! Contains (key))
                     return false;
 
             return true;
@@ -539,14 +539,14 @@ namespace Kaos.Collections
             TKey oKey = oNum.Current;
 
             for (KeyLeaf leaf = leftmostLeaf; leaf != null; leaf = leaf.rightKeyLeaf)
-                for (int klix = 0; klix < leaf.KeyCount; )
-                    for (TKey key = leaf.GetKey (klix);;)
+                for (int ix = 0; ix < leaf.KeyCount; )
+                    for (TKey key = leaf.GetKey (ix);;)
                     {
                         int diff = Comparer.Compare (oKey, key);
                         if (diff >= 0)
                         {
                             if (diff > 0)
-                                ++klix;
+                                ++ix;
                             else
                             {
                                 Remove (key);
@@ -562,10 +562,10 @@ namespace Kaos.Collections
                             return;
                         oKey = oNum.Current;
 
-                        if (klix >= leaf.KeyCount)
+                        if (ix >= leaf.KeyCount)
                         {
                             leaf = leaf.rightKeyLeaf;
-                            klix -= leaf.KeyCount;
+                            ix -= leaf.KeyCount;
                             break;
                         }
                     }
@@ -588,8 +588,8 @@ namespace Kaos.Collections
             if (other == null)
                 throw new ArgumentNullException (nameof (other));
 
-            foreach (var item in other)
-                Add (item);
+            foreach (TKey key in other)
+                Add (key);
         }
 
 #endif
@@ -602,8 +602,8 @@ namespace Kaos.Collections
         {
             private readonly RankedSet<TKey> tree;
             private readonly bool isReverse;
-            private KeyLeaf currentLeaf;
-            private int leafIndex;
+            private KeyLeaf leaf;
+            private int index;
 
             internal Enumerator (RankedSet<TKey> set, bool reverse=false)
             {
@@ -616,9 +616,9 @@ namespace Kaos.Collections
             {
                 get
                 {
-                    if (leafIndex < 0)
+                    if (index < 0)
                         throw new InvalidOperationException();
-                    return (object) Current;
+                    return (object) leaf.GetKey (index);
                 }
             }
 
@@ -626,40 +626,40 @@ namespace Kaos.Collections
             /// Gets the element at the current position of the enumerator.
             /// </summary>
             public TKey Current
-            { get { return leafIndex < 0? default (TKey) : currentLeaf.GetKey (leafIndex); } }
+            { get { return index < 0? default (TKey) : leaf.GetKey (index); } }
 
             /// <summary>Advances the enumerator to the next element in the collection.</summary>
             /// <returns><b>true</b> if the enumerator was successfully advanced to the next element; <b>false</b> if the enumerator has passed the end of the collection.</returns>
             public bool MoveNext()
             {
-                if (currentLeaf != null)
+                if (leaf != null)
                     if (isReverse)
                     {
-                        if (--leafIndex >= 0)
+                        if (--index >= 0)
                             return true;
 
-                        currentLeaf = currentLeaf.leftKeyLeaf;
-                        if (currentLeaf != null)
-                        { leafIndex = currentLeaf.KeyCount - 1; return true; }
+                        leaf = leaf.leftKeyLeaf;
+                        if (leaf != null)
+                        { index = leaf.KeyCount - 1; return true; }
                     }
                     else
                     {
-                        if (++leafIndex < currentLeaf.KeyCount)
+                        if (++index < leaf.KeyCount)
                             return true;
 
-                        currentLeaf = currentLeaf.rightKeyLeaf;
-                        if (currentLeaf != null)
-                        { leafIndex = 0; return true; }
+                        leaf = leaf.rightKeyLeaf;
+                        if (leaf != null)
+                        { index = 0; return true; }
                     }
 
-                leafIndex = -1;
+                index = -1;
                 return false;
             }
 
             void IEnumerator.Reset()
             {
-                currentLeaf = isReverse? tree.rightmostLeaf : tree.leftmostLeaf;
-                leafIndex = isReverse? currentLeaf.KeyCount : -1;
+                leaf = isReverse? tree.rightmostLeaf : tree.leftmostLeaf;
+                index = isReverse? leaf.KeyCount : -1;
             }
 
             /// <summary>Releases all resources used by the Enumerator.</summary>

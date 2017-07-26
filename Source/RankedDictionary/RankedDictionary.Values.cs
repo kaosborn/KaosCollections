@@ -81,8 +81,8 @@ namespace Kaos.Collections
                     throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
 
                 for (var leaf = (Leaf) tree.leftmostLeaf; leaf != null; leaf = (Leaf) leaf.rightKeyLeaf)
-                    for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
-                        array[index++] = leaf.GetValue (leafIndex);
+                    for (int ix = 0; ix < leaf.KeyCount; ++ix)
+                        array[index++] = leaf.GetValue (ix);
             }
 
 
@@ -101,8 +101,8 @@ namespace Kaos.Collections
             public sealed class Enumerator : IEnumerator<TValue>
             {
                 private readonly RankedDictionary<TKey,TValue> tree;
-                private Leaf currentLeaf;
-                private int leafIndex;
+                private Leaf leaf;
+                private int index;
 
                 internal Enumerator (RankedDictionary<TKey,TValue> dictionary)
                 {
@@ -114,7 +114,7 @@ namespace Kaos.Collections
                 {
                     get
                     {
-                        if (leafIndex < 0)
+                        if (index < 0)
                             throw new InvalidOperationException();
                         return (object) Current;
                     }
@@ -124,22 +124,22 @@ namespace Kaos.Collections
                 /// Gets the element at the current position of the enumerator.
                 /// </summary>
                 public TValue Current
-                { get { return leafIndex < 0? default (TValue) : currentLeaf.GetValue (leafIndex); } }
+                { get { return index < 0 ? default (TValue) : leaf.GetValue (index); } }
 
                 /// <summary>Advances the enumerator to the next element in the collection.</summary>
                 /// <returns><b>true</b> if the enumerator was successfully advanced to the next element; <b>false</b> if the enumerator has passed the end of the collection.</returns>
                 public bool MoveNext()
                 {
-                    if (currentLeaf != null)
+                    if (leaf != null)
                     {
-                        if (++leafIndex < currentLeaf.KeyCount)
+                        if (++index < leaf.KeyCount)
                             return true;
 
-                        currentLeaf = (Leaf) currentLeaf.rightKeyLeaf;
-                        if (currentLeaf != null)
-                        { leafIndex = 0; return true; }
+                        leaf = (Leaf) leaf.rightKeyLeaf;
+                        if (leaf != null)
+                        { index = 0; return true; }
 
-                        leafIndex = -1;
+                        index = -1;
                     }
 
                     return false;
@@ -147,8 +147,8 @@ namespace Kaos.Collections
 
                 void IEnumerator.Reset()
                 {
-                    leafIndex = -1;
-                    currentLeaf = (Leaf) tree.leftmostLeaf;
+                    index = -1;
+                    leaf = (Leaf) tree.leftmostLeaf;
                 }
 
                 /// <summary>Releases all resources used by the Enumerator.</summary>
@@ -192,9 +192,9 @@ namespace Kaos.Collections
                     throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
 
                 for (var leaf = (Leaf) tree.leftmostLeaf; leaf != null; leaf = (Leaf) leaf.rightKeyLeaf)
-                    for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
+                    for (int ix = 0; ix < leaf.KeyCount; ++ix)
                     {
-                        array.SetValue (leaf.GetValue (leafIndex), index);
+                        array.SetValue (leaf.GetValue (ix), index);
                         ++index;
                     }
             }

@@ -99,8 +99,8 @@ namespace Kaos.Collections
             public sealed class Enumerator : IEnumerator<TKey>
             {
                 private readonly RankedDictionary<TKey,TValue> tree;
-                private Leaf currentLeaf;
-                private int leafIndex;
+                private Leaf leaf;
+                private int index;
 
                 internal Enumerator (RankedDictionary<TKey,TValue> dictionary)
                 {
@@ -112,7 +112,7 @@ namespace Kaos.Collections
                 {
                     get
                     {
-                        if (leafIndex < 0)
+                        if (index < 0)
                             throw new InvalidOperationException();
                         return (object) Current;
                     }
@@ -122,22 +122,22 @@ namespace Kaos.Collections
                 /// Gets the element at the current position of the enumerator.
                 /// </summary>
                 public TKey Current
-                { get { return leafIndex < 0? default (TKey) : currentLeaf.GetKey (leafIndex); } }
+                { get { return index < 0 ? default (TKey) : leaf.GetKey (index); } }
 
                 /// <summary>Advances the enumerator to the next element in the collection.</summary>
                 /// <returns><b>true</b> if the enumerator was successfully advanced to the next element; <b>false</b> if the enumerator has passed the end of the collection.</returns>
                 public bool MoveNext()
                 {
-                    if (currentLeaf != null)
+                    if (leaf != null)
                     {
-                        if (++leafIndex < currentLeaf.KeyCount)
+                        if (++index < leaf.KeyCount)
                             return true;
 
-                        currentLeaf = (Leaf) currentLeaf.rightKeyLeaf;
-                        if (currentLeaf != null)
-                        { leafIndex = 0; return true; }
+                        leaf = (Leaf) leaf.rightKeyLeaf;
+                        if (leaf != null)
+                        { index = 0; return true; }
 
-                        leafIndex = -1;
+                        index = -1;
                     }
 
                     return false;
@@ -145,8 +145,8 @@ namespace Kaos.Collections
 
                 void IEnumerator.Reset()
                 {
-                    leafIndex = -1;
-                    currentLeaf = (Leaf) tree.leftmostLeaf;
+                    index = -1;
+                    leaf = (Leaf) tree.leftmostLeaf;
                 }
 
                 /// <summary>Releases all resources used by the Enumerator.</summary>
