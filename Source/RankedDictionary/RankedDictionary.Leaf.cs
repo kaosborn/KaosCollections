@@ -82,7 +82,7 @@ namespace Kaos.Collections
 
             public override void Coalesce()
             {
-                var right = (Leaf) rightKeyLeaf;
+                var right = (Leaf) rightLeaf;
                 for (int ix = 0; ix < right.values.Count; ++ix)
                     values.Add (right.values[ix]);
                 base.Coalesce();
@@ -90,7 +90,7 @@ namespace Kaos.Collections
 
             public override void Shift (int shiftCount)
             {
-                var right = (Leaf) rightKeyLeaf;
+                var right = (Leaf) rightLeaf;
                 for (int ix = 0; ix < shiftCount; ++ix)
                     values.Add (right.values[ix]);
                 base.Shift (shiftCount);

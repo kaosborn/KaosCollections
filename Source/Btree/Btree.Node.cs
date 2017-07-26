@@ -121,15 +121,14 @@ namespace Kaos.Collections
 
         protected class KeyLeaf : Node
         {
-            public KeyLeaf leftKeyLeaf;
-            public KeyLeaf rightKeyLeaf;
+            public KeyLeaf leftLeaf, rightLeaf;
 
 
             /// <summary>Create a siblingless leaf.</summary>
             /// <param name="capacity">The initial number of elements the page can store.</param>
             public KeyLeaf (int capacity=0) : base (capacity)
             {
-                this.leftKeyLeaf = this.rightKeyLeaf = null;
+                this.leftLeaf = this.rightLeaf = null;
             }
 
 
@@ -139,11 +138,11 @@ namespace Kaos.Collections
             public KeyLeaf (KeyLeaf leftLeaf, int capacity) : base (capacity)
             {
                 // Doubly linked list insertion.
-                this.rightKeyLeaf = leftLeaf.rightKeyLeaf;
-                leftLeaf.rightKeyLeaf = this;
-                this.leftKeyLeaf = leftLeaf;
-                if (this.rightKeyLeaf != null)
-                    this.rightKeyLeaf.leftKeyLeaf = this;
+                this.rightLeaf = leftLeaf.rightLeaf;
+                leftLeaf.rightLeaf = this;
+                this.leftLeaf = leftLeaf;
+                if (this.rightLeaf != null)
+                    this.rightLeaf.leftLeaf = this;
             }
 
 
@@ -160,13 +159,13 @@ namespace Kaos.Collections
             public void Chop()
             {
                 Truncate (0);
-                rightKeyLeaf = null;
+                rightLeaf = null;
             }
 
             public virtual void Coalesce()
             {
-                for (int ix = 0; ix < rightKeyLeaf.KeyCount; ++ix)
-                    keys.Add (rightKeyLeaf.keys[ix]);
+                for (int ix = 0; ix < rightLeaf.KeyCount; ++ix)
+                    keys.Add (rightLeaf.keys[ix]);
             }
 
             public void Insert (int index, TKey key)
@@ -183,8 +182,8 @@ namespace Kaos.Collections
             public virtual void Shift (int shiftCount)
             {
                 for (int ix = 0; ix < shiftCount; ++ix)
-                    keys.Add (rightKeyLeaf.keys[ix]);
-                rightKeyLeaf.keys.RemoveRange (0, shiftCount);
+                    keys.Add (rightLeaf.keys[ix]);
+                rightLeaf.keys.RemoveRange (0, shiftCount);
             }
 
             public virtual void Truncate (int index)

@@ -80,7 +80,7 @@ namespace Kaos.Collections
                 if (Count > array.Length - index)
                     throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
 
-                for (var leaf = (Leaf) tree.leftmostLeaf; leaf != null; leaf = (Leaf) leaf.rightKeyLeaf)
+                for (var leaf = (Leaf) tree.leftmostLeaf; leaf != null; leaf = (Leaf) leaf.rightLeaf)
                     for (int ix = 0; ix < leaf.KeyCount; ++ix)
                         array[index++] = leaf.GetValue (ix);
             }
@@ -135,7 +135,7 @@ namespace Kaos.Collections
                         if (++index < leaf.KeyCount)
                             return true;
 
-                        leaf = (Leaf) leaf.rightKeyLeaf;
+                        leaf = (Leaf) leaf.rightLeaf;
                         if (leaf != null)
                         { index = 0; return true; }
 
@@ -191,7 +191,7 @@ namespace Kaos.Collections
                 if (Count > array.Length - index)
                     throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
 
-                for (var leaf = (Leaf) tree.leftmostLeaf; leaf != null; leaf = (Leaf) leaf.rightKeyLeaf)
+                for (var leaf = (Leaf) tree.leftmostLeaf; leaf != null; leaf = (Leaf) leaf.rightLeaf)
                     for (int ix = 0; ix < leaf.KeyCount; ++ix)
                     {
                         array.SetValue (leaf.GetValue (ix), index);

@@ -139,7 +139,7 @@ namespace Kaos.Collections
             // Leaf is full so right split a new leaf.
             var newLeaf = new KeyLeaf (leaf, maxKeyCount);
 
-            if (newLeaf.rightKeyLeaf == null)
+            if (newLeaf.rightLeaf == null)
             {
                 rightmostLeaf = newLeaf;
 
@@ -169,7 +169,7 @@ namespace Kaos.Collections
             }
 
             // Promote anchor of split leaf.
-            path.Promote (newLeaf.Key0, (Node) newLeaf, newLeaf.rightKeyLeaf == null);
+            path.Promote (newLeaf.Key0, (Node) newLeaf, newLeaf.rightLeaf == null);
         }
 
 
@@ -220,7 +220,7 @@ namespace Kaos.Collections
             if (Count > array.Length - index)
                 throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
 
-            for (KeyLeaf leaf = leftmostLeaf; leaf != null; leaf = leaf.rightKeyLeaf)
+            for (KeyLeaf leaf = leftmostLeaf; leaf != null; leaf = leaf.rightLeaf)
                 for (int ix = 0; ix < leaf.KeyCount; ++ix)
                     array[index++] = leaf.GetKey (ix);
         }
@@ -294,7 +294,7 @@ namespace Kaos.Collections
 
             int delCount = 0;
 
-            for (KeyLeaf leaf = rightmostLeaf; leaf != null; leaf = leaf.leftKeyLeaf)
+            for (KeyLeaf leaf = rightmostLeaf; leaf != null; leaf = leaf.leftLeaf)
                 for (int ix = leaf.KeyCount-1; ix >= 0; --ix)
                 {
                     TKey key = leaf.GetKey (ix);
@@ -374,7 +374,7 @@ namespace Kaos.Collections
                 return;
             }
 
-            for (KeyLeaf leaf = rightmostLeaf; leaf != null; leaf = leaf.leftKeyLeaf)
+            for (KeyLeaf leaf = rightmostLeaf; leaf != null; leaf = leaf.leftLeaf)
                 for (int ix = leaf.KeyCount-1; ix >= 0; --ix)
                 {
                     TKey key = leaf.GetKey (ix);
@@ -539,7 +539,7 @@ namespace Kaos.Collections
             oNum.MoveNext();
             TKey oKey = oNum.Current;
 
-            for (KeyLeaf leaf = leftmostLeaf; leaf != null; leaf = leaf.rightKeyLeaf)
+            for (KeyLeaf leaf = leftmostLeaf; leaf != null; leaf = leaf.rightLeaf)
                 for (int ix = 0; ix < leaf.KeyCount; )
                     for (TKey key = leaf.GetKey (ix);;)
                     {
@@ -565,7 +565,7 @@ namespace Kaos.Collections
 
                         if (ix >= leaf.KeyCount)
                         {
-                            leaf = leaf.rightKeyLeaf;
+                            leaf = leaf.rightLeaf;
                             ix -= leaf.KeyCount;
                             break;
                         }
@@ -639,7 +639,7 @@ namespace Kaos.Collections
                         if (--index >= 0)
                             return true;
 
-                        leaf = leaf.leftKeyLeaf;
+                        leaf = leaf.leftLeaf;
                         if (leaf != null)
                         { index = leaf.KeyCount - 1; return true; }
                     }
@@ -648,7 +648,7 @@ namespace Kaos.Collections
                         if (++index < leaf.KeyCount)
                             return true;
 
-                        leaf = leaf.rightKeyLeaf;
+                        leaf = leaf.rightLeaf;
                         if (leaf != null)
                         { index = 0; return true; }
                     }
@@ -698,7 +698,7 @@ namespace Kaos.Collections
                     continue;
                 }
 
-                leaf = leaf.rightKeyLeaf;
+                leaf = leaf.rightLeaf;
                 if (leaf == null)
                     yield break;
 
@@ -741,7 +741,7 @@ namespace Kaos.Collections
                     continue;
                 }
 
-                leaf = (KeyLeaf) leaf.rightKeyLeaf;
+                leaf = (KeyLeaf) leaf.rightLeaf;
                 if (leaf == null)
                     yield break;
 

@@ -172,7 +172,7 @@ namespace Kaos.Collections
             // Leaf is full so right split a new leaf.
             var newLeaf = new Leaf (leaf, maxKeyCount);
 
-            if (newLeaf.rightKeyLeaf == null)
+            if (newLeaf.rightLeaf == null)
             {
                 rightmostLeaf = newLeaf;
 
@@ -202,7 +202,7 @@ namespace Kaos.Collections
             }
 
             // Promote anchor of split leaf.
-            path.Promote (newLeaf.Key0, (Node) newLeaf, newLeaf.rightKeyLeaf == null);
+            path.Promote (newLeaf.Key0, (Node) newLeaf, newLeaf.rightLeaf == null);
         }
 
 
@@ -238,13 +238,13 @@ namespace Kaos.Collections
             if (value != null)
             {
                 var comparer = EqualityComparer<TValue>.Default;
-                for (var leaf = (Leaf) leftmostLeaf; leaf != null; leaf = (Leaf) leaf.rightKeyLeaf)
+                for (var leaf = (Leaf) leftmostLeaf; leaf != null; leaf = (Leaf) leaf.rightLeaf)
                     for (int vix = 0; vix < leaf.ValueCount; ++vix)
                         if (comparer.Equals (leaf.GetValue (vix), value))
                             return true;
             }
             else
-                for (var leaf = (Leaf) leftmostLeaf; leaf != null; leaf = (Leaf) leaf.rightKeyLeaf)
+                for (var leaf = (Leaf) leftmostLeaf; leaf != null; leaf = (Leaf) leaf.rightLeaf)
                     for (int vix = 0; vix < leaf.ValueCount; ++vix)
                         if (leaf.GetValue (vix) == null)
                             return true;
@@ -270,7 +270,7 @@ namespace Kaos.Collections
             if (Count > array.Length - index)
                 throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
 
-            for (var leaf = (Leaf) leftmostLeaf; leaf != null; leaf = (Leaf) leaf.rightKeyLeaf)
+            for (var leaf = (Leaf) leftmostLeaf; leaf != null; leaf = (Leaf) leaf.rightLeaf)
                 for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
                     array[index++] = new KeyValuePair<TKey,TValue> (leaf.GetKey (leafIndex), leaf.GetValue (leafIndex));
         }
@@ -411,7 +411,7 @@ namespace Kaos.Collections
                     if (++index < leaf.KeyCount)
                         return true;
 
-                    leaf = (Leaf) leaf.rightKeyLeaf;
+                    leaf = (Leaf) leaf.rightLeaf;
                     if (leaf != null)
                     { index = 0; return true; }
 
@@ -639,7 +639,7 @@ namespace Kaos.Collections
             if (! (array is KeyValuePair<TKey,TValue>[]) && array.GetType() != typeof (Object[]))
                 throw new ArgumentException ("Target array type is not compatible with the type of items in the collection.", nameof (array));
 
-            for (var leaf = (Leaf) leftmostLeaf; leaf != null; leaf = (Leaf) leaf.rightKeyLeaf)
+            for (var leaf = (Leaf) leftmostLeaf; leaf != null; leaf = (Leaf) leaf.rightLeaf)
                 for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
                 {
                     array.SetValue (new KeyValuePair<TKey,TValue>(leaf.GetKey (leafIndex), leaf.GetValue (leafIndex)), index);
@@ -715,7 +715,7 @@ namespace Kaos.Collections
                     continue;
                 }
 
-                leaf = (Leaf) leaf.rightKeyLeaf;
+                leaf = (Leaf) leaf.rightLeaf;
                 if (leaf == null)
                     yield break;
 
@@ -763,7 +763,7 @@ namespace Kaos.Collections
                     continue;
                 }
 
-                leaf = (Leaf) leaf.rightKeyLeaf;
+                leaf = (Leaf) leaf.rightLeaf;
                 if (leaf == null)
                     yield break;
 
