@@ -311,6 +311,18 @@ namespace CollectionsTest
 
 
         [TestMethod]
+        public void UnitRs_CopyToObjectArray()
+        {
+            var obArr = new object[2];
+            Setup();
+            setI.Add (4); setI.Add (2);
+            ((System.Collections.ICollection) setI).CopyTo (obArr, 0);
+            Assert.AreEqual (2, (int) obArr[0]);
+            Assert.AreEqual (4, (int) obArr[1]);
+        }
+
+
+        [TestMethod]
         public void UnitRs_CopyTo1()
         {
             var s1 = new string[3];
@@ -468,6 +480,66 @@ namespace CollectionsTest
                 --expected;
             }
             Assert.AreEqual (0, expected);
+        }
+
+        #endregion
+
+        #region Test enumeration
+
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRs_EnumeratorOverflow_InvalidOperation()
+        {
+            Setup (4);
+            for (int ix=0; ix<10; ++ix) setI.Add (ix);
+
+            var iter = setI.GetEnumerator();
+            while (iter.MoveNext())
+            { }
+
+            var val = ((System.Collections.IEnumerator) iter).Current;
+        }
+
+        [TestMethod]
+        public void UnitRs_EnumeratorOverflowNoCrash()
+        {
+            Setup (4);
+            for (int ix=0; ix<10; ++ix) setI.Add (ix);
+
+            var iter = setI.GetEnumerator();
+            while (iter.MoveNext())
+            { }
+
+            var val = iter.Current;
+        }
+
+        [TestMethod]
+        public void UnitRs_GetEnumerator()
+        {
+            int k1 = 0, k2 = 0;
+            Setup (4);
+            for (int ix=0; ix<10; ++ix) setI.Add (ix);
+
+            var iter = setI.GetEnumerator();
+            while (iter.MoveNext())
+            {
+                int val = iter.Current;
+                Assert.AreEqual (k1, val);
+                ++k1;
+            }
+            Assert.AreEqual (10, k1);
+
+            bool isValid = iter.MoveNext();
+            Assert.IsFalse (isValid);
+
+            ((System.Collections.IEnumerator) iter).Reset();
+            while (iter.MoveNext())
+            {
+                int val = iter.Current;
+                Assert.AreEqual (k2, val);
+                ++k2;
+            }
+            Assert.AreEqual (10, k2);
         }
 
         #endregion
