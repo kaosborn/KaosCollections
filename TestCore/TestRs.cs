@@ -525,6 +525,33 @@ namespace CollectionsTest
 #if ! TEST_BCL
 
         [TestMethod]
+        public void UnitRs_GetFromNull()
+        {
+            Setup (4);
+
+            foreach (var px in personSet.GetFrom (null))
+            { }
+        }
+
+        [TestMethod]
+        public void UnitRs_GetFrom()
+        {
+            Setup (4);
+            for (int ii = 0; ii < 30; ++ii)
+                setI.Add (ii);
+
+            int ix = 20;
+            foreach (var kx in setI.GetFrom (ix))
+            {
+                Assert.AreEqual (ix, kx);
+                ++ix;
+            }
+
+            Assert.AreEqual (30, ix);
+        }
+
+
+        [TestMethod]
         public void UnitRs_IndexOf()
         {
             Setup (4);

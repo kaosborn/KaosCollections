@@ -720,6 +720,35 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>Provides range query support with ordered results.</summary>
+        /// <param name="item">Minimum value of range.</param>
+        /// <returns>An enumerator for the set for items greater than or equal to <em>item</em>.</returns>
+        public IEnumerable<TKey> GetFrom (TKey item)
+        {
+            var leaf = (KeyLeaf) Find (item, out int index);
+
+            // When the supplied start key is not be found, start with the next highest key.
+            if (index < 0)
+                index = ~index;
+
+            for (;;)
+            {
+                if (index < leaf.KeyCount)
+                {
+                    yield return leaf.GetKey (index);
+                    ++index;
+                    continue;
+                }
+
+                leaf = (KeyLeaf) leaf.rightKeyLeaf;
+                if (leaf == null)
+                    yield break;
+
+                index = 0;
+            }
+        }
+
+
         /// <summary>Gets the index of the specified item.</summary>
         /// <param name="item">The item of the index to get.</param>
         /// <returns>The index of the specified item if found; otherwise the bitwise complement of the insert point.</returns>
