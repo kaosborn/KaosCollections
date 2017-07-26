@@ -18,9 +18,10 @@ namespace Kaos.Collections
     /// <typeparam name="TKey">The type of the keys in the dictionary.</typeparam>
     /// <typeparam name="TValue">The type of the values in the dictionary.</typeparam>
     /// <remarks>
-    /// This class emulates and augments the
+    /// This class emulates and extends the
     /// <see cref="System.Collections.Generic.SortedDictionary{TKey,TValue}"/> class
     /// with the addition of the methods
+    /// <see cref="GetByIndex"/>, <see cref="IndexOf"/>, <see cref="TryGetValueAndIndex"/>,
     /// <see cref="GetBetween"/>, <see cref="SkipUntilKey"/>, and <see cref="Last"/>.
     /// </remarks>
     [DebuggerTypeProxy (typeof (IDictionaryDebugView<,>))]
@@ -348,19 +349,34 @@ namespace Kaos.Collections
             }
 
             object IDictionaryEnumerator.Key
-            { get { if (leafIndex < 0)
+            {
+                get
+                {
+                    if (leafIndex < 0)
                         throw new InvalidOperationException ("Enumeration is not active.");
-                    return currentLeaf.GetKey (leafIndex); } }
+                    return currentLeaf.GetKey (leafIndex);
+                }
+            }
 
             object IDictionaryEnumerator.Value
-            { get { if (leafIndex < 0)
+            {
+                get
+                {
+                    if (leafIndex < 0)
                         throw new InvalidOperationException ("Enumeration is not active.");
-                    return currentLeaf.GetValue (leafIndex); } }
+                    return currentLeaf.GetValue (leafIndex);
+                }
+            }
 
             DictionaryEntry IDictionaryEnumerator.Entry
-            { get { if (leafIndex < 0)
+            {
+                get
+                {
+                    if (leafIndex < 0)
                         throw new InvalidOperationException ("Enumeration is not active.");
-                    return new DictionaryEntry (currentLeaf.GetKey (leafIndex), currentLeaf.GetValue (leafIndex)); } }
+                    return new DictionaryEntry (currentLeaf.GetKey (leafIndex), currentLeaf.GetValue (leafIndex));
+                }
+            }
 
             object IEnumerator.Current
             {
@@ -378,8 +394,13 @@ namespace Kaos.Collections
 
             /// <summary>Gets the key/value pair at the current location.</summary>
             public KeyValuePair<TKey,TValue> Current
-            { get { return leafIndex < 0? new KeyValuePair<TKey,TValue> (default (TKey), default (TValue))
-                                        : currentLeaf.GetPair (leafIndex); } }
+            {
+                get
+                {
+                    return leafIndex < 0 ? new KeyValuePair<TKey,TValue> (default (TKey), default (TValue))
+                                         : currentLeaf.GetPair (leafIndex);
+                }
+            }
 
             /// <summary>Advances the enumerator to the next location.</summary>
             /// <returns><b>false</b> if no more data; otherwise <b>true</b>.</returns>
@@ -664,51 +685,6 @@ namespace Kaos.Collections
 
         #region Bonus methods
 
-        /// <summary>Gets the Last key/value pair without performing a full collection scan.</summary>
-        /// <returns>Key/value pair with maximum key in dictionary.</returns>
-        public KeyValuePair<TKey,TValue> Last()
-        {
-            if (Count == 0)
-                throw new InvalidOperationException ("Sequence contains no elements.");
-
-            int ix = rightmostLeaf.KeyCount-1;
-            return new KeyValuePair<TKey,TValue> (rightmostLeaf.GetKey (ix), ((Leaf) rightmostLeaf).GetValue (ix));
-        }
-
-
-        /// <summary>Provides range query support with ordered results.</summary>
-        /// <param name="key">Minimum value of range.</param>
-        /// <returns>An enumerator for the collection for key values greater than or equal to <em>key</em>.</returns>
-        /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
-        public IEnumerable<KeyValuePair<TKey,TValue>> SkipUntilKey (TKey key)
-        {
-            if (key == null)
-                throw new ArgumentNullException (nameof (key));
-
-            var leaf = (Leaf) Find (key, out int index);
-
-            // When the supplied start key is not be found, start with the next highest key.
-            if (index < 0)
-                index = ~index;
-
-            for (;;)
-            {
-                if (index < leaf.KeyCount)
-                {
-                    yield return leaf.GetPair (index);
-                    ++index;
-                    continue;
-                }
-
-                leaf = (Leaf) leaf.rightKeyLeaf;
-                if (leaf == null)
-                    yield break;
-
-                index = 0;
-            }
-        }
-
-
         /// <summary>Provides range query support.</summary>
         /// <param name="lower">Minimum inclusive key value of range.</param>
         /// <param name="upper">Maximum inclusive key value of range.</param>
@@ -748,10 +724,59 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Gets the index of the specified key.</summary>
+        /// <summary>Gets the element at the specified index.</summary>
+        /// <param name="index">The zero-based index of the element to get.</param>
+        /// <returns>The element at the specified index.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or greater than or equal to the number of keys.</exception>
+        /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
+        public KeyValuePair<TKey,TValue> GetByIndex (int index)
+        {
+            if (index < 0 || index >= Count)
+                throw new ArgumentOutOfRangeException (nameof (index), "Specified argument was out of the range of valid values.");
+
+            var leaf = (Leaf) Find (ref index);
+            return new KeyValuePair<TKey,TValue> (leaf.GetKey (index), leaf.GetValue (index));
+        }
+
+
+        /// <summary>Provides range query support with ordered results.</summary>
+        /// <param name="key">Minimum value of range.</param>
+        /// <returns>An enumerator for the collection for key values greater than or equal to <em>key</em>.</returns>
+        /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
+        public IEnumerable<KeyValuePair<TKey,TValue>> SkipUntilKey (TKey key)
+        {
+            if (key == null)
+                throw new ArgumentNullException (nameof (key));
+
+            var leaf = (Leaf) Find (key, out int index);
+
+            // When the supplied start key is not be found, start with the next highest key.
+            if (index < 0)
+                index = ~index;
+
+            for (;;)
+            {
+                if (index < leaf.KeyCount)
+                {
+                    yield return leaf.GetPair (index);
+                    ++index;
+                    continue;
+                }
+
+                leaf = (Leaf) leaf.rightKeyLeaf;
+                if (leaf == null)
+                    yield break;
+
+                index = 0;
+            }
+        }
+
+
+        /// <summary>Gets the index of the supplied key.</summary>
         /// <param name="key">The key of the index to get.</param>
         /// <returns>The index of the specified item if found; otherwise the bitwise complement of the insert point.</returns>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
+        /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
         public int IndexOf (TKey key)
         {
             if (key == null)
@@ -763,25 +788,25 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Gets the element at the specified index.</summary>
-        /// <param name="index">The zero-based index of the element to get.</param>
-        /// <returns>The element at the specified index.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or greater than or equal to the number of keys.</exception>
-        public KeyValuePair<TKey,TValue> GetByIndex (int index)
+        /// <summary>Gets the Last key/value pair.</summary>
+        /// <returns>Key/value pair with maximum key in dictionary.</returns>
+        /// <remarks>This is a O(1) operation.</remarks>
+        public KeyValuePair<TKey,TValue> Last()
         {
-            if (index < 0 || index >= Count)
-                throw new ArgumentOutOfRangeException (nameof (index), "Specified argument was out of the range of valid values.");
+            if (Count == 0)
+                throw new InvalidOperationException ("Sequence contains no elements.");
 
-            var leaf = (Leaf) Find (ref index);
-            return new KeyValuePair<TKey,TValue> (leaf.GetKey (index), leaf.GetValue (index));
+            int ix = rightmostLeaf.KeyCount-1;
+            return new KeyValuePair<TKey,TValue> (rightmostLeaf.GetKey (ix), ((Leaf) rightmostLeaf).GetValue (ix));
         }
 
 
-        /// <summary>Gets the value and index of the specified element.</summary>
+        /// <summary>Gets the value and index of the supplied element.</summary>
         /// <param name="key">The key of the value and index to get.</param>
         /// <param name="value">If the key is found, its value is placed here; otherwise it will be loaded with the default value.</param>
         /// <param name="index">If the key is found, its index is placed here; otherwise it will be -1.</param>
         /// <returns><b>true</b> if supplied key is found; otherwise <b>false</b>.</returns>
+        /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
         public bool TryGetValueAndIndex (TKey key, out TValue value, out int index)
         {
             var path = new NodeVector (this, key);
