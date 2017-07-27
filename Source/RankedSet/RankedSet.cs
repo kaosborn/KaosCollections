@@ -341,6 +341,9 @@ namespace Kaos.Collections
         /// Duplicate values in <em>other</em> are ignored.
         /// Values in <em>other</em> that are not in the set are ignored.
         /// </remarks>
+        /// <example>
+        /// <code source="..\Bench\RsExample04\RsExample04.cs" lang="cs" />
+        /// </example>
         public void ExceptWith (IEnumerable<TKey> other)
         {
             if (other == null)
@@ -358,6 +361,9 @@ namespace Kaos.Collections
         /// <summary>Removes all items that are not in a supplied collection.</summary>
         /// <param name="other">The collection of items to intersect.</param>
         /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
+        /// <example>
+        /// <code source="..\Bench\RsExample04\RsExample04.cs" lang="cs" />
+        /// </example>
         public void IntersectWith (IEnumerable<TKey> other)
         {
             if (other == null)
@@ -388,6 +394,9 @@ namespace Kaos.Collections
         /// <param name="other">The collection to compare to this set.</param>
         /// <returns><b>true</b> if the set is a proper subset of <em>other</em>; otherwise <b>false</b>.</returns>
         /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
+        /// <example>
+        /// <code source="..\Bench\RsExample03\RsExample03.cs" lang="cs" />
+        /// </example>
         public bool IsProperSubsetOf (IEnumerable<TKey> other)
         {
             if (other == null)
@@ -410,6 +419,9 @@ namespace Kaos.Collections
         /// <param name="other">The collection to compare to this set.</param>
         /// <returns><b>true</b> if the set is a proper superset of <em>other</em>; otherwise <b>false</b>.</returns>
         /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
+        /// <example>
+        /// <code source="..\Bench\RsExample03\RsExample03.cs" lang="cs" />
+        /// </example>
         public bool IsProperSupersetOf (IEnumerable<TKey> other)
         {
             if (other == null)
@@ -432,6 +444,9 @@ namespace Kaos.Collections
         /// <param name="other">The collection to compare to this set.</param>
         /// <returns><b>true</b> if the set is a subset of <em>other</em>; otherwise <b>false</b>.</returns>
         /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
+        /// <example>
+        /// <code source="..\Bench\RsExample03\RsExample03.cs" lang="cs" />
+        /// </example>
         public bool IsSubsetOf (IEnumerable<TKey> other)
         {
             if (other == null)
@@ -454,6 +469,9 @@ namespace Kaos.Collections
         /// <param name="other">The items to compare to the current set.</param>
         /// <returns><b>true</b> if the set is a superset of <em>other</em>; otherwise <b>false</b>.</returns>
         /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
+        /// <example>
+        /// <code source="..\Bench\RsExample03\RsExample03.cs" lang="cs" />
+        /// </example>
         public bool IsSupersetOf (IEnumerable<TKey> other)
         {
             if (other == null)
@@ -471,6 +489,9 @@ namespace Kaos.Collections
         /// <param name="other">The collection to compare to this set.</param>
         /// <returns><b>true</b> if the set and <em>other</em> share at least one common item; otherwise <b>false</b>.</returns>
         /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
+        /// <example>
+        /// <code source="..\Bench\RsExample03\RsExample03.cs" lang="cs" />
+        /// </example>
         public bool Overlaps (IEnumerable<TKey> other)
         {
             if (other == null)
@@ -505,6 +526,11 @@ namespace Kaos.Collections
         /// <param name="other">The collection to compare to this set.</param>
         /// <returns><b>true</b> if the set is equal to <em>other</em>; otherwise <b>false</b>.</returns>
         /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
+        /// <remarks>
+        /// Duplicate values in <em>other</em> are ignored.</remarks>
+        /// <example>
+        /// <code source="..\Bench\RsExample03\RsExample03.cs" lang="cs" />
+        /// </example>
         public bool SetEquals (IEnumerable<TKey> other)
         {
             if (other == null)
@@ -526,6 +552,9 @@ namespace Kaos.Collections
         /// <summary>Modifies the set so that it contains only items that are present either in itself or in the supplied collection, but not both.</summary>
         /// <param name="other">The collection to compare to this set.</param>
         /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
+        /// <example>
+        /// <code source="..\Bench\RsExample04\RsExample04.cs" lang="cs" />
+        /// </example>
         public void SymmetricExceptWith (IEnumerable<TKey> other)
         {
             if (other == null)
@@ -584,6 +613,9 @@ namespace Kaos.Collections
         /// <summary>Add all items in <em>other</em> to this set that are not already in this set.</summary>
         /// <param name="other">The collection to add to this set.</param>
         /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
+        /// <example>
+        /// <code source="..\Bench\RsExample04\RsExample04.cs" lang="cs" />
+        /// </example>
         public void UnionWith (IEnumerable<TKey> other)
         {
             if (other == null)

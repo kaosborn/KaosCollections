@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
-[assembly: AssemblyTitle ("RsExample03")]
+[assembly: AssemblyTitle ("RsExample04")]
 [assembly: AssemblyProduct ("KaosCollections")]
 [assembly: AssemblyCopyright ("Copyright © 2017 github.com/kaosborn")]
 [assembly: AssemblyTrademark ("freeware")]
