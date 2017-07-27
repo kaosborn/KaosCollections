@@ -12,7 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)IDictionaryDebugView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.Keys.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.Leaf.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.PairLeaf.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.Values.cs" />
   </ItemGroup>
 </Project>

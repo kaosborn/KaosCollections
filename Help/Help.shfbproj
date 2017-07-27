@@ -79,7 +79,7 @@ This namespace is intended to work alongside classes contained in the System.Col
     <Folder Include="media" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\VersionHistory.aml" />
+    <None Include="Content\History.aml" />
     <None Include="Content\Welcome.aml" />
   </ItemGroup>
   <ItemGroup>
