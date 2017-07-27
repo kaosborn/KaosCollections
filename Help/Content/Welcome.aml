@@ -3,33 +3,36 @@
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
     <introduction>
       <para>
-        The KaosCollections library contains classes that complement the System.Collections.Generic classes.
-        The primary classes are:
+        The KaosCollections library contains classes that complement the
+        <codeEntityReference>N:System.Collections.Generic</codeEntityReference>
+        classes. The primary classes are:
       </para>
       <list class="bullet">
         <listItem>
           <para>
-            RankedDictionary&lt;TKey,TValue&gt; - an improved version of SortedDictionary&lt;TKey,TValue&gt;.
+            <codeEntityReference qualifyHint="false">T:Kaos.Collections.RankedDictionary`2</codeEntityReference>- an improved version of
+            <codeEntityReference qualifyHint="false">T:System.Collections.Generic.SortedDictionary`2</codeEntityReference>
           </para>
         </listItem>
         <listItem>
           <para>
-            RankedSet&lt;T&gt; - an improved version of SortedSet&lt;T&gt;.
+            <codeEntityReference qualifyHint="false">T:Kaos.Collections.RankedSet`1</codeEntityReference>
+            - an improved version of
+            <codeEntityReference qualifyHint="false">T:System.Collections.Generic.SortedSet`1</codeEntityReference>
           </para>
         </listItem>
       </list>
       <para>
         All provided classes closely emulate the API of the Microsoft's classes
         while extending capability and improving performance in many common scenarios.
-        
         Both these classes add array-like support so that any element can be accessed by index
         or the index of an element may be determined from the element's key.
-        
-        The perforance bump is due to the B+ tree variant used by Kaos.Collections.
-        The binary tree used by SortedDictionary and SortedSet is a binary tree
-        which greatly increases allocations and tree depth.
-
-        Also in a B+ tree, data is grouped together in leaves which improves performance due to locality.
+      </para>
+      <para>
+        The performance bump is due to the B+ tree variant used by KaosCollections.
+        The structure used by SortedDictionary and SortedSet is a binary tree
+        which greatly increases tree height and number of allocations compared to a B+ tree.
+        Also in a B+ tree, data is grouped together in leaves which improves performance due to data locality.
       </para>
     </introduction>
 
@@ -37,44 +40,54 @@
       <title>API differences between System.Collections.Generic and Kaos.Collections</title>
       <content>
         <para>
-          The API of RankedDictionary and RankedSet closely adheres to Microsoft's generic classes with a few exceptions:
+          The API of RankedDictionary and RankedSet closely adheres to Microsoft's related generic classes with a few exceptions:
         </para>
         <list class="bullet">
           <listItem>
-            <para>Both classes add the GetByIndex(int) method which returns the element at the supplied index.</para>
+            <para>Both classes add the <codeInline>GetByIndex(index)</codeInline> method which returns the element at the supplied index.</para>
           </listItem>
           <listItem>
-            <para>Both classes add the IndexOf(TKey) method which returns the index of T.</para>
+            <para>Both classes add the <codeInline>IndexOf(key)</codeInline> method which returns the index of an element.</para>
           </listItem>
           <listItem>
             <para>
-              RankedDictionary adds the method SkipUntilKey(TKey) that
-              returns an iterator for elements beginning at the supplied value.
+              Both classes adds the method <codeInline>GetFrom(key)</codeInline> that
+              returns an enumerator for elements beginning at the supplied value.
             </para>
           </listItem>
           <listItem>
             <para>
-              RankedDictionary adds the method TryGetValueAndIndex (TKey, out TValue, out int) that
-              extends GetByIndex by also retrieving the key's associated value and index in one step.
+              RankedDictionary adds the method TryGetValueAndIndex <codeInline>(key, out value, out index)</codeInline> that
+              extends GetByIndex by also retrieving the key's associated value and index in one call.
             </para>
           </listItem>
           <listItem>
             <para>
-              RankedDictionary adds the method GetBetween (T,T) that returns an enumerator over the specified range.
+              RankedDictionary adds the method <codeInline>GetBetween(from,to)</codeInline> that returns an enumerator over the specified range.
             </para>
           </listItem>
           <listItem>
             <para>
-              The method SortedSet.GetViewBetween(T,T) (which provides a virtual view to a subset of a SortedSet)
-              is replaced with the RankedSet.GetBetween (T,T) method which returns an enumerator.
+              The method
+            <codeEntityReference qualifyHint="false">M:System.Collections.Generic.SortedSet`1.GetViewBetween(`0,`0)</codeEntityReference>
+              (which provides a virtual view to a range of a SortedSet) is replaced with the
+                <codeInline>RankedSet.GetBetween(from,to)</codeInline>
+              method which returns an enumerator.
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              Neither class implements the
+              <codeEntityReference>T:System.Runtime.Serialization.ISerializable</codeEntityReference>
+              interface. Serialization may be added a future version.
             </para>
           </listItem>
         </list>
       </content>
     </section>
-      
+
     <section>
-      <title>Data structure used by RankedDictionary and RankedSet</title>
+      <title>Data structure</title>
       <content>
         <para>
           The data structure used by RankedDictionary and RankedSet is a variant of an order statistic B+ tree.
@@ -82,12 +95,12 @@
         </para>
         <list class="bullet">
           <listItem>
-            <para>Select(i) — find the i'th smallest element in the tree (i.e. retrieve key by index).</para>
+            <para>Select(<legacyItalic>i</legacyItalic>) — find the <legacyItalic>i</legacyItalic>'th smallest element in the tree (i.e. retrieve key by index).</para>
           </listItem>
           <listItem>
             <para>
-              Rank(x) – find the rank of item x in the tree (i.e. retrieve index by key).
-              The names of the classes in the Kaos.Collections library are derived from this operation.
+              Rank(<legacyItalic>x</legacyItalic>) – find the rank of item <legacyItalic>x</legacyItalic> in the tree (i.e. retrieve index by key).
+              The names of the classes in the KaosCollections library are derived from this operation.
             </para>
           </listItem>
         </list>
@@ -99,12 +112,12 @@
           A tree with no elements is represented as an empty leaf.
         </para>
         <para>
-          This structure differs from a classic B+ tree in these ways:
+          This structure differs from a typical B+ tree in these ways:
         </para>
         <list class="bullet">
           <listItem>
             <para>
-              Rightmost, nonroot branches may contain as few as one child.
+              While the root may contain as few as 2 children, other rightmost branches may contain as few as one child.
               This variation optimizes the structure for bulk loading of presorted data
               and improves seek performance for data near the end of the collection - both common operations.
               All other branches, besides the root, maintain at least 50% capacity usage following every add and remove operation.
