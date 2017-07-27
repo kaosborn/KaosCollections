@@ -206,15 +206,6 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Removes all elements from the collection.</summary>
-        /// <remarks>This is a O(1) operation.</remarks>
-        public void Clear()
-        {
-            leftmostLeaf.Chop();
-            root = rightmostLeaf = leftmostLeaf;
-        }
-
-
         /// <summary>Determines if the collection contains the supplied key.</summary>
         /// <param name="key">Key to find.</param>
         /// <returns><b>true</b> if the collection contains the supplied key; otherwise <b>false</b>.</returns>

@@ -79,15 +79,6 @@ namespace Kaos.Collections
         bool ICollection.IsSynchronized
         { get { return false; } }
 
-        /// <summary>Gets the maximum value in the set per the comparer.</summary>
-        /// <remarks>This is a O(1) operation.</remarks>
-        public TKey Max
-        { get { return Count==0 ? default (TKey) : rightmostLeaf.GetKey (rightmostLeaf.KeyCount-1); } }
-
-        /// <summary>Gets the minimum value in the set per the comparer.</summary>
-        /// <remarks>This is a O(1) operation.</remarks>
-        public TKey Min
-        { get { return Count==0 ? default (TKey) : leftmostLeaf.Key0; } }
 
         /// <summary>Deprecated.</summary>
         object ICollection.SyncRoot => GetSyncRoot();
@@ -95,15 +86,6 @@ namespace Kaos.Collections
         #endregion
 
         #region Methods
-
-        /// <summary>Removes all items from the set.</summary>
-        /// <remarks>This is a O(1) operation.</remarks>
-        public void Clear()
-        {
-            leftmostLeaf.Chop();
-            root = rightmostLeaf = leftmostLeaf;
-        }
-
 
         /// <summary>Adds an item to the set and returns a success indicator.</summary>
         /// <param name="item">The item to add.</param>

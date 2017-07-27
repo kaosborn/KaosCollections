@@ -62,18 +62,38 @@ namespace Kaos.Collections
             this.root = this.rightmostLeaf = this.leftmostLeaf = leftmostLeaf;
         }
 
-        #region Properties
+        #region Properties and methods
 
         /// <summary>Gets the number of elements in the collection.</summary>
         /// <remarks>This is a <em>O (1)</em> operation.</remarks>
         public int Count
         { get { return root.Weight; } }
 
+        /// <summary>Gets the maximum value in the set per the comparer.</summary>
+        /// <remarks>This is a O(1) operation.</remarks>
+        public TKey Max
+        { get { return Count==0 ? default (TKey) : rightmostLeaf.GetKey (rightmostLeaf.KeyCount-1); } }
+
+        /// <summary>Gets the minimum value in the set per the comparer.</summary>
+        /// <remarks>This is a O(1) operation.</remarks>
+        public TKey Min
+        { get { return Count==0 ? default (TKey) : leftmostLeaf.Key0; } }
+
         /// <summary>Contains the method used to order elements in the sorted collection.</summary>
         /// <remarks>To override sorting based on the default comparer, supply an
         /// alternate comparer when constructing the collection.</remarks>
         public IComparer<TKey> Comparer
         { get { return comparer; } }
+
+
+        /// <summary>Removes all items from the set.</summary>
+        /// <remarks>This is a O(1) operation.</remarks>
+        public void Clear()
+        {
+            leftmostLeaf.Truncate (0);
+            leftmostLeaf.rightLeaf = null;
+            root = rightmostLeaf = leftmostLeaf;
+        }
 
         #endregion
 

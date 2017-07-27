@@ -155,12 +155,6 @@ namespace Kaos.Collections
                     keys.Add (source.GetKey (ix));
             }
 
-            public void Chop()
-            {
-                Truncate (0);
-                rightLeaf = null;
-            }
-
             public virtual void Coalesce()
             {
                 for (int ix = 0; ix < rightLeaf.KeyCount; ++ix)
