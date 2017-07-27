@@ -80,7 +80,7 @@ namespace Kaos.Collections
                 if (Count > array.Length - index)
                     throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
 
-                for (var leaf = (Leaf) tree.leftmostLeaf; leaf != null; leaf = (Leaf) leaf.rightLeaf)
+                for (var leaf = (PairLeaf) tree.leftmostLeaf; leaf != null; leaf = (PairLeaf) leaf.rightLeaf)
                     for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
                         array[index++] = leaf.GetKey (leafIndex);
             }
@@ -99,7 +99,7 @@ namespace Kaos.Collections
             public sealed class Enumerator : IEnumerator<TKey>
             {
                 private readonly RankedDictionary<TKey,TValue> tree;
-                private Leaf leaf;
+                private PairLeaf leaf;
                 private int index;
 
                 internal Enumerator (RankedDictionary<TKey,TValue> dictionary)
@@ -133,7 +133,7 @@ namespace Kaos.Collections
                         if (++index < leaf.KeyCount)
                             return true;
 
-                        leaf = (Leaf) leaf.rightLeaf;
+                        leaf = (PairLeaf) leaf.rightLeaf;
                         if (leaf != null)
                         { index = 0; return true; }
 
@@ -146,7 +146,7 @@ namespace Kaos.Collections
                 void IEnumerator.Reset()
                 {
                     index = -1;
-                    leaf = (Leaf) tree.leftmostLeaf;
+                    leaf = (PairLeaf) tree.leftmostLeaf;
                 }
 
                 /// <summary>Releases all resources used by the Enumerator.</summary>
@@ -189,7 +189,7 @@ namespace Kaos.Collections
                 if (Count > array.Length - index)
                     throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
 
-                for (var leaf = (Leaf) tree.leftmostLeaf; leaf != null; leaf = (Leaf) leaf.rightLeaf)
+                for (var leaf = (PairLeaf) tree.leftmostLeaf; leaf != null; leaf = (PairLeaf) leaf.rightLeaf)
                     for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
                     {
                         array.SetValue (leaf.GetKey (leafIndex), index);

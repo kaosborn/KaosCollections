@@ -19,13 +19,13 @@ namespace Kaos.Collections
         /// All key/value pairs are contained in this class.
         /// Leaf is a sequential linked list also referenced by parent branches.
         /// </remarks>
-        private sealed class Leaf : KeyLeaf
+        private sealed class PairLeaf : Leaf
         {
             private readonly List<TValue> values;
 
             /// <summary>Create a siblingless leaf.</summary>
             /// <param name="capacity">The initial number of elements the page can store.</param>
-            public Leaf (int capacity=0) : base (capacity)
+            public PairLeaf (int capacity=0) : base (capacity)
             {
                 this.values = new List<TValue> (capacity);
             }
@@ -33,7 +33,7 @@ namespace Kaos.Collections
             /// <summary>Splice this leaf to right of <paramref name="leftLeaf"/>.</summary>
             /// <param name="leftLeaf">Provides linked list insert point.</param>
             /// <param name="capacity">The initial number of elements the page can store.</param>
-            public Leaf (Leaf leftLeaf, int capacity) : base (leftLeaf, capacity)
+            public PairLeaf (PairLeaf leftLeaf, int capacity) : base (leftLeaf, capacity)
             {
                 this.values = new List<TValue> (capacity);
             }
@@ -49,13 +49,13 @@ namespace Kaos.Collections
 
             public static TValue GetValue (NodeVector path)
             {
-                var leaf = (Leaf) path.TopNode;
+                var leaf = (PairLeaf) path.TopNode;
                 return leaf.values[path.TopNodeIndex];
             }
 
             public static void SetValue (NodeVector path, TValue value)
             {
-                var leaf = (Leaf) path.TopNode;
+                var leaf = (PairLeaf) path.TopNode;
                 leaf.values[path.TopNodeIndex] = value;
             }
 
@@ -74,7 +74,7 @@ namespace Kaos.Collections
                 values.Add (value);
             }
 
-            public void Add (Leaf source, int sourceStart, int sourceStop)
+            public void Add (PairLeaf source, int sourceStart, int sourceStop)
             {
                 for (int ix = sourceStart; ix < sourceStop; ++ix)
                     Add (source.GetKey (ix), source.GetValue (ix));
@@ -82,7 +82,7 @@ namespace Kaos.Collections
 
             public override void Coalesce()
             {
-                var right = (Leaf) rightLeaf;
+                var right = (PairLeaf) rightLeaf;
                 for (int ix = 0; ix < right.values.Count; ++ix)
                     values.Add (right.values[ix]);
                 base.Coalesce();
@@ -90,7 +90,7 @@ namespace Kaos.Collections
 
             public override void Shift (int shiftCount)
             {
-                var right = (Leaf) rightLeaf;
+                var right = (PairLeaf) rightLeaf;
                 for (int ix = 0; ix < shiftCount; ++ix)
                     values.Add (right.values[ix]);
                 base.Shift (shiftCount);

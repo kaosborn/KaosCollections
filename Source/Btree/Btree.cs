@@ -50,12 +50,12 @@ namespace Kaos.Collections
     public abstract partial class Btree<TKey>
     {
         protected Node root;
-        protected KeyLeaf rightmostLeaf;
-        protected readonly KeyLeaf leftmostLeaf;
+        protected Leaf rightmostLeaf;
+        protected readonly Leaf leftmostLeaf;
         protected readonly int maxKeyCount;
         private readonly IComparer<TKey> comparer;
 
-        protected Btree (IComparer<TKey> comparer, KeyLeaf leftmostLeaf)
+        protected Btree (IComparer<TKey> comparer, Leaf leftmostLeaf)
         {
             this.comparer = comparer ?? Comparer<TKey>.Default;
             this.maxKeyCount = Btree.TreeOrder - 1;
@@ -83,7 +83,7 @@ namespace Kaos.Collections
         /// <param name="key">Target of search.</param>
         /// <param name="index">When found, holds index of returned Leaf; else ~index of nearest greater key.</param>
         /// <returns>Leaf holding target (found or not).</returns>
-        protected KeyLeaf Find (TKey key, out int index)
+        protected Leaf Find (TKey key, out int index)
         {
             //  Unfold on default comparer for 5% speed improvement.
             if (Comparer == Comparer<TKey>.Default)
@@ -94,7 +94,7 @@ namespace Kaos.Collections
                     if (node is Branch branch)
                         node = branch.GetChild (index < 0 ? ~index : index + 1);
                     else
-                        return (KeyLeaf) node;
+                        return (Leaf) node;
                 }
             else
                 for (Node node = root;;)
@@ -104,7 +104,7 @@ namespace Kaos.Collections
                     if (node is Branch branch)
                         node = branch.GetChild (index < 0 ? ~index : index + 1);
                     else
-                        return (KeyLeaf) node;
+                        return (Leaf) node;
                 }
         }
 
@@ -135,7 +135,7 @@ namespace Kaos.Collections
         protected void Remove2 (NodeVector path)
         {
             int leafIndex = path.TopNodeIndex;
-            var leaf = (KeyLeaf) path.TopNode;
+            var leaf = (Leaf) path.TopNode;
 
             leaf.Remove (leafIndex);
             path.UpdateWeight (-1);
@@ -166,7 +166,7 @@ namespace Kaos.Collections
             // Leaf underflow?
             if (leaf.KeyCount < (maxKeyCount + 1) / 2)
             {
-                KeyLeaf rightLeaf = leaf.rightLeaf;
+                Leaf rightLeaf = leaf.rightLeaf;
                 if (rightLeaf != null)
                     if (leaf.KeyCount + rightLeaf.KeyCount > maxKeyCount)
                     {
@@ -229,11 +229,11 @@ namespace Kaos.Collections
             LeafSlotCount = 0;
             LeafSlotsUsed = 0;
 
-            KeyLeaf lastLeaf;
+            Leaf lastLeaf;
             if (root is Branch)
                 lastLeaf = CheckBranch ((Branch) root, 1, GetHeight(), true, default (TKey), null);
             else
-                lastLeaf = CheckLeaf ((KeyLeaf) root, true, default (TKey), null);
+                lastLeaf = CheckLeaf ((Leaf) root, true, default (TKey), null);
 
             if (lastLeaf.rightLeaf != null)
                 throw new InvalidOperationException ("Last leaf has invalid RightLeaf");
@@ -266,13 +266,13 @@ namespace Kaos.Collections
         }
 
 
-        private KeyLeaf CheckBranch
+        private Leaf CheckBranch
         (
             Branch branch,
             int level, int height,
             bool isRightmost,
             TKey anchor,  // ignored when isRightmost true
-            KeyLeaf visited
+            Leaf visited
         )
         {
             BranchSlotCount += maxKeyCount;
@@ -296,7 +296,7 @@ namespace Kaos.Collections
                 if (level + 1 < height)
                     visited = CheckBranch ((Branch) branch.GetChild (i), level+1, height, isRightmost0, anchor0, visited);
                 else
-                    visited = CheckLeaf ((KeyLeaf) branch.GetChild (i), isRightmost0, anchor0, visited);
+                    visited = CheckLeaf ((Leaf) branch.GetChild (i), isRightmost0, anchor0, visited);
 
                 actualWeight += branch.GetChild (i).Weight;
             }
@@ -307,7 +307,7 @@ namespace Kaos.Collections
         }
 
 
-        private KeyLeaf CheckLeaf (KeyLeaf leaf, bool isRightmost, TKey anchor, KeyLeaf visited)
+        private Leaf CheckLeaf (Leaf leaf, bool isRightmost, TKey anchor, Leaf visited)
         {
             LeafSlotCount += maxKeyCount;
             LeafSlotsUsed += leaf.KeyCount;
@@ -361,7 +361,7 @@ namespace Kaos.Collections
             {
                 var branchPath = new NodeVector (this, level);
                 leftmost = branchPath.TopNode;
-                if (leftmost is KeyLeaf)
+                if (leftmost is Leaf)
                     break;
 
                 var branch = (Branch) leftmost;
@@ -394,10 +394,10 @@ namespace Kaos.Collections
             sb.Append ('L');
             sb.Append (level);
             sb.Append (": ");
-            for (var leaf = (KeyLeaf) leftmost;;)
+            for (var leaf = (Leaf) leftmost;;)
             {
                 leaf.Append (sb);
-                leaf = (KeyLeaf) leafPath.TraverseRight();
+                leaf = (Leaf) leafPath.TraverseRight();
                 if (leaf == null)
                     break;
 

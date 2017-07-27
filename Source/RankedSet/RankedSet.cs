@@ -34,13 +34,13 @@ namespace Kaos.Collections
         #region Constructors
 
         /// <summary>Initializes a new set of sorted items that uses the default item comparer.</summary>
-        public RankedSet() : base (Comparer<TKey>.Default, new KeyLeaf())
+        public RankedSet() : base (Comparer<TKey>.Default, new Leaf())
         { }
 
         /// <summary>Initializes a new set of sorted items that uses the supplied comparer.</summary>
         /// <param name="comparer">The comparer to use for sorting items.</param>
         /// <exception cref="InvalidOperationException">When <em>comparer</em> is <b>null</b> and no other comparer available.</exception>
-        public RankedSet (IComparer<TKey> comparer) : base (comparer, new KeyLeaf())
+        public RankedSet (IComparer<TKey> comparer) : base (comparer, new Leaf())
         { }
 
         /// <summary>Initializes a new set that contains items copied from the supplied collection.</summary>
@@ -126,7 +126,7 @@ namespace Kaos.Collections
 
         private void Add2 (NodeVector path, TKey key)
         {
-            var leaf = (KeyLeaf) path.TopNode;
+            var leaf = (Leaf) path.TopNode;
             int pathIndex = path.TopNodeIndex;
 
             path.UpdateWeight (1);
@@ -137,7 +137,7 @@ namespace Kaos.Collections
             }
 
             // Leaf is full so right split a new leaf.
-            var newLeaf = new KeyLeaf (leaf, maxKeyCount);
+            var newLeaf = new Leaf (leaf, maxKeyCount);
 
             if (newLeaf.rightLeaf == null)
             {
@@ -178,7 +178,7 @@ namespace Kaos.Collections
         /// <returns><b>true</b> if the set contains <em>item</em>; otherwise <b>false</b>.</returns>
         public bool Contains (TKey item)
         {
-            KeyLeaf leaf = Find (item, out int index);
+            Leaf leaf = Find (item, out int index);
             return index >= 0;
         }
 
@@ -220,7 +220,7 @@ namespace Kaos.Collections
             if (Count > array.Length - index)
                 throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
 
-            for (KeyLeaf leaf = leftmostLeaf; leaf != null; leaf = leaf.rightLeaf)
+            for (Leaf leaf = leftmostLeaf; leaf != null; leaf = leaf.rightLeaf)
                 for (int ix = 0; ix < leaf.KeyCount; ++ix)
                     array[index++] = leaf.GetKey (ix);
         }
@@ -294,7 +294,7 @@ namespace Kaos.Collections
 
             int delCount = 0;
 
-            for (KeyLeaf leaf = rightmostLeaf; leaf != null; leaf = leaf.leftLeaf)
+            for (Leaf leaf = rightmostLeaf; leaf != null; leaf = leaf.leftLeaf)
                 for (int ix = leaf.KeyCount-1; ix >= 0; --ix)
                 {
                     TKey key = leaf.GetKey (ix);
@@ -380,7 +380,7 @@ namespace Kaos.Collections
                 return;
             }
 
-            for (KeyLeaf leaf = rightmostLeaf; leaf != null; leaf = leaf.leftLeaf)
+            for (Leaf leaf = rightmostLeaf; leaf != null; leaf = leaf.leftLeaf)
                 for (int ix = leaf.KeyCount-1; ix >= 0; --ix)
                 {
                     TKey key = leaf.GetKey (ix);
@@ -465,7 +465,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Determines whether a set is a superset of the specified collection.</summary>
+        /// <summary>Determines whether a set is a superset of the supplied collection.</summary>
         /// <param name="other">The items to compare to the current set.</param>
         /// <returns><b>true</b> if the set is a superset of <em>other</em>; otherwise <b>false</b>.</returns>
         /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
@@ -568,7 +568,7 @@ namespace Kaos.Collections
             oNum.MoveNext();
             TKey oKey = oNum.Current;
 
-            for (KeyLeaf leaf = leftmostLeaf; leaf != null; leaf = leaf.rightLeaf)
+            for (Leaf leaf = leftmostLeaf; leaf != null; leaf = leaf.rightLeaf)
                 for (int ix = 0; ix < leaf.KeyCount; )
                     for (TKey key = leaf.GetKey (ix);;)
                     {
@@ -635,7 +635,7 @@ namespace Kaos.Collections
         {
             private readonly RankedSet<TKey> tree;
             private readonly bool isReverse;
-            private KeyLeaf leaf;
+            private Leaf leaf;
             private int index;
 
             internal Enumerator (RankedSet<TKey> set, bool reverse=false)
@@ -712,7 +712,7 @@ namespace Kaos.Collections
         /// </remarks>
         public IEnumerable<TKey> GetBetween (TKey lower, TKey upper)
         {
-            var leaf = (KeyLeaf) Find (lower, out int index);
+            var leaf = (Leaf) Find (lower, out int index);
 
             // When the supplied start key is not be found, start with the next highest key.
             if (index < 0)
@@ -748,7 +748,7 @@ namespace Kaos.Collections
             if (index < 0 || index >= Count)
                 throw new ArgumentOutOfRangeException (nameof (index), "Specified argument was out of the range of valid values.");
 
-            var leaf = (KeyLeaf) Find (ref index);
+            var leaf = (Leaf) Find (ref index);
             return leaf.GetKey (index);
         }
 
@@ -758,7 +758,7 @@ namespace Kaos.Collections
         /// <returns>An enumerator for the set for items greater than or equal to <em>item</em>.</returns>
         public IEnumerable<TKey> GetFrom (TKey item)
         {
-            var leaf = (KeyLeaf) Find (item, out int index);
+            var leaf = (Leaf) Find (item, out int index);
 
             // When the supplied start key is not be found, start with the next highest key.
             if (index < 0)
@@ -773,7 +773,7 @@ namespace Kaos.Collections
                     continue;
                 }
 
-                leaf = (KeyLeaf) leaf.rightLeaf;
+                leaf = (Leaf) leaf.rightLeaf;
                 if (leaf == null)
                     yield break;
 

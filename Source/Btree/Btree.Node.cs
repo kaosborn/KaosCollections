@@ -119,14 +119,13 @@ namespace Kaos.Collections
             }
         }
 
-        protected class KeyLeaf : Node
+        protected class Leaf : Node
         {
-            public KeyLeaf leftLeaf, rightLeaf;
-
+            public Leaf leftLeaf, rightLeaf;
 
             /// <summary>Create a siblingless leaf.</summary>
             /// <param name="capacity">The initial number of elements the page can store.</param>
-            public KeyLeaf (int capacity=0) : base (capacity)
+            public Leaf (int capacity=0) : base (capacity)
             {
                 this.leftLeaf = this.rightLeaf = null;
             }
@@ -135,7 +134,7 @@ namespace Kaos.Collections
             /// <summary>Splice this leaf to right of <paramref name="leftLeaf"/>.</summary>
             /// <param name="leftLeaf">Provides linked list insert point.</param>
             /// <param name="capacity">The initial number of elements the page can store.</param>
-            public KeyLeaf (KeyLeaf leftLeaf, int capacity) : base (capacity)
+            public Leaf (Leaf leftLeaf, int capacity) : base (capacity)
             {
                 // Doubly linked list insertion.
                 this.rightLeaf = leftLeaf.rightLeaf;
@@ -150,7 +149,7 @@ namespace Kaos.Collections
             public override int Weight
             { get { return keys.Count; } }
 
-            public void Add (KeyLeaf source, int sourceStart, int sourceStop)
+            public void Add (Leaf source, int sourceStart, int sourceStop)
             {
                 for (int ix = sourceStart; ix < sourceStop; ++ix)
                     keys.Add (source.GetKey (ix));
