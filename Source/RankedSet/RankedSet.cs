@@ -14,33 +14,33 @@ using System.Diagnostics;
 namespace Kaos.Collections
 {
     /// <summary>Represents a collection of sorted, unique items.</summary>
-    /// <typeparam name="TKey">The type of the items in the set.</typeparam>
+    /// <typeparam name="T">The type of the items in the set.</typeparam>
     /// <remarks>
     /// This class emulates and extends the
-    /// <see cref="System.Collections.Generic.SortedSet{TKey}"/> class.
+    /// <see cref="System.Collections.Generic.SortedSet{T}"/> class.
     /// </remarks>
     [DebuggerTypeProxy (typeof (ICollectionDebugView<>))]
     [DebuggerDisplay ("Count = {Count}")]
-    public sealed class RankedSet<TKey> : Btree<TKey>,
+    public sealed class RankedSet<T> : Btree<T>,
 #if ! NET35
-        ISet<TKey>,
+        ISet<T>,
 #endif
-        ICollection<TKey>,
+        ICollection<T>,
         ICollection
 #if ! NET35 && ! NET40
-        , IReadOnlyCollection<TKey>
+        , IReadOnlyCollection<T>
 #endif
     {
         #region Constructors
 
         /// <summary>Initializes a new set of sorted items that uses the default item comparer.</summary>
-        public RankedSet() : base (Comparer<TKey>.Default, new Leaf())
+        public RankedSet() : base (Comparer<T>.Default, new Leaf())
         { }
 
         /// <summary>Initializes a new set of sorted items that uses the supplied comparer.</summary>
         /// <param name="comparer">The comparer to use for sorting items.</param>
         /// <exception cref="InvalidOperationException">When <em>comparer</em> is <b>null</b> and no other comparer available.</exception>
-        public RankedSet (IComparer<TKey> comparer) : base (comparer, new Leaf())
+        public RankedSet (IComparer<T> comparer) : base (comparer, new Leaf())
         { }
 
         /// <summary>Initializes a new set that contains items copied from the supplied collection.</summary>
@@ -49,7 +49,7 @@ namespace Kaos.Collections
         /// This constructor is a O(<em>n</em> log <em>n</em>) operation, where <em>n</em> is the number of items.
         /// </remarks>
         /// <exception cref="ArgumentNullException">When <em>collection</em> is <b>null</b>.</exception>
-        public RankedSet (IEnumerable<TKey> collection) : this (collection, Comparer<TKey>.Default)
+        public RankedSet (IEnumerable<T> collection) : this (collection, Comparer<T>.Default)
         { }
 
         /// <summary>Initializes a new set that contains items copied from the supplied collection.</summary>
@@ -60,12 +60,12 @@ namespace Kaos.Collections
         /// </remarks>
         /// <exception cref="ArgumentNullException">When <em>collection</em> is <b>null</b>.</exception>
         /// <exception cref="InvalidOperationException">When <em>comparer</em> is <b>null</b> and no other comparer available.</exception>
-        public RankedSet (IEnumerable<TKey> collection, IComparer<TKey> comparer) : this (comparer)
+        public RankedSet (IEnumerable<T> collection, IComparer<T> comparer) : this (comparer)
         {
             if (collection == null)
                 throw new ArgumentNullException (nameof (collection));
 
-            foreach (TKey key in collection)
+            foreach (T key in collection)
                 Add (key);
         }
 
@@ -73,7 +73,7 @@ namespace Kaos.Collections
 
         #region Properties
 
-        bool ICollection<TKey>.IsReadOnly
+        bool ICollection<T>.IsReadOnly
         { get { return false; } }
 
         bool ICollection.IsSynchronized
@@ -94,7 +94,7 @@ namespace Kaos.Collections
         /// </para>
         /// <para>This is a O(log <em>n</em>) operation.</para>
         /// </remarks>
-        public bool Add (TKey item)
+        public bool Add (T item)
         {
             var path = new NodeVector (this, item);
             if (path.IsFound)
@@ -104,10 +104,10 @@ namespace Kaos.Collections
             return true;
         }
 
-        void ICollection<TKey>.Add (TKey item)
+        void ICollection<T>.Add (T item)
         { Add (item); }
 
-        private void Add2 (NodeVector path, TKey key)
+        private void Add2 (NodeVector path, T key)
         {
             StageBump();
 
@@ -161,7 +161,7 @@ namespace Kaos.Collections
         /// <summary>Determines whether the set contains a supplied item.</summary>
         /// <param name="item">The item to check for existence in the set.</param>
         /// <returns><b>true</b> if the set contains <em>item</em>; otherwise <b>false</b>.</returns>
-        public bool Contains (TKey item)
+        public bool Contains (T item)
         {
             Leaf leaf = Find (item, out int index);
             return index >= 0;
@@ -172,7 +172,7 @@ namespace Kaos.Collections
         /// <param name="array">A one-dimensional array that is the destination of the items to copy from the set.</param>
         /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
         /// <exception cref="ArgumentException">When not enough space is given for the copy.</exception>
-        public void CopyTo (TKey[] array)
+        public void CopyTo (T[] array)
         { CopyTo (array, 0, Count); }
 
         /// <summary>Copies the set to a compatible array, starting at the beginning of the target array.</summary>
@@ -181,7 +181,7 @@ namespace Kaos.Collections
         /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero.</exception>
         /// <exception cref="ArgumentException">When not enough space is given for the copy.</exception>
-        public void CopyTo (TKey[] array, int index)
+        public void CopyTo (T[] array, int index)
         { CopyTo (array, index, Count); }
 
         /// <summary>Copies the set to a compatible array, starting at the supplied position.</summary>
@@ -191,7 +191,7 @@ namespace Kaos.Collections
         /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> or <em>count</em> is less than zero.</exception>
         /// <exception cref="ArgumentException">When not enough space is given for the copy.</exception>
-        public void CopyTo (TKey[] array, int index, int count)
+        public void CopyTo (T[] array, int index, int count)
         {
             if (array == null)
                 throw new ArgumentNullException (nameof (array));
@@ -227,7 +227,7 @@ namespace Kaos.Collections
             if (Count > array.Length - index)
                 throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
 
-            if (array is TKey[] genArray)
+            if (array is T[] genArray)
             {
                 CopyTo (genArray, index);
                 return;
@@ -258,7 +258,7 @@ namespace Kaos.Collections
         /// <param name="item">The item to remove.</param>
         /// <returns><b>true</b> if <em>item</em> was found and removed; otherwise <b>false</b>.</returns>
         /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
-        public bool Remove (TKey item)
+        public bool Remove (T item)
         {
             var path = new NodeVector (this, item);
             if (! path.IsFound)
@@ -274,7 +274,7 @@ namespace Kaos.Collections
         /// <returns>The number of items removed from the set.</returns>
         /// <remarks>This is a O(<em>n</em> log <em>n</em>) operation.</remarks>
         /// <exception cref="ArgumentNullException">When <em>match</em> is <b>null</b>.</exception>
-        public int RemoveWhere (Predicate<TKey> match)
+        public int RemoveWhere (Predicate<T> match)
         {
             if (match == null)
                 throw new ArgumentNullException (nameof (match));
@@ -284,7 +284,7 @@ namespace Kaos.Collections
             for (Leaf leaf = rightmostLeaf; leaf != null; leaf = leaf.leftLeaf)
                 for (int ix = leaf.KeyCount-1; ix >= 0; --ix)
                 {
-                    TKey key = leaf.GetKey (ix);
+                    T key = leaf.GetKey (ix);
                     if (match (key))
                     {
                         ++delCount;
@@ -298,7 +298,7 @@ namespace Kaos.Collections
 
         /// <summary>Returns an IEnumerable that iterates over the set in reverse order.</summary>
         /// <returns>An enumerator that reverse iterates over the set.</returns>
-        public IEnumerable<TKey> Reverse()
+        public IEnumerable<T> Reverse()
         {
             Enumerator enor = new Enumerator (this, reverse:true);
             while (enor.MoveNext())
@@ -306,7 +306,7 @@ namespace Kaos.Collections
         }
 
 
-        IEnumerator<TKey> IEnumerable<TKey>.GetEnumerator()
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
             return new Enumerator (this);
         }
@@ -331,7 +331,7 @@ namespace Kaos.Collections
         /// <code source="..\Bench\RsExample04\RsExample04.cs" lang="cs" />
         /// </example>
         /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
-        public void ExceptWith (IEnumerable<TKey> other)
+        public void ExceptWith (IEnumerable<T> other)
         {
             if (other == null)
                 throw new ArgumentNullException (nameof (other));
@@ -341,7 +341,7 @@ namespace Kaos.Collections
                 if (other == this)
                     Clear();
                 else
-                    foreach (TKey key in other)
+                    foreach (T key in other)
                         Remove (key);
         }
 
@@ -352,7 +352,7 @@ namespace Kaos.Collections
         /// <code source="..\Bench\RsExample04\RsExample04.cs" lang="cs" />
         /// </example>
         /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
-        public void IntersectWith (IEnumerable<TKey> other)
+        public void IntersectWith (IEnumerable<T> other)
         {
             if (other == null)
                 throw new ArgumentNullException (nameof (other));
@@ -361,7 +361,7 @@ namespace Kaos.Collections
                 return;
 
             StageBump();
-            var oSet = other as RankedSet<TKey> ?? new RankedSet<TKey> (other);
+            var oSet = other as RankedSet<T> ?? new RankedSet<T> (other);
 
             if (oSet.Count == 0 || Comparer.Compare (oSet.Max, Min) < 0 || Comparer.Compare (oSet.Min, Max) > 0)
             {
@@ -372,7 +372,7 @@ namespace Kaos.Collections
             for (Leaf leaf = rightmostLeaf; leaf != null; leaf = leaf.leftLeaf)
                 for (int ix = leaf.KeyCount-1; ix >= 0; --ix)
                 {
-                    TKey key = leaf.GetKey (ix);
+                    T key = leaf.GetKey (ix);
                     if (! oSet.Contains (key))
                         Remove (key);
                 }
@@ -386,17 +386,17 @@ namespace Kaos.Collections
         /// <code source="..\Bench\RsExample03\RsExample03.cs" lang="cs" />
         /// </example>
         /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
-        public bool IsProperSubsetOf (IEnumerable<TKey> other)
+        public bool IsProperSubsetOf (IEnumerable<T> other)
         {
             if (other == null)
                 throw new ArgumentNullException (nameof (other));
 
-            var oSet = other as RankedSet<TKey> ?? new RankedSet<TKey> (other);
+            var oSet = other as RankedSet<T> ?? new RankedSet<T> (other);
 
             if (Count >= oSet.Count)
                 return false;
 
-            foreach (TKey key in this)
+            foreach (T key in this)
                 if (! oSet.Contains (key))
                     return false;
 
@@ -411,17 +411,17 @@ namespace Kaos.Collections
         /// <code source="..\Bench\RsExample03\RsExample03.cs" lang="cs" />
         /// </example>
         /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
-        public bool IsProperSupersetOf (IEnumerable<TKey> other)
+        public bool IsProperSupersetOf (IEnumerable<T> other)
         {
             if (other == null)
                 throw new ArgumentNullException (nameof (other));
 
-            var oSet = other as RankedSet<TKey> ?? new RankedSet<TKey> (other);
+            var oSet = other as RankedSet<T> ?? new RankedSet<T> (other);
 
             if (Count <= oSet.Count)
                 return false;
 
-            foreach (TKey key in other)
+            foreach (T key in other)
                 if (! Contains (key))
                     return false;
 
@@ -436,17 +436,17 @@ namespace Kaos.Collections
         /// <code source="..\Bench\RsExample03\RsExample03.cs" lang="cs" />
         /// </example>
         /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
-        public bool IsSubsetOf (IEnumerable<TKey> other)
+        public bool IsSubsetOf (IEnumerable<T> other)
         {
             if (other == null)
                 throw new ArgumentNullException (nameof (other));
 
-            var oSet = other as RankedSet<TKey> ?? new RankedSet<TKey> (other);
+            var oSet = other as RankedSet<T> ?? new RankedSet<T> (other);
 
             if (Count > oSet.Count)
                 return false;
 
-            foreach (TKey key in this)
+            foreach (T key in this)
                 if (! oSet.Contains (key))
                     return false;
 
@@ -461,12 +461,12 @@ namespace Kaos.Collections
         /// <code source="..\Bench\RsExample03\RsExample03.cs" lang="cs" />
         /// </example>
         /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
-        public bool IsSupersetOf (IEnumerable<TKey> other)
+        public bool IsSupersetOf (IEnumerable<T> other)
         {
             if (other == null)
                 throw new ArgumentNullException (nameof (other));
 
-            foreach (TKey key in other)
+            foreach (T key in other)
                 if (! Contains (key))
                     return false;
 
@@ -481,7 +481,7 @@ namespace Kaos.Collections
         /// <code source="..\Bench\RsExample03\RsExample03.cs" lang="cs" />
         /// </example>
         /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
-        public bool Overlaps (IEnumerable<TKey> other)
+        public bool Overlaps (IEnumerable<T> other)
         {
             if (other == null)
                 throw new ArgumentNullException (nameof (other));
@@ -489,21 +489,21 @@ namespace Kaos.Collections
             if (Count == 0)
                 return false;
 
-            if (other is RankedSet<TKey> oSet)
+            if (other is RankedSet<T> oSet)
             {
                 if (Comparer.Compare (oSet.Max, Min) < 0)
                     return false;
                 if (Comparer.Compare (oSet.Min, Max) > 0)
                     return false;
 
-                foreach (TKey key in oSet.GetBetween (Min, Max))
+                foreach (T key in oSet.GetBetween (Min, Max))
                     if (Contains (key))
                         return true;
 
                 return false;
             }
 
-            foreach (TKey key in other)
+            foreach (T key in other)
                 if (Contains (key))
                     return true;
 
@@ -519,17 +519,17 @@ namespace Kaos.Collections
         /// <code source="..\Bench\RsExample03\RsExample03.cs" lang="cs" />
         /// </example>
         /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
-        public bool SetEquals (IEnumerable<TKey> other)
+        public bool SetEquals (IEnumerable<T> other)
         {
             if (other == null)
                 throw new ArgumentNullException (nameof (other));
 
-            var oSet = other as RankedSet<TKey> ?? new RankedSet<TKey> (other);
+            var oSet = other as RankedSet<T> ?? new RankedSet<T> (other);
 
             if (Count != oSet.Count)
                 return false;
 
-            foreach (TKey key in oSet)
+            foreach (T key in oSet)
                 if (! Contains (key))
                     return false;
 
@@ -543,23 +543,23 @@ namespace Kaos.Collections
         /// <code source="..\Bench\RsExample04\RsExample04.cs" lang="cs" />
         /// </example>
         /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
-        public void SymmetricExceptWith (IEnumerable<TKey> other)
+        public void SymmetricExceptWith (IEnumerable<T> other)
         {
             if (other == null)
                 throw new ArgumentNullException (nameof (other));
 
-            var oSet = other as RankedSet<TKey> ?? new RankedSet<TKey> (other);
+            var oSet = other as RankedSet<T> ?? new RankedSet<T> (other);
             if (oSet.Count == 0)
                 return;
 
             StageBump();
             Enumerator oNum = oSet.GetEnumerator();
             oNum.MoveNext();
-            TKey oKey = oNum.Current;
+            T oKey = oNum.Current;
 
             for (Leaf leaf = leftmostLeaf; leaf != null; leaf = leaf.rightLeaf)
                 for (int ix = 0; ix < leaf.KeyCount; )
-                    for (TKey key = leaf.GetKey (ix);;)
+                    for (T key = leaf.GetKey (ix);;)
                     {
                         int diff = Comparer.Compare (oKey, key);
                         if (diff >= 0)
@@ -606,13 +606,13 @@ namespace Kaos.Collections
         /// <code source="..\Bench\RsExample04\RsExample04.cs" lang="cs" />
         /// </example>
         /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
-        public void UnionWith (IEnumerable<TKey> other)
+        public void UnionWith (IEnumerable<T> other)
         {
             if (other == null)
                 throw new ArgumentNullException (nameof (other));
 
             StageBump();
-            foreach (TKey key in other)
+            foreach (T key in other)
                 Add (key);
         }
 
@@ -622,15 +622,15 @@ namespace Kaos.Collections
         #region Enumerator
 
         /// <summary>Enumerates the sorted elements of a KeyCollection.</summary>
-        public sealed class Enumerator : IEnumerator<TKey>
+        public sealed class Enumerator : IEnumerator<T>
         {
-            private readonly RankedSet<TKey> tree;
+            private readonly RankedSet<T> tree;
             private readonly bool isReverse;
             private Leaf leaf;
             private int index;
             private int stageFreeze;
 
-            internal Enumerator (RankedSet<TKey> set, bool reverse=false)
+            internal Enumerator (RankedSet<T> set, bool reverse=false)
             {
                 this.tree = set;
                 this.isReverse = reverse;
@@ -650,12 +650,12 @@ namespace Kaos.Collections
 
             /// <summary>Gets the element at the current position of the enumerator.</summary>
             /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
-            public TKey Current
+            public T Current
             {
                 get
                 {
                     tree.StageCheck (stageFreeze);
-                    return index < 0? default (TKey) : leaf.GetKey (index);
+                    return index < 0? default (T) : leaf.GetKey (index);
                 }
             }
 
@@ -713,7 +713,7 @@ namespace Kaos.Collections
         /// Neither <em>lower</em> or <em>upper</em> need to be present in the collection.
         /// </remarks>
         /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
-        public IEnumerable<TKey> GetBetween (TKey lower, TKey upper)
+        public IEnumerable<T> GetBetween (T lower, T upper)
         {
             int stageFreeze = stage;
             var leaf = (Leaf) Find (lower, out int index);
@@ -749,7 +749,7 @@ namespace Kaos.Collections
         /// <returns>The key at the supplied index.</returns>
         /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
         /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or greater than or equal to the number of keys.</exception>
-        public TKey GetByIndex (int index)
+        public T GetByIndex (int index)
         {
             if (index < 0 || index >= Count)
                 throw new ArgumentOutOfRangeException (nameof (index), "Argument was out of the range of valid values.");
@@ -763,7 +763,7 @@ namespace Kaos.Collections
         /// <param name="item">Minimum value of range.</param>
         /// <returns>An enumerator for the set for items greater than or equal to <em>item</em>.</returns>
         /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
-        public IEnumerable<TKey> GetFrom (TKey item)
+        public IEnumerable<T> GetFrom (T item)
         {
             int stageFreeze = stage;
             var leaf = (Leaf) Find (item, out int index);
@@ -795,7 +795,7 @@ namespace Kaos.Collections
         /// <param name="item">The item of the index to get.</param>
         /// <returns>The index of <em>item</em> if found; otherwise the bitwise complement of the insert point.</returns>
         /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
-        public int IndexOf (TKey item)
+        public int IndexOf (T item)
         {
             var path = new NodeVector (this, item);
             int result = path.GetIndex();
