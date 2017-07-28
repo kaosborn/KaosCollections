@@ -76,7 +76,7 @@ namespace CollectionsTest
 
             int firstKey = -1;
             int iterations = 0;
-            foreach (var e in btree.GetStartAt (501))
+            foreach (var e in btree.GetFrom (501))
             {
                 if (iterations == 0)
                     firstKey = e.Key;
@@ -100,7 +100,7 @@ namespace CollectionsTest
             for (int i = 1; i < 999; i += 2)
             {
                 bool isFirst = true;
-                foreach (var x in btree.GetStartAt (i))
+                foreach (var x in btree.GetFrom (i))
                 {
                     if (isFirst)
                     {
@@ -121,7 +121,7 @@ namespace CollectionsTest
                 btree.Add (i, -i);
 
             int iterations = 0;
-            foreach (var x in btree.GetStartAt (2000))
+            foreach (var x in btree.GetFrom (2000))
                 ++iterations;
 
             Assert.AreEqual (0, iterations, "SkipUntilKey shouldn't find anything");

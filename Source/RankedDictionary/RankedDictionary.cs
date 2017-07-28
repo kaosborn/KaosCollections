@@ -22,7 +22,7 @@ namespace Kaos.Collections
     /// <see cref="System.Collections.Generic.SortedDictionary{TKey,TValue}"/> class
     /// with the addition of the methods
     /// <see cref="GetByIndex"/>, <see cref="IndexOf"/>, <see cref="TryGetValueAndIndex"/>,
-    /// <see cref="GetBetween"/>, <see cref="GetStartAt"/>, and <see cref="Last"/>.
+    /// <see cref="GetBetween"/>, <see cref="GetFrom"/>, and <see cref="Last"/>.
     /// </remarks>
     [DebuggerTypeProxy (typeof (IDictionaryDebugView<,>))]
     [DebuggerDisplay ("Count = {Count}")]
@@ -760,7 +760,7 @@ namespace Kaos.Collections
         /// <param name="key">Minimum value of range.</param>
         /// <returns>An enumerator for the collection for key values greater than or equal to <em>key</em>.</returns>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
-        public IEnumerable<KeyValuePair<TKey,TValue>> GetStartAt (TKey key)
+        public IEnumerable<KeyValuePair<TKey,TValue>> GetFrom (TKey key)
         {
             if (key == null)
                 throw new ArgumentNullException (nameof (key));
