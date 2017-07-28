@@ -115,6 +115,7 @@ namespace Kaos.Collections
                 }
 
                 /// <summary>Gets the key at the current position of the enumerator.</summary>
+                /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
                 public TKey Current
                 {
                     get
@@ -126,7 +127,8 @@ namespace Kaos.Collections
 
                 /// <summary>Advances the enumerator to the next key in the collection.</summary>
                 /// <returns><b>true</b> if the enumerator was successfully advanced to the next key; <b>false</b> if the enumerator has passed the end of the collection.</returns>
-                public bool MoveNext()
+                /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
+                    public bool MoveNext()
                 {
                     tree.StageCheck (stageFreeze);
 

@@ -75,9 +75,15 @@ namespace Kaos.Collections
         /// <summary>Gets or sets the value associated with the supplied key.</summary>
         /// <param name="key">The key of the value to get or set.</param>
         /// <returns>Value associated with the supplied key.</returns>
+        /// <remarks>
+        /// <para>
+        /// Setting a value for a non-existent key performs an add operation.
+        /// To get a value for a supplied index, use the <see cref="GetByIndex"/> method.
+        /// </para>
+        /// <para>This is a O(log <em>n</em>) operation.</para>
+        /// </remarks>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
-        /// <exception cref="KeyNotFoundException">When getting a value for a non-existant key.</exception>
-        /// <remarks>Setting a value for a non-existent key performs an add operation.</remarks>
+        /// <exception cref="KeyNotFoundException">When getting a value and <em>key</em> was not found.</exception>
         public TValue this[TKey key]
         {
             get
@@ -147,14 +153,14 @@ namespace Kaos.Collections
         /// <summary>Adds an element with the supplied key and value.</summary>
         /// <param name="key">The key of the element to add.</param>
         /// <param name="value">The value of the element to add.  May be null.</param>
-        /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
-        /// <exception cref="ArgumentException">When a key/value pair has already been added with the supplied key.</exception>
         /// <remarks>
         /// <para>
         /// If <em>key</em> is already in the dictionary, this method takes no action.
         /// </para>
         /// <para>This is a O(log <em>n</em>) operation.</para>
         /// </remarks>
+        /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
+        /// <exception cref="ArgumentException">When a key/value pair has already been added with the supplied key.</exception>
         public void Add (TKey key, TValue value)
         {
             if (key == null)
@@ -288,8 +294,8 @@ namespace Kaos.Collections
         /// <summary>Removes the element with the supplied key from the dictionary.</summary>
         /// <param name="key">The key of the element to remove.</param>
         /// <returns><b>true</b> if the element was successfully found and removed; otherwise <b>false</b>.</returns>
-        /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
         /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
+        /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
         public bool Remove (TKey key)
         {
             if (key == null)
@@ -344,7 +350,7 @@ namespace Kaos.Collections
             private int stageFreeze;
 
             /// <summary>Make an iterator that will loop thru the collection in order.</summary>
-            /// <param name="dictionary"><see cref="RankedDictionary{TKey,TValue}"/>containing these key/value pairs.</param>
+            /// <param name="dictionary">Collection containing these key/value pairs.</param>
             /// <param name="isGeneric">Supply <b>false</b> to indicate object Current should return DictionaryEntry values.</param>
             internal Enumerator (RankedDictionary<TKey,TValue> dictionary, bool isGeneric=true)
             {
@@ -744,8 +750,8 @@ namespace Kaos.Collections
         /// <summary>Gets the key/value pair at the supplied index.</summary>
         /// <param name="index">The zero-based index of the element to get.</param>
         /// <returns>The element at the supplied index.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or greater than or equal to the number of keys.</exception>
         /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or greater than or equal to the number of keys.</exception>
         public KeyValuePair<TKey,TValue> GetByIndex (int index)
         {
             if (index < 0 || index >= Count)
@@ -794,8 +800,8 @@ namespace Kaos.Collections
         /// <summary>Gets the index of the supplied key.</summary>
         /// <param name="key">The key of the index to get.</param>
         /// <returns>The index of the element with the supplied key if found; otherwise the bitwise complement of the insert point.</returns>
-        /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
         /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
+        /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
         public int IndexOf (TKey key)
         {
             if (key == null)
@@ -810,6 +816,7 @@ namespace Kaos.Collections
         /// <summary>Gets the Last key/value pair.</summary>
         /// <returns>The key/value pair with maximum key in dictionary.</returns>
         /// <remarks>This is a O(1) operation.</remarks>
+        /// <exception cref="InvalidOperationException">When the collection is empty.</exception>
         public KeyValuePair<TKey,TValue> Last()
         {
             if (Count == 0)

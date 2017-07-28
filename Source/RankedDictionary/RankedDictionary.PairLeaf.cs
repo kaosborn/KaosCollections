@@ -17,7 +17,7 @@ namespace Kaos.Collections
         /// <summary>An terminal B+ tree page.</summary>
         /// <remarks>
         /// All key/value pairs are contained in this class.
-        /// Leaf is a sequential linked list also referenced by parent branches.
+        /// This is a doubly linked list also referenced by parent branches.
         /// </remarks>
         private sealed class PairLeaf : Leaf
         {

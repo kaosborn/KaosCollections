@@ -92,7 +92,7 @@ namespace Kaos.Collections
         /// <para>
         /// If <em>item</em> is already in the set, this method returns <b>false</b> and does not throw an exception.
         /// </para>
-        /// <para>This is a O(<em>log n</em>) operation.</para>
+        /// <para>This is a O(log <em>n</em>) operation.</para>
         /// </remarks>
         public bool Add (TKey item)
         {
@@ -254,10 +254,10 @@ namespace Kaos.Collections
         public Enumerator GetEnumerator() => new Enumerator (this);
 
 
-        /// <summary>Removes the supplied item from the set.</summary>
+        /// <summary>Removes an item from the set.</summary>
         /// <param name="item">The item to remove.</param>
         /// <returns><b>true</b> if <em>item</em> was found and removed; otherwise <b>false</b>.</returns>
-        /// <remarks>This is a O(<em>log n</em>) operation.</remarks>
+        /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
         public bool Remove (TKey item)
         {
             var path = new NodeVector (this, item);
@@ -272,8 +272,8 @@ namespace Kaos.Collections
         /// <summary>Removes all items that match the condition defined by the supplied predicate.</summary>
         /// <param name="match">The condition of the items to remove.</param>
         /// <returns>The number of items removed from the set.</returns>
-        /// <exception cref="ArgumentNullException">When <em>match</em> is <b>null</b>.</exception>
         /// <remarks>This is a O(<em>n</em> log <em>n</em>) operation.</remarks>
+        /// <exception cref="ArgumentNullException">When <em>match</em> is <b>null</b>.</exception>
         public int RemoveWhere (Predicate<TKey> match)
         {
             if (match == null)
@@ -323,7 +323,6 @@ namespace Kaos.Collections
 
         /// <summary>Removes all items that are in a supplied collection.</summary>
         /// <param name="other">The collection of items to remove.</param>
-        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         /// <remarks>
         /// Duplicate values in <em>other</em> are ignored.
         /// Values in <em>other</em> that are not in the set are ignored.
@@ -331,6 +330,7 @@ namespace Kaos.Collections
         /// <example>
         /// <code source="..\Bench\RsExample04\RsExample04.cs" lang="cs" />
         /// </example>
+        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         public void ExceptWith (IEnumerable<TKey> other)
         {
             if (other == null)
@@ -348,10 +348,10 @@ namespace Kaos.Collections
 
         /// <summary>Removes all items that are not in a supplied collection.</summary>
         /// <param name="other">The collection of items to intersect.</param>
-        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         /// <example>
         /// <code source="..\Bench\RsExample04\RsExample04.cs" lang="cs" />
         /// </example>
+        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         public void IntersectWith (IEnumerable<TKey> other)
         {
             if (other == null)
@@ -382,10 +382,10 @@ namespace Kaos.Collections
         /// <summary>Determines whether the set is a proper subset of the supplied collection.</summary>
         /// <param name="other">The collection to compare to this set.</param>
         /// <returns><b>true</b> if the set is a proper subset of <em>other</em>; otherwise <b>false</b>.</returns>
-        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         /// <example>
         /// <code source="..\Bench\RsExample03\RsExample03.cs" lang="cs" />
         /// </example>
+        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         public bool IsProperSubsetOf (IEnumerable<TKey> other)
         {
             if (other == null)
@@ -407,10 +407,10 @@ namespace Kaos.Collections
         /// <summary>Determines whether the set is a proper superset of the supplied collection.</summary>
         /// <param name="other">The collection to compare to this set.</param>
         /// <returns><b>true</b> if the set is a proper superset of <em>other</em>; otherwise <b>false</b>.</returns>
-        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         /// <example>
         /// <code source="..\Bench\RsExample03\RsExample03.cs" lang="cs" />
         /// </example>
+        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         public bool IsProperSupersetOf (IEnumerable<TKey> other)
         {
             if (other == null)
@@ -432,10 +432,10 @@ namespace Kaos.Collections
         /// <summary>Determines whether the set is a subset of the supplied collection.</summary>
         /// <param name="other">The collection to compare to this set.</param>
         /// <returns><b>true</b> if the set is a subset of <em>other</em>; otherwise <b>false</b>.</returns>
-        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         /// <example>
         /// <code source="..\Bench\RsExample03\RsExample03.cs" lang="cs" />
         /// </example>
+        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         public bool IsSubsetOf (IEnumerable<TKey> other)
         {
             if (other == null)
@@ -457,10 +457,10 @@ namespace Kaos.Collections
         /// <summary>Determines whether a set is a superset of the supplied collection.</summary>
         /// <param name="other">The items to compare to the current set.</param>
         /// <returns><b>true</b> if the set is a superset of <em>other</em>; otherwise <b>false</b>.</returns>
-        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         /// <example>
         /// <code source="..\Bench\RsExample03\RsExample03.cs" lang="cs" />
         /// </example>
+        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         public bool IsSupersetOf (IEnumerable<TKey> other)
         {
             if (other == null)
@@ -477,10 +477,10 @@ namespace Kaos.Collections
         /// <summary>Determines whether the set and a supplied collection share common elements.</summary>
         /// <param name="other">The collection to compare to this set.</param>
         /// <returns><b>true</b> if the set and <em>other</em> share at least one common item; otherwise <b>false</b>.</returns>
-        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         /// <example>
         /// <code source="..\Bench\RsExample03\RsExample03.cs" lang="cs" />
         /// </example>
+        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         public bool Overlaps (IEnumerable<TKey> other)
         {
             if (other == null)
@@ -514,12 +514,11 @@ namespace Kaos.Collections
         /// <summary>Determines whether the set and the supplied collection contain the same items.</summary>
         /// <param name="other">The collection to compare to this set.</param>
         /// <returns><b>true</b> if the set is equal to <em>other</em>; otherwise <b>false</b>.</returns>
-        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
-        /// <remarks>
-        /// Duplicate values in <em>other</em> are ignored.</remarks>
+        /// <remarks>Duplicate values in <em>other</em> are ignored.</remarks>
         /// <example>
         /// <code source="..\Bench\RsExample03\RsExample03.cs" lang="cs" />
         /// </example>
+        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         public bool SetEquals (IEnumerable<TKey> other)
         {
             if (other == null)
@@ -540,10 +539,10 @@ namespace Kaos.Collections
 
         /// <summary>Modifies the set so that it contains only items that are present either in itself or in the supplied collection, but not both.</summary>
         /// <param name="other">The collection to compare to this set.</param>
-        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         /// <example>
         /// <code source="..\Bench\RsExample04\RsExample04.cs" lang="cs" />
         /// </example>
+        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         public void SymmetricExceptWith (IEnumerable<TKey> other)
         {
             if (other == null)
@@ -602,11 +601,11 @@ namespace Kaos.Collections
 
         /// <summary>Add all items in <em>other</em> to this set that are not already in this set.</summary>
         /// <param name="other">The collection to add to this set.</param>
-        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         /// <remarks>Duplicate values in <em>other</em> are ignored.</remarks>
         /// <example>
         /// <code source="..\Bench\RsExample04\RsExample04.cs" lang="cs" />
         /// </example>
+        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         public void UnionWith (IEnumerable<TKey> other)
         {
             if (other == null)
@@ -748,8 +747,8 @@ namespace Kaos.Collections
         /// <summary>Gets the key at the supplied index.</summary>
         /// <param name="index">The zero-based index of the key to get.</param>
         /// <returns>The key at the supplied index.</returns>
+        /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
         /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or greater than or equal to the number of keys.</exception>
-        /// <remarks>This is a O(<em>log n</em>) operation.</remarks>
         public TKey GetByIndex (int index)
         {
             if (index < 0 || index >= Count)
@@ -795,7 +794,7 @@ namespace Kaos.Collections
         /// <summary>Gets the index of the supplied item.</summary>
         /// <param name="item">The item of the index to get.</param>
         /// <returns>The index of <em>item</em> if found; otherwise the bitwise complement of the insert point.</returns>
-        /// <remarks>This is a O(<em>log n</em>) operation.</remarks>
+        /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
         public int IndexOf (TKey item)
         {
             var path = new NodeVector (this, item);
