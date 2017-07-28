@@ -95,6 +95,7 @@ namespace Kaos.Collections
                 if (key == null)
                     throw new ArgumentNullException (nameof (key));
 
+                StageBump();
                 var path = new NodeVector (this, key);
                 if (path.IsFound)
                     PairLeaf.SetValue (path, value);
@@ -168,6 +169,8 @@ namespace Kaos.Collections
 
         private void Add2 (NodeVector path, TKey key, TValue value)
         {
+            StageBump();
+
             var leaf = (PairLeaf) path.TopNode;
             int pathIndex = path.TopNodeIndex;
 
@@ -338,6 +341,7 @@ namespace Kaos.Collections
             private bool isGeneric;
             private PairLeaf leaf;
             private int index;
+            private int stageFreeze;
 
             /// <summary>Make an iterator that will loop thru the collection in order.</summary>
             /// <param name="dictionary"><see cref="RankedDictionary{TKey,TValue}"/>containing these key/value pairs.</param>
@@ -383,6 +387,7 @@ namespace Kaos.Collections
             {
                 get
                 {
+                    tree.StageCheck (stageFreeze);
                     if (index < 0)
                         throw new InvalidOperationException ("Enumeration is not active.");
 
@@ -394,10 +399,12 @@ namespace Kaos.Collections
             }
 
             /// <summary>Gets the key/value pair at the current location.</summary>
+            /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
             public KeyValuePair<TKey,TValue> Current
             {
                 get
                 {
+                    tree.StageCheck (stageFreeze);
                     return index < 0 ? new KeyValuePair<TKey,TValue> (default (TKey), default (TValue))
                                          : leaf.GetPair (index);
                 }
@@ -405,8 +412,11 @@ namespace Kaos.Collections
 
             /// <summary>Advances the enumerator to the next location.</summary>
             /// <returns><b>false</b> if no more data; otherwise <b>true</b>.</returns>
+            /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
             public bool MoveNext()
             {
+                tree.StageCheck (stageFreeze);
+
                 if (leaf != null)
                 {
                     if (++index < leaf.KeyCount)
@@ -423,7 +433,11 @@ namespace Kaos.Collections
 
             /// <summary>Moves the enumerator back to its initial location.</summary>
             void IEnumerator.Reset()
-            { index = -1; leaf = (PairLeaf) tree.leftmostLeaf; }
+            {
+                stageFreeze = tree.stage;
+                index = -1;
+                leaf = (PairLeaf) tree.leftmostLeaf;
+            }
 
             /// <exclude />
             public void Dispose() { }
@@ -538,6 +552,7 @@ namespace Kaos.Collections
 
                 try
                 {
+                    StageBump();
                     var path = new NodeVector (this, (TKey) key);
                     if (path.IsFound)
                         PairLeaf.SetValue (path, (TValue) value);
@@ -697,6 +712,7 @@ namespace Kaos.Collections
         /// </example>
         public IEnumerable<KeyValuePair<TKey,TValue>> GetBetween (TKey lower, TKey upper)
         {
+            int stageFreeze = stage;
             var leaf = (PairLeaf) Find (lower, out int index);
 
             // When the supplied start key is not be found, start with the next highest key.
@@ -711,6 +727,7 @@ namespace Kaos.Collections
                         yield break;
 
                     yield return leaf.GetPair (index);
+                    StageCheck (stageFreeze);
                     ++index;
                     continue;
                 }
@@ -748,6 +765,7 @@ namespace Kaos.Collections
             if (key == null)
                 throw new ArgumentNullException (nameof (key));
 
+            int stageFreeze = stage;
             var leaf = (PairLeaf) Find (key, out int index);
 
             // When the supplied start key is not be found, start with the next highest key.
@@ -759,6 +777,7 @@ namespace Kaos.Collections
                 if (index < leaf.KeyCount)
                 {
                     yield return leaf.GetPair (index);
+                    StageCheck (stageFreeze);
                     ++index;
                     continue;
                 }

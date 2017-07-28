@@ -542,6 +542,21 @@ namespace CollectionsTest
             Assert.AreEqual (10, k2);
         }
 
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRs_EnumHotUpdate()
+        {
+            Setup (4);
+            for (int ix=0; ix<10; ++ix) setI.Add (ix);
+
+            int n = 0;
+            foreach (int kv in setI)
+            {
+                if (++n == 2)
+                    setI.Add (49);
+            }
+        }
+
         #endregion
 
         #region Test ISet methods
@@ -616,6 +631,37 @@ namespace CollectionsTest
 
         #region Test bonus methods
 #if ! TEST_BCL
+
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRs_GetBetweenHotUpdate()
+        {
+            Setup (4);
+            for (int ix=0; ix<10; ++ix) setI.Add (ix);
+
+            int n = 0;
+            foreach (int key in setI.GetBetween (3, 8))
+            {
+                if (++n == 2)
+                    setI.Add (49);
+            }
+        }
+
+        [TestMethod]
+        public void UnitRs_GetBetween()
+        {
+            Setup (4);
+            for (int ix=0; ix<20; ++ix) setI.Add (ix);
+
+            int expected = 5;
+            foreach (int key in setI.GetBetween (5, 15))
+            {
+                Assert.AreEqual (expected, key);
+                ++expected;
+            }
+            Assert.AreEqual (expected, 16);
+        }
+
 
         [TestMethod]
         public void UnitRs_GetFromNull()

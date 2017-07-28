@@ -668,6 +668,27 @@ namespace CollectionsTest
 
         #endregion
 
+        #region Test enumeration
+
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRd_EnumHotUpdate()
+        {
+            Setup (4);
+            tree2.Add ("vv", 1);
+            tree2.Add ("mm", 2);
+            tree2.Add ("qq", 3);
+
+            int n = 0;
+            foreach (var kv in tree2)
+            {
+                if (++n == 2)
+                    tree2.Add ("breaks enum", 4);
+            }
+        }
+
+        #endregion
+
         #region Test ICollection implementation
 
         [TestMethod]

@@ -1,13 +1,11 @@
 ﻿using System;
-//using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Kaos.Collections;
 
 namespace CollectionsTest
 {
     public partial class Test_Btree
     {
-        #region Test Keys subclass
+        #region Test Keys properties and methods
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
@@ -172,7 +170,28 @@ namespace CollectionsTest
 
         #endregion
 
-        #region test Values subclass
+        #region Test Keys enumeration
+
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRdk_EnumHotUpdate()
+        {
+            Setup (4);
+            tree2.Add ("vv", 1);
+            tree2.Add ("mm", 2);
+            tree2.Add ("qq", 3);
+
+            int n = 0;
+            foreach (var kv in tree2.Keys)
+            {
+                if (++n == 2)
+                    tree2.Remove ("vv");
+            }
+        }
+
+        #endregion
+
+        #region Test Values properties and methods
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
@@ -334,6 +353,27 @@ namespace CollectionsTest
         {
             Setup();
             genValues2.Remove (9);
+        }
+
+        #endregion
+
+        #region Test Values enumeration
+
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRdv_EnumHotUpdate()
+        {
+            Setup (4);
+            tree2.Add ("vv", 1);
+            tree2.Add ("mm", 2);
+            tree2.Add ("qq", 3);
+
+            int n = 0;
+            foreach (var kv in tree2.Keys)
+            {
+                if (++n == 2)
+                    tree2.Clear();
+            }
         }
 
         #endregion

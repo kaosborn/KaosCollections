@@ -54,6 +54,7 @@ namespace Kaos.Collections
         protected readonly Leaf leftmostLeaf;
         protected readonly int maxKeyCount;
         private readonly IComparer<TKey> comparer;
+        protected int stage = 0;
 
         protected Btree (IComparer<TKey> comparer, Leaf leftmostLeaf)
         {
@@ -90,6 +91,7 @@ namespace Kaos.Collections
         /// <remarks>This is a O(1) operation.</remarks>
         public void Clear()
         {
+            StageBump();
             leftmostLeaf.Truncate (0);
             leftmostLeaf.rightLeaf = null;
             root = rightmostLeaf = leftmostLeaf;
@@ -98,6 +100,15 @@ namespace Kaos.Collections
         #endregion
 
         #region Nonpublic methods
+
+        protected void StageBump()
+        { ++stage; }
+
+        protected void StageCheck (int expected)
+        {
+            if (stage != expected)
+                throw new InvalidOperationException ("Operation is not valid because collection was modified.");
+        }
 
         /// <summary>Perform lite search for key.</summary>
         /// <param name="key">Target of search.</param>
@@ -154,6 +165,8 @@ namespace Kaos.Collections
 
         protected void Remove2 (NodeVector path)
         {
+            StageBump();
+
             int leafIndex = path.TopNodeIndex;
             var leaf = (Leaf) path.TopNode;
 

@@ -79,7 +79,6 @@ namespace Kaos.Collections
         bool ICollection.IsSynchronized
         { get { return false; } }
 
-
         object ICollection.SyncRoot => GetSyncRoot();
 
         #endregion
@@ -110,6 +109,8 @@ namespace Kaos.Collections
 
         private void Add2 (NodeVector path, TKey key)
         {
+            StageBump();
+
             var leaf = (Leaf) path.TopNode;
             int pathIndex = path.TopNodeIndex;
 
@@ -335,6 +336,7 @@ namespace Kaos.Collections
             if (other == null)
                 throw new ArgumentNullException (nameof (other));
 
+            StageBump();
             if (Count > 0)
                 if (other == this)
                     Clear();
@@ -358,6 +360,7 @@ namespace Kaos.Collections
             if (Count == 0)
                 return;
 
+            StageBump();
             var oSet = other as RankedSet<TKey> ?? new RankedSet<TKey> (other);
 
             if (oSet.Count == 0 || Comparer.Compare (oSet.Max, Min) < 0 || Comparer.Compare (oSet.Min, Max) > 0)
@@ -550,6 +553,7 @@ namespace Kaos.Collections
             if (oSet.Count == 0)
                 return;
 
+            StageBump();
             Enumerator oNum = oSet.GetEnumerator();
             oNum.MoveNext();
             TKey oKey = oNum.Current;
@@ -608,6 +612,7 @@ namespace Kaos.Collections
             if (other == null)
                 throw new ArgumentNullException (nameof (other));
 
+            StageBump();
             foreach (TKey key in other)
                 Add (key);
         }
@@ -624,6 +629,7 @@ namespace Kaos.Collections
             private readonly bool isReverse;
             private Leaf leaf;
             private int index;
+            private int stageFreeze;
 
             internal Enumerator (RankedSet<TKey> set, bool reverse=false)
             {
@@ -636,22 +642,31 @@ namespace Kaos.Collections
             {
                 get
                 {
+                    tree.StageCheck (stageFreeze);
                     if (index < 0)
                         throw new InvalidOperationException();
                     return (object) leaf.GetKey (index);
                 }
             }
 
-            /// <summary>
-            /// Gets the element at the current position of the enumerator.
-            /// </summary>
+            /// <summary>Gets the element at the current position of the enumerator.</summary>
+            /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
             public TKey Current
-            { get { return index < 0? default (TKey) : leaf.GetKey (index); } }
+            {
+                get
+                {
+                    tree.StageCheck (stageFreeze);
+                    return index < 0? default (TKey) : leaf.GetKey (index);
+                }
+            }
 
             /// <summary>Advances the enumerator to the next element in the collection.</summary>
             /// <returns><b>true</b> if the enumerator was successfully advanced to the next element; <b>false</b> if the enumerator has passed the end of the collection.</returns>
+            /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
             public bool MoveNext()
             {
+                tree.StageCheck (stageFreeze);
+
                 if (leaf != null)
                     if (isReverse)
                     {
@@ -678,6 +693,7 @@ namespace Kaos.Collections
 
             void IEnumerator.Reset()
             {
+                stageFreeze = tree.stage;
                 leaf = isReverse? tree.rightmostLeaf : tree.leftmostLeaf;
                 index = isReverse? leaf.KeyCount : -1;
             }
@@ -697,8 +713,10 @@ namespace Kaos.Collections
         /// <remarks>
         /// Neither <em>lower</em> or <em>upper</em> need to be present in the collection.
         /// </remarks>
+        /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
         public IEnumerable<TKey> GetBetween (TKey lower, TKey upper)
         {
+            int stageFreeze = stage;
             var leaf = (Leaf) Find (lower, out int index);
 
             // When the supplied start key is not be found, start with the next highest key.
@@ -713,6 +731,7 @@ namespace Kaos.Collections
                         yield break;
 
                     yield return leaf.GetKey (index);
+                    StageCheck (stageFreeze);
                     ++index;
                     continue;
                 }
@@ -744,8 +763,10 @@ namespace Kaos.Collections
         /// <summary>Provides range query support with ordered results.</summary>
         /// <param name="item">Minimum value of range.</param>
         /// <returns>An enumerator for the set for items greater than or equal to <em>item</em>.</returns>
+        /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
         public IEnumerable<TKey> GetFrom (TKey item)
         {
+            int stageFreeze = stage;
             var leaf = (Leaf) Find (item, out int index);
 
             // When the supplied start key is not be found, start with the next highest key.
@@ -757,6 +778,7 @@ namespace Kaos.Collections
                 if (index < leaf.KeyCount)
                 {
                     yield return leaf.GetKey (index);
+                    StageCheck (stageFreeze);
                     ++index;
                     continue;
                 }

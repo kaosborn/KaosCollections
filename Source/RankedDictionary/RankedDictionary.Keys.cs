@@ -95,6 +95,7 @@ namespace Kaos.Collections
                 private readonly RankedDictionary<TKey,TValue> tree;
                 private PairLeaf leaf;
                 private int index;
+                private int stageFreeze;
 
                 internal Enumerator (RankedDictionary<TKey,TValue> dictionary)
                 {
@@ -106,6 +107,7 @@ namespace Kaos.Collections
                 {
                     get
                     {
+                        tree.StageCheck (stageFreeze);
                         if (index < 0)
                             throw new InvalidOperationException();
                         return (object) Current;
@@ -114,12 +116,20 @@ namespace Kaos.Collections
 
                 /// <summary>Gets the key at the current position of the enumerator.</summary>
                 public TKey Current
-                { get { return index < 0 ? default (TKey) : leaf.GetKey (index); } }
+                {
+                    get
+                    {
+                        tree.StageCheck (stageFreeze);
+                        return index < 0 ? default (TKey) : leaf.GetKey (index);
+                    }
+                }
 
                 /// <summary>Advances the enumerator to the next key in the collection.</summary>
                 /// <returns><b>true</b> if the enumerator was successfully advanced to the next key; <b>false</b> if the enumerator has passed the end of the collection.</returns>
                 public bool MoveNext()
                 {
+                    tree.StageCheck (stageFreeze);
+
                     if (leaf != null)
                     {
                         if (++index < leaf.KeyCount)
@@ -137,6 +147,7 @@ namespace Kaos.Collections
 
                 void IEnumerator.Reset()
                 {
+                    stageFreeze = tree.stage;
                     index = -1;
                     leaf = (PairLeaf) tree.leftmostLeaf;
                 }
