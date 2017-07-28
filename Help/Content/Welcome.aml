@@ -11,14 +11,13 @@
         <listItem>
           <para>
             <codeEntityReference qualifyHint="false">T:Kaos.Collections.RankedDictionary`2</codeEntityReference>- an improved version of
-            <codeEntityReference qualifyHint="false">T:System.Collections.Generic.SortedDictionary`2</codeEntityReference>
+            <codeEntityReference qualifyHint="false">T:System.Collections.Generic.SortedDictionary`2</codeEntityReference>.
           </para>
         </listItem>
         <listItem>
           <para>
-            <codeEntityReference qualifyHint="false">T:Kaos.Collections.RankedSet`1</codeEntityReference>
-            - an improved version of
-            <codeEntityReference qualifyHint="false">T:System.Collections.Generic.SortedSet`1</codeEntityReference>
+            <codeEntityReference qualifyHint="false">T:Kaos.Collections.RankedSet`1</codeEntityReference>- an improved version of
+            <codeEntityReference qualifyHint="false">T:System.Collections.Generic.SortedSet`1</codeEntityReference>.
           </para>
         </listItem>
       </list>
@@ -30,7 +29,7 @@
       </para>
       <para>
         The performance bump is due to the B+ tree variant used by KaosCollections.
-        The structure used by SortedDictionary and SortedSet is a binary tree
+        The structure used by <codeInline>SortedDictionary</codeInline> and <codeInline>SortedSet</codeInline> is a binary tree
         which greatly increases tree height and number of allocations compared to a B+ tree.
         Also in a B+ tree, data is grouped together in leaves which improves performance due to data locality.
       </para>
@@ -40,7 +39,7 @@
       <title>API differences between System.Collections.Generic and Kaos.Collections</title>
       <content>
         <para>
-          The API of RankedDictionary and RankedSet closely adheres to Microsoft's related generic classes with a few exceptions:
+          The API of <codeInline>RankedDictionary</codeInline> and <codeInline>RankedSet</codeInline> closely adheres to Microsoft's related generic classes with a few exceptions:
         </para>
         <list class="bullet">
           <listItem>
@@ -51,28 +50,28 @@
           </listItem>
           <listItem>
             <para>
-              Both classes adds the method <codeInline>GetFrom(key)</codeInline> that
+              Both classes add the method <codeInline>GetBetween(lowerKey,upperKey)</codeInline> that
               returns an enumerator for elements beginning at the supplied value.
             </para>
           </listItem>
           <listItem>
             <para>
-              RankedDictionary adds the method TryGetValueAndIndex <codeInline>(key, out value, out index)</codeInline> that
-              extends GetByIndex by also retrieving the key's associated value and index in one call.
+              Both classes add the method <codeInline>GetFrom(lowerKey)</codeInline> that
+              returns an enumerator for elements beginning at the supplied value.
             </para>
           </listItem>
           <listItem>
             <para>
-              RankedDictionary adds the method <codeInline>GetBetween(from,to)</codeInline> that returns an enumerator over the specified range.
+              <codeInline>RankedDictionary</codeInline> adds the method <codeInline>TryGetValueAndIndex(key, out value, out index)</codeInline> that
+              extend <codeInline>IndexOf(key)</codeInline> by also retrieving the key's associated value and index in one call.
             </para>
           </listItem>
           <listItem>
             <para>
-              The method
-            <codeEntityReference qualifyHint="false">M:System.Collections.Generic.SortedSet`1.GetViewBetween(`0,`0)</codeEntityReference>
-              (which provides a virtual view to a range of a SortedSet) is replaced with the
-                <codeInline>RankedSet.GetBetween(from,to)</codeInline>
-              method which returns an enumerator.
+              The <codeInline>SortedSet</codeInline> method
+              <codeEntityReference qualifyHint="false">M:System.Collections.Generic.SortedSet`1.GetViewBetween(`0,`0)</codeEntityReference>
+              (which provides a virtual view to a range of a SortedSet) is not implemented.
+              Use the <codeInline>GetBetween(lower,upper)</codeInline> enumerator instead.
             </para>
           </listItem>
           <listItem>
@@ -90,7 +89,7 @@
       <title>Data structure</title>
       <content>
         <para>
-          The data structure used by RankedDictionary and RankedSet is a variant of an order statistic B+ tree.
+          The data structure used by <codeInline>RankedDictionary</codeInline> and <codeInline>RankedSet</codeInline> is a variant of an order statistic B+ tree.
           An order statistic tree brings two additional capabilities to a tree:
         </para>
         <list class="bullet">
@@ -105,10 +104,9 @@
           </listItem>
         </list>
         <para>
-          RankedDictionary and RankedSet store data in a B+ tree where all elements are stored in leaves at the same depth.
+          <codeInline>RankedDictionary</codeInline> and <codeInline>RankedSet</codeInline> store all elements in leaves at the same depth.
           The leaf level is a sorted doubly linked list with head and tail pointers.
-          The first key of each leaf (except the leftmost) is copied to one branch for subdividing.
-          Every node (branch or leaf) keeps keys sorted to enable binary searching.
+          The first key of every leaf (except the leftmost) is copied to one branch for subdividing.
           A tree with no elements is represented as an empty leaf.
         </para>
         <para>
@@ -132,7 +130,7 @@
           </listItem>
           <listItem>
             <para>
-              Every branch tracks the total number of items ('Weight') in leaves under it.
+              Every branch tracks the total number of items (weight) in its decendent leaves.
               For example, the weight of the root is the total number of elements in all leaves.
             </para>
           </listItem>
@@ -158,19 +156,19 @@
           <listItem>
             <para>
               Full .NET Framework 4.0.
-              This target does not include IReadOnlyDictionary or IReadOnlyCollection implementation.
+              This target does not include <codeInline>IReadOnlyDictionary</codeInline> or <codeInline>IReadOnlyCollection</codeInline> implementation.
             </para>
           </listItem>
           <listItem>
             <para>
               Full .NET Framework 3.5.
-              This target does not include IReadOnlyDictionary, IReadOnlyCollection, or ISet implementation.
+              This target does not include <codeInline>IReadOnlyDictionary</codeInline>, <codeInline>IReadOnlyCollection</codeInline>, or <codeInline>ISet</codeInline> implementation.
             </para>
           </listItem>
         </list>
         <para>
           Documentation is currently distributed as a MS-Help 1 (.CHM) file.
-          Also, installing as a Nuget package will provide intellisense and object browser documentation.
+          Also, installing as a NuGet package will provide intellisense and object browser documentation.
         </para>
       </content>
     </section>
@@ -179,7 +177,7 @@
       <title>Build environment</title>
       <content>
         <para>
-          This library requires Visual Studio 2017 Community Edition to build.
+          Visual Studio 2017 Community Edition (or greater) is required to build the library.
           There is an additional dependency on Sandcastle Help File Builder for building documentation.
           Test is performed by MSTest.
         </para>
