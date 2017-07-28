@@ -16,7 +16,7 @@ namespace Kaos.Collections
     /// <summary>Represents a collection of sorted, unique items.</summary>
     /// <typeparam name="TKey">The type of the items in the set.</typeparam>
     /// <remarks>
-    /// This class emulates and augments the
+    /// This class emulates and extends the
     /// <see cref="System.Collections.Generic.SortedSet{TKey}"/> class.
     /// </remarks>
     [DebuggerTypeProxy (typeof (ICollectionDebugView<>))]
@@ -80,7 +80,6 @@ namespace Kaos.Collections
         { get { return false; } }
 
 
-        /// <summary>Deprecated.</summary>
         object ICollection.SyncRoot => GetSyncRoot();
 
         #endregion
@@ -89,10 +88,13 @@ namespace Kaos.Collections
 
         /// <summary>Adds an item to the set and returns a success indicator.</summary>
         /// <param name="item">The item to add.</param>
-        /// <remarks>
-        /// If <em>item</em> is already in the set, this method returns false and does not throw an exception.
-        /// </remarks>
         /// <returns><b>true</b> if <em>item</em> was added to the set; otherwise <b>false</b>.</returns>
+        /// <remarks>
+        /// <para>
+        /// If <em>item</em> is already in the set, this method returns <b>false</b> and does not throw an exception.
+        /// </para>
+        /// <para>This is a O(<em>log n</em>) operation.</para>
+        /// </remarks>
         public bool Add (TKey item)
         {
             var path = new NodeVector (this, item);
@@ -181,7 +183,7 @@ namespace Kaos.Collections
         public void CopyTo (TKey[] array, int index)
         { CopyTo (array, index, Count); }
 
-        /// <summary>Copies the set to a compatible array, starting at the specified position.</summary>
+        /// <summary>Copies the set to a compatible array, starting at the supplied position.</summary>
         /// <param name="array">A one-dimensional array that is the destination of the items to copy from the set.</param>
         /// <param name="index">The zero-based starting position.</param>
         /// <param name="count">The number of items to copy.</param>
@@ -194,10 +196,10 @@ namespace Kaos.Collections
                 throw new ArgumentNullException (nameof (array));
 
             if (index < 0)
-                throw new ArgumentOutOfRangeException (nameof (index), index, "Specified argument was out of the range of valid values.");
+                throw new ArgumentOutOfRangeException (nameof (index), index, "Argument was out of the range of valid values.");
 
             if (count < 0)
-                throw new ArgumentOutOfRangeException (nameof (count), count, "Specified argument was out of the range of valid values.");
+                throw new ArgumentOutOfRangeException (nameof (count), count, "Argument was out of the range of valid values.");
 
             if (Count > array.Length - index)
                 throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
@@ -251,9 +253,10 @@ namespace Kaos.Collections
         public Enumerator GetEnumerator() => new Enumerator (this);
 
 
-        /// <summary>Removes a specified item from the set.</summary>
+        /// <summary>Removes the supplied item from the set.</summary>
         /// <param name="item">The item to remove.</param>
         /// <returns><b>true</b> if <em>item</em> was found and removed; otherwise <b>false</b>.</returns>
+        /// <remarks>This is a O(<em>log n</em>) operation.</remarks>
         public bool Remove (TKey item)
         {
             var path = new NodeVector (this, item);
@@ -269,6 +272,7 @@ namespace Kaos.Collections
         /// <param name="match">The condition of the items to remove.</param>
         /// <returns>The number of items removed from the set.</returns>
         /// <exception cref="ArgumentNullException">When <em>match</em> is <b>null</b>.</exception>
+        /// <remarks>This is a O(<em>n</em> log <em>n</em>) operation.</remarks>
         public int RemoveWhere (Predicate<TKey> match)
         {
             if (match == null)
@@ -595,6 +599,7 @@ namespace Kaos.Collections
         /// <summary>Add all items in <em>other</em> to this set that are not already in this set.</summary>
         /// <param name="other">The collection to add to this set.</param>
         /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
+        /// <remarks>Duplicate values in <em>other</em> are ignored.</remarks>
         /// <example>
         /// <code source="..\Bench\RsExample04\RsExample04.cs" lang="cs" />
         /// </example>
@@ -721,14 +726,15 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Gets the key at the specified index.</summary>
+        /// <summary>Gets the key at the supplied index.</summary>
         /// <param name="index">The zero-based index of the key to get.</param>
-        /// <returns>The key at the specified index.</returns>
+        /// <returns>The key at the supplied index.</returns>
         /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or greater than or equal to the number of keys.</exception>
+        /// <remarks>This is a O(<em>log n</em>) operation.</remarks>
         public TKey GetByIndex (int index)
         {
             if (index < 0 || index >= Count)
-                throw new ArgumentOutOfRangeException (nameof (index), "Specified argument was out of the range of valid values.");
+                throw new ArgumentOutOfRangeException (nameof (index), "Argument was out of the range of valid values.");
 
             var leaf = (Leaf) Find (ref index);
             return leaf.GetKey (index);
@@ -764,9 +770,10 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Gets the index of the specified item.</summary>
+        /// <summary>Gets the index of the supplied item.</summary>
         /// <param name="item">The item of the index to get.</param>
-        /// <returns>The index of the specified item if found; otherwise the bitwise complement of the insert point.</returns>
+        /// <returns>The index of <em>item</em> if found; otherwise the bitwise complement of the insert point.</returns>
+        /// <remarks>This is a O(<em>log n</em>) operation.</remarks>
         public int IndexOf (TKey item)
         {
             var path = new NodeVector (this, item);

@@ -32,13 +32,8 @@ namespace Kaos.Collections
 
             #region Constructors
 
-            /// <summary>
-            /// Make a new <b>"BtreeDictionary&lt;TKey,TValue&gt;.ValueCollection</b> that
-            /// holds the values of a <see cref="RankedDictionary{TKey,TValue}"/>.
-            /// </summary>
-            /// <param name="dictionary">
-            /// <see cref="RankedDictionary{TKey,TValue}"/> containing these keys.
-            /// </param>
+            /// <summary>Makes a new collection that holds the values of a <see cref="RankedDictionary{TKey,TValue}"/>.</summary>
+            /// <param name="dictionary"><see cref="RankedDictionary{TKey,TValue}"/> containing these keys.</param>
             /// <exception cref="ArgumentNullException">When <em>dictionary</em> is <b>null</b>.</exception>
             public ValueCollection (RankedDictionary<TKey,TValue> dictionary)
             {
@@ -54,9 +49,7 @@ namespace Kaos.Collections
 
             #region Properties
 
-            /// <summary>
-            /// Get the number of values in the collection.
-            /// </summary>
+            /// <summary>Gets the number of values in the collection.</summary>
             public int Count
             { get { return tree.Count; } }
 
@@ -64,18 +57,19 @@ namespace Kaos.Collections
 
             #region Methods
 
-            /// <summary>
-            /// Copy values to a target array starting as position <em>index</em> in the target.
-            /// </summary>
-            /// <param name="array">Array to modify.</param>
-            /// <param name="index">Starting position in <em>array</em>.</param>
+            /// <summary>Copies values to a supplied array starting as position <em>index</em> in the target.</summary>
+            /// <param name="array">Destination of copy.</param>
+            /// <param name="index">Starting position in <em>array</em> for copy operation.</param>
+            /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
+            /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero.</exception>
+            /// <exception cref="ArgumentException">When not enough space is given for the copy.</exception>
             public void CopyTo (TValue[] array, int index)
             {
                 if (array == null)
                     throw new ArgumentNullException (nameof (array));
 
                 if (index < 0)
-                    throw new ArgumentOutOfRangeException (nameof (index), index, "Specified argument was out of the range of valid values.");
+                    throw new ArgumentOutOfRangeException (nameof (index), index, "Argument was out of the range of valid values.");
 
                 if (Count > array.Length - index)
                     throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
@@ -86,9 +80,7 @@ namespace Kaos.Collections
             }
 
 
-            /// <summary>
-            /// Returns an enumerator that iterates through the ValueCollection.
-            /// </summary>
+            /// <summary>Returns an enumerator that iterates thru the ValueCollection.</summary>
             /// <returns>An enumerator for the collection.</returns>
             public IEnumerator<TValue> GetEnumerator()
             { return new Enumerator (tree); }
@@ -97,7 +89,7 @@ namespace Kaos.Collections
 
             #region Enumerator
 
-            /// <summary>Enumerates the elements of a ValueCollection ordered by key.</summary>
+            /// <summary>Enumerates the values of a ValueCollection ordered by key.</summary>
             public sealed class Enumerator : IEnumerator<TValue>
             {
                 private readonly RankedDictionary<TKey,TValue> tree;
@@ -120,14 +112,12 @@ namespace Kaos.Collections
                     }
                 }
 
-                /// <summary>
-                /// Gets the element at the current position of the enumerator.
-                /// </summary>
+                /// <summary>Gets the value at the current position of the enumerator.</summary>
                 public TValue Current
                 { get { return index < 0 ? default (TValue) : leaf.GetValue (index); } }
 
-                /// <summary>Advances the enumerator to the next element in the collection.</summary>
-                /// <returns><b>true</b> if the enumerator was successfully advanced to the next element; <b>false</b> if the enumerator has passed the end of the collection.</returns>
+                /// <summary>Advances the enumerator to the next value in the collection.</summary>
+                /// <returns><b>true</b> if the enumerator was successfully advanced to the next value; <b>false</b> if the enumerator has passed the end of the collection.</returns>
                 public bool MoveNext()
                 {
                     if (leaf != null)
@@ -186,7 +176,7 @@ namespace Kaos.Collections
                     throw new ArgumentException ("Multidimension array is not supported on this operation.", nameof (array));
 
                 if (index < 0)
-                    throw new ArgumentOutOfRangeException (nameof (index), index, "Index is less than 0.");
+                    throw new ArgumentOutOfRangeException (nameof (index), index, "Index is less than zero.");
 
                 if (Count > array.Length - index)
                     throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));

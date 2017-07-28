@@ -32,13 +32,8 @@ namespace Kaos.Collections
 
             #region Constructors
 
-            /// <summary>
-            /// Make a new <b>"BtreeDictionary&lt;TKey,TValue&gt;.KeyCollection</b> that
-            /// holds the keys of a <see cref="RankedDictionary{TKey,TValue}"/>.
-            /// </summary>
-            /// <param name="dictionary">
-            /// <see cref="RankedDictionary{TKey,TValue}"/> containing these keys.
-            /// </param>
+            /// <summary>Makes a new collection that holds the keys of a <see cref="RankedDictionary{TKey,TValue}"/>.</summary>
+            /// <param name="dictionary"><see cref="RankedDictionary{TKey,TValue}"/> containing these keys.</param>
             /// <exception cref="ArgumentNullException">When <em>dictionary</em> is <b>null</b>.</exception>
             public KeyCollection (RankedDictionary<TKey,TValue> dictionary)
             {
@@ -54,9 +49,7 @@ namespace Kaos.Collections
 
             #region Properties
 
-            /// <summary>
-            /// Get the number of keys in the collection.
-            /// </summary>
+            /// <summary>Gets the number of keys in the collection.</summary>
             public int Count
             { get { return tree.Count; } }
 
@@ -64,18 +57,19 @@ namespace Kaos.Collections
 
             #region Methods
 
-            /// <summary>
-            /// Copy keys to a target array starting as position <em>index</em> in the target.
-            /// </summary>
-            /// <param name="array">Array to modify.</param>
-            /// <param name="index">Starting position in <em>array</em>.</param>
+            /// <summary>Copies keys to a supplied array starting as position <em>index</em> in the target.</summary>
+            /// <param name="array">Destination of copy.</param>
+            /// <param name="index">Starting position in <em>array</em> for copy operation.</param>
+            /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
+            /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero.</exception>
+            /// <exception cref="ArgumentException">When not enough space is given for the copy.</exception>
             public void CopyTo (TKey[] array, int index)
             {
                 if (array == null)
                     throw new ArgumentNullException (nameof (array));
 
                 if (index < 0)
-                    throw new ArgumentOutOfRangeException (nameof (index), index, "Specified argument was out of the range of valid values.");
+                    throw new ArgumentOutOfRangeException (nameof (index), index, "Argument was out of the range of valid values.");
 
                 if (Count > array.Length - index)
                     throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
@@ -118,14 +112,12 @@ namespace Kaos.Collections
                     }
                 }
 
-                /// <summary>
-                /// Gets the element at the current position of the enumerator.
-                /// </summary>
+                /// <summary>Gets the key at the current position of the enumerator.</summary>
                 public TKey Current
                 { get { return index < 0 ? default (TKey) : leaf.GetKey (index); } }
 
-                /// <summary>Advances the enumerator to the next element in the collection.</summary>
-                /// <returns><b>true</b> if the enumerator was successfully advanced to the next element; <b>false</b> if the enumerator has passed the end of the collection.</returns>
+                /// <summary>Advances the enumerator to the next key in the collection.</summary>
+                /// <returns><b>true</b> if the enumerator was successfully advanced to the next key; <b>false</b> if the enumerator has passed the end of the collection.</returns>
                 public bool MoveNext()
                 {
                     if (leaf != null)
@@ -184,7 +176,7 @@ namespace Kaos.Collections
                     throw new ArgumentException ("Multidimension array is not supported on this operation.", nameof (array));
 
                 if (index < 0)
-                    throw new ArgumentOutOfRangeException (nameof (index), "Index is less than 0.");
+                    throw new ArgumentOutOfRangeException (nameof (index), "Index is less than zero.");
 
                 if (Count > array.Length - index)
                     throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));

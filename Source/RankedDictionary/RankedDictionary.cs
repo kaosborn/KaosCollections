@@ -104,7 +104,9 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Gets the collection of keys in the <see cref="RankedDictionary{TKey,TValue}"/>.</summary>
+        /// <summary>Gets only the collection of keys from this dictionary.</summary>
+        /// <remarks>The keys given by this collection are sorted according to the
+        /// <see cref="Btree{TKey}.Comparer"/> property.</remarks>
         /// <example>
         /// This trivial example shows how to enumerate the keys of a dictionary.
         /// <code source="..\Bench\RdExample02\RdExample02.cs" lang="cs" />
@@ -120,7 +122,9 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Gets the collection of values in the <see cref="RankedDictionary{TKey,TValue}"/>.</summary>
+        /// <summary>Gets only the collection of values from this dictionary.</summary>
+        /// <remarks>The values given by this collection are sorted in the same
+        /// order as their respective keys in the <see cref="Keys"/> collection.</remarks>
         /// <example>
         /// This trivial example shows how to enumerate the values of a dictionary.
         /// <code source="..\Bench\RdExample02\RdExample02.cs" lang="cs" />
@@ -139,12 +143,17 @@ namespace Kaos.Collections
 
         #region Methods
 
-        /// <summary>Adds an element with the specified key and value.</summary>
+        /// <summary>Adds an element with the supplied key and value.</summary>
         /// <param name="key">The key of the element to add.</param>
         /// <param name="value">The value of the element to add.  May be null.</param>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
-        /// <exception cref="ArgumentException">When supplied <em>key</em>
-        /// has already been added.</exception>
+        /// <exception cref="ArgumentException">When a key/value pair has already been added with the supplied key.</exception>
+        /// <remarks>
+        /// <para>
+        /// If <em>key</em> is already in the dictionary, this method takes no action.
+        /// </para>
+        /// <para>This is a O(log <em>n</em>) operation.</para>
+        /// </remarks>
         public void Add (TKey key, TValue value)
         {
             if (key == null)
@@ -223,7 +232,7 @@ namespace Kaos.Collections
         /// <summary>Determines if the collection contains the supplied value.</summary>
         /// <remarks>This operation performs a sequential search.</remarks>
         /// <param name="value">Value to find.</param>
-        /// <returns><b>true</b> if the collection contains the specified value; otherwise <b>false</b>.</returns>
+        /// <returns><b>true</b> if the collection contains the supplied value; otherwise <b>false</b>.</returns>
         public bool ContainsValue (TValue value)
         {
             if (value != null)
@@ -245,10 +254,10 @@ namespace Kaos.Collections
 
 
         /// <summary>Copies the collection to the supplied array offset.</summary>
-        /// <param name="array">Destionation of copy.</param>
-        /// <param name="index">Copy starts at this location.</param>
+        /// <param name="array">Destination of copy.</param>
+        /// <param name="index">Starting position in <em>array</em> for copy operation.</param>
         /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than 0.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero.</exception>
         /// <exception cref="ArgumentException">When not enough space is given for the copy.</exception>
         public void CopyTo (KeyValuePair<TKey,TValue>[] array, int index)
         {
@@ -256,7 +265,7 @@ namespace Kaos.Collections
                 throw new ArgumentNullException (nameof (array));
 
             if (index < 0)
-                throw new ArgumentOutOfRangeException (nameof (index), "Index is less than 0.");
+                throw new ArgumentOutOfRangeException (nameof (index), "Index is less than zero.");
 
             if (Count > array.Length - index)
                 throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
@@ -273,10 +282,11 @@ namespace Kaos.Collections
         { return new Enumerator (this); }
 
 
-        /// <summary>Removes the element with the specified key from the dictionary.</summary>
+        /// <summary>Removes the element with the supplied key from the dictionary.</summary>
         /// <param name="key">The key of the element to remove.</param>
         /// <returns><b>true</b> if the element was successfully found and removed; otherwise <b>false</b>.</returns>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
+        /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
         public bool Remove (TKey key)
         {
             if (key == null)
@@ -423,9 +433,9 @@ namespace Kaos.Collections
 
         #region Explicit generic properties and methods interface implementations
 
-        /// <summary>Adds an element with the specified key/value pair.</summary>
+        /// <summary>Adds an element with the supplied key/value pair.</summary>
         /// <param name="keyValuePair">Contains the key and value of the element to add.</param>
-        /// <exception cref="ArgumentException">When supplied <em>key</em>
+        /// <exception cref="ArgumentException">When an element containing <em>key</em>
         /// has already been added.</exception>
         void ICollection<KeyValuePair<TKey,TValue>>.Add (KeyValuePair<TKey,TValue> keyValuePair)
         {
@@ -437,10 +447,9 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Determines if the collection contains the supplied key and value.</summary>
+        /// <summary>Determines if the collection contains the supplied key/value pair.</summary>
         /// <param name="keyValuePair">Key/value pair to find.</param>
-        /// <returns><b>true</b> if the collection contains the specified pair;
-        /// otherwise <b>false</b>.</returns>
+        /// <returns><b>true</b> if the collection contains the supplied key/value pair; otherwise <b>false</b>.</returns>
         bool ICollection<KeyValuePair<TKey,TValue>>.Contains (KeyValuePair<TKey,TValue> keyValuePair)
         {
             var leaf = (PairLeaf) Find (keyValuePair.Key, out int index);
@@ -459,15 +468,15 @@ namespace Kaos.Collections
         { get { return false; } }
 
 
-        /// <summary>Gets the collection of keys from this key/value the collection.</summary>
+        /// <summary>Gets only the collection of keys from this key/value pair collection.</summary>
         /// <remarks>The keys given by this collection are sorted according to the
         /// <see cref="Btree{TKey}.Comparer"/> property.</remarks>
         ICollection<TKey> IDictionary<TKey,TValue>.Keys
         { get { return (ICollection<TKey>) Keys; } }
 
-        /// <summary>Gets the collection of values from this key/value collection.</summary>
+        /// <summary>Gets only the collection of values from this key/value pair collection.</summary>
         /// <remarks>The values given by this collection are sorted in the same
-        /// order as their respective keys in the <see cref="Keys"/> property.</remarks>
+        /// order as their respective keys in the <see cref="Keys"/> collection.</remarks>
         ICollection<TValue> IDictionary<TKey,TValue>.Values
         { get { return (ICollection<TValue>) Values; } }
 
@@ -586,7 +595,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Determines whether the dictionary contains an element with the specified key.</summary>
+        /// <summary>Determines whether the dictionary contains a key/value pair with the supplied key.</summary>
         /// <param name="key">The key to locate in the dictionary.</param>
         /// <returns><b>true</b> if the collection contains the supplied key; otherwise <b>false</b>.</returns>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
@@ -603,11 +612,11 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Copies the elements of the dictionary to an array, starting at the specified array index.</summary>
+        /// <summary>Copies the elements of the dictionary to an array, starting at the supplied array index.</summary>
         /// <param name="array">The destination array of the copy.</param>
-        /// <param name="index">The zero-based index in array at which copying begins.</param>
+        /// <param name="index">The zero-based index in <em>array</em> at which copying begins.</param>
         /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than 0.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero.</exception>
         /// <exception cref="ArgumentException">
         /// When array is multidimensional,
         /// the number of elements in the source is greater than the available space,
@@ -622,7 +631,7 @@ namespace Kaos.Collections
                 throw new ArgumentException ("Multidimension array is not supported on this operation.", nameof (array));
 
             if (index < 0)
-                throw new ArgumentOutOfRangeException (nameof (index), "Index is less than 0.");
+                throw new ArgumentOutOfRangeException (nameof (index), "Index is less than zero.");
 
             if (Count > array.Length - index)
                 throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
@@ -715,15 +724,15 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Gets the element at the specified index.</summary>
+        /// <summary>Gets the key/value pair at the supplied index.</summary>
         /// <param name="index">The zero-based index of the element to get.</param>
-        /// <returns>The element at the specified index.</returns>
+        /// <returns>The element at the supplied index.</returns>
         /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or greater than or equal to the number of keys.</exception>
         /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
         public KeyValuePair<TKey,TValue> GetByIndex (int index)
         {
             if (index < 0 || index >= Count)
-                throw new ArgumentOutOfRangeException (nameof (index), "Specified argument was out of the range of valid values.");
+                throw new ArgumentOutOfRangeException (nameof (index), "Argument is out of the range of valid values.");
 
             var leaf = (PairLeaf) Find (ref index);
             return new KeyValuePair<TKey,TValue> (leaf.GetKey (index), leaf.GetValue (index));
@@ -765,7 +774,7 @@ namespace Kaos.Collections
 
         /// <summary>Gets the index of the supplied key.</summary>
         /// <param name="key">The key of the index to get.</param>
-        /// <returns>The index of the specified item if found; otherwise the bitwise complement of the insert point.</returns>
+        /// <returns>The index of the element with the supplied key if found; otherwise the bitwise complement of the insert point.</returns>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
         /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
         public int IndexOf (TKey key)
@@ -780,7 +789,7 @@ namespace Kaos.Collections
 
 
         /// <summary>Gets the Last key/value pair.</summary>
-        /// <returns>Key/value pair with maximum key in dictionary.</returns>
+        /// <returns>The key/value pair with maximum key in dictionary.</returns>
         /// <remarks>This is a O(1) operation.</remarks>
         public KeyValuePair<TKey,TValue> Last()
         {
