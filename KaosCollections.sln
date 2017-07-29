@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.15
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "BtreeDictionary", "BtreeDictionary\BtreeDictionary.shproj", "{9AAB8F38-1582-401D-A4FD-ADAE2C6CB496}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Collections400", "Collections400\Collections400.csproj", "{04BC35F4-F0D8-47D0-AE7C-B2D62BE49FC6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bench", "Bench", "{F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}"
@@ -64,7 +62,6 @@ Global
 		Source\Btree\Btree.projitems*{04bc35f4-f0d8-47d0-ae7c-b2d62be49fc6}*SharedItemsImports = 4
 		Source\RankedDictionary\RankedDictionary.projitems*{04bc35f4-f0d8-47d0-ae7c-b2d62be49fc6}*SharedItemsImports = 4
 		Source\RankedSet\RankedSet.projitems*{04bc35f4-f0d8-47d0-ae7c-b2d62be49fc6}*SharedItemsImports = 4
-		BtreeDictionary\BtreeDictionary.projitems*{9aab8f38-1582-401d-a4fd-adae2c6cb496}*SharedItemsImports = 13
 		Source\RankedSet\RankedSet.projitems*{c39a213b-5aae-4c05-8ca8-946331511d0d}*SharedItemsImports = 13
 		Source\RankedDictionary\RankedDictionary.projitems*{d1e37c27-b068-4f2e-8603-f8f5495b3330}*SharedItemsImports = 13
 		Source\Btree\Btree.projitems*{f46832d9-2950-47b9-bb68-42ee79668f61}*SharedItemsImports = 13
