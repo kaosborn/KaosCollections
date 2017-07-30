@@ -24,7 +24,7 @@
       <para>
         All provided classes closely emulate the API of the Microsoft's classes
         while extending capability and improving performance in many common scenarios.
-        Both these classes add array-like support so that any element can be accessed by index
+        Both these classes add array-like functionality so that any element can be accessed by index
         or the index of an element may be determined from the element's key.
       </para>
       <para>
@@ -43,10 +43,10 @@
         </para>
         <list class="bullet">
           <listItem>
-            <para>Both classes add the <codeInline>GetByIndex(index)</codeInline> method which returns the element at the supplied index.</para>
+            <para>Both classes add the method <codeInline>GetByIndex(index)</codeInline> which returns the element at the supplied index.</para>
           </listItem>
           <listItem>
-            <para>Both classes add the <codeInline>IndexOf(key)</codeInline> method which returns the index of an element.</para>
+            <para>Both classes add the method <codeInline>IndexOf(key)</codeInline> which returns the index of an element.</para>
           </listItem>
           <listItem>
             <para>
@@ -130,7 +130,7 @@
           </listItem>
           <listItem>
             <para>
-              Every branch tracks the total number of items (weight) in its decendent leaves.
+              Every branch tracks the total number of items (weight) in its descendent leaves.
               For example, the weight of the root is the total number of elements in all leaves.
             </para>
           </listItem>
@@ -168,7 +168,7 @@
         </list>
         <para>
           Documentation is currently distributed as a MS-Help 1 (.CHM) file.
-          Also, installing as a NuGet package will provide intellisense and object browser documentation.
+          Also, installing as a NuGet package will provide IntelliSense and object browser documentation.
         </para>
       </content>
     </section>
