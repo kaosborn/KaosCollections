@@ -1,6 +1,6 @@
 ﻿//
 // Library: KaosCollections
-// File:    RankedDictionary.Leaf.cs
+// File:    RankedDictionary.PairLeaf.cs
 // Purpose: Define Leaf nested class.
 //
 // Copyright © 2009-2017 Kasey Osborn (github.com/kaosborn)
@@ -14,11 +14,7 @@ namespace Kaos.Collections
 {
     public partial class RankedDictionary<TKey,TValue>
     {
-        /// <summary>An terminal B+ tree page.</summary>
-        /// <remarks>
-        /// All key/value pairs are contained in this class.
-        /// This is a doubly linked list also referenced by parent branches.
-        /// </remarks>
+        /// <summary>A terminal B+ tree node for key/value pairs.</summary>
         private sealed class PairLeaf : Leaf
         {
             private readonly List<TValue> values;
@@ -39,8 +35,7 @@ namespace Kaos.Collections
             }
 
 
-            public int ValueCount
-            { get { return values.Count; } }
+            public int ValueCount => values.Count;
 
 
             public KeyValuePair<TKey,TValue> GetPair (int index)

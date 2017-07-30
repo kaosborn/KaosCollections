@@ -484,28 +484,24 @@ namespace Kaos.Collections
 
 
         /// <summary>Indicates that this collection may be modified.</summary>
-        bool ICollection<KeyValuePair<TKey,TValue>>.IsReadOnly
-        { get { return false; } }
+        bool ICollection<KeyValuePair<TKey,TValue>>.IsReadOnly => false;
 
 
         /// <summary>Gets only the collection of keys from this key/value pair collection.</summary>
         /// <remarks>The keys given by this collection are sorted according to the
         /// <see cref="Btree{TKey}.Comparer"/> property.</remarks>
-        ICollection<TKey> IDictionary<TKey,TValue>.Keys
-        { get { return (ICollection<TKey>) Keys; } }
+        ICollection<TKey> IDictionary<TKey,TValue>.Keys => (ICollection<TKey>) Keys;
+
 
         /// <summary>Gets only the collection of values from this key/value pair collection.</summary>
         /// <remarks>The values given by this collection are sorted in the same
         /// order as their respective keys in the <see cref="Keys"/> collection.</remarks>
-        ICollection<TValue> IDictionary<TKey,TValue>.Values
-        { get { return (ICollection<TValue>) Values; } }
+        ICollection<TValue> IDictionary<TKey,TValue>.Values => (ICollection<TValue>) Values;
 
 #if ! NET35 && ! NET40
-        IEnumerable<TKey> IReadOnlyDictionary<TKey,TValue>.Keys
-        { get { return Keys; } }
+        IEnumerable<TKey> IReadOnlyDictionary<TKey,TValue>.Keys => Keys;
 
-        IEnumerable<TValue> IReadOnlyDictionary<TKey,TValue>.Values
-        { get { return Values; } }
+        IEnumerable<TValue> IReadOnlyDictionary<TKey,TValue>.Values => Values;
 #endif
 
         /// <summary>Deletes the supplied key and its associated value from the collection.
@@ -573,21 +569,16 @@ namespace Kaos.Collections
             }
         }
 
-        bool IDictionary.IsFixedSize
-        { get { return false; } }
+        bool IDictionary.IsFixedSize => false;
 
         /// <summary>Indicates that structure may be modified.</summary>
-        bool IDictionary.IsReadOnly
-        { get { return false; } }
+        bool IDictionary.IsReadOnly => false;
 
-        bool ICollection.IsSynchronized
-        { get { return false; } }
+        bool ICollection.IsSynchronized => false;
 
-        ICollection IDictionary.Keys
-        { get { return (ICollection) Keys; } }
+        ICollection IDictionary.Keys => (ICollection) Keys;
 
-        ICollection IDictionary.Values
-        { get { return (ICollection) Values; } }
+        ICollection IDictionary.Values => (ICollection) Values;
 
         #endregion
 
@@ -611,8 +602,7 @@ namespace Kaos.Collections
             if (! (value is TValue))
                 throw new ArgumentException ("Parameter '" + nameof (value) + "' is not of type '" + typeof (TValue) + "'.");
 
-            var genCol = (IDictionary<TKey,TValue>) this;
-            genCol.Add ((TKey) key, (TValue) value);
+            ((IDictionary<TKey,TValue>) this).Add ((TKey) key, (TValue) value);
         }
 
 
@@ -698,9 +688,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Deprecated.</summary>
-        object ICollection.SyncRoot
-        { get { return GetSyncRoot(); } }
+        object ICollection.SyncRoot => GetSyncRoot();
 
         #endregion
 

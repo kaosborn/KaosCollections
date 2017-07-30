@@ -20,11 +20,14 @@ namespace Kaos.Collections
             protected readonly List<TKey> keys;
 
             public Node (int keyCapacity)
-            { this.keys = new List<TKey> (keyCapacity); }
+            {
+                this.keys = new List<TKey> (keyCapacity);
+            }
 
-            public int KeyCount { get { return keys.Count; } }
-            public TKey Key0 { get { return keys[0]; } }
             public abstract int Weight { get; }
+
+            public int KeyCount => keys.Count;
+            public TKey Key0 => keys[0];
 
             public void AddKey (TKey key) { keys.Add (key); }
             public TKey GetKey (int index) { return keys[index]; }

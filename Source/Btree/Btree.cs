@@ -67,24 +67,20 @@ namespace Kaos.Collections
 
         /// <summary>Gets the number of elements in the collection.</summary>
         /// <remarks>This is a <em>O (1)</em> operation.</remarks>
-        public int Count
-        { get { return root.Weight; } }
+        public int Count => root.Weight;
 
         /// <summary>Gets the maximum value in the set per the comparer.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
-        public TKey Max
-        { get { return Count==0 ? default (TKey) : rightmostLeaf.GetKey (rightmostLeaf.KeyCount-1); } }
+        public TKey Max => Count==0 ? default (TKey) : rightmostLeaf.GetKey (rightmostLeaf.KeyCount-1);
 
         /// <summary>Gets the minimum value in the set per the comparer.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
-        public TKey Min
-        { get { return Count==0 ? default (TKey) : leftmostLeaf.Key0; } }
+        public TKey Min => Count==0 ? default (TKey) : leftmostLeaf.Key0;
 
         /// <summary>Contains the method used to order elements in the sorted collection.</summary>
         /// <remarks>To override sorting based on the default comparer, supply an
         /// alternate comparer when constructing the collection.</remarks>
-        public IComparer<TKey> Comparer
-        { get { return comparer; } }
+        public IComparer<TKey> Comparer => comparer;
 
 
         /// <summary>Removes all items from the set.</summary>
@@ -284,8 +280,7 @@ namespace Kaos.Collections
 
         /// <summary>Gets maximum number of children of a branch.</summary>
         /// <returns>Maximum number of children of a branch.</returns>
-        public int GetOrder()
-        { return maxKeyCount + 1; }
+        public int GetOrder() => maxKeyCount + 1;
 
 
         /// <summary>Gets the number of levels in the tree.</summary>

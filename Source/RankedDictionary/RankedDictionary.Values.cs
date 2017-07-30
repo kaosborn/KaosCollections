@@ -50,8 +50,7 @@ namespace Kaos.Collections
             #region Properties
 
             /// <summary>Gets the number of values in the collection.</summary>
-            public int Count
-            { get { return tree.Count; } }
+            public int Count => tree.Count;
 
             #endregion
 
@@ -162,14 +161,12 @@ namespace Kaos.Collections
 
             #region Explicit properties and methods interface implementations
 
-            bool ICollection<TValue>.IsReadOnly
-            { get { return true; } }
+            bool ICollection<TValue>.IsReadOnly => true;
 
-            bool ICollection.IsSynchronized
-            { get { return false; } }
+            bool ICollection.IsSynchronized => false;
 
-            object ICollection.SyncRoot
-            { get { return tree.GetSyncRoot(); } }
+            object ICollection.SyncRoot => tree.GetSyncRoot();
+
 
             void ICollection<TValue>.Add (TValue value)
             { throw new NotSupportedException(); }

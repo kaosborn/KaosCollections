@@ -64,14 +64,11 @@ namespace Kaos.Collections
             public bool IsFound
             { get; private set; }
 
-            public Node TopNode
-            { get { return nodeStack[indexStack.Count - 1]; } }
+            public Node TopNode => nodeStack[indexStack.Count - 1];
 
-            public int TopNodeIndex
-            { get { return indexStack[indexStack.Count - 1]; } }
+            public int TopNodeIndex => indexStack[indexStack.Count - 1];
 
-            public int Height
-            { get { return indexStack.Count; } }
+            public int Height => indexStack.Count;
 
             #endregion
 
@@ -412,11 +409,6 @@ namespace Kaos.Collections
 #endregion
 
 #if DEBUG
-            /// <summary>Returns <b>true</b> if no left sibling.</summary>
-            public bool Child0
-            { get { return this.indexStack[Height - 2] == 0; } }
-
-
             /// <summary>Make an empty path.</summary>
             /// <param name="tree">Target of path.</param>
             /// <remarks>Used only for diagnostics.</remarks>
@@ -427,7 +419,6 @@ namespace Kaos.Collections
                 this.IsFound = false;
                 Push (tree.root, 0);
             }
-
 
             /// <summary>Make a path to leftmost branch or leaf at the supplied level.</summary>
             /// <param name="tree">Target of path.</param>
@@ -441,6 +432,9 @@ namespace Kaos.Collections
                     Push (node, 0);
                 }
             }
+
+            /// <summary>Returns <b>true</b> if no left sibling.</summary>
+            public bool Child0 => indexStack[Height - 2] == 0;
 #endif
         }
     }

@@ -73,11 +73,9 @@ namespace Kaos.Collections
 
         #region Properties
 
-        bool ICollection<T>.IsReadOnly
-        { get { return false; } }
+        bool ICollection<T>.IsReadOnly => false;
 
-        bool ICollection.IsSynchronized
-        { get { return false; } }
+        bool ICollection.IsSynchronized => false;
 
         object ICollection.SyncRoot => GetSyncRoot();
 

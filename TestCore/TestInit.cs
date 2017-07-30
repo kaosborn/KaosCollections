@@ -1,4 +1,5 @@
 ﻿//
+// Library: KaosCollections
 // File: TestInit.cs
 //
 // Run this suite against SortedDictionary and SortedSet to demonstrate identical
