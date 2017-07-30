@@ -1,16 +1,17 @@
 ﻿//
 // Program: RdBench04.cs
-// Purpose: Performance benchmark GUID adds
+// Purpose: Benchmark performance on GUID add operations.
 //
 // Usage notes:
 // - For valid results, run Release build outside Visual Studio.
-// - Adjust reps to change test duration.  Higher values show greater BtreeDictionary improvements.
+// - Adjust reps to change test duration.  Higher values show greater RankedDictionary improvements.
 //
 
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Kaos.Collections;
+[assembly: System.Reflection.AssemblyVersion ("0.1.0.0")]
 
 namespace BenchApp
 {

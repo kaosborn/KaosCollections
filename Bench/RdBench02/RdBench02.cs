@@ -1,6 +1,6 @@
 ﻿//
 // Program: RdBench02.cs
-// Purpose: Perform comparison benchmarks on BtreeDictionary & SortedDictionary.
+// Purpose: Perform comparison benchmarks on RankedDictionary and SortedDictionary.
 //
 // Usage notes:
 // - For valid results, run Release build outside Visual Studio.
@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Kaos.Collections;
+[assembly: System.Reflection.AssemblyVersion ("0.1.0.0")]
 
 namespace BenchApp
 {

@@ -1,15 +1,14 @@
 ﻿//
 // Program: RdBench03.cs
-// Purpose: Benchmark BtreeDictionary fill percent.
+// Purpose: Benchmark RankedDictionary fill percent.
 //
 // Usage notes:
 // • Run in Debug build for diagnostics.
 //
 
 using System;
-using System.Reflection;
 using Kaos.Collections;
-[assembly: AssemblyVersion ("0.1.0.0")]
+[assembly: System.Reflection.AssemblyVersion ("0.1.0.0")]
 
 namespace BenchApp
 {

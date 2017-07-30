@@ -1,9 +1,9 @@
 ﻿//
 // Program: RdBench01.cs
-// Purpose: Benchmark SortedDictionary and BtreeDictionary comparisons with range query narrative.
+// Purpose: Benchmark SortedDictionary and RankedDictionary comparisons with range query narrative.
 //
 // Usage notes:
-// • Adjust 'reps' to change test duration.  Higher values show greater BtreeDictionary improvements.
+// • Adjust 'reps' to change test duration.  Higher values show greater RankedDictionary improvements.
 // • To include diagnostic results, run Debug build.
 // • For valid time results, run Release build outside Visual Studio.
 //
@@ -13,6 +13,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Kaos.Collections;
+[assembly: System.Reflection.AssemblyVersion ("0.1.0.0")]
 
 namespace BenchApp
 {

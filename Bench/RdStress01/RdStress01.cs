@@ -1,15 +1,17 @@
 ﻿//
 // Program: RdStress01.cs
-// Purpose: Stress BtreeDictionary with permutation deletes.
+// Purpose: Stress RankedDictionary with permutation deletes.
 //
 // Usage notes:
 // • Not a performance test so run Debug version for full diagnostics.
+// • Compilation has an external NuGet dependency for permutations.
 //
 
 using System;
 using System.Threading;
 using Kaos.Collections;
 using Kaos.Combinatorics;
+[assembly: System.Reflection.AssemblyVersion ("0.1.0.0")]
 
 namespace BenchApp
 {
