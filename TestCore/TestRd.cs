@@ -6,7 +6,10 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+#if ! TEST_BCL
 using Kaos.Collections;
+#endif
 
 namespace CollectionsTest
 {
@@ -44,7 +47,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void UnitRd_Ctor0()
+        public void UnitRd_Ctor0Empty()
         {
             Setup();
             Assert.AreEqual (0, tree1.Count);
@@ -442,6 +445,116 @@ namespace CollectionsTest
 
 
         [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRd_Remove_ArgumentNull()
+        {
+            Setup();
+            tree2.Add ("delta", 4);
+
+            bool isRemoved = tree2.Remove ((string) null);
+        }
+
+
+        [TestMethod]
+        public void UnitRd_Remove()
+        {
+            Setup();
+
+            foreach (int key in iVals1)
+                tree1.Add (key, key + 1000);
+
+            int c0 = tree1.Count;
+            bool isRemoved1 = tree1.Remove (iVals1[3]);
+            bool isRemoved2 = tree1.Remove (iVals1[3]);
+
+            Assert.IsTrue (isRemoved1);
+            Assert.IsFalse (isRemoved2);
+            Assert.AreEqual (c0 - 1, tree1.Count);
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRd_TryGetValue_ArgumentNull()
+        {
+            Setup();
+
+            int resultValue;
+            tree2.TryGetValue (null, out resultValue);
+        }
+
+
+        [TestMethod]
+        public void UnitRd_TryGetValueOrUnfoundKeyInt()
+        {
+            Setup (5);
+            for (int i = 2; i <= 50; i+=2)
+                tree1.Add (i, i+300);
+
+            int val1, val2, val3;
+
+            bool result1 = tree1.TryGetValue (5, out val1);
+            bool result2 = tree1.TryGetValue (18, out val2);
+            bool result3 = tree1.TryGetValue (26, out val3);
+
+            Assert.AreEqual (val2, 318);
+            Assert.AreEqual (val3, 326);
+
+            Assert.IsFalse (result1);
+            Assert.IsTrue (result2);
+            Assert.IsTrue (result3);
+        }
+
+
+        [TestMethod]
+        public void UnitRd_TryGetValueForUnfoundKeyString()
+        {
+#if TEST_BCL
+            var sd = new SortedDictionary<string,int> (StringComparer.Ordinal);
+#else
+            var sd = new RankedDictionary<string,int> (StringComparer.Ordinal);
+#endif
+
+            for (char c = 'A'; c <= 'Z'; ++c)
+                sd.Add (c.ToString(), (int) c);
+
+            int val1, val2, val3;
+
+            bool result1 = sd.TryGetValue ("M", out val1);
+            bool result2 = sd.TryGetValue ("U", out val2);
+            bool result3 = sd.TryGetValue ("$", out val3);
+
+            Assert.AreEqual (val1, 'M');
+            Assert.AreEqual (val2, 'U');
+
+            Assert.IsTrue (result1);
+            Assert.IsTrue (result2);
+            Assert.IsFalse (result3);
+        }
+
+
+        [TestMethod]
+        public void UnitRd_TryGetValue()
+        {
+            Setup();
+
+            foreach (int key in iVals1)
+                tree1.Add (key, key + 1000);
+
+            int resultValue;
+            tree1.TryGetValue (iVals1[0], out resultValue);
+
+            Assert.AreEqual (iVals1[0] + 1000, resultValue);
+
+            tree1.TryGetValue (50, out resultValue);
+            Assert.AreEqual (default (int), resultValue);
+        }
+
+        #endregion
+
+        #region Test enumeration
+
+        [TestMethod]
         public void UnitRd_GetEnumeratorOnEmpty()
         {
             int actual=0;
@@ -552,125 +665,6 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        [ExpectedException (typeof (ArgumentNullException))]
-        public void CrashRd_Remove_ArgumentNull()
-        {
-            Setup();
-            tree2.Add ("delta", 4);
-
-            bool isRemoved = tree2.Remove ((string) null);
-        }
-
-
-        [TestMethod]
-        public void UnitRd_Remove()
-        {
-            Setup();
-
-            foreach (int key in iVals1)
-                tree1.Add (key, key + 1000);
-
-            int c0 = tree1.Count;
-            bool isRemoved1 = tree1.Remove (iVals1[3]);
-            bool isRemoved2 = tree1.Remove (iVals1[3]);
-
-            Assert.IsTrue (isRemoved1);
-            Assert.IsFalse (isRemoved2);
-            Assert.AreEqual (c0 - 1, tree1.Count);
-        }
-
-
-        [TestMethod]
-        [ExpectedException (typeof (ArgumentNullException))]
-        public void CrashRd_TryGetValue_ArgumentNull()
-        {
-            Setup();
-
-            int resultValue;
-            tree2.TryGetValue (null, out resultValue);
-        }
-
-
-        [TestMethod]
-        public void UnitRd_TryGetValueOrUnfoundKeyInt()
-        {
-            Setup (5);
-            for (int i = 2; i <= 50; i+=2)
-                tree1.Add (i, i+300);
-
-            int val1, val2, val3;
-
-            bool result1 = tree1.TryGetValue (5, out val1);
-            bool result2 = tree1.TryGetValue (18, out val2);
-            bool result3 = tree1.TryGetValue (26, out val3);
-
-            Assert.AreEqual (val2, 318);
-            Assert.AreEqual (val3, 326);
-
-            Assert.IsFalse (result1);
-            Assert.IsTrue (result2);
-            Assert.IsTrue (result3);
-        }
-
-
-        [TestMethod]
-        public void UnitRd_TryGetValueForUnfoundKeyString()
-        {
-#if TEST_BCL
-            var sd = new SortedDictionary<string,int> (StringComparer.Ordinal);
-#else
-            var sd = new RankedDictionary<string,int> (StringComparer.Ordinal);
-#endif
-
-            for (char c = 'A'; c <= 'Z'; ++c)
-                sd.Add (c.ToString(), (int) c);
-
-            int val1, val2, val3;
-
-            bool result1 = sd.TryGetValue ("M", out val1);
-            bool result2 = sd.TryGetValue ("U", out val2);
-            bool result3 = sd.TryGetValue ("$", out val3);
-
-            Assert.AreEqual (val1, 'M');
-            Assert.AreEqual (val2, 'U');
-
-            Assert.IsTrue (result1);
-            Assert.IsTrue (result2);
-            Assert.IsFalse (result3);
-        }
-
-
-        [TestMethod]
-        public void UnitRd_TryGetValue()
-        {
-            Setup();
-
-            foreach (int key in iVals1)
-                tree1.Add (key, key + 1000);
-
-            int resultValue;
-            tree1.TryGetValue (iVals1[0], out resultValue);
-
-            Assert.AreEqual (iVals1[0] + 1000, resultValue);
-
-            tree1.TryGetValue (50, out resultValue);
-            Assert.AreEqual (default (int), resultValue);
-        }
-
-
-        [TestMethod]
-        public void UnitRd_ObjectGetEnumerator()
-        {
-            Setup();
-            var aa = (System.Collections.IEnumerable) tree1;
-            var bb = aa.GetEnumerator();
-        }
-
-        #endregion
-
-        #region Test enumeration
-
-        [TestMethod]
         [ExpectedException (typeof (InvalidOperationException))]
         public void CrashRd_EnumHotUpdate()
         {
@@ -685,6 +679,14 @@ namespace CollectionsTest
                 if (++n == 2)
                     tree2.Add ("breaks enum", 4);
             }
+        }
+
+        [TestMethod]
+        public void UnitRd_ObjectGetEnumerator()
+        {
+            Setup();
+            var aa = (System.Collections.IEnumerable) tree1;
+            var bb = aa.GetEnumerator();
         }
 
         #endregion
@@ -746,7 +748,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void UnitRd_ICollectionCompairPairNullRef()
+        public void UnitRd_ICollectionComparePairNullRef()
         {
             Setup();
             tree4.Add (3, "cc");
@@ -910,6 +912,221 @@ namespace CollectionsTest
             Assert.AreEqual (2, count);
         }
 
+        #endregion
+
+        #region Test bonus methods
+#if ! TEST_BCL
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRdx_Ctor0_ArgumentOutOfRange()
+        {
+            Btree.TreeOrder = 3;
+        }
+
+
+        [TestMethod]
+        public void UnitRdx_GetBetween()
+        {
+            var bt = new RankedDictionary<int,int>();
+
+            for (int i = 90; i >= 0; i -= 10)
+                bt.Add (i, -100 - i);
+
+            int iterations = 0;
+            int sumVals = 0;
+            foreach (var kv in bt.GetBetween (35, 55))
+            {
+                ++iterations;
+                sumVals += kv.Value;
+            }
+
+            Assert.AreEqual (2, iterations);
+            Assert.AreEqual (-290, sumVals);
+        }
+
+
+        [TestMethod]
+        public void UnitRdx_GetBetweenPassedEnd()
+        {
+            var btree = new RankedDictionary<int,int>();
+
+            for (int i = 0; i < 1000; ++i)
+                btree.Add (i, -i);
+
+            int iterations = 0;
+            int sumVals = 0;
+            foreach (KeyValuePair<int,int> e in btree.GetBetween (500, 1500))
+            {
+                ++iterations;
+                sumVals += e.Value;
+            }
+
+            Assert.AreEqual (500, iterations);
+            Assert.AreEqual (-374750, sumVals, "Sum of values not correct");
+        }
+
+
+        [TestMethod]
+        public void UnitRdx_GetFrom()
+        {
+            var btree = new RankedDictionary<int,int>();
+
+            for (int i = 1; i <= 1000; ++i)
+                btree.Add (i, -i);
+
+            int firstKey = -1;
+            int iterations = 0;
+            foreach (var e in btree.GetFrom (501))
+            {
+                if (iterations == 0)
+                    firstKey = e.Key;
+                ++iterations;
+            }
+
+            Assert.AreEqual (501, firstKey);
+            Assert.AreEqual (500, iterations);
+        }
+
+
+        [TestMethod]
+        public void UnitRdx_GetFromMissingVal()
+        {
+
+            var btree = new RankedDictionary<int,int>();
+
+            for (int i = 0; i < 1000; i += 2)
+                btree.Add (i, -i);
+
+            for (int i = 1; i < 999; i += 2)
+            {
+                bool isFirst = true;
+                foreach (var x in btree.GetFrom (i))
+                {
+                    if (isFirst)
+                    {
+                        Assert.AreEqual (i + 1, x.Key, "Incorrect key value");
+                        isFirst = false;
+                    }
+                }
+            }
+        }
+
+
+        [TestMethod]
+        public void UnitRdx_GetFromKeyPassedEnd()
+        {
+            var btree = new RankedDictionary<int,int>();
+
+            for (int i = 0; i < 1000; ++i)
+                btree.Add (i, -i);
+
+            int iterations = 0;
+            foreach (var x in btree.GetFrom (2000))
+                ++iterations;
+
+            Assert.AreEqual (0, iterations, "SkipUntilKey shouldn't find anything");
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRdx_GetByIndex1_ArgumentOutOfRange()
+        {
+            var tree = new RankedDictionary<int,int>();
+            KeyValuePair<int,int> pair = tree.GetByIndex (-1);
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRdx_GetByIndex2_ArgumentOutOfRange()
+        {
+            var tree = new RankedDictionary<int,int>();
+            KeyValuePair<int,int> pair = tree.GetByIndex (0);
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRdx_GetByIndex3_ArgumentOutOfRange()
+        {
+            Btree.TreeOrder = 4;
+            var tree = new RankedDictionary<int,int>() { { 4, 104 } };
+            KeyValuePair<int,int> pair = tree.GetByIndex (-1);
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRdx_GetByIndex4_ArgumentOutOfRange()
+        {
+            Btree.TreeOrder = 4;
+            var tree = new RankedDictionary<int,int>();
+            KeyValuePair<int,int> pair = tree.GetByIndex (0);
+        }
+
+
+        [TestMethod]
+        public void UnitRdx_GetByIndex()
+        {
+            Btree.TreeOrder = 4;
+            var tree = new RankedDictionary<int,int>();
+            for (int ii = 0; ii <= 800; ii+=2)
+                tree.Add (ii, ii+100);
+
+            for (int ii = 0; ii <= 400; ii+=2)
+            {
+                KeyValuePair<int,int> pair = tree.GetByIndex (ii);
+                Assert.AreEqual (ii*2, pair.Key);
+                Assert.AreEqual (ii*2+100, pair.Value);
+            }
+        }
+
+
+        [TestMethod]
+        public void UnitRdx_IndexOf()
+        {
+            Btree.TreeOrder = 5;
+            var tree = new RankedDictionary<int,int>();
+            for (int ii = 0; ii < 500; ii+=2)
+                tree.Add (ii, ii+1000);
+
+            for (int ii = 0; ii < 500; ii+=2)
+            {
+                int ix = tree.IndexOf (ii);
+                Assert.AreEqual (ii/2, ix);
+            }
+
+            int iw = tree.IndexOf (-1);
+            Assert.AreEqual (~0, iw);
+
+            int iy = tree.IndexOf (500);
+            Assert.AreEqual (~250, iy);
+        }
+
+
+        [TestMethod]
+        public void UnitRdx_TryGetValueIndex()
+        {
+            Btree.TreeOrder = 5;
+            var tree = new RankedDictionary<int,int>();
+            for (int ii = 0; ii < 500; ii+=2)
+                tree.Add (ii, ii+1000);
+
+            for (int ii = 0; ii < 500; ii+=2)
+            {
+                bool isOk = tree.TryGetValueAndIndex (ii, out int v1, out int i1);
+
+                Assert.IsTrue (isOk);
+                Assert.AreEqual (ii/2, i1);
+                Assert.AreEqual (ii+1000, v1);
+            }
+
+            bool isOkNot = tree.TryGetValueAndIndex (111, out int v2, out int i2);
+            Assert.IsFalse (isOkNot);
+        }
+
+#endif
         #endregion
     }
 }

@@ -2,12 +2,164 @@
 using System.Collections;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Kaos.Collections;
 
 namespace CollectionsTest
 {
     public partial class Test_Btree
     {
+        #region Test object properties
+
+        [TestMethod]
+        public void UnitRd_ObjectIsFixedSize()
+        {
+            Setup();
+            Assert.IsFalse (objCol1.IsFixedSize);
+        }
+
+
+        [TestMethod]
+        public void UnitRd_ObjectIsReadonly()
+        {
+            Setup();
+            Assert.IsFalse (objCol1.IsReadOnly);
+        }
+
+
+        [TestMethod]
+        public void UnitRd_ObjectIsSynchronized()
+        {
+            Setup();
+            Assert.IsFalse (objCol1.IsSynchronized);
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRd_ObjectItemGet_ArgumentNull()
+        {
+            Setup();
+            objCol2.Add ("foo", 10);
+            object j = objCol2[null];
+        }
+
+
+        [TestMethod]
+        public void CrashRd_ObjectItemGetBadKey()
+        {
+            Setup();
+            objCol2.Add ("foo", 10);
+            object j = objCol2[45];
+            Assert.IsNull (j);
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRd_ObjectItemSetKey_ArgumentNull()
+        {
+            Setup();
+            objCol2.Add ("foo", 10);
+            objCol2[null] = "bar";
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRd_ObjectItemSetValue_ArgumentNull()
+        {
+            Setup();
+            objCol2.Add ("foo", 10);
+            objCol2["foo"] = null;
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentException))]
+        public void CrashRd_ObjectItemSetBadKey_Argument()
+        {
+            Setup();
+            objCol2.Add ("foo", 10);
+            objCol2[23] = 45;
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentException))]
+        public void CrashRd_ObjectItemSetBadValue_Argument()
+        {
+            Setup();
+            objCol2.Add ("foo", 10);
+            objCol2["red"] = "blue";
+        }
+
+
+        [TestMethod]
+        public void UnitRd_ObjectItem()
+        {
+            Setup();
+
+            object j1 = objCol2["foo"];
+            Assert.IsNull (j1);
+
+            objCol2.Add ("foo", 10);
+            objCol2.Add ("bar", 20);
+
+            objCol2["raz"] = 30;
+
+            Assert.AreEqual (3, objCol2.Count);
+
+            objCol2["bar"] = 40;
+
+            Assert.AreEqual (3, objCol2.Count);
+
+            object j2 = objCol2["bar"];
+            Assert.AreEqual (40, (int) j2);
+
+            objCol4[12] = "twelve";
+            objCol4[13] = null;
+            Assert.AreEqual (2, objCol4.Count);
+        }
+
+        #endregion
+
+        #region Test object methods
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRd_ObjectAddNullKey_Argument()
+        {
+            Setup();
+            objCol2.Add ((String) null, 1);
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentException))]
+        public void CrashRd_ObjectAddBadKey_Argument()
+        {
+            Setup();
+            objCol2.Add (23, 45);
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentException))]
+        public void CrashRd_ObjectAddBadValue_Argument()
+        {
+            Setup();
+            objCol2.Add ("razz", "matazz");
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentException))]
+        public void CrashRd_ObjectAddDupl_Argument()
+        {
+            Setup();
+            objCol2.Add ("nn", 1);
+            objCol2.Add ("nn", 2);
+        }
+
+
         [TestMethod]
         public void UnitRd_ObjectContainsKey()
         {
@@ -140,155 +292,6 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void UnitRd_ObjectIsFixedSize()
-        {
-            Setup();
-            Assert.IsFalse (objCol1.IsFixedSize);
-        }
-
-
-        [TestMethod]
-        public void UnitRd_ObjectIsReadonly()
-        {
-            Setup();
-            Assert.IsFalse (objCol1.IsReadOnly);
-        }
-
-
-        [TestMethod]
-        public void UnitRd_ObjectIsSynchronized()
-        {
-            Setup();
-            Assert.IsFalse (objCol1.IsSynchronized);
-        }
-
-
-        [TestMethod]
-        [ExpectedException (typeof (ArgumentNullException))]
-        public void CrashRd_ObjectAddNullKey_Argument()
-        {
-            Setup();
-            objCol2.Add ((String) null, 1);
-        }
-
-
-        [TestMethod]
-        [ExpectedException (typeof (ArgumentException))]
-        public void CrashRd_ObjectAddBadKey_Argument()
-        {
-            Setup();
-            objCol2.Add (23, 45);
-        }
-
-
-        [TestMethod]
-        [ExpectedException (typeof (ArgumentException))]
-        public void CrashRd_ObjectAddBadValue_Argument()
-        {
-            Setup();
-            objCol2.Add ("razz", "matazz");
-        }
-
-
-        [TestMethod]
-        [ExpectedException (typeof (ArgumentException))]
-        public void CrashRd_ObjectAddDupl_Argument()
-        {
-            Setup();
-            objCol2.Add ("nn", 1);
-            objCol2.Add ("nn", 2);
-        }
-
-
-        [TestMethod]
-        [ExpectedException (typeof (ArgumentNullException))]
-        public void CrashRd_ObjectItemGet_ArgumentNull()
-        {
-            Setup();
-            objCol2.Add ("foo", 10);
-            object j = objCol2[null];
-        }
-
-
-        [TestMethod]
-        public void CrashRd_ObjectItemGetBadKey()
-        {
-            Setup();
-            objCol2.Add ("foo", 10);
-            object j = objCol2[45];
-            Assert.IsNull (j);
-        }
-
-
-        [TestMethod]
-        [ExpectedException (typeof (ArgumentNullException))]
-        public void CrashRd_ObjectItemSetKey_ArgumentNull()
-        {
-            Setup();
-            objCol2.Add ("foo", 10);
-            objCol2[null] = "bar";
-        }
-
-
-        [TestMethod]
-        [ExpectedException (typeof (ArgumentNullException))]
-        public void CrashRd_ObjectItemSetValue_ArgumentNull()
-        {
-            Setup();
-            objCol2.Add ("foo", 10);
-            objCol2["foo"] = null;
-        }
-
-
-        [TestMethod]
-        [ExpectedException (typeof (ArgumentException))]
-        public void CrashRd_ObjectItemSetBadKey_Argument()
-        {
-            Setup();
-            objCol2.Add ("foo", 10);
-            objCol2[23] = 45;
-        }
-
-
-        [TestMethod]
-        [ExpectedException (typeof (ArgumentException))]
-        public void CrashRd_ObjectItemSetBadValue_Argument()
-        {
-            Setup();
-            objCol2.Add ("foo", 10);
-            objCol2["red"] = "blue";
-        }
-
-
-        [TestMethod]
-        public void UnitRd_ObjectItem()
-        {
-            Setup();
-
-            object j1 = objCol2["foo"];
-            Assert.IsNull (j1);
-
-            objCol2.Add ("foo", 10);
-            objCol2.Add ("bar", 20);
-
-            objCol2["raz"] = 30;
-
-            Assert.AreEqual (3, objCol2.Count);
-
-            objCol2["bar"] = 40;
-
-            Assert.AreEqual (3, objCol2.Count);
-
-            object j2 = objCol2["bar"];
-            Assert.AreEqual (40, (int) j2);
-
-            objCol4[12] = "twelve";
-            objCol4[13] = null;
-            Assert.AreEqual (2, objCol4.Count);
-        }
-
-
-        [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
         public void CrashRd_ObjectRemove_ArgumentNull()
         {
@@ -313,13 +316,38 @@ namespace CollectionsTest
             objCol1.Remove ("ignore wrong type");
         }
 
+        #endregion
 
-        // ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== =====
+        #region Test object Keys
+
+        [TestMethod]
+        public void UnitRdk_ObjectKeysCount()
+        {
+            int n = 10;
+            Setup();
+
+            ICollection c1 = (ICollection) tree1.Keys;
+
+            Assert.AreEqual (0, c1.Count);
+
+            for (int i = 0; i < n; ++i)
+                tree1.Add (i + 100, i + 1000);
+
+            Assert.AreEqual (n, c1.Count);
+        }
+
+
+        [TestMethod]
+        public void UnitRdk_ObjectKeysIsSynchronized()
+        {
+            Setup();
+            Assert.IsFalse (((ICollection) tree1.Keys).IsSynchronized);
+        }
 
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void CrashRd_ObjectKeysCopyTo_ArgumentNull()
+        public void CrashRdk_ObjectKeysCopyTo_ArgumentNull()
         {
             Setup();
             ICollection c1 = (ICollection) tree1.Keys;
@@ -329,7 +357,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void CrashRd_ObjectKeysCopyToMultiDimensional_Argument()
+        public void CrashRdk_ObjectKeysCopyToMultiDimensional_Argument()
         {
             Setup();
             tree1.Add (42, 420);
@@ -341,7 +369,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRd_ObjectKeysCopyTo_ArgumentOutOfRange()
+        public void CrashRdk_ObjectKeysCopyTo_ArgumentOutOfRange()
         {
             Setup();
             tree1.Add (42, 420);
@@ -353,7 +381,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void CrashRd_ObjectKeysCopyToNotLongEnough_Argument()
+        public void CrashRdk_ObjectKeysCopyToNotLongEnough_Argument()
         {
             Setup();
             for (int i = 0; i < 10; ++i)
@@ -365,7 +393,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void UnitRd_ObjectKeysCopyTo()
+        public void UnitRdk_ObjectKeysCopyTo()
         {
             int n = 10;
             Setup();
@@ -384,7 +412,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void UnitRd_ObjectKeysGetEnumerator()
+        public void UnitRdk_ObjectKeysGetEnumerator()
         {
             int n = 10;
             Setup();
@@ -401,15 +429,17 @@ namespace CollectionsTest
             }
         }
 
-        // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+        #endregion
+
+        #region Test object Values
 
         [TestMethod]
-        public void UnitRd_ObjectKeysCount()
+        public void UnitRdv_ObjectICollectionValuesCount()
         {
             int n = 10;
             Setup();
 
-            ICollection c1 = (ICollection) tree1.Keys;
+            ICollection c1 = (ICollection) tree1.Values;
 
             Assert.AreEqual (0, c1.Count);
 
@@ -421,19 +451,16 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void UnitRd_ObjectKeysIsSynchronized()
+        public void UnitRdv_ObjectICollectionValuesIsSynchronized()
         {
             Setup();
-            Assert.IsFalse (((ICollection) tree1.Keys).IsSynchronized);
+            Assert.IsFalse (((ICollection) tree1.Values).IsSynchronized);
         }
-
-
-        // ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== ===== =====
 
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void CrashRd_ObjectValuesCopyTo_ArgumentNull()
+        public void CrashRdv_ObjectValuesCopyTo_ArgumentNull()
         {
             Setup();
             ICollection c1 = (ICollection) tree1.Values;
@@ -443,7 +470,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void CrashRd_ObjectValuesCopyToMultiDimensional_Argument()
+        public void CrashRdv_ObjectValuesCopyToMultiDimensional_Argument()
         {
             Setup();
             tree1.Add (42, 420);
@@ -455,7 +482,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRd_ObjectValuesCopyTo_ArgumentOutOfRange()
+        public void CrashRdv_ObjectValuesCopyTo_ArgumentOutOfRange()
         {
             Setup();
             tree1.Add (42, 420);
@@ -467,7 +494,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void CrashRd_ObjectValuesCopyToNotLongEnough_Argument()
+        public void CrashRdv_ObjectValuesCopyToNotLongEnough_Argument()
         {
             Setup();
             for (int i = 0; i < 10; ++i)
@@ -479,7 +506,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void UnitRd_ObjectValuesCopyTo()
+        public void UnitRdv_ObjectValuesCopyTo()
         {
             int n = 10;
             Setup();
@@ -498,7 +525,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void UnitRd_ObjectValuesGetEnumerator()
+        public void UnitRdv_ObjectValuesGetEnumerator()
         {
             int n = 10;
             Setup();
@@ -515,30 +542,6 @@ namespace CollectionsTest
             }
         }
 
-        // ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
-
-        [TestMethod]
-        public void UnitRd_ObjectValuesCount()
-        {
-            int n = 10;
-            Setup();
-
-            ICollection c1 = (ICollection) tree1.Values;
-
-            Assert.AreEqual (0, c1.Count);
-
-            for (int i = 0; i < n; ++i)
-                tree1.Add (i + 100, i + 1000);
-
-            Assert.AreEqual (n, c1.Count);
-        }
-
-
-        [TestMethod]
-        public void UnitRd_ObjectValuesIsSynchronized()
-        {
-            Setup();
-            Assert.IsFalse (((ICollection) tree1.Values).IsSynchronized);
-        }
+        #endregion
     }
 }
