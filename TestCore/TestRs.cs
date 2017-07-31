@@ -607,24 +607,196 @@ namespace CollectionsTest
             Assert.AreEqual (9, setI.Min);
         }
 
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRs_IsSubsetOf_ArgumentNull()
+        {
+            Setup();
+            bool result = setI.IsSubsetOf (null);
+        }
+
+        [TestMethod]
+        public void UnitRs_IsSubsetOf()
+        {
+            Setup();
+
+            var a35779 = new int[] { 3, 5, 7, 7, 9 };
+            var a357 = new int[] { 3, 5, 7 };
+            var a35 = new int[] { 3, 5 };
+            var ae = new int[] { };
+
+            Assert.IsTrue (setI.IsSubsetOf (a35));
+            Assert.IsTrue (setI.IsSubsetOf (ae));
+
+            setI.Add (3); setI.Add (5); setI.Add (7);
+
+            Assert.IsTrue (setI.IsSubsetOf (a35779));
+            Assert.IsTrue (setI.IsSubsetOf (a357));
+            Assert.IsFalse (setI.IsSubsetOf (a35));
+            Assert.IsFalse (setI.IsSubsetOf (ae));
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRs_IsProperSubsetOf_ArgumentNull()
+        {
+            Setup();
+            bool result = setI.IsProperSubsetOf (null);
+        }
+
+        [TestMethod]
+        public void UnitRs_IsProperSubsetOf()
+        {
+            Setup();
+
+            var a35779 = new int[] { 3, 5, 7, 7, 9 };
+            var a357 = new int[] { 3, 5, 7 };
+            var a35 = new int[] { 3, 5 };
+            var ae = new int[] { };
+
+            Assert.IsTrue (setI.IsProperSubsetOf (a35));
+            Assert.IsFalse (setI.IsProperSubsetOf (ae));
+
+            setI.Add (3); setI.Add (5); setI.Add (7);
+
+            Assert.IsTrue (setI.IsProperSubsetOf (a35779));
+            Assert.IsFalse (setI.IsProperSubsetOf (a357));
+            Assert.IsFalse (setI.IsProperSubsetOf (a35));
+            Assert.IsFalse (setI.IsProperSubsetOf (ae));
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRs_IsSupersetOf_ArgumentNull()
+        {
+            Setup();
+            bool result = setI.IsSupersetOf (null);
+        }
+
         [TestMethod]
         public void UnitRs_IsSupersetOf()
         {
-            bool isSuper;
             Setup();
 
-            isSuper = setI.IsSupersetOf (new int[0]);
-            Assert.IsTrue (isSuper);
+            var a3579 = new int[] { 3, 5, 7, 9 };
+            var a357 = new int[] { 3, 5, 7 };
+            var a35 = new int[] { 3, 5 };
+            var a355 = new int[] { 3, 5, 5 };
+            var ae = new int[] { };
 
-            foreach (int item in iVals1)
-                setI.Add (item);
-            Assert.IsTrue (isSuper);
+            Assert.IsTrue (setI.IsSupersetOf (ae));
+            Assert.IsFalse (setI.IsSupersetOf (a35));
 
-            isSuper = setI.IsSupersetOf (iVals4);
-            Assert.IsTrue (isSuper);
+            setI.Add (3); setI.Add (5); setI.Add (7);
 
-            isSuper = setI.IsSupersetOf (iVals2);
-            Assert.IsFalse (isSuper);
+            Assert.IsFalse (setI.IsSupersetOf (a3579));
+            Assert.IsTrue (setI.IsSupersetOf (a357));
+            Assert.IsTrue (setI.IsSupersetOf (a35));
+            Assert.IsTrue (setI.IsSupersetOf (a355));
+            Assert.IsTrue (setI.IsSupersetOf (ae));
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRs_IsProperSupersetOf_ArgumentNull()
+        {
+            Setup();
+            bool result = setI.IsProperSupersetOf (null);
+        }
+
+        [TestMethod]
+        public void UnitRs_IsProperSupersetOf()
+        {
+            Setup();
+
+            var a3579 = new int[] { 3, 5, 7, 9 };
+            var a357 = new int[] { 3, 5, 7 };
+            var a35 = new int[] { 3, 5 };
+            var a355 = new int[] { 3, 5, 5 };
+            var ae = new int[] { };
+
+            Assert.IsFalse (setI.IsProperSupersetOf (ae));
+            Assert.IsFalse (setI.IsProperSupersetOf (a35));
+
+            setI.Add (3); setI.Add (5); setI.Add (7);
+
+            Assert.IsFalse (setI.IsProperSupersetOf (a3579));
+            Assert.IsFalse (setI.IsProperSupersetOf (a357));
+            Assert.IsTrue (setI.IsProperSupersetOf (a35));
+            Assert.IsTrue (setI.IsProperSupersetOf (a355));
+            Assert.IsTrue (setI.IsProperSupersetOf (ae));
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRs_Overlaps_ArgumentNull()
+        {
+            Setup();
+            bool result = setI.Overlaps (null);
+        }
+
+        [TestMethod]
+        public void UnitRs_Overlaps()
+        {
+            Setup();
+
+            var a35779 = new int[] { 3, 5, 7, 7, 9 };
+            var a357 = new int[] { 3, 5, 7 };
+            var a35 = new int[] { 3, 5 };
+            var a355 = new int[] { 3, 5, 5 };
+            var a19 = new int[] { 1, 9 };
+            var ae = new int[] { };
+
+            Assert.IsFalse (setI.Overlaps (ae));
+            Assert.IsFalse (setI.Overlaps (a35));
+
+            setI.Add (3); setI.Add (5); setI.Add (7);
+
+            Assert.IsTrue (setI.Overlaps (a35779));
+            Assert.IsTrue (setI.Overlaps (a357));
+            Assert.IsTrue (setI.Overlaps (a35));
+            Assert.IsFalse (setI.Overlaps (a19));
+            Assert.IsFalse (setI.Overlaps (ae));
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRs_SetEquals_ArgumentNull()
+        {
+            Setup();
+            bool result = setI.SetEquals (null);
+        }
+        [TestMethod]
+
+        public void UnitRs_SetEquals()
+        {
+            Setup();
+
+            var a359 = new int[] { 3, 5, 9 };
+            var a3557 = new int[] { 3, 5, 5, 7 };
+            var a357 = new int[] { 3, 5, 7 };
+            var a35 = new int[] { 3, 5 };
+            var a355 = new int[] { 3, 5, 5 };
+            var a19 = new int[] { 1, 9 };
+            var ae = new int[] { };
+
+            Assert.IsTrue (setI.SetEquals (ae));
+            Assert.IsFalse (setI.SetEquals (a35));
+
+            setI.Add (3); setI.Add (5); setI.Add (7);
+
+            Assert.IsTrue (setI.SetEquals (a3557));
+            Assert.IsTrue (setI.SetEquals (a357));
+            Assert.IsFalse (setI.SetEquals (a359));
+            Assert.IsFalse (setI.SetEquals (a35));
+            Assert.IsFalse (setI.SetEquals (a355));
+            Assert.IsFalse (setI.SetEquals (a19));
+            Assert.IsFalse (setI.SetEquals (ae));
         }
 
         #endregion
