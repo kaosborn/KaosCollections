@@ -594,6 +594,16 @@ namespace CollectionsTest
             Assert.AreEqual (0, setI.Count);
         }
 
+        [TestMethod]
+        public void UnitRs_ExceptWithSelf()
+        {
+            Setup();
+            setI.Add (4); setI.Add (2);
+
+            setI.ExceptWith (setI);
+            Assert.AreEqual (0, setI.Count);
+        }
+
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
@@ -853,8 +863,8 @@ namespace CollectionsTest
             Setup();
             bool result = setI.SetEquals (null);
         }
-        [TestMethod]
 
+        [TestMethod]
         public void UnitRs_SetEquals()
         {
             var a359 = new int[] { 3, 5, 9 };
@@ -878,6 +888,22 @@ namespace CollectionsTest
             Assert.IsFalse (setI.SetEquals (a355));
             Assert.IsFalse (setI.SetEquals (a19));
             Assert.IsFalse (setI.SetEquals (empty));
+        }
+
+        [TestMethod]
+        public void UnitRs_SetEquals2()
+        {
+            Setup();
+
+            personSet.Add (new Person ("Fred"));
+            personSet.Add (new Person ("Wilma"));
+
+            var pa = new Person[] { new Person ("Wilma"), new Person ("Fred") };
+
+            Assert.IsTrue (personSet.SetEquals (pa));
+
+            personSet.Add (new Person ("Pebbles"));
+            Assert.IsFalse (personSet.SetEquals (pa));
         }
 
         #endregion
