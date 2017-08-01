@@ -123,7 +123,9 @@ namespace Kaos.Collections
             // Leaf is full so right split a new leaf.
             var newLeaf = new Leaf (leaf, maxKeyCount);
 
-            if (newLeaf.rightLeaf == null)
+            if (newLeaf.rightLeaf != null)
+                newLeaf.rightLeaf.leftLeaf = newLeaf;
+            else
             {
                 rightmostLeaf = newLeaf;
 

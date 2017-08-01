@@ -136,14 +136,13 @@ namespace Kaos.Collections
             /// <summary>Splice this leaf to right of <paramref name="leftLeaf"/>.</summary>
             /// <param name="leftLeaf">Provides linked list insert point.</param>
             /// <param name="capacity">The initial number of elements the page can store.</param>
+            /// <remarks>Caller must fixup rightLeaf field.</remarks>
             public Leaf (Leaf leftLeaf, int capacity) : base (capacity)
             {
                 // Doubly linked list insertion.
                 this.rightLeaf = leftLeaf.rightLeaf;
                 leftLeaf.rightLeaf = this;
                 this.leftLeaf = leftLeaf;
-                if (this.rightLeaf != null)
-                    this.rightLeaf.leftLeaf = this;
             }
 
 
