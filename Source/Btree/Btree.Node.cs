@@ -1,6 +1,7 @@
 ﻿//
 // Library: KaosCollections
 // File:    Btree.Node.cs
+// Purpose: Define nested classes Node, Branch, Leaf.
 //
 // Copyright © 2009-2017 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely
@@ -14,7 +15,7 @@ namespace Kaos.Collections
 {
     public abstract partial class Btree<TKey>
     {
-        /// <summary>Base page of the B+ tree. May be internal (Branch) or terminal (Leaf).</summary>
+        /// <summary>Base page of the B+ tree. May be internal (Branch) or terminal (Leaf, PairLeaf).</summary>
         protected abstract class Node
         {
             protected readonly List<TKey> keys;
@@ -32,7 +33,7 @@ namespace Kaos.Collections
             public void AddKey (TKey key) { keys.Add (key); }
             public TKey GetKey (int index) { return keys[index]; }
             public int Search (TKey key) { return keys.BinarySearch (key); }
-            public int Search (TKey key, IComparer<TKey> comparer) { return keys.BinarySearch (key, comparer); }
+             public int Search (TKey key, IComparer<TKey> comparer) { return keys.BinarySearch (key, comparer); }
             public void SetKey (int index, TKey key) { keys[index] = key; }
             public void RemoveKey (int index) { keys.RemoveAt (index); }
             public void RemoveKeys (int index, int count) { keys.RemoveRange (index, count); }
@@ -54,7 +55,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>An non-leaf B+ tree page.</summary>
+        /// <summary>Internal node containing subdivions.</summary>
         /// <remarks>
         /// Contains copies of the first key ('anchor') of every leaf except the leftmost.
         /// </remarks>
@@ -80,7 +81,7 @@ namespace Kaos.Collections
 
             public Node GetChild (int childIndex) => childNodes[childIndex];
 
-            /// <summary>Number of key/value pairs in the subtree.</summary>
+            /// <summary>Number of key/value pairs in descendent leaves.</summary>
             public override int Weight
             { get { return weight; } }
 
@@ -133,7 +134,7 @@ namespace Kaos.Collections
             }
 
 
-            /// <summary>Splice this leaf to right of <paramref name="leftLeaf"/>.</summary>
+            /// <summary>Splice new leaf to right of leftLeaf".</summary>
             /// <param name="leftLeaf">Provides linked list insert point.</param>
             /// <param name="capacity">The initial number of elements the page can store.</param>
             /// <remarks>Caller must fixup rightLeaf field.</remarks>

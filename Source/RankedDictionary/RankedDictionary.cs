@@ -320,6 +320,7 @@ namespace Kaos.Collections
         /// otherwise it will be loaded with the default value for its type.
         /// </param>
         /// <returns><b>true</b> if <em>key</em> is found; otherwise <b>false</b>.</returns>
+        /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
         public bool TryGetValue (TKey key, out TValue value)
         {
@@ -458,8 +459,7 @@ namespace Kaos.Collections
 
         /// <summary>Adds an element with the supplied key/value pair.</summary>
         /// <param name="keyValuePair">Contains the key and value of the element to add.</param>
-        /// <exception cref="ArgumentException">When an element containing <em>key</em>
-        /// has already been added.</exception>
+        /// <exception cref="ArgumentException">When an element containing <em>key</em> has already been added.</exception>
         void ICollection<KeyValuePair<TKey,TValue>>.Add (KeyValuePair<TKey,TValue> keyValuePair)
         {
             var path = new NodeVector (this, keyValuePair.Key);
@@ -507,11 +507,10 @@ namespace Kaos.Collections
         IEnumerable<TValue> IReadOnlyDictionary<TKey,TValue>.Values => Values;
 #endif
 
-        /// <summary>Deletes the supplied key and its associated value from the collection.
-        /// </summary>
-        /// <param name="keyValuePair">Contains key and value to find and remove. No operation is taken
-        /// unless both key and value match.</param>
+        /// <summary>Deletes the supplied key and its associated value from the collection.</summary>
+        /// <param name="keyValuePair">Contains key and value to find and remove.</param>
         /// <returns><b>true</b> if key/value pair removed; otherwise <b>false</b>.</returns>
+        /// <remarks>No operation is taken unless both key and value match.</remarks>
         bool ICollection<KeyValuePair<TKey,TValue>>.Remove (KeyValuePair<TKey,TValue> keyValuePair)
         {
             var path = new NodeVector (this, keyValuePair.Key);
@@ -702,7 +701,13 @@ namespace Kaos.Collections
         /// <param name="upper">Maximum inclusive key value of range.</param>
         /// <returns>An enumerator for all elements between lower and upper.</returns>
         /// <remarks>
+        /// <para>
         /// Neither <em>lower</em> or <em>upper</em> need to be present in the collection.
+        /// </para>
+        /// <para>
+        /// Retrieving the first element is a O(log <em>n</em>) operation.
+        /// Retrieving subsequent elements is a O(1) operation.
+        /// </para>
         /// </remarks>
         /// <example>
         /// <code source="..\Bench\RdExample03\RdExample03.cs" lang="cs" />

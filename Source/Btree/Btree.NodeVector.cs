@@ -74,8 +74,8 @@ namespace Kaos.Collections
 
             #region Methods
 
-            /// <summary>Calculate the rank of the current pair.</summary>
-            /// <returns>The rank of the current pair.</returns>
+            /// <summary>Calculate the rank of the current key.</summary>
+            /// <returns>The rank of the current key.</returns>
             public int GetIndex()
             {
                 int result = TopNodeIndex;
@@ -94,9 +94,8 @@ namespace Kaos.Collections
                 return result;
             }
 
-            /// <summary>
-            /// Get the node to the immediate left of the node specified by NodeVector.
-            /// </summary>
+
+            /// <summary>Get the node to the immediate left of the node specified by NodeVector.</summary>
             public Node GetLeftNode()
             {
                 Debug.Assert (indexStack.Count == nodeStack.Count);
@@ -335,7 +334,7 @@ namespace Kaos.Collections
                             // Cascade when rightmost branch is empty.
                             continue;
 
-                        // Rotate pivot for first pair.
+                        // Rotate pivot for first key.
                         TKey pivot = branch.Key0;
                         branch.RemoveKey (0);
                         branch.RemoveChild (0);
