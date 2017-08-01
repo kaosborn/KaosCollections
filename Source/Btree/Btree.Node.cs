@@ -81,7 +81,7 @@ namespace Kaos.Collections
             { return childNodes[childIndex]; }
 
             public Node Child0
-            { get { return childNodes[0]; } set { childNodes[0] = value; } }
+            { get { return childNodes[0]; } }
 
             /// <summary>Number of key/value pairs in the subtree.</summary>
             public override int Weight

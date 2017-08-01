@@ -59,10 +59,6 @@ namespace Kaos.Collections
             { return values[index]; }
 
 
-            public void SetValue (int index, TValue value)
-            { values[index] = value; }
-
-
             public void Add (TKey key, TValue value)
             {
                 AddKey (key);
@@ -110,13 +106,6 @@ namespace Kaos.Collections
                 Debug.Assert (index >= 0 && index <= ValueCount);
                 values.RemoveAt (index);
                 base.Remove (index);
-            }
-
-            public void Remove (int index, int count)
-            {
-                Debug.Assert (index >= 0 && index + count <= ValueCount);
-                RemoveKeys (index, count);
-                values.RemoveRange (index, count);
             }
         }
     }
