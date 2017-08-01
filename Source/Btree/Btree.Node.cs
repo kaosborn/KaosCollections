@@ -68,20 +68,17 @@ namespace Kaos.Collections
                 this.childNodes = new List<Node> (keyCapacity + 1);
             }
 
-            public Branch (int keyCapacity, Node child, int weight = 0) : base (keyCapacity)
+            public Branch (int keyCapacity, Node child, int weight=0) : base (keyCapacity)
             {
                 this.childNodes = new List<Node> (keyCapacity + 1) { child };
                 this.weight = weight;
             }
 
-            public int ChildCount
-            { get { return childNodes.Count; } }
+            public int ChildCount => childNodes.Count;
 
-            public Node GetChild (int childIndex)
-            { return childNodes[childIndex]; }
+            public Node Child0 => childNodes[0];
 
-            public Node Child0
-            { get { return childNodes[0]; } }
+            public Node GetChild (int childIndex) => childNodes[childIndex];
 
             /// <summary>Number of key/value pairs in the subtree.</summary>
             public override int Weight
@@ -122,9 +119,11 @@ namespace Kaos.Collections
             }
         }
 
+
         protected class Leaf : Node
         {
-            public Leaf leftLeaf, rightLeaf;
+            public Leaf leftLeaf,
+                        rightLeaf;
 
             /// <summary>Create a siblingless leaf.</summary>
             /// <param name="capacity">The initial number of elements the page can store.</param>
