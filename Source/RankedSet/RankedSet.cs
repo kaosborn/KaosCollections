@@ -362,7 +362,7 @@ namespace Kaos.Collections
                 return;
 
             StageBump();
-            var oSet = other as RankedSet<T> ?? new RankedSet<T> (other);
+            var oSet = other as RankedSet<T> ?? new RankedSet<T> (other, Comparer);
 
             if (oSet.Count == 0 || Comparer.Compare (oSet.Max, Min) < 0 || Comparer.Compare (oSet.Min, Max) > 0)
             {
@@ -392,7 +392,7 @@ namespace Kaos.Collections
             if (other == null)
                 throw new ArgumentNullException (nameof (other));
 
-            var oSet = other as RankedSet<T> ?? new RankedSet<T> (other);
+            var oSet = other as RankedSet<T> ?? new RankedSet<T> (other, Comparer);
 
             if (Count >= oSet.Count)
                 return false;
@@ -417,7 +417,7 @@ namespace Kaos.Collections
             if (other == null)
                 throw new ArgumentNullException (nameof (other));
 
-            var oSet = other as RankedSet<T> ?? new RankedSet<T> (other);
+            var oSet = other as RankedSet<T> ?? new RankedSet<T> (other, Comparer);
 
             if (Count <= oSet.Count)
                 return false;
@@ -442,7 +442,7 @@ namespace Kaos.Collections
             if (other == null)
                 throw new ArgumentNullException (nameof (other));
 
-            var oSet = other as RankedSet<T> ?? new RankedSet<T> (other);
+            var oSet = other as RankedSet<T> ?? new RankedSet<T> (other, Comparer);
 
             if (Count > oSet.Count)
                 return false;
@@ -525,7 +525,7 @@ namespace Kaos.Collections
             if (other == null)
                 throw new ArgumentNullException (nameof (other));
 
-            var oSet = other as RankedSet<T> ?? new RankedSet<T> (other);
+            var oSet = other as RankedSet<T> ?? new RankedSet<T> (other, Comparer);
 
             if (Count != oSet.Count)
                 return false;
@@ -549,7 +549,7 @@ namespace Kaos.Collections
             if (other == null)
                 throw new ArgumentNullException (nameof (other));
 
-            var oSet = other as RankedSet<T> ?? new RankedSet<T> (other);
+            var oSet = other as RankedSet<T> ?? new RankedSet<T> (other, Comparer);
             if (oSet.Count == 0)
                 return;
 
