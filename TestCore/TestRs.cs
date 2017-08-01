@@ -562,36 +562,58 @@ namespace CollectionsTest
         #region Test ISet methods
 
         [TestMethod]
-        public void UnitRs_ExceptWith()
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRs_ExceptWith_ArgumentNull()
         {
             Setup();
-            foreach (var v1 in iVals1)
-                setI.Add (v1);
+            setI.ExceptWith (null);
+        }
 
-            var list1 = new System.Collections.Generic.List<int> (iVals1);
-            var list2 = new System.Collections.Generic.List<int> (iVals2);
+        [TestMethod]
+        public void UnitRs_ExceptWith()
+        {
+            var a37 = new int[] { 3, 7 };
+            var a5 = new int[] { 5 };
+            var a133799 = new int[] { 1, 3, 3, 7, 9, 9 };
+            var empty = new int[] { };
+            Setup();
 
-            setI.ExceptWith (iVals2);
+            setI.ExceptWith (empty);
+            Assert.AreEqual (0, setI.Count);
 
-            int expectedCount = iVals1.Length;
-            foreach (int i2 in iVals2)
-                if (list1.Contains (i2))
-                    --expectedCount;
+            setI.ExceptWith (a37);
+            Assert.AreEqual (0, setI.Count);
 
-            foreach (int ii in setI)
-                if (list2.Contains (ii))
-                    Assert.Fail ("Unexpected = " + ii);
+            setI.Add (3); setI.Add (5); setI.Add (7);
 
-            Assert.AreEqual (expectedCount, setI.Count);
+            setI.ExceptWith (a133799);
+            Assert.AreEqual (1, setI.Count);
+            Assert.AreEqual (5, setI.Min);
+
+            setI.ExceptWith (a5);
+            Assert.AreEqual (0, setI.Count);
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRs_IntersectWith_ArgumentNull()
+        {
+            Setup();
+            setI.IntersectWith (null);
         }
 
         [TestMethod]
         public void UnitRs_IntersectWith()
         {
-            Setup(4);
             var a1 = new int[] { 3, 5, 7, 9, 11, 13 };
-            foreach (var v1 in a1) setI.Add (v1);
+            var empty = new int[] { };
+            Setup(4);
 
+            setI.IntersectWith (empty);
+            Assert.AreEqual (0, setI.Count);
+
+            foreach (var v1 in a1) setI.Add (v1);
             setI.IntersectWith (new int[] { 1 });
             Assert.AreEqual (0, setI.Count);
 
@@ -605,6 +627,71 @@ namespace CollectionsTest
             setI.IntersectWith (new int[] { 1, 9, 15 });
             Assert.AreEqual (1, setI.Count);
             Assert.AreEqual (9, setI.Min);
+
+            setI.IntersectWith (empty);
+            Assert.AreEqual (0, setI.Count);
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRs_SymmetricExceptWith_ArgumentNull()
+        {
+            Setup();
+            setI.SymmetricExceptWith (null);
+        }
+
+        [TestMethod]
+        public void UnitRs_SymmetricExceptWith()
+        {
+            var a37 = new int[] { 3, 7 };
+            var a357 = new int[] { 3, 5, 7 };
+            var a5599 = new int[] { 5, 5, 9, 9 };
+            var empty = new int[] { };
+            Setup();
+
+            setI.SymmetricExceptWith (empty);
+            Assert.AreEqual (0, setI.Count);
+
+            setI.SymmetricExceptWith (a37);
+            Assert.AreEqual (2, setI.Count);
+            Assert.AreEqual (3, setI.Min);
+            Assert.AreEqual (7, setI.Max);
+
+            setI.SymmetricExceptWith (a357);
+            Assert.AreEqual (1, setI.Count);
+            Assert.AreEqual (5, setI.Min);
+
+            setI.SymmetricExceptWith (a5599);
+            Assert.AreEqual (1, setI.Count);
+            Assert.AreEqual (9, setI.Min);
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRs_UnionWith_ArgumentNull()
+        {
+            Setup();
+            setI.UnionWith (null);
+        }
+
+        [TestMethod]
+        public void UnitRs_UnionWith()
+        {
+            var a357 = new int[] { 3, 5, 7 };
+            var a5599 = new int[] { 5, 5, 9, 9 };
+            var empty = new int[] { };
+            Setup();
+
+            setI.UnionWith (empty);
+            Assert.AreEqual (0, setI.Count);
+
+            setI.UnionWith (a357);
+            Assert.AreEqual (3, setI.Count);
+
+            setI.UnionWith (a5599);
+            Assert.AreEqual (4, setI.Count);
         }
 
 
@@ -619,22 +706,21 @@ namespace CollectionsTest
         [TestMethod]
         public void UnitRs_IsSubsetOf()
         {
-            Setup();
-
             var a35779 = new int[] { 3, 5, 7, 7, 9 };
             var a357 = new int[] { 3, 5, 7 };
             var a35 = new int[] { 3, 5 };
-            var ae = new int[] { };
+            var empty = new int[] { };
+            Setup();
 
             Assert.IsTrue (setI.IsSubsetOf (a35));
-            Assert.IsTrue (setI.IsSubsetOf (ae));
+            Assert.IsTrue (setI.IsSubsetOf (empty));
 
             setI.Add (3); setI.Add (5); setI.Add (7);
 
             Assert.IsTrue (setI.IsSubsetOf (a35779));
             Assert.IsTrue (setI.IsSubsetOf (a357));
             Assert.IsFalse (setI.IsSubsetOf (a35));
-            Assert.IsFalse (setI.IsSubsetOf (ae));
+            Assert.IsFalse (setI.IsSubsetOf (empty));
         }
 
 
@@ -649,22 +735,21 @@ namespace CollectionsTest
         [TestMethod]
         public void UnitRs_IsProperSubsetOf()
         {
-            Setup();
-
             var a35779 = new int[] { 3, 5, 7, 7, 9 };
             var a357 = new int[] { 3, 5, 7 };
             var a35 = new int[] { 3, 5 };
-            var ae = new int[] { };
+            var empty = new int[] { };
+            Setup();
 
             Assert.IsTrue (setI.IsProperSubsetOf (a35));
-            Assert.IsFalse (setI.IsProperSubsetOf (ae));
+            Assert.IsFalse (setI.IsProperSubsetOf (empty));
 
             setI.Add (3); setI.Add (5); setI.Add (7);
 
             Assert.IsTrue (setI.IsProperSubsetOf (a35779));
             Assert.IsFalse (setI.IsProperSubsetOf (a357));
             Assert.IsFalse (setI.IsProperSubsetOf (a35));
-            Assert.IsFalse (setI.IsProperSubsetOf (ae));
+            Assert.IsFalse (setI.IsProperSubsetOf (empty));
         }
 
         [TestMethod]
@@ -678,15 +763,14 @@ namespace CollectionsTest
         [TestMethod]
         public void UnitRs_IsSupersetOf()
         {
-            Setup();
-
             var a3579 = new int[] { 3, 5, 7, 9 };
             var a357 = new int[] { 3, 5, 7 };
             var a35 = new int[] { 3, 5 };
             var a355 = new int[] { 3, 5, 5 };
-            var ae = new int[] { };
+            var empty = new int[] { };
+            Setup();
 
-            Assert.IsTrue (setI.IsSupersetOf (ae));
+            Assert.IsTrue (setI.IsSupersetOf (empty));
             Assert.IsFalse (setI.IsSupersetOf (a35));
 
             setI.Add (3); setI.Add (5); setI.Add (7);
@@ -695,7 +779,7 @@ namespace CollectionsTest
             Assert.IsTrue (setI.IsSupersetOf (a357));
             Assert.IsTrue (setI.IsSupersetOf (a35));
             Assert.IsTrue (setI.IsSupersetOf (a355));
-            Assert.IsTrue (setI.IsSupersetOf (ae));
+            Assert.IsTrue (setI.IsSupersetOf (empty));
         }
 
 
@@ -710,15 +794,14 @@ namespace CollectionsTest
         [TestMethod]
         public void UnitRs_IsProperSupersetOf()
         {
-            Setup();
-
             var a3579 = new int[] { 3, 5, 7, 9 };
             var a357 = new int[] { 3, 5, 7 };
             var a35 = new int[] { 3, 5 };
             var a355 = new int[] { 3, 5, 5 };
-            var ae = new int[] { };
+            var empty = new int[] { };
+            Setup();
 
-            Assert.IsFalse (setI.IsProperSupersetOf (ae));
+            Assert.IsFalse (setI.IsProperSupersetOf (empty));
             Assert.IsFalse (setI.IsProperSupersetOf (a35));
 
             setI.Add (3); setI.Add (5); setI.Add (7);
@@ -727,7 +810,7 @@ namespace CollectionsTest
             Assert.IsFalse (setI.IsProperSupersetOf (a357));
             Assert.IsTrue (setI.IsProperSupersetOf (a35));
             Assert.IsTrue (setI.IsProperSupersetOf (a355));
-            Assert.IsTrue (setI.IsProperSupersetOf (ae));
+            Assert.IsTrue (setI.IsProperSupersetOf (empty));
         }
 
 
@@ -742,16 +825,15 @@ namespace CollectionsTest
         [TestMethod]
         public void UnitRs_Overlaps()
         {
-            Setup();
-
             var a35779 = new int[] { 3, 5, 7, 7, 9 };
             var a357 = new int[] { 3, 5, 7 };
             var a35 = new int[] { 3, 5 };
             var a355 = new int[] { 3, 5, 5 };
             var a19 = new int[] { 1, 9 };
-            var ae = new int[] { };
+            var empty = new int[] { };
+            Setup();
 
-            Assert.IsFalse (setI.Overlaps (ae));
+            Assert.IsFalse (setI.Overlaps (empty));
             Assert.IsFalse (setI.Overlaps (a35));
 
             setI.Add (3); setI.Add (5); setI.Add (7);
@@ -760,7 +842,7 @@ namespace CollectionsTest
             Assert.IsTrue (setI.Overlaps (a357));
             Assert.IsTrue (setI.Overlaps (a35));
             Assert.IsFalse (setI.Overlaps (a19));
-            Assert.IsFalse (setI.Overlaps (ae));
+            Assert.IsFalse (setI.Overlaps (empty));
         }
 
 
@@ -775,17 +857,16 @@ namespace CollectionsTest
 
         public void UnitRs_SetEquals()
         {
-            Setup();
-
             var a359 = new int[] { 3, 5, 9 };
             var a3557 = new int[] { 3, 5, 5, 7 };
             var a357 = new int[] { 3, 5, 7 };
             var a35 = new int[] { 3, 5 };
             var a355 = new int[] { 3, 5, 5 };
             var a19 = new int[] { 1, 9 };
-            var ae = new int[] { };
+            var empty = new int[] { };
+            Setup();
 
-            Assert.IsTrue (setI.SetEquals (ae));
+            Assert.IsTrue (setI.SetEquals (empty));
             Assert.IsFalse (setI.SetEquals (a35));
 
             setI.Add (3); setI.Add (5); setI.Add (7);
@@ -796,7 +877,7 @@ namespace CollectionsTest
             Assert.IsFalse (setI.SetEquals (a35));
             Assert.IsFalse (setI.SetEquals (a355));
             Assert.IsFalse (setI.SetEquals (a19));
-            Assert.IsFalse (setI.SetEquals (ae));
+            Assert.IsFalse (setI.SetEquals (empty));
         }
 
         #endregion
