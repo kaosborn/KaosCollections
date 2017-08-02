@@ -34,30 +34,14 @@ namespace Kaos.Collections
                 this.values = new List<TValue> (capacity);
             }
 
-
             public int ValueCount => values.Count;
 
+            public KeyValuePair<TKey,TValue> GetPair (int index) => new KeyValuePair<TKey,TValue> (keys[index], values[index]);
 
-            public KeyValuePair<TKey,TValue> GetPair (int index)
-            { return new KeyValuePair<TKey,TValue> (keys[index], values[index]); }
+            public TValue GetValue (int index) => values[index];
 
-
-            public static TValue GetValue (NodeVector path)
-            {
-                var leaf = (PairLeaf) path.TopNode;
-                return leaf.values[path.TopNodeIndex];
-            }
-
-            public static void SetValue (NodeVector path, TValue value)
-            {
-                var leaf = (PairLeaf) path.TopNode;
-                leaf.values[path.TopNodeIndex] = value;
-            }
-
-
-            public TValue GetValue (int index)
-            { return values[index]; }
-
+            public void SetValue (int index, TValue value)
+            { values[index] = value; }
 
             public void Add (TKey key, TValue value)
             {

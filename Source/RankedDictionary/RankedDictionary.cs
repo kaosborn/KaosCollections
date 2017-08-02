@@ -105,7 +105,7 @@ namespace Kaos.Collections
                 StageBump();
                 var path = new NodeVector (this, key);
                 if (path.IsFound)
-                    PairLeaf.SetValue (path, value);
+                    ((PairLeaf) path.TopNode).SetValue (path.TopNodeIndex, value);
                 else
                     Add2 (path, key, value);
             }
@@ -514,7 +514,7 @@ namespace Kaos.Collections
         bool ICollection<KeyValuePair<TKey,TValue>>.Remove (KeyValuePair<TKey,TValue> keyValuePair)
         {
             var path = new NodeVector (this, keyValuePair.Key);
-            if (! path.IsFound || ! EqualityComparer<TValue>.Default.Equals (keyValuePair.Value, PairLeaf.GetValue (path)))
+            if (! path.IsFound || ! EqualityComparer<TValue>.Default.Equals (keyValuePair.Value, ((PairLeaf) path.TopNode).GetValue (path.TopNodeIndex)))
                 return false;
 
             Remove2 (path);
@@ -559,7 +559,7 @@ namespace Kaos.Collections
                     StageBump();
                     var path = new NodeVector (this, (TKey) key);
                     if (path.IsFound)
-                        PairLeaf.SetValue (path, (TValue) value);
+                        ((PairLeaf) path.TopNode).SetValue (path.TopNodeIndex, (TValue) value);
                     else
                         Add2 (path, (TKey) key, (TValue) value);
                 }
@@ -839,7 +839,7 @@ namespace Kaos.Collections
                 return false;
             }
 
-            value = PairLeaf.GetValue (path);
+            value = ((PairLeaf) path.TopNode).GetValue (path.TopNodeIndex);
             index = path.GetIndex();
             return true;
         }
