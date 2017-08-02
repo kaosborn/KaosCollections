@@ -348,18 +348,21 @@ namespace Kaos.Collections
         public sealed class Enumerator : IEnumerator<KeyValuePair<TKey,TValue>>, IDictionaryEnumerator
         {
             private readonly RankedDictionary<TKey,TValue> tree;
-            private bool isGeneric;
+            private readonly bool isReverse;
+            private readonly bool nonGeneric;
             private PairLeaf leaf;
             private int index;
             private int stageFreeze;
+            private int state;  // -1=rewound; 0=active; 1=consumed
 
             /// <summary>Make an iterator that will loop thru the collection in order.</summary>
             /// <param name="dictionary">Collection containing these key/value pairs.</param>
             /// <param name="isGeneric">Supply <b>false</b> to indicate object Current should return DictionaryEntry values.</param>
-            internal Enumerator (RankedDictionary<TKey,TValue> dictionary, bool isGeneric=true)
+            internal Enumerator (RankedDictionary<TKey,TValue> dictionary, bool isReverse=false, bool nonGeneric=false)
             {
                 this.tree = dictionary;
-                this.isGeneric = isGeneric;
+                this.isReverse = isReverse;
+                this.nonGeneric = nonGeneric;
                 ((IEnumerator) this).Reset();
             }
 
@@ -367,7 +370,7 @@ namespace Kaos.Collections
             {
                 get
                 {
-                    if (index < 0)
+                    if (state != 0)
                         throw new InvalidOperationException ("Enumeration is not active.");
                     return leaf.GetKey (index);
                 }
@@ -377,7 +380,7 @@ namespace Kaos.Collections
             {
                 get
                 {
-                    if (index < 0)
+                    if (state != 0)
                         throw new InvalidOperationException ("Enumeration is not active.");
                     return leaf.GetValue (index);
                 }
@@ -387,7 +390,7 @@ namespace Kaos.Collections
             {
                 get
                 {
-                    if (index < 0)
+                    if (state != 0)
                         throw new InvalidOperationException ("Enumeration is not active.");
                     return new DictionaryEntry (leaf.GetKey (index), leaf.GetValue (index));
                 }
@@ -398,13 +401,13 @@ namespace Kaos.Collections
                 get
                 {
                     tree.StageCheck (stageFreeze);
-                    if (index < 0)
+                    if (state != 0)
                         throw new InvalidOperationException ("Enumeration is not active.");
 
-                    if (isGeneric)
-                        return leaf.GetPair (index);
-                    else
+                    if (nonGeneric)
                         return new DictionaryEntry (leaf.GetKey (index), leaf.GetValue (index));
+                    else
+                        return leaf.GetPair (index);
                 }
             }
 
@@ -415,8 +418,8 @@ namespace Kaos.Collections
                 get
                 {
                     tree.StageCheck (stageFreeze);
-                    return index < 0 ? new KeyValuePair<TKey,TValue> (default (TKey), default (TValue))
-                                         : leaf.GetPair (index);
+                    return state == 0 ? leaf.GetPair (index)
+                                      : new KeyValuePair<TKey,TValue> (default (TKey), default (TValue));
                 }
             }
 
@@ -427,7 +430,26 @@ namespace Kaos.Collections
             {
                 tree.StageCheck (stageFreeze);
 
-                if (leaf != null)
+                if (state != 0)
+                    if (state > 0)
+                        return false;
+                    else
+                    {
+                        leaf = (PairLeaf) (isReverse ? tree.rightmostLeaf : tree.leftmostLeaf);
+                        index = isReverse ? leaf.KeyCount : -1;
+                        state = 0;
+                    }
+
+                if (isReverse)
+                {
+                    if (--index >= 0)
+                        return true;
+
+                    leaf = (PairLeaf) leaf.leftLeaf;
+                    if (leaf != null)
+                    { index = leaf.KeyCount - 1; return true; }
+                }
+                else
                 {
                     if (++index < leaf.KeyCount)
                         return true;
@@ -435,9 +457,9 @@ namespace Kaos.Collections
                     leaf = (PairLeaf) leaf.rightLeaf;
                     if (leaf != null)
                     { index = 0; return true; }
-
-                    index = -1;
                 }
+
+                state = 1;
                 return false;
             }
 
@@ -445,8 +467,7 @@ namespace Kaos.Collections
             void IEnumerator.Reset()
             {
                 stageFreeze = tree.stage;
-                index = -1;
-                leaf = (PairLeaf) tree.leftmostLeaf;
+                state = -1;
             }
 
             /// <exclude />
@@ -664,7 +685,7 @@ namespace Kaos.Collections
         /// <summary>Gets an enumerator that iterates thru the collection.</summary>
         /// <returns>An enumerator for the collection.</returns>
         IDictionaryEnumerator IDictionary.GetEnumerator()
-        { return new Enumerator (this, false); }
+        { return new Enumerator (this, isReverse:false, nonGeneric:true); }
 
 
         /// <summary>Gets an enumerator that iterates thru the collection.</summary>

@@ -301,7 +301,7 @@ namespace Kaos.Collections
         /// <returns>An enumerator that reverse iterates over the set.</returns>
         public IEnumerable<T> Reverse()
         {
-            Enumerator enor = new Enumerator (this, reverse:true);
+            Enumerator enor = new Enumerator (this, isReverse:true);
             while (enor.MoveNext())
                 yield return enor.Current;
         }
@@ -630,11 +630,12 @@ namespace Kaos.Collections
             private Leaf leaf;
             private int index;
             private int stageFreeze;
+            private int state;  // -1=rewound; 0=active; 1=consumed
 
-            internal Enumerator (RankedSet<T> set, bool reverse=false)
+            internal Enumerator (RankedSet<T> set, bool isReverse=false)
             {
                 this.tree = set;
-                this.isReverse = reverse;
+                this.isReverse = isReverse;
                 ((IEnumerator) this).Reset();
             }
 
@@ -643,7 +644,7 @@ namespace Kaos.Collections
                 get
                 {
                     tree.StageCheck (stageFreeze);
-                    if (index < 0)
+                    if (state != 0)
                         throw new InvalidOperationException();
                     return (object) leaf.GetKey (index);
                 }
@@ -656,7 +657,7 @@ namespace Kaos.Collections
                 get
                 {
                     tree.StageCheck (stageFreeze);
-                    return index < 0? default (T) : leaf.GetKey (index);
+                    return state != 0 ? default (T) : leaf.GetKey (index);
                 }
             }
 
@@ -667,35 +668,43 @@ namespace Kaos.Collections
             {
                 tree.StageCheck (stageFreeze);
 
-                if (leaf != null)
-                    if (isReverse)
-                    {
-                        if (--index >= 0)
-                            return true;
-
-                        leaf = leaf.leftLeaf;
-                        if (leaf != null)
-                        { index = leaf.KeyCount - 1; return true; }
-                    }
+                if (state != 0)
+                    if (state > 0)
+                        return false;
                     else
                     {
-                        if (++index < leaf.KeyCount)
-                            return true;
-
-                        leaf = leaf.rightLeaf;
-                        if (leaf != null)
-                        { index = 0; return true; }
+                        leaf = isReverse ? tree.rightmostLeaf : tree.leftmostLeaf;
+                        index = isReverse ? leaf.KeyCount : -1;
+                        state = 0;
                     }
 
-                index = -1;
+                if (isReverse)
+                {
+                    if (--index >= 0)
+                        return true;
+
+                    leaf = leaf.leftLeaf;
+                    if (leaf != null)
+                    { index = leaf.KeyCount - 1; return true; }
+                }
+                else
+                {
+                    if (++index < leaf.KeyCount)
+                        return true;
+
+                    leaf = leaf.rightLeaf;
+                    if (leaf != null)
+                    { index = 0; return true; }
+                }
+
+                state = 1;
                 return false;
             }
 
             void IEnumerator.Reset()
             {
                 stageFreeze = tree.stage;
-                leaf = isReverse? tree.rightmostLeaf : tree.leftmostLeaf;
-                index = isReverse? leaf.KeyCount : -1;
+                state = -1;
             }
 
             /// <summary>Releases all resources used by the Enumerator.</summary>
