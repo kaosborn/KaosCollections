@@ -280,7 +280,7 @@ namespace Kaos.Collections
                 throw new ArgumentOutOfRangeException (nameof (index), "Index is less than zero.");
 
             if (Count > array.Length - index)
-                throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
+                throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
 
             for (var leaf = (PairLeaf) leftmostLeaf; leaf != null; leaf = (PairLeaf) leaf.rightLeaf)
                 for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)

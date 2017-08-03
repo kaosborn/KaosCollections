@@ -203,12 +203,22 @@ namespace Kaos.Collections
             if (count < 0)
                 throw new ArgumentOutOfRangeException (nameof (count), count, "Argument was out of the range of valid values.");
 
-            if (Count > array.Length - index)
-                throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
+            if (count > array.Length - index)
+                throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
 
-            for (Leaf leaf = leftmostLeaf; leaf != null; leaf = leaf.rightLeaf)
-                for (int ix = 0; ix < leaf.KeyCount; ++ix)
+            for (Leaf leaf = leftmostLeaf; count > 0; )
+            {
+                int limIx = count < leaf.KeyCount ? count : leaf.KeyCount;
+
+                for (int ix = 0; ix < limIx; ++ix)
                     array[index++] = leaf.GetKey (ix);
+
+                leaf = leaf.rightLeaf;
+                if (leaf == null)
+                    break;
+
+                count -= limIx;
+            }
         }
 
         void ICollection.CopyTo (Array array, int index)
