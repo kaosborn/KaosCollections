@@ -152,7 +152,7 @@ namespace CollectionsTest
 
 #endregion
 
-        #region Test properties
+#region Test properties
 
         [TestMethod]
         public void UnitRs_Max()
@@ -185,9 +185,9 @@ namespace CollectionsTest
             Assert.AreEqual (1, setI.Min);
         }
 
-        #endregion
+#endregion
 
-        #region Test methods
+#region Test methods
 
         [TestMethod]
         public void UnitRs_AddNull()
@@ -408,6 +408,58 @@ namespace CollectionsTest
             setSo.CopyTo (s1, 0);
         }
 
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentException))]
+        public void CrashRs_CopyTo3A_Argument()
+        {
+            Setup (4);
+            setI.Add (2); setI.Add (4);
+            var a1 = new int[3];
+            setI.CopyTo (a1, 1, 3);
+        }
+
+        [TestMethod]
+        public void UnitRs_CopyTo3B()
+        {
+            Setup (4);
+            setI.Add (5); setI.Add (0); setI.Add (3);
+            var a1 = new int[] { -1, -1, -1, -1, -1 };
+
+            setI.CopyTo (a1, 1, 4);
+            Assert.AreEqual (-1, a1[0]);
+            Assert.AreEqual (0, a1[1]);
+            Assert.AreEqual (3, a1[2]);
+            Assert.AreEqual (5, a1[3]);
+            Assert.AreEqual (-1, a1[4]);
+        }
+
+        [TestMethod]
+        public void UnitRs_CopyTo3C()
+        {
+            Setup (4);
+            setI.Add (5); setI.Add (0); setI.Add (3);
+            var a1 = new int[] { -1, -1, -1, -1 };
+
+            setI.CopyTo (a1, 1, 2);
+            Assert.AreEqual (-1, a1[0]);
+            Assert.AreEqual (0, a1[1]);
+            Assert.AreEqual (3, a1[2]);
+            Assert.AreEqual (-1, a1[3]);
+        }
+
+        [TestMethod]
+        public void UnitRs_CopyTo3D()
+        {
+            Setup();
+            setI.Add (5); setI.Add (0); setI.Add (3);
+            var a1 = new int[] { -1, -1 };
+
+            setI.CopyTo (a1, 0, 0);
+
+            Assert.AreEqual (-1, a1[0]);
+            Assert.AreEqual (-1, a1[1]);
+        }
+
 
         [TestMethod]
         public void UnitRs_Remove()
@@ -482,9 +534,9 @@ namespace CollectionsTest
             Assert.AreEqual (0, expected);
         }
 
-        #endregion
+#endregion
 
-        #region Test enumeration
+#region Test enumeration
 
         [TestMethod]
         [ExpectedException (typeof (InvalidOperationException))]
@@ -557,9 +609,9 @@ namespace CollectionsTest
             }
         }
 
-        #endregion
+#endregion
 
-        #region Test ISet methods
+#region Test ISet methods
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
@@ -906,9 +958,9 @@ namespace CollectionsTest
             Assert.IsFalse (personSet.SetEquals (pa));
         }
 
-        #endregion
+#endregion
 
-        #region Test bonus methods
+#region Test bonus methods
 #if ! TEST_BCL
 
         [TestMethod]
@@ -988,6 +1040,6 @@ namespace CollectionsTest
         }
 
 #endif
-        #endregion
+#endregion
     }
 }
