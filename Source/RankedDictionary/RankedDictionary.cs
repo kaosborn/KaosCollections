@@ -26,7 +26,7 @@ namespace Kaos.Collections
     /// </remarks>
     [DebuggerTypeProxy (typeof (IDictionaryDebugView<,>))]
     [DebuggerDisplay ("Count = {Count}")]
-    public sealed partial class RankedDictionary<TKey,TValue> :
+    public partial class RankedDictionary<TKey,TValue> :
         Btree<TKey>
         , IDictionary<TKey,TValue>
         , IDictionary
