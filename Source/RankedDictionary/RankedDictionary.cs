@@ -105,7 +105,7 @@ namespace Kaos.Collections
                 StageBump();
                 var path = new NodeVector (this, key);
                 if (path.IsFound)
-                    ((PairLeaf) path.TopNode).SetValue (path.TopNodeIndex, value);
+                    ((PairLeaf) path.TopNode).SetValue (path.TopIndex, value);
                 else
                     Add2 (path, key, value);
             }
@@ -179,7 +179,7 @@ namespace Kaos.Collections
             StageBump();
 
             var leaf = (PairLeaf) path.TopNode;
-            int pathIndex = path.TopNodeIndex;
+            int pathIndex = path.TopIndex;
 
             path.UpdateWeight (1);
             if (leaf.KeyCount < maxKeyCount)
@@ -535,7 +535,7 @@ namespace Kaos.Collections
         bool ICollection<KeyValuePair<TKey,TValue>>.Remove (KeyValuePair<TKey,TValue> keyValuePair)
         {
             var path = new NodeVector (this, keyValuePair.Key);
-            if (! path.IsFound || ! EqualityComparer<TValue>.Default.Equals (keyValuePair.Value, ((PairLeaf) path.TopNode).GetValue (path.TopNodeIndex)))
+            if (! path.IsFound || ! EqualityComparer<TValue>.Default.Equals (keyValuePair.Value, ((PairLeaf) path.TopNode).GetValue (path.TopIndex)))
                 return false;
 
             Remove2 (path);
@@ -580,7 +580,7 @@ namespace Kaos.Collections
                     StageBump();
                     var path = new NodeVector (this, (TKey) key);
                     if (path.IsFound)
-                        ((PairLeaf) path.TopNode).SetValue (path.TopNodeIndex, (TValue) value);
+                        ((PairLeaf) path.TopNode).SetValue (path.TopIndex, (TValue) value);
                     else
                         Add2 (path, (TKey) key, (TValue) value);
                 }
@@ -860,7 +860,7 @@ namespace Kaos.Collections
                 return false;
             }
 
-            value = ((PairLeaf) path.TopNode).GetValue (path.TopNodeIndex);
+            value = ((PairLeaf) path.TopNode).GetValue (path.TopIndex);
             index = path.GetIndex();
             return true;
         }

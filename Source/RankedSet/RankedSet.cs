@@ -111,7 +111,7 @@ namespace Kaos.Collections
             StageBump();
 
             var leaf = (Leaf) path.TopNode;
-            int pathIndex = path.TopNodeIndex;
+            int pathIndex = path.TopIndex;
 
             path.UpdateWeight (1);
             if (leaf.KeyCount < maxKeyCount)
@@ -564,9 +564,9 @@ namespace Kaos.Collections
                 return;
 
             StageBump();
-            Enumerator oNum = oSet.GetEnumerator();
-            oNum.MoveNext();
-            T oKey = oNum.Current;
+            Enumerator oEtor = oSet.GetEnumerator();
+            oEtor.MoveNext();
+            T oKey = oEtor.Current;
 
             for (Leaf leaf = leftmostLeaf; leaf != null; leaf = leaf.rightLeaf)
                 for (int ix = 0; ix < leaf.KeyCount; )
@@ -580,17 +580,17 @@ namespace Kaos.Collections
                             else
                             {
                                 Remove (key);
-                                if (! oNum.MoveNext())
+                                if (! oEtor.MoveNext())
                                     return;
-                                oKey = oNum.Current;
+                                oKey = oEtor.Current;
                             }
                             break;
                         }
 
                         Add (oKey);
-                        if (! oNum.MoveNext())
+                        if (! oEtor.MoveNext())
                             return;
-                        oKey = oNum.Current;
+                        oKey = oEtor.Current;
 
                         if (ix >= leaf.KeyCount)
                         {
@@ -603,9 +603,9 @@ namespace Kaos.Collections
             for (;;)
             {
                 Add (oKey);
-                if (! oNum.MoveNext())
+                if (! oEtor.MoveNext())
                     return;
-                oKey = oNum.Current;
+                oKey = oEtor.Current;
             }
         }
 

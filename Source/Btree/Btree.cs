@@ -163,7 +163,7 @@ namespace Kaos.Collections
         {
             StageBump();
 
-            int leafIndex = path.TopNodeIndex;
+            int leafIndex = path.TopIndex;
             var leaf = (Leaf) path.TopNode;
 
             leaf.Remove (leafIndex);

@@ -66,7 +66,7 @@ namespace Kaos.Collections
 
             public Node TopNode => nodeStack[indexStack.Count - 1];
 
-            public int TopNodeIndex => indexStack[indexStack.Count - 1];
+            public int TopIndex => indexStack[indexStack.Count - 1];
 
             public int Height => indexStack.Count;
 
@@ -78,7 +78,7 @@ namespace Kaos.Collections
             /// <returns>The rank of the current key.</returns>
             public int GetIndex()
             {
-                int result = TopNodeIndex;
+                int result = TopIndex;
 
                 for (int level = indexStack.Count-2; level >= 0; --level)
                     if (indexStack[level] <= nodeStack[level].KeyCount / 2)
@@ -200,7 +200,7 @@ namespace Kaos.Collections
 
                     Pop();
                     node = TopNode;
-                    int newIndex = TopNodeIndex + 1;
+                    int newIndex = TopIndex + 1;
 
                     if (newIndex < ((Branch) node).ChildCount)
                     {
@@ -244,7 +244,7 @@ namespace Kaos.Collections
 
                     Pop();
                     var branch = (Branch) TopNode;
-                    int branchIndex = TopNodeIndex;
+                    int branchIndex = TopIndex;
 
                     if (branch.KeyCount < owner.maxKeyCount)
                     {
@@ -328,7 +328,7 @@ namespace Kaos.Collections
                     Pop();
 
                     var branch = (Branch) TopNode;
-                    if (TopNodeIndex == 0)
+                    if (TopIndex == 0)
                     {
                         if (branch.KeyCount == 0)
                             // Cascade when rightmost branch is empty.
@@ -343,8 +343,8 @@ namespace Kaos.Collections
                     else
                     {
                         // Typical branch pivot delete.
-                        branch.RemoveKey (TopNodeIndex - 1);
-                        branch.RemoveChild (TopNodeIndex);
+                        branch.RemoveKey (TopIndex - 1);
+                        branch.RemoveChild (TopIndex);
                     }
 
                     var right = (Branch) TraverseRight();
