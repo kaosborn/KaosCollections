@@ -40,7 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BtreeBench01.cs" />
+    <Compile Include="RdBench01.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Collections400\Collections400.csproj">
