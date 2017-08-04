@@ -51,6 +51,21 @@ namespace CollectionsTest
         }
 
 
+#if TEST_BCL
+        public class DerivedS : SortedSet<int> { }
+#else
+        public class DerivedS : RankedSet<int> { }
+#endif
+
+        [TestMethod]
+        public void UnitRs_CtorSubclass()
+        {
+            var sub = new DerivedS();
+            bool isRO = ((System.Collections.Generic.ICollection<int>) sub).IsReadOnly;
+            Assert.IsFalse (isRO);
+        }
+
+
         [TestMethod]
         public void UnitRs_Ctor0Empty()
         {

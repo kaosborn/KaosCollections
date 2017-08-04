@@ -46,6 +46,21 @@ namespace CollectionsTest
         }
 
 
+#if TEST_BCL
+        public class DerivedD : SortedDictionary<int,int> { }
+#else
+        public class DerivedD : RankedDictionary<int,int> { }
+#endif
+
+        [TestMethod]
+        public void UnitRd_CtorSubclass()
+        {
+            var sub = new DerivedD();
+            bool isRO = ((System.Collections.Generic.IDictionary<int,int>) sub).IsReadOnly;
+            Assert.IsFalse (isRO);
+        }
+
+
         [TestMethod]
         public void UnitRd_Ctor0Empty()
         {
