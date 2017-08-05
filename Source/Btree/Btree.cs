@@ -56,11 +56,15 @@ namespace Kaos.Collections
         protected IComparer<TKey> keyComparer;
         protected int stage = 0;
 
-        protected Btree (IComparer<TKey> comparer, Leaf leftmostLeaf)
+        protected Btree (Leaf startLeaf)
+        {
+            this.maxKeyCount = Btree.TreeOrder - 1;
+            this.root = this.rightmostLeaf = this.leftmostLeaf = startLeaf;
+        }
+
+        protected Btree (IComparer<TKey> comparer, Leaf startLeaf) : this (startLeaf)
         {
             this.keyComparer = comparer ?? Comparer<TKey>.Default;
-            this.maxKeyCount = Btree.TreeOrder - 1;
-            this.root = this.rightmostLeaf = this.leftmostLeaf = leftmostLeaf;
         }
 
         #region Properties and methods
