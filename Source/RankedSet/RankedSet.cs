@@ -10,6 +10,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+#if NET35 || NET40 || SERIALIZE
+using System.Runtime.Serialization;
+#endif
 
 namespace Kaos.Collections
 {
@@ -19,6 +22,9 @@ namespace Kaos.Collections
     /// This class emulates and extends the
     /// <see cref="System.Collections.Generic.SortedSet{T}"/> class.
     /// </remarks>
+#if NET35 || NET40 || SERIALIZE
+    [Serializable]
+#endif
     [DebuggerTypeProxy (typeof (ICollectionDebugView<>))]
     [DebuggerDisplay ("Count = {Count}")]
     public class RankedSet<T> :
@@ -30,6 +36,9 @@ namespace Kaos.Collections
         , ICollection
 #if ! NET35 && ! NET40
         , IReadOnlyCollection<T>
+#endif
+#if NET35 || NET40 || SERIALIZE
+        , ISerializable, IDeserializationCallback
 #endif
     {
         #region Constructors
@@ -721,6 +730,70 @@ namespace Kaos.Collections
             public void Dispose() { }
         }
 
+        #endregion
+
+        #region ISerializable
+#if NET35 || NET40 || SERIALIZE
+
+        private SerializationInfo serializationInfo;
+        private RankedSet (SerializationInfo info, StreamingContext context) : base (new Btree<T>.Leaf())
+        {
+            this.serializationInfo = info;
+        }
+
+        /// <summary>Populates a SerializationInfo with target data.</summary>
+        /// <param name="info">The SerializationInfo to populate.</param>
+        /// <param name="context">The destination.</param>
+        /// <exception cref="ArgumentNullException">When <em>info</em> is <b>null</b>.</exception>
+        protected virtual void GetObjectData (SerializationInfo info, StreamingContext context)
+        {
+            if (info == null)
+                throw new ArgumentNullException (nameof (info));
+
+            info.AddValue ("Count", Count);
+            info.AddValue ("Comparer", Comparer, typeof (IComparer<T>));
+            info.AddValue ("Stage", stage);
+
+            var items = new T[Count];
+            CopyTo (items, 0);
+            info.AddValue ("Items", items, typeof (T[]));
+        }
+
+        protected virtual void OnDeserialization (object sender)
+        {
+            if (keyComparer != null)
+                return;  // Owner did the fixups.
+
+            if (serializationInfo == null)
+                throw new SerializationException ("Missing information.");
+
+            keyComparer = (IComparer<T>) serializationInfo.GetValue ("Comparer", typeof (IComparer<T>));
+            int storedCount = serializationInfo.GetInt32 ("Count");
+            stage = serializationInfo.GetInt32 ("Stage");
+
+            if (storedCount != 0)
+            {
+                var items = (T[]) serializationInfo.GetValue ("Items", typeof (T[]));
+                if (items == null)
+                    throw new SerializationException ("Missing Items.");
+
+                for (int ix = 0; ix < items.Length; ++ix)
+                    Add (items[ix]);
+
+                if (storedCount != Count)
+                    throw new SerializationException ("Mismatched count.");
+            }
+
+            serializationInfo = null;
+        }
+
+        void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
+        { GetObjectData(info, context); }
+
+        void IDeserializationCallback.OnDeserialization (Object sender)
+        { OnDeserialization (sender); }
+
+#endif
         #endregion
 
         #region Bonus methods
