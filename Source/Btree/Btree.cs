@@ -53,12 +53,12 @@ namespace Kaos.Collections
         protected Leaf rightmostLeaf;
         protected readonly Leaf leftmostLeaf;
         protected readonly int maxKeyCount;
-        private readonly IComparer<TKey> comparer;
+        protected IComparer<TKey> keyComparer;
         protected int stage = 0;
 
         protected Btree (IComparer<TKey> comparer, Leaf leftmostLeaf)
         {
-            this.comparer = comparer ?? Comparer<TKey>.Default;
+            this.keyComparer = comparer ?? Comparer<TKey>.Default;
             this.maxKeyCount = Btree.TreeOrder - 1;
             this.root = this.rightmostLeaf = this.leftmostLeaf = leftmostLeaf;
         }
@@ -80,7 +80,7 @@ namespace Kaos.Collections
         /// <summary>Contains the method used to order elements in the sorted collection.</summary>
         /// <remarks>To override sorting based on the default comparer, supply an
         /// alternate comparer when constructing the collection.</remarks>
-        public IComparer<TKey> Comparer => comparer;
+        public IComparer<TKey> Comparer => keyComparer;
 
 
         /// <summary>Removes all items from the set.</summary>
