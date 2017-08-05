@@ -165,9 +165,9 @@ namespace CollectionsTest
             Assert.AreEqual (Person.names.Length, people.Count);
         }
 
-#endregion
+        #endregion
 
-#region Test properties
+        #region Test properties
 
         [TestMethod]
         public void UnitRs_Max()
@@ -200,9 +200,9 @@ namespace CollectionsTest
             Assert.AreEqual (1, setI.Min);
         }
 
-#endregion
+        #endregion
 
-#region Test methods
+        #region Test methods
 
         [TestMethod]
         public void UnitRs_AddNull()
@@ -549,9 +549,9 @@ namespace CollectionsTest
             Assert.AreEqual (0, expected);
         }
 
-#endregion
+        #endregion
 
-#region Test enumeration
+        #region Test enumeration
 
         [TestMethod]
         [ExpectedException (typeof (InvalidOperationException))]
@@ -624,9 +624,9 @@ namespace CollectionsTest
             }
         }
 
-#endregion
+        #endregion
 
-#region Test ISet methods
+        #region Test ISet methods
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
@@ -973,9 +973,9 @@ namespace CollectionsTest
             Assert.IsFalse (personSet.SetEquals (pa));
         }
 
-#endregion
+        #endregion
 
-#region Test bonus methods
+        #region Test bonus methods
 #if ! TEST_BCL
 
         [TestMethod]
@@ -1055,6 +1055,6 @@ namespace CollectionsTest
         }
 
 #endif
-#endregion
+        #endregion
     }
 }
