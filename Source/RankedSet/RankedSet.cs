@@ -50,6 +50,11 @@ namespace Kaos.Collections
         /// <summary>Initializes a new set of sorted items that uses the supplied comparer.</summary>
         /// <param name="comparer">The comparer to use for sorting items.</param>
         /// <exception cref="InvalidOperationException">When <em>comparer</em> is <b>null</b> and no other comparer available.</exception>
+        /// <example>
+        /// This program shows usage of a custom comparer combined with serialization.
+        /// Note: Serialization is is not supported in .NET Standard 1.0.
+        /// <code source="..\Bench\RsExample05\RsExample05.cs" lang="cs" />
+        /// </example>
         public RankedSet (IComparer<T> comparer) : base (comparer, new Leaf())
         { }
 
@@ -180,27 +185,30 @@ namespace Kaos.Collections
 
         /// <summary>Copies the set to a compatible array, starting at the beginning of the target array.</summary>
         /// <param name="array">A one-dimensional array that is the destination of the items to copy from the set.</param>
+        /// <remarks>This is a O(<em>n</em>) operation.</remarks>
         /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
-        /// <exception cref="ArgumentException">When not enough space is given for the copy.</exception>
+        /// <exception cref="ArgumentException">When not enough space is available for the copy.</exception>
         public void CopyTo (T[] array)
         { CopyTo (array, 0, Count); }
-
-        /// <summary>Copies the set to a compatible array, starting at the beginning of the target array.</summary>
-        /// <param name="array">A one-dimensional array that is the destination of the items to copy from the set.</param>
-        /// <param name="index">The zero-based starting position.</param>
-        /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero.</exception>
-        /// <exception cref="ArgumentException">When not enough space is given for the copy.</exception>
-        public void CopyTo (T[] array, int index)
-        { CopyTo (array, index, Count); }
 
         /// <summary>Copies the set to a compatible array, starting at the supplied position.</summary>
         /// <param name="array">A one-dimensional array that is the destination of the items to copy from the set.</param>
         /// <param name="index">The zero-based starting position.</param>
+        /// <remarks>This is a O(<em>n</em>) operation.</remarks>
+        /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero.</exception>
+        /// <exception cref="ArgumentException">When not enough space is available for the copy.</exception>
+        public void CopyTo (T[] array, int index)
+        { CopyTo (array, index, Count); }
+
+        /// <summary>Copies a supplied number of items to a compatible array, starting at the supplied position.</summary>
+        /// <param name="array">A one-dimensional array that is the destination of the items to copy from the set.</param>
+        /// <param name="index">The zero-based starting position.</param>
         /// <param name="count">The number of items to copy.</param>
+        /// <remarks>This is a O(<em>n</em>) operation.</remarks>
         /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> or <em>count</em> is less than zero.</exception>
-        /// <exception cref="ArgumentException">When not enough space is given for the copy.</exception>
+        /// <exception cref="ArgumentException">When not enough space is available for the copy.</exception>
         public void CopyTo (T[] array, int index, int count)
         {
             if (array == null)
@@ -292,7 +300,10 @@ namespace Kaos.Collections
         /// <summary>Removes all items that match the condition defined by the supplied predicate.</summary>
         /// <param name="match">The condition of the items to remove.</param>
         /// <returns>The number of items removed from the set.</returns>
-        /// <remarks>This is a O(<em>n</em> log <em>n</em>) operation.</remarks>
+        /// <remarks>
+        /// This is a O(<em>n</em> log <em>m</em>) operation
+        /// where <em>m</em> is the count of items removed and <em>n</em> is the size of the set.
+        /// </remarks>
         /// <exception cref="ArgumentNullException">When <em>match</em> is <b>null</b>.</exception>
         public int RemoveWhere (Predicate<T> match)
         {
@@ -803,7 +814,11 @@ namespace Kaos.Collections
         /// <param name="upper">Maximum item value of range.</param>
         /// <returns>An enumerator for all items between <em>lower</em> and <em>upper</em> inclusive.</returns>
         /// <remarks>
-        /// Neither <em>lower</em> or <em>upper</em> need to be present in the collection.
+        /// <para>Neither <em>lower</em> or <em>upper</em> need to be present in the collection.</para>
+        /// <para>
+        /// Retrieving the initial item is a O(log <em>n</em>) operation.
+        /// Retrieving each subsequent item is a O(1) operation.
+        /// </para>
         /// </remarks>
         /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
         public IEnumerable<T> GetBetween (T lower, T upper)
@@ -855,6 +870,12 @@ namespace Kaos.Collections
         /// <summary>Provides range query support with ordered results.</summary>
         /// <param name="item">Minimum value of range.</param>
         /// <returns>An enumerator for the set for items greater than or equal to <em>item</em>.</returns>
+        /// <remarks>
+        /// <para>
+        /// Retrieving the initial item is a O(log <em>n</em>) operation.
+        /// Retrieving each subsequent item is a O(1) operation.
+        /// </para>
+        /// </remarks>
         /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
         public IEnumerable<T> GetFrom (T item)
         {

@@ -357,7 +357,8 @@ namespace Kaos.Collections
 
             /// <summary>Make an iterator that will loop thru the collection in order.</summary>
             /// <param name="dictionary">Collection containing these key/value pairs.</param>
-            /// <param name="isGeneric">Supply <b>false</b> to indicate object Current should return DictionaryEntry values.</param>
+            /// <param name="isReverse">Supply <b>true</b> to iterate from last to first.</param>
+            /// <param name="nonGeneric">Supply <b>true</b> to indicate object Current should return DictionaryEntry values.</param>
             internal Enumerator (RankedDictionary<TKey,TValue> dictionary, bool isReverse=false, bool nonGeneric=false)
             {
                 this.tree = dictionary;
