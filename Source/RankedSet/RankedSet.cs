@@ -517,26 +517,18 @@ namespace Kaos.Collections
             if (other == null)
                 throw new ArgumentNullException (nameof (other));
 
-            if (Count == 0)
-                return false;
-
-            if (other is RankedSet<T> oSet)
-            {
-                if (Comparer.Compare (oSet.Max, Min) < 0)
-                    return false;
-                if (Comparer.Compare (oSet.Min, Max) > 0)
-                    return false;
-
-                foreach (T key in oSet.GetBetween (Min, Max))
-                    if (Contains (key))
-                        return true;
-
-                return false;
-            }
-
-            foreach (T key in other)
-                if (Contains (key))
-                    return true;
+            if (Count != 0)
+                if (other is RankedSet<T> oSet)
+                {
+                    if (Comparer.Compare (oSet.Max, Min) >= 0 && Comparer.Compare (oSet.Min, Max) <= 0)
+                        foreach (T key in oSet.GetBetween (Min, Max))
+                            if (Contains (key))
+                                return true;
+                }
+                else
+                    foreach (T key in other)
+                        if (Contains (key))
+                            return true;
 
             return false;
         }
