@@ -520,10 +520,15 @@ namespace Kaos.Collections
             if (Count != 0)
                 if (other is RankedSet<T> oSet)
                 {
-                    if (Comparer.Compare (oSet.Max, Min) >= 0 && Comparer.Compare (oSet.Min, Max) <= 0)
-                        foreach (T key in oSet.GetBetween (Min, Max))
-                            if (Contains (key))
-                                return true;
+                    RankedSet<T> set1, set2;
+                    if (Count > oSet.Count)
+                    { set1 = this; set2 = oSet; }
+                    else
+                    { set2 = this; set1 = oSet; }
+
+                    foreach (T key in set2.GetBetween (set1.Min, set1.Max))
+                        if (set1.Contains (key))
+                            return true;
                 }
                 else
                     foreach (T key in other)
