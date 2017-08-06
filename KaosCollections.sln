@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.15
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Collections400", "Collections400\Collections400.csproj", "{04BC35F4-F0D8-47D0-AE7C-B2D62BE49FC6}"
 EndProject
@@ -58,6 +58,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RsExample04", "Bench\RsExample04\RsExample04.csproj", "{4FAE4A89-DEF1-4CF3-9976-D52FE303ED7D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RdBench05", "Bench\RdBench05\RdBench05.csproj", "{F87EF1A4-AAF7-4C59-A93B-1478FB557BB7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RsExample05", "Bench\RsExample05\RsExample05.csproj", "{7AF8F9B9-ECA1-4402-9C74-0AEEF370E072}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -163,6 +165,10 @@ Global
 		{F87EF1A4-AAF7-4C59-A93B-1478FB557BB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F87EF1A4-AAF7-4C59-A93B-1478FB557BB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F87EF1A4-AAF7-4C59-A93B-1478FB557BB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AF8F9B9-ECA1-4402-9C74-0AEEF370E072}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AF8F9B9-ECA1-4402-9C74-0AEEF370E072}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AF8F9B9-ECA1-4402-9C74-0AEEF370E072}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AF8F9B9-ECA1-4402-9C74-0AEEF370E072}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -190,5 +196,6 @@ Global
 		{3E4793AA-0F66-422A-8C54-9D141B9D0FD3} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{4FAE4A89-DEF1-4CF3-9976-D52FE303ED7D} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{F87EF1A4-AAF7-4C59-A93B-1478FB557BB7} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
+		{7AF8F9B9-ECA1-4402-9C74-0AEEF370E072} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 	EndGlobalSection
 EndGlobal
