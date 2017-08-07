@@ -310,7 +310,8 @@ namespace Kaos.Collections
             if (match == null)
                 throw new ArgumentNullException (nameof (match));
 
-            int delCount = 0;
+            int result = 0;
+            int stageFreeze = stage;
 
             for (Leaf leaf = rightmostLeaf; leaf != null; leaf = leaf.leftLeaf)
                 for (int ix = leaf.KeyCount-1; ix >= 0; --ix)
@@ -318,12 +319,18 @@ namespace Kaos.Collections
                     T key = leaf.GetKey (ix);
                     if (match (key))
                     {
-                        ++delCount;
-                        bool isOk = Remove (key);
+                        StageCheck (stageFreeze);
+                        var path = new NodeVector (this, key);
+                        if (path.IsFound)
+                        {
+                            Remove2 (path);
+                            stageFreeze = stage;
+                            ++result;
+                        }
                     }
                 }
 
-            return delCount;
+            return result;
         }
 
 
