@@ -10,6 +10,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+#if NET35 || NET40 || SERIALIZE
+using System.Runtime.Serialization;
+#endif
 
 namespace Kaos.Collections
 {
@@ -26,12 +29,18 @@ namespace Kaos.Collections
     /// </remarks>
     [DebuggerTypeProxy (typeof (IDictionaryDebugView<,>))]
     [DebuggerDisplay ("Count = {Count}")]
+#if NET35 || NET40 || SERIALIZE
+    [Serializable]
+#endif
     public partial class RankedDictionary<TKey,TValue> :
         Btree<TKey>
         , IDictionary<TKey,TValue>
         , IDictionary
 #if ! NET35 && ! NET40
         , IReadOnlyDictionary<TKey,TValue>
+#endif
+#if NET35 || NET40 || SERIALIZE
+        , ISerializable, IDeserializationCallback
 #endif
     {
         private KeyCollection keys;
@@ -714,6 +723,77 @@ namespace Kaos.Collections
 
         object ICollection.SyncRoot => GetSyncRoot();
 
+        #endregion
+
+        #region ISerializable implementation
+#if NET35 || NET40 || SERIALIZE
+
+        private SerializationInfo serializationInfo;
+        private RankedDictionary (SerializationInfo info, StreamingContext context) : base (new PairLeaf())
+        {
+            this.serializationInfo = info;
+        }
+
+        protected virtual void GetObjectData (SerializationInfo info, StreamingContext context)
+        {
+            if (info == null)
+                throw new ArgumentNullException (nameof (info));
+
+            info.AddValue ("Count", Count);
+            info.AddValue ("Comparer", Comparer, typeof (IComparer<TKey>));
+            info.AddValue ("Stage", stage);
+
+            var keys = new TKey[Count];
+            Keys.CopyTo (keys, 0);
+            info.AddValue ("Keys", keys, typeof (TKey[]));
+
+            var values = new TValue[Count];
+            Values.CopyTo (values, 0);
+            info.AddValue ("Values", values, typeof (TValue[]));
+        }
+
+        protected virtual void OnDeserialization (object sender)
+        {
+            if (keyComparer != null)
+                return;  // Owner did the fixups.
+
+            if (serializationInfo == null)
+                throw new SerializationException ("Missing information.");
+
+            keyComparer = (IComparer<TKey>) serializationInfo.GetValue ("Comparer", typeof (IComparer<TKey>));
+            int storedCount = serializationInfo.GetInt32 ("Count");
+            stage = serializationInfo.GetInt32 ("Stage");
+
+            if (storedCount != 0)
+            {
+                var keys = (TKey[]) serializationInfo.GetValue ("Keys", typeof (TKey[]));
+                if (keys == null)
+                    throw new SerializationException ("Missing Keys.");
+
+                var values = (TValue[]) serializationInfo.GetValue ("Values", typeof (TValue[]));
+                if (keys == null)
+                    throw new SerializationException ("Missing Values.");
+
+                if (keys.Length != values.Length)
+                    throw new SerializationException ("Mismatched key/value count.");
+
+                for (int ix = 0; ix < keys.Length; ++ix)
+                    Add (keys[ix], values[ix]);
+
+                if (storedCount != keys.Length)
+                    throw new SerializationException ("Mismatched count.");
+            }
+
+            serializationInfo = null;
+        }
+
+        void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
+        { GetObjectData(info, context); }
+
+        void IDeserializationCallback.OnDeserialization (Object sender)
+        { OnDeserialization (sender); }
+
+#endif
         #endregion
 
         #region Bonus methods
