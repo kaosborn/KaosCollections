@@ -545,11 +545,14 @@ namespace Kaos.Collections
         bool ICollection<KeyValuePair<TKey,TValue>>.Remove (KeyValuePair<TKey,TValue> keyValuePair)
         {
             var path = new NodeVector (this, keyValuePair.Key);
-            if (! path.IsFound || ! EqualityComparer<TValue>.Default.Equals (keyValuePair.Value, ((PairLeaf) path.TopNode).GetValue (path.TopIndex)))
-                return false;
+            if (path.IsFound)
+                if (EqualityComparer<TValue>.Default.Equals (keyValuePair.Value, ((PairLeaf) path.TopNode).GetValue (path.TopIndex)))
+                {
+                    Remove2 (path);
+                    return true;
+                }
 
-            Remove2 (path);
-            return true;
+            return false;
         }
 
         #endregion
@@ -712,12 +715,12 @@ namespace Kaos.Collections
             if (key == null)
                 throw new ArgumentNullException (nameof (key));
 
-            if (! (key is TKey))
-                return;
-
-            var path = new NodeVector (this, (TKey) key);
-            if (path.IsFound)
-                Remove2 (path);
+            if (key is TKey tKey)
+            {
+                var path = new NodeVector (this, tKey);
+                if (path.IsFound)
+                    Remove2 (path);
+            }
         }
 
 
