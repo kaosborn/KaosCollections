@@ -931,6 +931,25 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>Gets the index of the element with the supplied value.</summary>
+        /// <param name="value">The value of the element of the index to get.</param>
+        /// <returns>The index of the element if found; otherwise -1.</returns>
+        /// <remarks>This is a O(<em>n</em>) operation.</remarks>
+        public int IndexOfValue (TValue value)
+        {
+            int result = 0;
+            for (var leaf = (PairLeaf) leftmostLeaf; leaf != null; leaf = (PairLeaf) leaf.rightLeaf)
+            {
+                var ix = leaf.IndexOfValue (value);
+                if (ix >= 0)
+                    return result + ix;
+                result += leaf.KeyCount;
+            }
+
+            return -1;
+        }
+
+
         /// <summary>Gets the Last key/value pair.</summary>
         /// <returns>The key/value pair with maximum key in dictionary.</returns>
         /// <remarks>This is a O(1) operation.</remarks>

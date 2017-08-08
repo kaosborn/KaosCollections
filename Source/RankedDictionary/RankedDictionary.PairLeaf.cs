@@ -7,6 +7,7 @@
 // MIT License - Use and redistribute freely
 //
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -39,6 +40,8 @@ namespace Kaos.Collections
             public KeyValuePair<TKey,TValue> GetPair (int index) => new KeyValuePair<TKey,TValue> (keys[index], values[index]);
 
             public TValue GetValue (int index) => values[index];
+
+            public int IndexOfValue (TValue value) => values.IndexOf (value);
 
             public void SetValue (int index, TValue value)
             { values[index] = value; }

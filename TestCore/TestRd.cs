@@ -1133,6 +1133,20 @@ namespace CollectionsTest
             Assert.AreEqual (~250, iy);
         }
 
+        [TestMethod]
+        public void UnitRdx_IndexOfValue()
+        {
+            var d1 = new RankedDictionary<int,int>();
+            for (int ii = 0; ii < 500; ++ii)
+                d1.Add (ii, ii+1000);
+
+            var ix1 = d1.IndexOfValue (1400);
+            Assert.AreEqual (400, ix1);
+
+            var ix2 = d1.IndexOfValue (88888);
+            Assert.AreEqual (-1, ix2);
+        }
+
 
         [TestMethod]
         public void UnitRdx_TryGetValueIndex()
