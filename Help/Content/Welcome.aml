@@ -3,7 +3,7 @@
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
     <introduction>
       <para>
-        The KaosCollections library contains classes that complement the
+        The KaosCollections library contains classes that work alongside the
         <codeEntityReference>N:System.Collections.Generic</codeEntityReference>
         classes. The primary classes are:
       </para>
@@ -76,9 +76,7 @@
           </listItem>
           <listItem>
             <para>
-              Neither class implements the
-              <codeEntityReference>T:System.Runtime.Serialization.ISerializable</codeEntityReference>
-              interface. Serialization may be added a future version.
+              There are rare cases where error conditions result in a different exception.
             </para>
           </listItem>
         </list>
