@@ -52,7 +52,7 @@ namespace Kaos.Collections
         /// <exception cref="InvalidOperationException">When <em>comparer</em> is <b>null</b> and no other comparer available.</exception>
         /// <example>
         /// This program shows usage of a custom comparer combined with serialization.
-        /// Note: Serialization is is not supported in .NET Standard 1.0.
+        /// Note: Serialization is not supported in .NET Standard 1.0.
         /// <code source="..\Bench\RsExample05\RsExample05.cs" lang="cs" />
         /// </example>
         public RankedSet (IComparer<T> comparer) : base (comparer, new Leaf())

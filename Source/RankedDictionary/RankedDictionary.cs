@@ -52,8 +52,25 @@ namespace Kaos.Collections
         public RankedDictionary() : base (Comparer<TKey>.Default, new PairLeaf())
         { }
 
+
         /// <summary>Initializes a new dictionary of key/value pairs that are sorted on unique keys using the supplied key comparer.</summary>
         /// <param name="comparer">Comparison operator for keys.</param>
+        /// <remarks>
+        /// <para>Every key in a dictionary must be unique according to the comparer.</para>
+        /// <para>
+        /// This class requires a IComparer implementation to perform key comparisons.
+        /// If <em>comparer</em> is <b>null</b>, the default comparer for the type will be used.
+        /// If the key type implements the IComparable&lt;T&gt; interface, the default comparer uses that implementation.
+        /// If no comparison implementation is available, the Add method will fail on the second element.
+        /// </para>
+        /// </remarks>
+        /// <example>
+        /// <para>
+        /// This program shows usage of a provided comparer combined with serialization.
+        /// </para>
+        /// <para>Note: Serialization is not supported in .NET Standard 1.0.</para>
+        /// <code source="..\Bench\RdExample05\RdExample05.cs" lang="cs" />
+        /// </example>
         /// <exception cref="InvalidOperationException">When <em>comparer</em> is <b>null</b> and no other comparer available.</exception>
         public RankedDictionary (IComparer<TKey> comparer) : base (comparer, new PairLeaf())
         { }
@@ -90,7 +107,7 @@ namespace Kaos.Collections
         /// Setting a value for a non-existent key performs an add operation.
         /// To get a value for a supplied index, use the <see cref="GetByIndex"/> method.
         /// </para>
-        /// <para>This is a O(log <em>n</em>) operation.</para>
+        /// <para>This is a O(log <em>n</em>) operation for both getting and setting.</para>
         /// </remarks>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
         /// <exception cref="KeyNotFoundException">When getting a value and <em>key</em> was not found.</exception>
