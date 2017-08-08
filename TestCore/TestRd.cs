@@ -70,6 +70,20 @@ namespace CollectionsTest
 
 
         [TestMethod]
+        [ExpectedException (typeof (ArgumentException))]
+        public void CrashRd_Ctor1NoComparer_InvalidOperation()
+        {
+            var comp0 = (System.Collections.Generic.Comparer<Person>) null;
+#if TEST_BCL
+            var d1 = new SortedDictionary<Person,int> (comp0);
+#else
+            var d1 = new SortedDictionary<Person,int> (comp0);
+#endif
+            d1.Add (new Person ("Zed"), 1);
+            d1.Add (new Person ("Macron"), 2);
+        }
+
+        [TestMethod]
         public void UnitRd_Ctor1A1()
         {
 #if TEST_BCL
