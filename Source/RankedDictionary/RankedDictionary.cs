@@ -964,6 +964,20 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>Removes the element at the supplied index.</summary>
+        /// <param name="index">The zero-based position of the element to remove.</param>
+        /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or greater than or equal to the number of elements.</exception>
+        public void RemoveAt (int index)
+        {
+            if (index < 0 || index >= Count)
+                throw new ArgumentOutOfRangeException (nameof (index), "Argument is out of the range of valid values.");
+
+            var path = NodeVector.CreateForIndex (this, index);
+            Remove2 (path);
+        }
+
+
         /// <summary>Gets the value and index of the supplied element.</summary>
         /// <param name="key">The key of the value and index to get.</param>
         /// <param name="value">If the key is found, its value is placed here; otherwise it will be loaded with the default value.</param>

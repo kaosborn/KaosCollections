@@ -1149,6 +1149,41 @@ namespace CollectionsTest
 
 
         [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRdx_RemoveAtA_ArgumentOutOfRange()
+        {
+            var d1 = new RankedDictionary<int,int>();
+            d1.Add (42, 24);
+            d1.RemoveAt (-1);
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRdx_RemoveAtB_ArgumentOutOfRange()
+        {
+            var d1 = new RankedDictionary<int,int>();
+            d1.RemoveAt (0);
+        }
+
+        [TestMethod]
+        public void UnitRdx_RemoveAt()
+        {
+            var d1 = new RankedDictionary<int,int>();
+            for (int ii = 0; ii < 5000; ++ii)
+                d1.Add (ii, -ii);
+
+            for (int i2 = 4900; i2 >= 0; i2 -= 100)
+                d1.RemoveAt (i2);
+
+            for (int i2 = 0; i2 < 5000; ++i2)
+                if (i2 % 100 == 0)
+                    Assert.IsFalse (d1.ContainsKey (i2));
+                else
+                    Assert.IsTrue (d1.ContainsKey (i2));
+        }
+
+
+        [TestMethod]
         public void UnitRdx_TryGetValueIndex()
         {
             Btree.TreeOrder = 5;

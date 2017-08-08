@@ -26,15 +26,21 @@ namespace Kaos.Collections
 
             #region Constructors
 
-            /// <summary>Perform search and store each level of path on the stack.</summary>
-            /// <param name="tree">Tree to search.</param>
-            /// <param name="key">Value to find.</param>
-            public NodeVector (Btree<TKey> tree, TKey key)
+            /// <summary>Make an empty path.</summary>
+            /// <param name="tree">Target of path.</param>
+            private NodeVector (Btree<TKey> tree)
             {
                 this.owner = tree;
                 this.indexStack = new List<int>();
                 this.nodeStack = new List<Node>();
+            }
 
+
+            /// <summary>Perform search and store each level of path on the stack.</summary>
+            /// <param name="tree">Tree to search.</param>
+            /// <param name="key">Value to find.</param>
+            public NodeVector (Btree<TKey> tree, TKey key) : this (tree)
+            {
                 for (Node node = tree.root;;)
                 {
                     Debug.Assert (node != null);
@@ -55,6 +61,32 @@ namespace Kaos.Collections
                     this.indexStack.Add (ix);
                     node = ((Branch) node).GetChild (ix);
                 }
+            }
+
+
+            public static NodeVector CreateForIndex (Btree<TKey> tree, int index)
+            {
+                var path = new NodeVector (tree);
+
+                Node node = tree.root;
+                while (node is Branch branch)
+                    for (int ix = 0; ix <= node.KeyCount; ++ix)
+                    {
+                        Node child = branch.GetChild (ix);
+                        int cw = child.Weight;
+                        if (cw > index)
+                        {
+                            path.indexStack.Add (ix);
+                            path.nodeStack.Add (node);
+                            node = child;
+                            break;
+                        }
+                        index -= cw;
+                    }
+
+                path.indexStack.Add (index);
+                path.nodeStack.Add (node);
+                return path;
             }
 
             #endregion
@@ -408,16 +440,6 @@ namespace Kaos.Collections
 #endregion
 
 #if DEBUG
-            /// <summary>Make an empty path.</summary>
-            /// <param name="tree">Target of path.</param>
-            /// <remarks>Used only for diagnostics.</remarks>
-            public NodeVector (Btree<TKey> tree)
-            {
-                this.indexStack = new List<int>();
-                this.nodeStack = new List<Node>();
-                this.IsFound = false;
-                Push (tree.root, 0);
-            }
 
             /// <summary>Make a path to leftmost branch or leaf at the supplied level.</summary>
             /// <param name="tree">Target of path.</param>
@@ -425,6 +447,9 @@ namespace Kaos.Collections
             /// <remarks>Used only for diagnostics.</remarks>
             public NodeVector (Btree<TKey> tree, int level) : this (tree)
             {
+                this.IsFound = false;
+                Push (tree.root, 0);
+
                 for (Node node = TopNode; level > 0; --level)
                 {
                     node = ((Branch) node).GetChild (0);
