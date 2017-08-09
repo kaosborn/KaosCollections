@@ -11,7 +11,8 @@
         <listItem>
           <para>
             <codeEntityReference qualifyHint="false">T:Kaos.Collections.RankedDictionary`2</codeEntityReference>- an improved version of
-            <codeEntityReference qualifyHint="false">T:System.Collections.Generic.SortedDictionary`2</codeEntityReference>.
+            <codeEntityReference qualifyHint="false">T:System.Collections.Generic.SortedDictionary`2</codeEntityReference>with additional
+            <codeEntityReference qualifyHint="false">T:System.Collections.Generic.SortedList`2</codeEntityReference>API enhancements.
           </para>
         </listItem>
         <listItem>
@@ -39,44 +40,76 @@
       <title>API differences between System.Collections.Generic and Kaos.Collections</title>
       <content>
         <para>
-          The API of <codeInline>RankedDictionary</codeInline> and <codeInline>RankedSet</codeInline> closely adheres to Microsoft's related generic classes with a few exceptions:
+          The APIs of <codeInline>RankedDictionary</codeInline> and <codeInline>RankedSet</codeInline> closely adhere to Microsoft's related generic classes with a few exceptions:
         </para>
         <list class="bullet">
           <listItem>
-            <para>Both classes add the method <codeInline>GetByIndex(index)</codeInline> which returns the element at the supplied index.</para>
+            <para><codeInline>RankedDictionary</codeInline> is enhanced with methods borrowed from <codeInline> SortedList</codeInline>:</para>
+            <list class="bullet">
+              <listItem>
+                <para>Adds <codeInline>IndexOfKey(key)</codeInline> that returns the position of the element with the supplied key.</para>
+              </listItem>
+              <listItem>
+                <para>Adds <codeInline>IndexOfValue(value)</codeInline> that returns the position of the first element with the supplied value.</para>
+              </listItem>
+              <listItem>
+                <para>Adds <codeInline>RemoveAt(index)</codeInline> that deletes the element at the supplied position.</para>
+              </listItem>
+            </list>
           </listItem>
+
           <listItem>
-            <para>Both classes add the method <codeInline>IndexOf(key)</codeInline> which returns the index of an element.</para>
+            <para><codeInline>RankedDictionary</codeInline> and <codeInline>RankedSet</codeInline> implement <codeInline>IEnumerable&lt;T&gt;</codeInline> methods to improve performance:</para>
+            <list class="bullet">
+              <listItem>
+                <para>Implements <codeInline>ElementAt(index)</codeInline> that returns the element at the supplied position.</para>
+              </listItem>
+              <listItem>
+                <para>Implements <codeInline>Last()</codeInline> that returns the element at the last position.</para>
+              </listItem>
+            </list>
           </listItem>
+
+          <listItem>
+            <para><codeInline>RankedDictionary</codeInline> and <codeInline>RankedSet</codeInline> add enumerators for range query support:</para>
+            <list class="bullet">
+              <listItem>
+                <para>
+                  Adds <codeInline>GetBetween(lower,upper)</codeInline> for elements beginning and ending at the supplied values.
+                </para>
+              </listItem>
+              <listItem>
+                <para>
+                  Adds <codeInline>GetFrom(lower)</codeInline> for elements beginning at the supplied value.
+                </para>
+              </listItem>
+            </list>
+          </listItem>
+            
           <listItem>
             <para>
-              Both classes add the method <codeInline>GetBetween(lowerKey,upperKey)</codeInline> that
-              returns an enumerator for elements beginning at the supplied value.
+              <codeInline>RankedDictionary</codeInline> adds the method <codeInline>TryGetValueAndIndex(key,value,index)</codeInline> that
+              retrieves the key's associated value and index in one call.
             </para>
           </listItem>
           <listItem>
-            <para>
-              Both classes add the method <codeInline>GetFrom(lowerKey)</codeInline> that
-              returns an enumerator for elements beginning at the supplied value.
-            </para>
+            <para><codeInline>RankedSet</codeInline> adds the method <codeInline>IndexOf(item)</codeInline> that returns the position of the supplied item.</para>
           </listItem>
           <listItem>
-            <para>
-              <codeInline>RankedDictionary</codeInline> adds the method <codeInline>TryGetValueAndIndex(key, out value, out index)</codeInline> that
-              extend <codeInline>IndexOf(key)</codeInline> by also retrieving the key's associated value and index in one call.
-            </para>
+            <para><codeInline>RankedSet</codeInline> adds the method <codeInline>RemoveAt(item)</codeInline> that deletes the item at the supplied position.</para>
           </listItem>
           <listItem>
             <para>
               The <codeInline>SortedSet</codeInline> method
               <codeEntityReference qualifyHint="false">M:System.Collections.Generic.SortedSet`1.GetViewBetween(`0,`0)</codeEntityReference>
-              (which provides a virtual view to a range of a SortedSet) is not implemented.
+              (which provides a virtual view to a range of a <codeInline>SortedSet</codeInline>)
+              is not implemented by <codeInline>RankedSet</codeInline>.
               Use the <codeInline>GetBetween(lower,upper)</codeInline> enumerator instead.
             </para>
           </listItem>
           <listItem>
             <para>
-              There are rare cases where error conditions result in a different exception.
+              There are a few error conditions that result in different exceptions being thrown.
             </para>
           </listItem>
         </list>
@@ -87,8 +120,8 @@
       <title>Data structure</title>
       <content>
         <para>
-          The data structure used by <codeInline>RankedDictionary</codeInline> and <codeInline>RankedSet</codeInline> is a variant of an order statistic B+ tree.
-          An order statistic tree brings two additional capabilities to a tree:
+          The data structure used by <codeInline>RankedDictionary</codeInline> and <codeInline>RankedSet</codeInline> is an order statistic B+ tree variant.
+          An order statistic tree adds two capabilities to a tree:
         </para>
         <list class="bullet">
           <listItem>
@@ -113,10 +146,10 @@
         <list class="bullet">
           <listItem>
             <para>
-              While the root may contain as few as 2 children, other rightmost branches may contain as few as one child.
+              While the root may contain as few as two children, other rightmost branches may contain as few as one child.
               This variation optimizes the structure for bulk loading of presorted data
               and improves seek performance for data near the end of the collection - both common operations.
-              All other branches, besides the root, maintain at least 50% capacity usage following every add and remove operation.
+              All other branches maintain at least 50% capacity usage following every add and remove operation.
             </para>
           </listItem>
           <listItem>
@@ -128,8 +161,8 @@
           </listItem>
           <listItem>
             <para>
-              Every branch tracks the total number of items (weight) in its descendent leaves.
-              For example, the weight of the root is the total number of elements in all leaves.
+              Every branch tracks the number of elements (weight) in all of its descendent leaves.
+              For example, the weight of the root is the total number of elements in every leaf.
             </para>
           </listItem>
         </list>
