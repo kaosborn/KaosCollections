@@ -52,14 +52,14 @@ namespace BenchApp
 
             ////
 
-            Console.WriteLine ("\nBtreeDictionary has its own implementation of Last() which does not suffer the");
-            Console.WriteLine ("performance hit that SortedDictionary.Last() does.  BtreeDictionary also");
-            Console.WriteLine ("supports optimized range queries with its SkipUntilKey(TKey) and");
-            Console.WriteLine ("BetweenKeys(TKey,TKey) methods.\n");
+            Console.WriteLine ("\nRankedDictionary has its own implementation of Last() which does not suffer the");
+            Console.WriteLine ("performance hit that SortedDictionary.Last() does.  RankedDictionary also");
+            Console.WriteLine ("supports optimized range queries with its GetFrom(TKey) and");
+            Console.WriteLine ("GetBetween(TKey,TKey) enumerators.\n");
 
             var bt = new RankedDictionary<int,int>();
 
-            Console.Write ("Loading BtreeDictionary with " + reps + " elements:\n\nLoad time = ");
+            Console.Write ("Loading RankedDictionary with " + reps + " elements:\n\nLoad time = ");
 
             Stopwatch watch2 = new Stopwatch();
             watch2.Reset();
