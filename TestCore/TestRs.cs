@@ -979,6 +979,39 @@ namespace CollectionsTest
 #if ! TEST_BCL
 
         [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashSdx_ElementAt1_ArgumentOutOfRange()
+        {
+            var tree = new RankedSet<int>();
+            tree.Add (4);
+            int key = tree.ElementAt (-1);
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashSdx_ElementAt2_ArgumentOutOfRange()
+        {
+            var tree = new RankedSet<int>();
+            int item = tree.ElementAt (0);
+        }
+
+        [TestMethod]
+        public void UnitSdx_ElementAt()
+        {
+            var tree = new RankedSet<int>();
+            tree.Capacity = 4;
+            for (int ii = 0; ii <= 800; ii+=2)
+                tree.Add (ii);
+
+            for (int ii = 0; ii <= 400; ii+=2)
+            {
+                int key = tree.ElementAt (ii);
+                Assert.AreEqual (ii*2, key);
+            }
+        }
+
+
+        [TestMethod]
         [ExpectedException (typeof (InvalidOperationException))]
         public void CrashRs_GetBetweenHotUpdate()
         {
