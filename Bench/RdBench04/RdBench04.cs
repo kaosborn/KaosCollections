@@ -40,8 +40,8 @@ namespace BenchApp
 
             for (int order=32; order <= 256; order+=16)
             {
-                Btree.TreeOrder = order;
                 var bt = new RankedDictionary<Guid,int>();
+                bt.Capacity = order;
                 Console.Write ("\nLoading BtreeDictionary (order="+order+") with " + reps + " elements:\n\nLoad time = ");
 
                 Stopwatch watch2 = new Stopwatch();

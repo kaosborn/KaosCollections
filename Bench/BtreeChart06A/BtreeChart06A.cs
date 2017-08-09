@@ -37,8 +37,8 @@ namespace ChartApp
 
         static void Main()
         {
-            Btree.TreeOrder = 6;
             tree = new RankedDictionary<int,int>();
+            tree.Capacity = 6;
 
             Console.WriteLine ("Create sequentially loaded tree of order 6:");
             for (int i = 2; i <= 60; i+=2)

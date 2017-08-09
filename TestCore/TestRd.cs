@@ -948,9 +948,37 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRdx_Ctor0_ArgumentOutOfRange()
+        public void CrashRdx_Capacity_ArgumentOutOfRange()
         {
-            Btree.TreeOrder = 3;
+            var bt = new RankedDictionary<int,int>();
+            bt.Capacity = -1;
+        }
+
+
+        [TestMethod]
+        public void UnitRdx_Capacity()
+        {
+            var bt = new RankedDictionary<int,int>();
+            var initial = bt.Capacity;
+
+            bt.Capacity = 0;
+            Assert.AreEqual (initial, bt.Capacity);
+
+            bt.Capacity = 3;
+            Assert.AreEqual (initial, bt.Capacity);
+
+            bt.Capacity = 257;
+            Assert.AreEqual (initial, bt.Capacity);
+
+            bt.Capacity = 4;
+            Assert.AreEqual (4, bt.Capacity);
+
+            bt.Capacity = 256;
+            Assert.AreEqual (256, bt.Capacity);
+
+            bt.Add (1, 11);
+            bt.Capacity = 128;
+            Assert.AreEqual (256, bt.Capacity);
         }
 
 
@@ -1080,8 +1108,8 @@ namespace CollectionsTest
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
         public void CrashRdx_GetByIndex3_ArgumentOutOfRange()
         {
-            Btree.TreeOrder = 4;
-            var tree = new RankedDictionary<int,int>() { { 4, 104 } };
+            var tree = new RankedDictionary<int,int>();
+            tree.Add (4, 104);
             KeyValuePair<int,int> pair = tree.ElementAt (-1);
         }
 
@@ -1089,7 +1117,6 @@ namespace CollectionsTest
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
         public void CrashRdx_GetByIndex4_ArgumentOutOfRange()
         {
-            Btree.TreeOrder = 4;
             var tree = new RankedDictionary<int,int>();
             KeyValuePair<int,int> pair = tree.ElementAt (0);
         }
@@ -1098,8 +1125,8 @@ namespace CollectionsTest
         [TestMethod]
         public void UnitRdx_GetByIndex()
         {
-            Btree.TreeOrder = 4;
             var tree = new RankedDictionary<int,int>();
+            tree.Capacity = 4;
             for (int ii = 0; ii <= 800; ii+=2)
                 tree.Add (ii, ii+100);
 
@@ -1115,8 +1142,8 @@ namespace CollectionsTest
         [TestMethod]
         public void UnitRdx_IndexOf()
         {
-            Btree.TreeOrder = 5;
             var tree = new RankedDictionary<int,int>();
+            tree.Capacity = 5;
             for (int ii = 0; ii < 500; ii+=2)
                 tree.Add (ii, ii+1000);
 
@@ -1186,8 +1213,8 @@ namespace CollectionsTest
         [TestMethod]
         public void UnitRdx_TryGetValueIndex()
         {
-            Btree.TreeOrder = 5;
             var tree = new RankedDictionary<int,int>();
+            tree.Capacity = 5;
             for (int ii = 0; ii < 500; ii+=2)
                 tree.Add (ii, ii+1000);
 

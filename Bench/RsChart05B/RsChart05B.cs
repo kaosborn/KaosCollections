@@ -37,8 +37,11 @@ namespace ChartApp
         {
             for (int i = 1; i <= 12; i+= 1)
             {
-                Btree.TreeOrder = 4;
-                var rs1 = new RankedSet<int>() { 3, 5, 6, 7, 9, 10, 11 };
+                var rs1 = new RankedSet<int>();
+                rs1.Capacity = 4;
+
+                foreach (int kk in new int[] { 3, 5, 6, 7, 9, 10, 11 })
+                    rs1.Add (kk);
                 rs1.Remove (6); rs1.Remove (10);
                 WriteInfo (rs1);
 

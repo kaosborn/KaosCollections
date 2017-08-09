@@ -16,49 +16,25 @@ using System.Threading;
 [assembly: CLSCompliant (true)]
 namespace Kaos.Collections
 {
-    /// <summary>Provides configuration setting for all <see cref="Btree{TKey}"/> derived classes.</summary>
-    /// <remarks>
-    /// The TreeOrder property is provided for experimental purposes only.
-    /// The default value should be used in typical scenarios and changing
-    /// this property may cause performance degradation.
-    /// Changes made to TreeOrder will only impact subsequent instantiations
-    /// and will not affect any existing instances.
-    /// </remarks>
-    public static class Btree
-    {
-        private const int MinimumOrder = 4;
-        private const int DefaultOrder = 128;
-        private const int MaximumOrder = 256;
-        private static int treeOrder = DefaultOrder;
-
-        /// <summary>Configures the order of subsequently constructed trees.</summary>
-        public static int TreeOrder
-        {
-            get { return treeOrder; }
-            set
-            {
-                if (value < MinimumOrder || value > MaximumOrder)
-                    throw new ArgumentOutOfRangeException ("Must be between " + MinimumOrder + " and " + MaximumOrder);
-                treeOrder = value;
-            }
-        }
-    }
-
     /// <summary>Provides base functionality for other classes in this library.</summary>
     /// <typeparam name="TKey">The type of the keys.</typeparam>
     /// <remarks>This class cannot be directly instantiated.</remarks>
     public abstract partial class Btree<TKey>
     {
+        private const int MinimumOrder = 4;
+        private const int DefaultOrder = 128;
+        private const int MaximumOrder = 256;
+
         protected Node root;
         protected Leaf rightmostLeaf;
         protected readonly Leaf leftmostLeaf;
-        protected readonly int maxKeyCount;
         protected IComparer<TKey> keyComparer;
+        protected int maxKeyCount;
         protected int stage = 0;
 
         protected Btree (Leaf startLeaf)
         {
-            this.maxKeyCount = Btree.TreeOrder - 1;
+            this.maxKeyCount = DefaultOrder - 1;
             this.root = this.rightmostLeaf = this.leftmostLeaf = startLeaf;
         }
 
@@ -68,6 +44,36 @@ namespace Kaos.Collections
         }
 
         #region Properties and methods
+
+        /// <summary>Gets or sets the <em>order</em> of the underlying B+ tree structure.</summary>
+        /// <remarks>
+        /// <para>
+        /// The <em>order</em> of a tree (also known as branching factor) is the maximum number of child nodes that a branch may reference.
+        /// The minimum number of child node references for a non-rightmost branch is <em>order</em>/2.
+        /// The maximum number of elements in a leaf is <em>order</em>-1.
+        /// The minimum number of elements in a non-rightmost leaf is <em>order</em>/2.
+        /// </para>
+        /// <para>
+        /// Changing this property may degrade performance and is provided for experimental purposes only.
+        /// The default value of 128 should always be adequate.
+        /// </para>
+        /// <para>
+        /// Attempts to set this value when <em>Count</em> is non-zero are ignored.
+        /// Non-negative values below 4 or above 256 are ignored.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="ArgumentOutOfRangeException">When supplied value is less than zero.</exception>
+        public int Capacity
+        {
+            get { return maxKeyCount + 1; }
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentOutOfRangeException ("Must be between " + MinimumOrder + " and " + MaximumOrder + ".");
+                if (Count == 0 && value >= MinimumOrder && value <= MaximumOrder)
+                    maxKeyCount = value - 1;
+            }
+        }
 
         /// <summary>Gets the number of elements in the collection.</summary>
         /// <remarks>This is a <em>O (1)</em> operation.</remarks>

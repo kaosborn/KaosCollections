@@ -19,8 +19,8 @@ namespace BenchApp
     {
         static void Main()
         {
-            Btree.TreeOrder = 4;
             var tree = new RankedDictionary<int,int>();
+            tree.Capacity = 4;
 
             for (int w = 1; w < 21; ++w)
             {

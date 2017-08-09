@@ -98,7 +98,6 @@ namespace CollectionsTest
             setTS1 = new SortedSet<TS1>();
             personSet = new SortedSet<Person> (new PersonComparer());
 #else
-            Btree.TreeOrder = order;
             tree1 = new RankedDictionary<int,int>();
             tree2 = new RankedDictionary<string,int>();
             tree3 = new RankedDictionary<string,int?>();
@@ -107,6 +106,14 @@ namespace CollectionsTest
             setS = new RankedSet<string>();
             setTS1 = new RankedSet<TS1>();
             personSet = new RankedSet<Person> (new PersonComparer());
+            tree1.Capacity = order;
+            tree2.Capacity = order;
+            tree3.Capacity = order;
+            tree4.Capacity = order;
+            setI.Capacity = order;
+            setS.Capacity = order;
+            setTS1.Capacity = order;
+            personSet.Capacity = order;
 #endif
 
             Type treeType = tree1.GetType();
