@@ -1054,6 +1054,41 @@ namespace CollectionsTest
             Assert.AreEqual (~50, i100);
         }
 
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRsx_RemoveAtA_ArgumentOutOfRange()
+        {
+            var d1 = new RankedSet<int>();
+            d1.Add (42);
+            d1.RemoveAt (-1);
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRsx_RemoveAtB_ArgumentOutOfRange()
+        {
+            var d1 = new RankedSet<int>();
+            d1.RemoveAt (0);
+        }
+
+        [TestMethod]
+        public void UnitRsx_RemoveAt()
+        {
+            var d1 = new RankedSet<int>();
+            for (int ii = 0; ii < 5000; ++ii)
+                d1.Add (ii);
+
+            for (int i2 = 4990; i2 >= 0; i2 -= 10)
+                d1.RemoveAt (i2);
+
+            for (int i2 = 0; i2 < 5000; ++i2)
+                if (i2 % 10 == 0)
+                    Assert.IsFalse (d1.Contains (i2));
+                else
+                    Assert.IsTrue (d1.Contains (i2));
+        }
+
 #endif
         #endregion
     }
