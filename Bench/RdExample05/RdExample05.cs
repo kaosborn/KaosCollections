@@ -23,13 +23,13 @@ namespace ExampleApp
         public Person (string first, string last)
         { this.First = first; this.Last = last; }
 
-        public Person (SerializationInfo info, StreamingContext context)
+        protected Person (SerializationInfo info, StreamingContext context)
         {
             this.First = (string) info.GetValue ("First", typeof (String));
             this.Last = (string) info.GetValue ("Last", typeof (String));
         }
 
-        public void GetObjectData (SerializationInfo info, StreamingContext context)
+        public virtual void GetObjectData (SerializationInfo info, StreamingContext context)
         {
             info.AddValue ("First", First, typeof (String));
             info.AddValue ("Last", Last, typeof (String));

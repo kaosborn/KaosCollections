@@ -1,6 +1,4 @@
-﻿// Demonstrate usage of .NET 3.5 & .NET 4.0 serialization with a custom comparer.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
@@ -25,13 +23,13 @@ namespace ExampleApp
         public Person (string first, string last)
         { this.First = first; this.Last = last; }
 
-        public Person (SerializationInfo info, StreamingContext context)
+        protected Person (SerializationInfo info, StreamingContext context)
         {
             this.First = (String) info.GetValue ("First", typeof (String));
             this.Last = (String) info.GetValue ("Last", typeof (String));
         }
 
-        public void GetObjectData (SerializationInfo info, StreamingContext context)
+        public virtual void GetObjectData (SerializationInfo info, StreamingContext context)
         {
             info.AddValue ("First", First, typeof (String));
             info.AddValue ("Last", Last, typeof (String));
