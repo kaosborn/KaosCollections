@@ -24,7 +24,7 @@ namespace Kaos.Collections
     /// This class emulates and extends the
     /// <see cref="System.Collections.Generic.SortedDictionary{TKey,TValue}"/> class
     /// with the addition of the methods
-    /// <see cref="GetByIndex"/>, <see cref="IndexOf"/>, <see cref="TryGetValueAndIndex"/>,
+    /// <see cref="ElementAt"/>, <see cref="IndexOfKey"/>, <see cref="TryGetValueAndIndex"/>,
     /// <see cref="GetBetween"/>, <see cref="GetFrom"/>, and <see cref="Last"/>.
     /// </remarks>
     [DebuggerTypeProxy (typeof (IDictionaryDebugView<,>))]
@@ -105,7 +105,7 @@ namespace Kaos.Collections
         /// <remarks>
         /// <para>
         /// Setting a value for a non-existent key performs an add operation.
-        /// To get a value for a supplied index, use the <see cref="GetByIndex"/> method.
+        /// To get a value for a supplied index, use the <see cref="ElementAt"/> method.
         /// </para>
         /// <para>This is a O(log <em>n</em>) operation for both getting and setting.</para>
         /// </remarks>
@@ -870,7 +870,7 @@ namespace Kaos.Collections
         /// <returns>The element at the supplied index.</returns>
         /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
         /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or greater than or equal to the number of keys.</exception>
-        public KeyValuePair<TKey,TValue> GetByIndex (int index)
+        public KeyValuePair<TKey,TValue> ElementAt (int index)
         {
             if (index < 0 || index >= Count)
                 throw new ArgumentOutOfRangeException (nameof (index), "Argument is out of the range of valid values.");
@@ -920,7 +920,7 @@ namespace Kaos.Collections
         /// <returns>The index of the element with the supplied key if found; otherwise the bitwise complement of the insert point.</returns>
         /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
-        public int IndexOf (TKey key)
+        public int IndexOfKey (TKey key)
         {
             if (key == null)
                 throw new ArgumentNullException (nameof (key));

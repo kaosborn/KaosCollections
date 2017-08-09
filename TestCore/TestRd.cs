@@ -1063,7 +1063,7 @@ namespace CollectionsTest
         public void CrashRdx_GetByIndex1_ArgumentOutOfRange()
         {
             var tree = new RankedDictionary<int,int>();
-            KeyValuePair<int,int> pair = tree.GetByIndex (-1);
+            KeyValuePair<int,int> pair = tree.ElementAt (-1);
         }
 
 
@@ -1072,7 +1072,7 @@ namespace CollectionsTest
         public void CrashRdx_GetByIndex2_ArgumentOutOfRange()
         {
             var tree = new RankedDictionary<int,int>();
-            KeyValuePair<int,int> pair = tree.GetByIndex (0);
+            KeyValuePair<int,int> pair = tree.ElementAt (0);
         }
 
 
@@ -1082,7 +1082,7 @@ namespace CollectionsTest
         {
             Btree.TreeOrder = 4;
             var tree = new RankedDictionary<int,int>() { { 4, 104 } };
-            KeyValuePair<int,int> pair = tree.GetByIndex (-1);
+            KeyValuePair<int,int> pair = tree.ElementAt (-1);
         }
 
         [TestMethod]
@@ -1091,7 +1091,7 @@ namespace CollectionsTest
         {
             Btree.TreeOrder = 4;
             var tree = new RankedDictionary<int,int>();
-            KeyValuePair<int,int> pair = tree.GetByIndex (0);
+            KeyValuePair<int,int> pair = tree.ElementAt (0);
         }
 
 
@@ -1105,7 +1105,7 @@ namespace CollectionsTest
 
             for (int ii = 0; ii <= 400; ii+=2)
             {
-                KeyValuePair<int,int> pair = tree.GetByIndex (ii);
+                KeyValuePair<int,int> pair = tree.ElementAt (ii);
                 Assert.AreEqual (ii*2, pair.Key);
                 Assert.AreEqual (ii*2+100, pair.Value);
             }
@@ -1122,14 +1122,14 @@ namespace CollectionsTest
 
             for (int ii = 0; ii < 500; ii+=2)
             {
-                int ix = tree.IndexOf (ii);
+                int ix = tree.IndexOfKey (ii);
                 Assert.AreEqual (ii/2, ix);
             }
 
-            int iw = tree.IndexOf (-1);
+            int iw = tree.IndexOfKey (-1);
             Assert.AreEqual (~0, iw);
 
-            int iy = tree.IndexOf (500);
+            int iy = tree.IndexOfKey (500);
             Assert.AreEqual (~250, iy);
         }
 

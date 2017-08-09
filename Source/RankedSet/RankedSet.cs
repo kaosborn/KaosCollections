@@ -856,12 +856,12 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Gets the key at the supplied index.</summary>
-        /// <param name="index">The zero-based index of the key to get.</param>
-        /// <returns>The key at the supplied index.</returns>
+        /// <summary>Gets the item at the supplied index.</summary>
+        /// <param name="index">The zero-based index of the item to get.</param>
+        /// <returns>The item at the supplied index.</returns>
         /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
-        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or greater than or equal to the number of keys.</exception>
-        public T GetByIndex (int index)
+        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or not less than the number of items.</exception>
+        public T ElementAt (int index)
         {
             if (index < 0 || index >= Count)
                 throw new ArgumentOutOfRangeException (nameof (index), "Argument was out of the range of valid values.");
