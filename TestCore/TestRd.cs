@@ -954,7 +954,6 @@ namespace CollectionsTest
             bt.Capacity = -1;
         }
 
-
         [TestMethod]
         public void UnitRdx_Capacity()
         {
@@ -1002,7 +1001,6 @@ namespace CollectionsTest
             Assert.AreEqual (-290, sumVals);
         }
 
-
         [TestMethod]
         public void UnitRdx_GetBetweenPassedEnd()
         {
@@ -1045,7 +1043,6 @@ namespace CollectionsTest
             Assert.AreEqual (500, iterations);
         }
 
-
         [TestMethod]
         public void UnitRdx_GetFromMissingVal()
         {
@@ -1069,9 +1066,8 @@ namespace CollectionsTest
             }
         }
 
-
         [TestMethod]
-        public void UnitRdx_GetFromKeyPassedEnd()
+        public void UnitRdx_GetFromPassedEnd()
         {
             var btree = new RankedDictionary<int,int>();
 
@@ -1088,42 +1084,22 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRdx_GetByIndex1_ArgumentOutOfRange()
+        public void CrashRdx_ElementAt1_ArgumentOutOfRange()
         {
             var tree = new RankedDictionary<int,int>();
             KeyValuePair<int,int> pair = tree.ElementAt (-1);
         }
 
-
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRdx_GetByIndex2_ArgumentOutOfRange()
+        public void CrashRdx_ElementAt2_ArgumentOutOfRange()
         {
             var tree = new RankedDictionary<int,int>();
             KeyValuePair<int,int> pair = tree.ElementAt (0);
         }
 
-
         [TestMethod]
-        [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRdx_GetByIndex3_ArgumentOutOfRange()
-        {
-            var tree = new RankedDictionary<int,int>();
-            tree.Add (4, 104);
-            KeyValuePair<int,int> pair = tree.ElementAt (-1);
-        }
-
-        [TestMethod]
-        [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRdx_GetByIndex4_ArgumentOutOfRange()
-        {
-            var tree = new RankedDictionary<int,int>();
-            KeyValuePair<int,int> pair = tree.ElementAt (0);
-        }
-
-
-        [TestMethod]
-        public void UnitRdx_GetByIndex()
+        public void UnitRdx_ElementAt()
         {
             var tree = new RankedDictionary<int,int>();
             tree.Capacity = 4;
@@ -1140,7 +1116,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void UnitRdx_IndexOf()
+        public void UnitRdx_IndexOfKey()
         {
             var tree = new RankedDictionary<int,int>();
             tree.Capacity = 5;
@@ -1159,6 +1135,7 @@ namespace CollectionsTest
             int iy = tree.IndexOfKey (500);
             Assert.AreEqual (~250, iy);
         }
+
 
         [TestMethod]
         public void UnitRdx_IndexOfValue()
