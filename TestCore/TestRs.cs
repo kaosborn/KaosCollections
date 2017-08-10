@@ -1089,6 +1089,27 @@ namespace CollectionsTest
 
 
         [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRs_Last_InvalidOperation()
+        {
+            Setup();
+            var item = setI.Last();
+        }
+
+        [TestMethod]
+        public void UnitRs_Last()
+        {
+            Setup();
+            setI.Add (7);
+            setI.Add (5);
+            setI.Add (3);
+
+            int item = setI.Last();
+            Assert.AreEqual (7, item, "didn't get expected last key");
+        }
+
+
+        [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
         public void CrashRsx_RemoveAtA_ArgumentOutOfRange()
         {

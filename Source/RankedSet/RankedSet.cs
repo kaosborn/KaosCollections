@@ -25,14 +25,15 @@ namespace Kaos.Collections
     /// improving performance of operations on large collections.
     /// </para>
     /// <para>
-    /// Extensions for indexing are:
+    /// Indexing enhancements include:
     /// <list type="bullet">
     /// <item><see cref="IndexOf"/></item>
     /// <item><see cref="RemoveAt"/></item>
     /// </list>
-    /// <para>Indexing also includes an extension method that has been directly implemented for optimization:</para>
+    /// <para>Indexing also includes extension methods that has been directly implemented for optimization:</para>
     /// <list type="bullet">
     /// <item><see cref="ElementAt"/></item>
+    /// <item><see cref="Last"/></item>
     /// </list>
     /// <para>Optimized range enumerators are provided:</para>
     /// <list type="bullet">
@@ -937,6 +938,19 @@ namespace Kaos.Collections
             var path = new NodeVector (this, item);
             int result = path.GetIndex();
             return path.IsFound ? result : ~result;
+        }
+
+
+        /// <summary>Gets the last item.</summary>
+        /// <returns>The item sorted to the end of the set.</returns>
+        /// <remarks>This is a O(1) operation.</remarks>
+        /// <exception cref="InvalidOperationException">When the collection is empty.</exception>
+        public T Last()
+        {
+            if (Count == 0)
+                throw new InvalidOperationException ("Sequence contains no elements.");
+
+            return rightmostLeaf.GetKey (rightmostLeaf.KeyCount-1);
         }
 
 
