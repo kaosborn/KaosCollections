@@ -17,7 +17,7 @@ using System.Threading;
 namespace Kaos.Collections
 {
     /// <summary>Provides base functionality for other classes in this library.</summary>
-    /// <typeparam name="TKey">The type of the keys.</typeparam>
+    /// <typeparam name="TKey">The type of the keys in the derived class.</typeparam>
     /// <remarks>This class cannot be directly instantiated.</remarks>
     public abstract partial class Btree<TKey>
     {
@@ -70,13 +70,14 @@ namespace Kaos.Collections
             {
                 if (value < 0)
                     throw new ArgumentOutOfRangeException ("Must be between " + MinimumOrder + " and " + MaximumOrder + ".");
+
                 if (Count == 0 && value >= MinimumOrder && value <= MaximumOrder)
                     maxKeyCount = value - 1;
             }
         }
 
         /// <summary>Gets the number of elements in the collection.</summary>
-        /// <remarks>This is a <em>O (1)</em> operation.</remarks>
+        /// <remarks>This is a O(1) operation.</remarks>
         public int Count => root.Weight;
 
         /// <summary>Gets the maximum value in the set per the comparer.</summary>
@@ -147,7 +148,7 @@ namespace Kaos.Collections
 
 
         /// <summary>Perform traverse to leaf at index.</summary>
-        /// <param name="index">On entry, holds index of set; on exit holds index of leaf.</param>
+        /// <param name="index">On entry, holds index of collection; on exit holds index of leaf.</param>
         /// <returns>Leaf holding item at index position.</returns>
         protected Node Find (ref int index)
         {

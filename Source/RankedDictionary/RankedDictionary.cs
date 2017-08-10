@@ -16,16 +16,44 @@ using System.Runtime.Serialization;
 
 namespace Kaos.Collections
 {
-    /// <summary>Represents a collection of key/value pairs that are sorted on unique keys.
+    /// <summary>
+    /// Represents a collection of key/value pairs that are sorted on unique keys.
     /// </summary>
     /// <typeparam name="TKey">The type of the keys in the dictionary.</typeparam>
     /// <typeparam name="TValue">The type of the values in the dictionary.</typeparam>
     /// <remarks>
-    /// This class emulates and extends the
-    /// <see cref="System.Collections.Generic.SortedDictionary{TKey,TValue}"/> class
-    /// with the addition of the methods
-    /// <see cref="ElementAt"/>, <see cref="IndexOfKey"/>, <see cref="TryGetValueAndIndex"/>,
-    /// <see cref="GetBetween"/>, <see cref="GetFrom"/>, and <see cref="Last"/>.
+    /// <para>
+    /// This class emulates and extends
+    /// <see cref="System.Collections.Generic.SortedDictionary{TKey,TValue}"/>while
+    /// improving performance of operations on large collections.
+    /// While primarily emulating SortedDictionary, this class also borrows heavily from
+    /// <see href="https://msdn.microsoft.com/en-us/library/ms132319(v=vs.110).aspx">SortedList&lt;TKey,TValue&gt;</see>
+    /// for indexing functionality:
+    /// <list type="bullet">
+    /// <item><see cref="IndexOfKey"/></item>
+    /// <item><see cref="IndexOfValue"/></item>
+    /// <item><see cref="RemoveAt"/></item>
+    /// </list>
+    /// <para>Extension methods have been directly implemented for optimization:</para>
+    /// <list type="bullet">
+    /// <item><see cref="ElementAt"/></item>
+    /// <item><see cref="Last"/></item>
+    /// </list>
+    /// <para>Indexing functionality also includes:</para>
+    /// <list type="bullet">
+    /// <item><see cref="TryGetValueAndIndex"/></item>
+    /// </list>
+    /// <para>These optimized range enumerators are included:</para>
+    /// <list type="bullet">
+    /// <item><see cref="GetBetween"/></item>
+    /// <item><see cref="GetFrom"/></item>
+    /// </list>
+    /// </para>
+    /// <para>
+    /// Keys must be immutable as long as they are used as keys in the
+    /// <see cref="RankedDictionary{TKey,TValue}"/>class.
+    /// Every key must be unique and cannot be null, but a value can be for a reference type.
+    /// </para>
     /// </remarks>
     [DebuggerTypeProxy (typeof (IDictionaryDebugView<,>))]
     [DebuggerDisplay ("Count = {Count}")]
@@ -950,7 +978,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Gets the Last key/value pair.</summary>
+        /// <summary>Gets the last key/value pair.</summary>
         /// <returns>The key/value pair with maximum key in dictionary.</returns>
         /// <remarks>This is a O(1) operation.</remarks>
         /// <exception cref="InvalidOperationException">When the collection is empty.</exception>
@@ -978,7 +1006,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Gets the value and index of the supplied element.</summary>
+        /// <summary>Gets the value and index associated with the supplied key.</summary>
         /// <param name="key">The key of the value and index to get.</param>
         /// <param name="value">If the key is found, its value is placed here; otherwise it will be loaded with the default value.</param>
         /// <param name="index">If the key is found, its index is placed here; otherwise it will be -1.</param>

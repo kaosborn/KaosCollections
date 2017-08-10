@@ -19,8 +19,27 @@ namespace Kaos.Collections
     /// <summary>Represents a collection of sorted, unique items.</summary>
     /// <typeparam name="T">The type of the items in the set.</typeparam>
     /// <remarks>
-    /// This class emulates and extends the
-    /// <see cref="System.Collections.Generic.SortedSet{T}"/> class.
+    /// <para>
+    /// This class emulates and extends
+    /// <see cref="System.Collections.Generic.SortedSet{T}"/> while
+    /// improving performance of operations on large collections.
+    /// </para>
+    /// <para>
+    /// Extensions for indexing are:
+    /// <list type="bullet">
+    /// <item><see cref="IndexOf"/></item>
+    /// <item><see cref="RemoveAt"/></item>
+    /// </list>
+    /// <para>Indexing also includes an extension method that has been directly implemented for optimization:</para>
+    /// <list type="bullet">
+    /// <item><see cref="ElementAt"/></item>
+    /// </list>
+    /// <para>Optimized range enumerators are provided:</para>
+    /// <list type="bullet">
+    /// <item><see cref="GetBetween"/></item>
+    /// <item><see cref="GetFrom"/></item>
+    /// </list>
+    /// </para>
     /// </remarks>
 #if NET35 || NET40 || SERIALIZE
     [Serializable]
