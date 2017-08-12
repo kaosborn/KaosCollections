@@ -4,10 +4,10 @@
 //
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 #if TEST_BCL
 using System.Linq;
 #endif
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CollectionsTest
 {

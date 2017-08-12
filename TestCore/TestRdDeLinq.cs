@@ -4,8 +4,8 @@
 //
 
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 #if TEST_BCL
 using System.Linq;
 #endif
@@ -26,7 +26,7 @@ namespace CollectionsTest
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRdx_ElementAt2_ArgumentOutOfRange()
+        public void CrashRdq_ElementAt2_ArgumentOutOfRange()
         {
             Setup();
             KeyValuePair<int,int> pair = tree1.ElementAt (0);

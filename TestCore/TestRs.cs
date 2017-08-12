@@ -4,7 +4,6 @@
 //
 
 using System;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #if TEST_BCL
 using System.Collections.Generic;
@@ -44,7 +43,7 @@ namespace CollectionsTest
 
             Assert.AreEqual (3, toISetI.Count);
             Assert.AreEqual (3, toIColI.Count);
-            Assert.AreEqual (3, toIEnuI.Count());
+            Assert.AreEqual (3, System.Linq.Enumerable.Count (toIEnuI));
             Assert.AreEqual (3, ObjEnumCount);
             Assert.AreEqual (3, toIColO.Count);
             Assert.AreEqual (3, toIRocI.Count);

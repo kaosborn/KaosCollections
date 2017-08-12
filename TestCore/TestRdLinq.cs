@@ -5,7 +5,6 @@
 // Last() is required for coverage testing.
 //
 
-using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
