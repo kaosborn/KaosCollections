@@ -1012,6 +1012,31 @@ namespace CollectionsTest
 
 
         [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRsq_ElementAtOD1_ArgumentOutOfRange()
+        {
+            Setup();
+            int key = setI.ElementAt (-1);
+        }
+
+        [TestMethod]
+        public void UnitRsq_ElementAtOD2()
+        {
+            Setup();
+
+            int item1 = setI.ElementAtOrDefault (0);
+            Assert.AreEqual (default (int), item1);
+
+            setI.Add (9);
+            int item2 = setI.ElementAtOrDefault (0);
+            Assert.AreEqual (9, item2);
+
+            int item3 = setI.ElementAtOrDefault (1);
+            Assert.AreEqual (default (int), item3);
+        }
+
+
+        [TestMethod]
         [ExpectedException (typeof (InvalidOperationException))]
         public void CrashRs_GetBetweenHotUpdate()
         {

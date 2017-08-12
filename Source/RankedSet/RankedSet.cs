@@ -886,6 +886,24 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>Gets the item at the supplied index or the default if index is out of range.</summary>
+        /// <param name="index">The zero-based index of the item to get.</param>
+        /// <returns>The item at the supplied index.</returns>
+        /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero.</exception>
+        public T ElementAtOrDefault (int index)
+        {
+            if (index < 0)
+                throw new ArgumentOutOfRangeException (nameof (index), "Argument was out of the range of valid values.");
+
+            if (index >= Count)
+                return default (T);
+
+            var leaf = (Leaf) Find (ref index);
+            return leaf.GetKey (index);
+        }
+
+
         /// <summary>Provides range query support with ordered results.</summary>
         /// <param name="item">Minimum value of range.</param>
         /// <returns>An enumerator for the set for items greater than or equal to <em>item</em>.</returns>
