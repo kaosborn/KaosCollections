@@ -978,62 +978,6 @@ namespace CollectionsTest
         #region Test bonus methods
 #if ! TEST_BCL
 
-        [TestMethod]
-        [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashSdx_ElementAt1_ArgumentOutOfRange()
-        {
-            var tree = new RankedSet<int>();
-            tree.Add (4);
-            int key = tree.ElementAt (-1);
-        }
-
-        [TestMethod]
-        [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashSdx_ElementAt2_ArgumentOutOfRange()
-        {
-            var tree = new RankedSet<int>();
-            int item = tree.ElementAt (0);
-        }
-
-        [TestMethod]
-        public void UnitSdx_ElementAt()
-        {
-            var tree = new RankedSet<int>();
-            tree.Capacity = 4;
-            for (int ii = 0; ii <= 800; ii+=2)
-                tree.Add (ii);
-
-            for (int ii = 0; ii <= 400; ii+=2)
-            {
-                int key = tree.ElementAt (ii);
-                Assert.AreEqual (ii*2, key);
-            }
-        }
-
-
-        [TestMethod]
-        [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRsq_ElementAtOD1_ArgumentOutOfRange()
-        {
-            Setup();
-            int key = setI.ElementAt (-1);
-        }
-
-        [TestMethod]
-        public void UnitRsq_ElementAtOD2()
-        {
-            Setup();
-
-            int item1 = setI.ElementAtOrDefault (0);
-            Assert.AreEqual (default (int), item1);
-
-            setI.Add (9);
-            int item2 = setI.ElementAtOrDefault (0);
-            Assert.AreEqual (9, item2);
-
-            int item3 = setI.ElementAtOrDefault (1);
-            Assert.AreEqual (default (int), item3);
-        }
 
 
         [TestMethod]
@@ -1110,27 +1054,6 @@ namespace CollectionsTest
             Assert.AreEqual (0, i0);
             Assert.AreEqual (4, i8);
             Assert.AreEqual (~50, i100);
-        }
-
-
-        [TestMethod]
-        [ExpectedException (typeof (InvalidOperationException))]
-        public void CrashRs_Last_InvalidOperation()
-        {
-            Setup();
-            var item = setI.Last();
-        }
-
-        [TestMethod]
-        public void UnitRs_Last()
-        {
-            Setup();
-            setI.Add (7);
-            setI.Add (5);
-            setI.Add (3);
-
-            int item = setI.Last();
-            Assert.AreEqual (7, item, "didn't get expected last key");
         }
 
 

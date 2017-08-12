@@ -7,40 +7,12 @@
 
 using System;
 using System.Linq;
-using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Kaos.Collections;
 
 namespace CollectionsTest
 {
     public partial class Test_Btree
     {
-        [TestMethod]
-        [ExpectedException (typeof (InvalidOperationException))]
-        public void CrashRd_Last_InvalidOperation()
-        {
-            Setup();
-
-            // Exception thrown when empty.
-            var kv = tree2.Last();
-        }
-
-
-        [TestMethod]
-        public void UnitRd_Last()
-        {
-            Setup();
-            tree1.Add (3, -33);
-            tree1.Add (1, -11);
-            tree1.Add (2, -22);
-
-            var kv = tree1.Last();
-
-            Assert.AreEqual (3, kv.Key, "didn't get expected last key");
-            Assert.AreEqual (-33, kv.Value, "didn't get expected last value");
-        }
-
-
         [TestMethod]
         public void UnitRd_LinqAny()
         {
