@@ -178,7 +178,7 @@ namespace Kaos.Collections
             var leaf = (Leaf) path.TopNode;
 
             leaf.Remove (leafIndex);
-            path.UpdateWeight (-1);
+            path.DecrementPathWeight();
 
             if (leafIndex == 0)
                 if (leaf.KeyCount != 0)

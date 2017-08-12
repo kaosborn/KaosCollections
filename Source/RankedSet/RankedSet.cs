@@ -118,6 +118,9 @@ namespace Kaos.Collections
 
         #region Methods
 
+        void ICollection<T>.Add (T item)
+        { Add (item); }
+
         /// <summary>Adds an item to the set and returns a success indicator.</summary>
         /// <param name="item">The item to add.</param>
         /// <returns><b>true</b> if <em>item</em> was added to the set; otherwise <b>false</b>.</returns>
@@ -133,29 +136,20 @@ namespace Kaos.Collections
             if (path.IsFound)
                 return false;
 
-            Add2 (path, item);
-            return true;
-        }
-
-        void ICollection<T>.Add (T item)
-        { Add (item); }
-
-        private void Add2 (NodeVector path, T key)
-        {
             StageBump();
 
-            var leaf = (Leaf) path.TopNode;
-            int pathIndex = path.TopIndex;
+            path.IncrementPathWeight();
 
-            path.UpdateWeight (1);
+            var leaf = (Leaf) path.TopNode;
             if (leaf.KeyCount < maxKeyCount)
             {
-                leaf.Insert (pathIndex, key);
-                return;
+                leaf.Insert (path.TopIndex, item);
+                return true;
             }
 
             // Leaf is full so right split a new leaf.
             var newLeaf = new Leaf (leaf, maxKeyCount);
+            int pathIndex = path.TopIndex;
 
             if (newLeaf.rightLeaf != null)
                 newLeaf.rightLeaf.leftLeaf = newLeaf;
@@ -165,9 +159,9 @@ namespace Kaos.Collections
 
                 if (pathIndex == leaf.KeyCount)
                 {
-                    newLeaf.AddKey (key);
-                    path.Promote (key, (Node) newLeaf, true);
-                    return;
+                    newLeaf.AddKey (item);
+                    path.Promote (item, (Node) newLeaf, true);
+                    return true;
                 }
             }
 
@@ -177,19 +171,20 @@ namespace Kaos.Collections
                 // Left-side insert: Copy right side to the split leaf.
                 newLeaf.Add (leaf, splitIndex - 1, leaf.KeyCount);
                 leaf.Truncate (splitIndex - 1);
-                leaf.Insert (pathIndex, key);
+                leaf.Insert (pathIndex, item);
             }
             else
             {
                 // Right-side insert: Copy split leaf parts and new key.
                 newLeaf.Add (leaf, splitIndex, pathIndex);
-                newLeaf.AddKey (key);
+                newLeaf.AddKey (item);
                 newLeaf.Add (leaf, pathIndex, leaf.KeyCount);
                 leaf.Truncate (splitIndex);
             }
 
             // Promote anchor of split leaf.
             path.Promote (newLeaf.Key0, (Node) newLeaf, newLeaf.rightLeaf == null);
+            return true;
         }
 
 

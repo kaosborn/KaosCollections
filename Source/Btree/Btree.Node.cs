@@ -85,10 +85,9 @@ namespace Kaos.Collections
             public override int Weight
             { get { return weight; } }
 
-            /// <summary>Change count of key/value pairs in subtree.</summary>
-            /// <param name="adjustment">Change in value.</param>
-            public void AdjustWeight (int adjustment)
-            { weight += adjustment; }
+            public void AdjustWeight (int delta) { weight += delta; }
+            public void IncrementWeight() { ++weight; }
+            public void DecrementWeight() { --weight; }
 
             public void RemoveChild (int index)
             { childNodes.RemoveAt (index); }

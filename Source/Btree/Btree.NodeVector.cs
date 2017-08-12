@@ -43,23 +43,21 @@ namespace Kaos.Collections
             {
                 for (Node node = tree.root;;)
                 {
-                    Debug.Assert (node != null);
-
                     this.nodeStack.Add (node);
-                    int ix = node.Search (key, tree.Comparer);
-
-                    if (! (node is Branch))
+                    int ix = tree.Comparer==Comparer<TKey>.Default ? node.Search (key)
+                                                                   : node.Search (key, tree.Comparer);
+                    if (node is Branch branch)
                     {
-                        IsFound = ix >= 0;
-                        if (! IsFound)
-                            ix = ~ix;
+                        ix = (ix < 0) ? ~ix : ix+1;
                         this.indexStack.Add (ix);
+                        node = branch.GetChild (ix);
+                    }
+                    else
+                    {
+                        this.IsFound = ix >= 0;
+                        this.indexStack.Add (this.IsFound ? ix : ~ix);
                         return;
                     }
-
-                    ix = (ix < 0) ? ~ix : ix+1;
-                    this.indexStack.Add (ix);
-                    node = ((Branch) node).GetChild (ix);
                 }
             }
 
@@ -253,10 +251,17 @@ namespace Kaos.Collections
             }
 
 
-            public void UpdateWeight (int delta)
+            public void DecrementPathWeight()
             {
                 for (int level = Height-2; level >= 0; --level)
-                    ((Branch) nodeStack[level]).AdjustWeight (delta);
+                    ((Branch) nodeStack[level]).DecrementWeight();
+            }
+
+
+            public void IncrementPathWeight()
+            {
+                for (int level = Height-2; level >= 0; --level)
+                    ((Branch) nodeStack[level]).IncrementWeight();
             }
 
 

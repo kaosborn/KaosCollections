@@ -235,7 +235,7 @@ namespace Kaos.Collections
             var leaf = (PairLeaf) path.TopNode;
             int pathIndex = path.TopIndex;
 
-            path.UpdateWeight (1);
+            path.IncrementPathWeight();
             if (leaf.KeyCount < maxKeyCount)
             {
                 leaf.Insert (pathIndex, key, value);
