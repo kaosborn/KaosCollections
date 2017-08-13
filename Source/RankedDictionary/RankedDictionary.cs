@@ -396,141 +396,6 @@ namespace Kaos.Collections
 
         #endregion
 
-        #region Enumerator
-
-        /// <summary>Provides sequential access to the dictionary.</summary>
-        public sealed class Enumerator : IEnumerator<KeyValuePair<TKey,TValue>>, IDictionaryEnumerator
-        {
-            private readonly RankedDictionary<TKey,TValue> tree;
-            private readonly bool isReverse;
-            private readonly bool nonGeneric;
-            private PairLeaf leaf;
-            private int index;
-            private int stageFreeze;
-            private int state;  // -1=rewound; 0=active; 1=consumed
-
-            /// <summary>Make an iterator that will loop thru the collection in order.</summary>
-            /// <param name="dictionary">Collection containing these key/value pairs.</param>
-            /// <param name="isReverse">Supply <b>true</b> to iterate from last to first.</param>
-            /// <param name="nonGeneric">Supply <b>true</b> to indicate object Current should return DictionaryEntry values.</param>
-            internal Enumerator (RankedDictionary<TKey,TValue> dictionary, bool isReverse=false, bool nonGeneric=false)
-            {
-                this.tree = dictionary;
-                this.isReverse = isReverse;
-                this.nonGeneric = nonGeneric;
-                ((IEnumerator) this).Reset();
-            }
-
-            object IDictionaryEnumerator.Key
-            {
-                get
-                {
-                    if (state != 0)
-                        throw new InvalidOperationException ("Enumeration is not active.");
-                    return leaf.GetKey (index);
-                }
-            }
-
-            object IDictionaryEnumerator.Value
-            {
-                get
-                {
-                    if (state != 0)
-                        throw new InvalidOperationException ("Enumeration is not active.");
-                    return leaf.GetValue (index);
-                }
-            }
-
-            DictionaryEntry IDictionaryEnumerator.Entry
-            {
-                get
-                {
-                    if (state != 0)
-                        throw new InvalidOperationException ("Enumeration is not active.");
-                    return new DictionaryEntry (leaf.GetKey (index), leaf.GetValue (index));
-                }
-            }
-
-            object IEnumerator.Current
-            {
-                get
-                {
-                    tree.StageCheck (stageFreeze);
-                    if (state != 0)
-                        throw new InvalidOperationException ("Enumeration is not active.");
-
-                    if (nonGeneric)
-                        return new DictionaryEntry (leaf.GetKey (index), leaf.GetValue (index));
-                    else
-                        return leaf.GetPair (index);
-                }
-            }
-
-            /// <summary>Gets the key/value pair at the current location.</summary>
-            /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
-            public KeyValuePair<TKey,TValue> Current
-            {
-                get
-                {
-                    tree.StageCheck (stageFreeze);
-                    return state == 0 ? leaf.GetPair (index)
-                                      : new KeyValuePair<TKey,TValue> (default (TKey), default (TValue));
-                }
-            }
-
-            /// <summary>Advances the enumerator to the next location.</summary>
-            /// <returns><b>false</b> if no more data; otherwise <b>true</b>.</returns>
-            /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
-            public bool MoveNext()
-            {
-                tree.StageCheck (stageFreeze);
-
-                if (state != 0)
-                    if (state > 0)
-                        return false;
-                    else
-                    {
-                        leaf = (PairLeaf) (isReverse ? tree.rightmostLeaf : tree.leftmostLeaf);
-                        index = isReverse ? leaf.KeyCount : -1;
-                        state = 0;
-                    }
-
-                if (isReverse)
-                {
-                    if (--index >= 0)
-                        return true;
-
-                    leaf = (PairLeaf) leaf.leftLeaf;
-                    if (leaf != null)
-                    { index = leaf.KeyCount - 1; return true; }
-                }
-                else
-                {
-                    if (++index < leaf.KeyCount)
-                        return true;
-
-                    leaf = (PairLeaf) leaf.rightLeaf;
-                    if (leaf != null)
-                    { index = 0; return true; }
-                }
-
-                state = 1;
-                return false;
-            }
-
-            /// <summary>Moves the enumerator back to its initial location.</summary>
-            void IEnumerator.Reset()
-            {
-                stageFreeze = tree.stage;
-                state = -1;
-            }
-
-            /// <exclude />
-            public void Dispose() { }
-        }
-
-        #endregion
-
         #region Explicit generic properties and methods interface implementations
 
         /// <summary>Adds an element with the supplied key/value pair.</summary>
@@ -1043,6 +908,141 @@ namespace Kaos.Collections
             value = ((PairLeaf) path.TopNode).GetValue (path.TopIndex);
             index = path.GetIndex();
             return true;
+        }
+
+        #endregion
+
+        #region Enumerator
+
+        /// <summary>Provides sequential access to the dictionary.</summary>
+        public sealed class Enumerator : IEnumerator<KeyValuePair<TKey,TValue>>, IDictionaryEnumerator
+        {
+            private readonly RankedDictionary<TKey,TValue> tree;
+            private readonly bool isReverse;
+            private readonly bool nonGeneric;
+            private PairLeaf leaf;
+            private int index;
+            private int stageFreeze;
+            private int state;  // -1=rewound; 0=active; 1=consumed
+
+            /// <summary>Make an iterator that will loop thru the collection in order.</summary>
+            /// <param name="dictionary">Collection containing these key/value pairs.</param>
+            /// <param name="isReverse">Supply <b>true</b> to iterate from last to first.</param>
+            /// <param name="nonGeneric">Supply <b>true</b> to indicate object Current should return DictionaryEntry values.</param>
+            internal Enumerator (RankedDictionary<TKey,TValue> dictionary, bool isReverse=false, bool nonGeneric=false)
+            {
+                this.tree = dictionary;
+                this.isReverse = isReverse;
+                this.nonGeneric = nonGeneric;
+                ((IEnumerator) this).Reset();
+            }
+
+            object IDictionaryEnumerator.Key
+            {
+                get
+                {
+                    if (state != 0)
+                        throw new InvalidOperationException ("Enumeration is not active.");
+                    return leaf.GetKey (index);
+                }
+            }
+
+            object IDictionaryEnumerator.Value
+            {
+                get
+                {
+                    if (state != 0)
+                        throw new InvalidOperationException ("Enumeration is not active.");
+                    return leaf.GetValue (index);
+                }
+            }
+
+            DictionaryEntry IDictionaryEnumerator.Entry
+            {
+                get
+                {
+                    if (state != 0)
+                        throw new InvalidOperationException ("Enumeration is not active.");
+                    return new DictionaryEntry (leaf.GetKey (index), leaf.GetValue (index));
+                }
+            }
+
+            object IEnumerator.Current
+            {
+                get
+                {
+                    tree.StageCheck (stageFreeze);
+                    if (state != 0)
+                        throw new InvalidOperationException ("Enumeration is not active.");
+
+                    if (nonGeneric)
+                        return new DictionaryEntry (leaf.GetKey (index), leaf.GetValue (index));
+                    else
+                        return leaf.GetPair (index);
+                }
+            }
+
+            /// <summary>Gets the key/value pair at the current location.</summary>
+            /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
+            public KeyValuePair<TKey,TValue> Current
+            {
+                get
+                {
+                    tree.StageCheck (stageFreeze);
+                    return state == 0 ? leaf.GetPair (index)
+                                      : new KeyValuePair<TKey,TValue> (default (TKey), default (TValue));
+                }
+            }
+
+            /// <summary>Advances the enumerator to the next location.</summary>
+            /// <returns><b>false</b> if no more data; otherwise <b>true</b>.</returns>
+            /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
+            public bool MoveNext()
+            {
+                tree.StageCheck (stageFreeze);
+
+                if (state != 0)
+                    if (state > 0)
+                        return false;
+                    else
+                    {
+                        leaf = (PairLeaf) (isReverse ? tree.rightmostLeaf : tree.leftmostLeaf);
+                        index = isReverse ? leaf.KeyCount : -1;
+                        state = 0;
+                    }
+
+                if (isReverse)
+                {
+                    if (--index >= 0)
+                        return true;
+
+                    leaf = (PairLeaf) leaf.leftLeaf;
+                    if (leaf != null)
+                    { index = leaf.KeyCount - 1; return true; }
+                }
+                else
+                {
+                    if (++index < leaf.KeyCount)
+                        return true;
+
+                    leaf = (PairLeaf) leaf.rightLeaf;
+                    if (leaf != null)
+                    { index = 0; return true; }
+                }
+
+                state = 1;
+                return false;
+            }
+
+            /// <summary>Moves the enumerator back to its initial location.</summary>
+            void IEnumerator.Reset()
+            {
+                stageFreeze = tree.stage;
+                state = -1;
+            }
+
+            /// <exclude />
+            public void Dispose() { }
         }
 
         #endregion

@@ -371,7 +371,7 @@ namespace Kaos.Collections
 
         #endregion
 
-        #region ISet methods implementation
+        #region ISet implementation
 #if ! NET35
 
         /// <summary>Removes all items that are in a supplied collection.</summary>
@@ -669,6 +669,229 @@ namespace Kaos.Collections
 #endif
         #endregion
 
+        #region ISerializable implementation and support
+#if NET35 || NET40 || SERIALIZE
+
+        private SerializationInfo serializationInfo;
+        private RankedSet (SerializationInfo info, StreamingContext context) : base (new Btree<T>.Leaf())
+        {
+            this.serializationInfo = info;
+        }
+
+        /// <summary>Populates a SerializationInfo with target data.</summary>
+        /// <param name="info">The SerializationInfo to populate.</param>
+        /// <param name="context">The destination.</param>
+        /// <exception cref="ArgumentNullException">When <em>info</em> is <b>null</b>.</exception>
+        protected virtual void GetObjectData (SerializationInfo info, StreamingContext context)
+        {
+            if (info == null)
+                throw new ArgumentNullException (nameof (info));
+
+            info.AddValue ("Count", Count);
+            info.AddValue ("Comparer", Comparer, typeof (IComparer<T>));
+            info.AddValue ("Stage", stage);
+
+            var items = new T[Count];
+            CopyTo (items, 0);
+            info.AddValue ("Items", items, typeof (T[]));
+        }
+
+        protected virtual void OnDeserialization (object sender)
+        {
+            if (keyComparer != null)
+                return;  // Owner did the fixups.
+
+            if (serializationInfo == null)
+                throw new SerializationException ("Missing information.");
+
+            keyComparer = (IComparer<T>) serializationInfo.GetValue ("Comparer", typeof (IComparer<T>));
+            int storedCount = serializationInfo.GetInt32 ("Count");
+            stage = serializationInfo.GetInt32 ("Stage");
+
+            if (storedCount != 0)
+            {
+                var items = (T[]) serializationInfo.GetValue ("Items", typeof (T[]));
+                if (items == null)
+                    throw new SerializationException ("Missing Items.");
+
+                for (int ix = 0; ix < items.Length; ++ix)
+                    Add (items[ix]);
+
+                if (storedCount != Count)
+                    throw new SerializationException ("Mismatched count.");
+            }
+
+            serializationInfo = null;
+        }
+
+        void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
+        { GetObjectData(info, context); }
+
+        void IDeserializationCallback.OnDeserialization (Object sender)
+        { OnDeserialization (sender); }
+
+#endif
+        #endregion
+
+        #region LINQ instance implementation
+
+        /// <summary>Gets the item at the supplied index.</summary>
+        /// <param name="index">The zero-based index of the item to get.</param>
+        /// <returns>The item at the supplied index.</returns>
+        /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or not less than the number of items.</exception>
+        public T ElementAt (int index)
+        {
+            if (index < 0 || index >= Count)
+                throw new ArgumentOutOfRangeException (nameof (index), "Argument was out of the range of valid values.");
+
+            var leaf = (Leaf) Find (ref index);
+            return leaf.GetKey (index);
+        }
+
+
+        /// <summary>Gets the item at the supplied index or the default if index is out of range.</summary>
+        /// <param name="index">The zero-based index of the item to get.</param>
+        /// <returns>The item at the supplied index.</returns>
+        /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero.</exception>
+        public T ElementAtOrDefault (int index)
+        {
+            if (index < 0)
+                throw new ArgumentOutOfRangeException (nameof (index), "Argument was out of the range of valid values.");
+
+            if (index >= Count)
+                return default (T);
+
+            var leaf = (Leaf) Find (ref index);
+            return leaf.GetKey (index);
+        }
+
+
+        /// <summary>Gets the last item.</summary>
+        /// <returns>The item sorted to the end of the set.</returns>
+        /// <remarks>This is a O(1) operation.</remarks>
+        /// <exception cref="InvalidOperationException">When the collection is empty.</exception>
+        public T Last()
+        {
+            if (Count == 0)
+                throw new InvalidOperationException ("Sequence contains no elements.");
+
+            return rightmostLeaf.GetKey (rightmostLeaf.KeyCount-1);
+        }
+
+        #endregion
+
+        #region Bonus methods
+
+        /// <summary>Returns a subset range.</summary>
+        /// <param name="lower">Minimum item value of range.</param>
+        /// <param name="upper">Maximum item value of range.</param>
+        /// <returns>An enumerator for all items between <em>lower</em> and <em>upper</em> inclusive.</returns>
+        /// <remarks>
+        /// <para>Neither <em>lower</em> or <em>upper</em> need to be present in the collection.</para>
+        /// <para>
+        /// Retrieving the initial item is a O(log <em>n</em>) operation.
+        /// Retrieving each subsequent item is a O(1) operation.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
+        public IEnumerable<T> GetBetween (T lower, T upper)
+        {
+            int stageFreeze = stage;
+            var leaf = (Leaf) Find (lower, out int index);
+
+            // When the supplied start key is not be found, start with the next highest key.
+            if (index < 0)
+                index = ~index;
+
+            for (;;)
+            {
+                if (index < leaf.KeyCount)
+                {
+                    if (Comparer.Compare (leaf.GetKey (index), upper) > 0)
+                        yield break;
+
+                    yield return leaf.GetKey (index);
+                    StageCheck (stageFreeze);
+                    ++index;
+                    continue;
+                }
+
+                leaf = leaf.rightLeaf;
+                if (leaf == null)
+                    yield break;
+
+                index = 0;
+            }
+        }
+
+
+        /// <summary>Provides range query support with ordered results.</summary>
+        /// <param name="item">Minimum value of range.</param>
+        /// <returns>An enumerator for the set for items greater than or equal to <em>item</em>.</returns>
+        /// <remarks>
+        /// <para>
+        /// Retrieving the initial item is a O(log <em>n</em>) operation.
+        /// Retrieving each subsequent item is a O(1) operation.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
+        public IEnumerable<T> GetFrom (T item)
+        {
+            int stageFreeze = stage;
+            var leaf = (Leaf) Find (item, out int index);
+
+            // When the supplied start key is not be found, start with the next highest key.
+            if (index < 0)
+                index = ~index;
+
+            for (;;)
+            {
+                if (index < leaf.KeyCount)
+                {
+                    yield return leaf.GetKey (index);
+                    StageCheck (stageFreeze);
+                    ++index;
+                    continue;
+                }
+
+                leaf = (Leaf) leaf.rightLeaf;
+                if (leaf == null)
+                    yield break;
+
+                index = 0;
+            }
+        }
+
+
+        /// <summary>Gets the index of the supplied item.</summary>
+        /// <param name="item">The item of the index to get.</param>
+        /// <returns>The index of <em>item</em> if found; otherwise the bitwise complement of the insert point.</returns>
+        /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
+        public int IndexOf (T item)
+        {
+            var path = new NodeVector (this, item);
+            int result = path.GetIndex();
+            return path.IsFound ? result : ~result;
+        }
+
+
+        /// <summary>Removes the item at the supplied index.</summary>
+        /// <param name="index">The zero-based position of the item to remove.</param>
+        /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or greater than or equal to the number of elements.</exception>
+        public void RemoveAt (int index)
+        {
+            if (index < 0 || index >= Count)
+                throw new ArgumentOutOfRangeException (nameof (index), "Argument is out of the range of valid values.");
+
+            var path = NodeVector.CreateForIndex (this, index);
+            Remove2 (path);
+        }
+
+        #endregion
+
         #region Enumerator
 
         /// <summary>Enumerates the sorted elements of a KeyCollection.</summary>
@@ -758,226 +981,6 @@ namespace Kaos.Collections
 
             /// <summary>Releases all resources used by the Enumerator.</summary>
             public void Dispose() { }
-        }
-
-        #endregion
-
-        #region ISerializable
-#if NET35 || NET40 || SERIALIZE
-
-        private SerializationInfo serializationInfo;
-        private RankedSet (SerializationInfo info, StreamingContext context) : base (new Btree<T>.Leaf())
-        {
-            this.serializationInfo = info;
-        }
-
-        /// <summary>Populates a SerializationInfo with target data.</summary>
-        /// <param name="info">The SerializationInfo to populate.</param>
-        /// <param name="context">The destination.</param>
-        /// <exception cref="ArgumentNullException">When <em>info</em> is <b>null</b>.</exception>
-        protected virtual void GetObjectData (SerializationInfo info, StreamingContext context)
-        {
-            if (info == null)
-                throw new ArgumentNullException (nameof (info));
-
-            info.AddValue ("Count", Count);
-            info.AddValue ("Comparer", Comparer, typeof (IComparer<T>));
-            info.AddValue ("Stage", stage);
-
-            var items = new T[Count];
-            CopyTo (items, 0);
-            info.AddValue ("Items", items, typeof (T[]));
-        }
-
-        protected virtual void OnDeserialization (object sender)
-        {
-            if (keyComparer != null)
-                return;  // Owner did the fixups.
-
-            if (serializationInfo == null)
-                throw new SerializationException ("Missing information.");
-
-            keyComparer = (IComparer<T>) serializationInfo.GetValue ("Comparer", typeof (IComparer<T>));
-            int storedCount = serializationInfo.GetInt32 ("Count");
-            stage = serializationInfo.GetInt32 ("Stage");
-
-            if (storedCount != 0)
-            {
-                var items = (T[]) serializationInfo.GetValue ("Items", typeof (T[]));
-                if (items == null)
-                    throw new SerializationException ("Missing Items.");
-
-                for (int ix = 0; ix < items.Length; ++ix)
-                    Add (items[ix]);
-
-                if (storedCount != Count)
-                    throw new SerializationException ("Mismatched count.");
-            }
-
-            serializationInfo = null;
-        }
-
-        void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
-        { GetObjectData(info, context); }
-
-        void IDeserializationCallback.OnDeserialization (Object sender)
-        { OnDeserialization (sender); }
-
-#endif
-        #endregion
-
-        #region Bonus methods
-
-        /// <summary>Returns a subset range.</summary>
-        /// <param name="lower">Minimum item value of range.</param>
-        /// <param name="upper">Maximum item value of range.</param>
-        /// <returns>An enumerator for all items between <em>lower</em> and <em>upper</em> inclusive.</returns>
-        /// <remarks>
-        /// <para>Neither <em>lower</em> or <em>upper</em> need to be present in the collection.</para>
-        /// <para>
-        /// Retrieving the initial item is a O(log <em>n</em>) operation.
-        /// Retrieving each subsequent item is a O(1) operation.
-        /// </para>
-        /// </remarks>
-        /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
-        public IEnumerable<T> GetBetween (T lower, T upper)
-        {
-            int stageFreeze = stage;
-            var leaf = (Leaf) Find (lower, out int index);
-
-            // When the supplied start key is not be found, start with the next highest key.
-            if (index < 0)
-                index = ~index;
-
-            for (;;)
-            {
-                if (index < leaf.KeyCount)
-                {
-                    if (Comparer.Compare (leaf.GetKey (index), upper) > 0)
-                        yield break;
-
-                    yield return leaf.GetKey (index);
-                    StageCheck (stageFreeze);
-                    ++index;
-                    continue;
-                }
-
-                leaf = leaf.rightLeaf;
-                if (leaf == null)
-                    yield break;
-
-                index = 0;
-            }
-        }
-
-
-        /// <summary>Gets the item at the supplied index.</summary>
-        /// <param name="index">The zero-based index of the item to get.</param>
-        /// <returns>The item at the supplied index.</returns>
-        /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
-        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or not less than the number of items.</exception>
-        public T ElementAt (int index)
-        {
-            if (index < 0 || index >= Count)
-                throw new ArgumentOutOfRangeException (nameof (index), "Argument was out of the range of valid values.");
-
-            var leaf = (Leaf) Find (ref index);
-            return leaf.GetKey (index);
-        }
-
-
-        /// <summary>Gets the item at the supplied index or the default if index is out of range.</summary>
-        /// <param name="index">The zero-based index of the item to get.</param>
-        /// <returns>The item at the supplied index.</returns>
-        /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
-        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero.</exception>
-        public T ElementAtOrDefault (int index)
-        {
-            if (index < 0)
-                throw new ArgumentOutOfRangeException (nameof (index), "Argument was out of the range of valid values.");
-
-            if (index >= Count)
-                return default (T);
-
-            var leaf = (Leaf) Find (ref index);
-            return leaf.GetKey (index);
-        }
-
-
-        /// <summary>Provides range query support with ordered results.</summary>
-        /// <param name="item">Minimum value of range.</param>
-        /// <returns>An enumerator for the set for items greater than or equal to <em>item</em>.</returns>
-        /// <remarks>
-        /// <para>
-        /// Retrieving the initial item is a O(log <em>n</em>) operation.
-        /// Retrieving each subsequent item is a O(1) operation.
-        /// </para>
-        /// </remarks>
-        /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
-        public IEnumerable<T> GetFrom (T item)
-        {
-            int stageFreeze = stage;
-            var leaf = (Leaf) Find (item, out int index);
-
-            // When the supplied start key is not be found, start with the next highest key.
-            if (index < 0)
-                index = ~index;
-
-            for (;;)
-            {
-                if (index < leaf.KeyCount)
-                {
-                    yield return leaf.GetKey (index);
-                    StageCheck (stageFreeze);
-                    ++index;
-                    continue;
-                }
-
-                leaf = (Leaf) leaf.rightLeaf;
-                if (leaf == null)
-                    yield break;
-
-                index = 0;
-            }
-        }
-
-
-        /// <summary>Gets the index of the supplied item.</summary>
-        /// <param name="item">The item of the index to get.</param>
-        /// <returns>The index of <em>item</em> if found; otherwise the bitwise complement of the insert point.</returns>
-        /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
-        public int IndexOf (T item)
-        {
-            var path = new NodeVector (this, item);
-            int result = path.GetIndex();
-            return path.IsFound ? result : ~result;
-        }
-
-
-        /// <summary>Gets the last item.</summary>
-        /// <returns>The item sorted to the end of the set.</returns>
-        /// <remarks>This is a O(1) operation.</remarks>
-        /// <exception cref="InvalidOperationException">When the collection is empty.</exception>
-        public T Last()
-        {
-            if (Count == 0)
-                throw new InvalidOperationException ("Sequence contains no elements.");
-
-            return rightmostLeaf.GetKey (rightmostLeaf.KeyCount-1);
-        }
-
-
-        /// <summary>Removes the item at the supplied index.</summary>
-        /// <param name="index">The zero-based position of the item to remove.</param>
-        /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
-        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or greater than or equal to the number of elements.</exception>
-        public void RemoveAt (int index)
-        {
-            if (index < 0 || index >= Count)
-                throw new ArgumentOutOfRangeException (nameof (index), "Argument is out of the range of valid values.");
-
-            var path = NodeVector.CreateForIndex (this, index);
-            Remove2 (path);
         }
 
         #endregion

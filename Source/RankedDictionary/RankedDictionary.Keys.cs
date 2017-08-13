@@ -86,6 +86,56 @@ namespace Kaos.Collections
 
             #endregion
 
+            #region Explicit properties and methods interface implementations
+
+            bool ICollection<TKey>.IsReadOnly => true;
+
+            bool ICollection.IsSynchronized => false;
+
+            object ICollection.SyncRoot => tree.GetSyncRoot();
+
+
+            void ICollection<TKey>.Add (TKey key)
+            { throw new NotSupportedException(); }
+
+            void ICollection<TKey>.Clear()
+            { throw new NotSupportedException(); }
+
+            bool ICollection<TKey>.Contains (TKey key)
+            { return tree.ContainsKey (key); }
+
+            void ICollection.CopyTo (Array array, int index)
+            {
+                if (array == null)
+                    throw new ArgumentNullException (nameof (array));
+
+                if (array.Rank > 1)
+                    throw new ArgumentException ("Multidimension array is not supported on this operation.", nameof (array));
+
+                if (index < 0)
+                    throw new ArgumentOutOfRangeException (nameof (index), "Index is less than zero.");
+
+                if (Count > array.Length - index)
+                    throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
+
+                for (var leaf = (PairLeaf) tree.leftmostLeaf; leaf != null; leaf = (PairLeaf) leaf.rightLeaf)
+                    for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
+                    {
+                        array.SetValue (leaf.GetKey (leafIndex), index);
+                        ++index;
+                    }
+            }
+
+            /// <summary>Gets an enumerator that iterates thru the collection.</summary>
+            /// <returns>An enumerator for the collection.</returns>
+            IEnumerator IEnumerable.GetEnumerator()
+            { return GetEnumerator(); }
+
+            bool ICollection<TKey>.Remove (TKey key)
+            { throw new NotSupportedException(); }
+
+            #endregion
+
             #region Enumerator
 
             /// <summary>Enumerates the sorted elements of a KeyCollection.</summary>
@@ -156,56 +206,6 @@ namespace Kaos.Collections
                 /// <summary>Releases all resources used by the Enumerator.</summary>
                 public void Dispose() { }
             }
-
-            #endregion
-
-            #region Explicit properties and methods interface implementations
-
-            bool ICollection<TKey>.IsReadOnly => true;
-
-            bool ICollection.IsSynchronized => false;
-
-            object ICollection.SyncRoot => tree.GetSyncRoot();
-
-
-            void ICollection<TKey>.Add (TKey key)
-            { throw new NotSupportedException(); }
-
-            void ICollection<TKey>.Clear()
-            { throw new NotSupportedException(); }
-
-            bool ICollection<TKey>.Contains (TKey key)
-            { return tree.ContainsKey (key); }
-
-            void ICollection.CopyTo (Array array, int index)
-            {
-                if (array == null)
-                    throw new ArgumentNullException (nameof (array));
-
-                if (array.Rank > 1)
-                    throw new ArgumentException ("Multidimension array is not supported on this operation.", nameof (array));
-
-                if (index < 0)
-                    throw new ArgumentOutOfRangeException (nameof (index), "Index is less than zero.");
-
-                if (Count > array.Length - index)
-                    throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
-
-                for (var leaf = (PairLeaf) tree.leftmostLeaf; leaf != null; leaf = (PairLeaf) leaf.rightLeaf)
-                    for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
-                    {
-                        array.SetValue (leaf.GetKey (leafIndex), index);
-                        ++index;
-                    }
-            }
-
-            /// <summary>Gets an enumerator that iterates thru the collection.</summary>
-            /// <returns>An enumerator for the collection.</returns>
-            IEnumerator IEnumerable.GetEnumerator()
-            { return GetEnumerator(); }
-
-            bool ICollection<TKey>.Remove (TKey key)
-            { throw new NotSupportedException(); }
 
             #endregion
         }

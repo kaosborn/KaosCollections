@@ -86,6 +86,54 @@ namespace Kaos.Collections
 
             #endregion
 
+            #region Explicit properties and methods interface implementations
+
+            bool ICollection<TValue>.IsReadOnly => true;
+
+            bool ICollection.IsSynchronized => false;
+
+            object ICollection.SyncRoot => tree.GetSyncRoot();
+
+
+            void ICollection<TValue>.Add (TValue value)
+            { throw new NotSupportedException(); }
+
+            void ICollection<TValue>.Clear()
+            { throw new NotSupportedException(); }
+
+            bool ICollection<TValue>.Contains (TValue value)
+            { return tree.ContainsValue (value); }
+
+            void ICollection.CopyTo (Array array, int index)
+            {
+                if (array == null)
+                    throw new ArgumentNullException (nameof (array));
+
+                if (array.Rank > 1)
+                    throw new ArgumentException ("Multidimension array is not supported on this operation.", nameof (array));
+
+                if (index < 0)
+                    throw new ArgumentOutOfRangeException (nameof (index), index, "Index is less than zero.");
+
+                if (Count > array.Length - index)
+                    throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
+
+                for (var leaf = (PairLeaf) tree.leftmostLeaf; leaf != null; leaf = (PairLeaf) leaf.rightLeaf)
+                    for (int ix = 0; ix < leaf.KeyCount; ++ix)
+                    {
+                        array.SetValue (leaf.GetValue (ix), index);
+                        ++index;
+                    }
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            { return GetEnumerator(); }
+
+            bool ICollection<TValue>.Remove (TValue value)
+            { throw new NotSupportedException(); }
+
+            #endregion
+
             #region Enumerator
 
             /// <summary>Enumerates the values of a ValueCollection ordered by key.</summary>
@@ -154,56 +202,8 @@ namespace Kaos.Collections
                 }
 
                 /// <summary>Releases all resources used by the Enumerator.</summary>
-                public void Dispose () { }
+                public void Dispose() { }
             }
-
-            #endregion
-
-            #region Explicit properties and methods interface implementations
-
-            bool ICollection<TValue>.IsReadOnly => true;
-
-            bool ICollection.IsSynchronized => false;
-
-            object ICollection.SyncRoot => tree.GetSyncRoot();
-
-
-            void ICollection<TValue>.Add (TValue value)
-            { throw new NotSupportedException(); }
-
-            void ICollection<TValue>.Clear()
-            { throw new NotSupportedException(); }
-
-            bool ICollection<TValue>.Contains (TValue value)
-            { return tree.ContainsValue (value); }
-
-            void ICollection.CopyTo (Array array, int index)
-            {
-                if (array == null)
-                    throw new ArgumentNullException (nameof (array));
-
-                if (array.Rank > 1)
-                    throw new ArgumentException ("Multidimension array is not supported on this operation.", nameof (array));
-
-                if (index < 0)
-                    throw new ArgumentOutOfRangeException (nameof (index), index, "Index is less than zero.");
-
-                if (Count > array.Length - index)
-                    throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
-
-                for (var leaf = (PairLeaf) tree.leftmostLeaf; leaf != null; leaf = (PairLeaf) leaf.rightLeaf)
-                    for (int ix = 0; ix < leaf.KeyCount; ++ix)
-                    {
-                        array.SetValue (leaf.GetValue (ix), index);
-                        ++index;
-                    }
-            }
-
-            IEnumerator IEnumerable.GetEnumerator()
-            { return GetEnumerator(); }
-
-            bool ICollection<TValue>.Remove (TValue value)
-            { throw new NotSupportedException(); }
 
             #endregion
         }
