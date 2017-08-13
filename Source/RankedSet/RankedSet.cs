@@ -674,7 +674,7 @@ namespace Kaos.Collections
 #if NET35 || NET40 || SERIALIZE
 
         private SerializationInfo serializationInfo;
-        private RankedSet (SerializationInfo info, StreamingContext context) : base (new Btree<T>.Leaf())
+        protected RankedSet (SerializationInfo info, StreamingContext context) : base (new Btree<T>.Leaf())
         {
             this.serializationInfo = info;
         }

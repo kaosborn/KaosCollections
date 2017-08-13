@@ -644,11 +644,11 @@ namespace Kaos.Collections
 
         #endregion
 
-        #region ISerializable implementation
+        #region ISerializable implementation and support
 #if NET35 || NET40 || SERIALIZE
 
         private SerializationInfo serializationInfo;
-        private RankedDictionary (SerializationInfo info, StreamingContext context) : base (new PairLeaf())
+        protected RankedDictionary (SerializationInfo info, StreamingContext context) : base (new PairLeaf())
         {
             this.serializationInfo = info;
         }
