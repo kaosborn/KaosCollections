@@ -502,6 +502,36 @@ namespace CollectionsTest
 
 
         [TestMethod]
+        public void UnitRd_ReverseEmpty()
+        {
+            int total = 0;
+            Setup (5);
+
+            foreach (var countdown in tree1.Reverse())
+               ++total;
+
+            Assert.AreEqual (0, total);
+        }
+
+        [TestMethod]
+        public void UnitRd_Reverse()
+        {
+            int expected = 500;
+            Setup (5);
+            for (int ii=1; ii <= expected; ++ii)
+                tree1.Add (ii, -ii);
+
+            foreach (var actual in tree1.Reverse())
+            {
+                Assert.AreEqual (expected, actual.Key);
+                Assert.AreEqual (-expected, actual.Value);
+                --expected;
+            }
+            Assert.AreEqual (0, expected);
+        }
+
+
+        [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
         public void CrashRd_TryGetValue_ArgumentNull()
         {

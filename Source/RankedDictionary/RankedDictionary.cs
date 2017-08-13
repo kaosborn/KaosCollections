@@ -49,10 +49,11 @@ namespace Kaos.Collections
     /// <item><see cref="GetBetween"/></item>
     /// <item><see cref="GetFrom"/></item>
     /// </list>
-    /// <para>Properties have been shared with SortedSet:</para>
+    /// <para>Properties and a method have been shared with SortedSet:</para>
     /// <list type="bullet">
     /// <item><see cref="Btree{TKey}.Min"/></item>
     /// <item><see cref="Btree{TKey}.Max"/></item>
+    /// <item><see cref="Reverse"/></item>
     /// </list>
     /// </para>
     /// <para>
@@ -637,6 +638,16 @@ namespace Kaos.Collections
                 if (path.IsFound)
                     Remove2 (path);
             }
+        }
+
+
+        /// <summary>Returns an IEnumerable that iterates over the dictionary in reverse order.</summary>
+        /// <returns>An enumerator that reverse iterates over the dictionary.</returns>
+        public IEnumerable<KeyValuePair<TKey,TValue>> Reverse()
+        {
+            Enumerator etor = new Enumerator (this, isReverse:true);
+            while (etor.MoveNext())
+                yield return etor.Current;
         }
 
 
