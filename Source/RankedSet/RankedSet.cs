@@ -30,9 +30,10 @@ namespace Kaos.Collections
     /// <item><see cref="IndexOf"/></item>
     /// <item><see cref="RemoveAt"/></item>
     /// </list>
-    /// <para>Indexing also includes extension methods that has been directly implemented for optimization:</para>
+    /// <para>Indexing also includes extension methods that has been directly implemented and optimized:</para>
     /// <list type="bullet">
     /// <item><see cref="ElementAt"/></item>
+    /// <item><see cref="ElementAtOrDefault"/></item>
     /// <item><see cref="Last"/></item>
     /// </list>
     /// <para>Optimized range enumerators are provided:</para>

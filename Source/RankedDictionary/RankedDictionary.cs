@@ -34,9 +34,10 @@ namespace Kaos.Collections
     /// <item><see cref="IndexOfValue"/></item>
     /// <item><see cref="RemoveAt"/></item>
     /// </list>
-    /// <para>Extension methods have been directly implemented for optimization:</para>
+    /// <para>Extension methods have been directly implemented and optimized:</para>
     /// <list type="bullet">
     /// <item><see cref="ElementAt"/></item>
+    /// <item><see cref="ElementAtOrDefault"/></item>
     /// <item><see cref="Last"/></item>
     /// </list>
     /// <para>Indexing functionality also includes:</para>
@@ -47,6 +48,11 @@ namespace Kaos.Collections
     /// <list type="bullet">
     /// <item><see cref="GetBetween"/></item>
     /// <item><see cref="GetFrom"/></item>
+    /// </list>
+    /// <para>Properties have been shared with SortedSet:</para>
+    /// <list type="bullet">
+    /// <item><see cref="Btree{TKey}.Min"/></item>
+    /// <item><see cref="Btree{TKey}.Max"/></item>
     /// </list>
     /// </para>
     /// <para>
