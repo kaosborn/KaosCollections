@@ -62,6 +62,9 @@ namespace Kaos.Collections
     /// Every key must be unique and cannot be null, but a value can be for a reference type.
     /// </para>
     /// </remarks>
+    /// <example>
+    /// <code source="..\Bench\RdExample01\RdExample01.cs" lang="cs" />
+    /// </example>
     [DebuggerTypeProxy (typeof (IDictionaryDebugView<,>))]
     [DebuggerDisplay ("Count = {Count}")]
 #if NET35 || NET40 || SERIALIZE
