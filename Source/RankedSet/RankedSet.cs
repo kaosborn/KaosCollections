@@ -373,7 +373,6 @@ namespace Kaos.Collections
         #endregion
 
         #region ISet implementation
-#if ! NET35
 
         /// <summary>Removes all items that are in a supplied collection.</summary>
         /// <param name="other">The collection of items to remove.</param>
@@ -667,7 +666,6 @@ namespace Kaos.Collections
                 Add (key);
         }
 
-#endif
         #endregion
 
         #region ISerializable implementation and support
