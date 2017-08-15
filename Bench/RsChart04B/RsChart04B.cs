@@ -1,5 +1,5 @@
 ﻿//
-// Program: BtreeChart04B.cs
+// Program: RsChart04B.cs
 // Purpose: Show various tree mutation scenarios.
 //
 // Usage notes:
@@ -13,9 +13,9 @@ using Kaos.Collections;
 
 namespace ChartApp
 {
-    class BtreeChart04B
+    class RsChart04B
     {
-        static RankedDictionary<int,int> tree;
+        static RankedSet<int> tree;
 
         static void WriteInfo (bool showStats=false)
         {
@@ -37,25 +37,25 @@ namespace ChartApp
 
         static void Main()
         {
-            tree = new RankedDictionary<int,int>();
+            tree = new RankedSet<int>();
             tree.Capacity = 4;
 
             Console.WriteLine ("Create sequentially loaded tree of order 4:");
             for (int i = 2; i <= 44; i+=2)
-                tree.Add (i, i + 100);
+                tree.Add (i);
             WriteInfo();
 
             Console.WriteLine ("Add 1,21:");
-            tree.Add (1, 101);
-            tree.Add (21, 221);
+            tree.Add (1);
+            tree.Add (21);
             WriteInfo();
 
             Console.WriteLine ("Add 9:");
-            tree.Add (9, 111);
+            tree.Add (9);
             WriteInfo();
 
             Console.WriteLine ("Add 27:");
-                tree.Add (27, 270);
+                tree.Add (27);
             WriteInfo();
 
             Console.WriteLine ("Remove 44:");
@@ -85,10 +85,10 @@ namespace ChartApp
             WriteInfo();
 
             Console.WriteLine ("Seek 30:");
-            var isOk = tree.TryGetValue (30, out int result30);
+            var isOk = tree.Contains (30);
 
             Console.WriteLine();
-            Console.WriteLine ("Result = " + result30);
+            Console.WriteLine ("Result = " + isOk);
             Console.WriteLine();
 
             Console.WriteLine ("Remove 30:");
@@ -167,7 +167,7 @@ namespace ChartApp
 
         Seek 30:
 
-        Result = 130
+        Result = True
 
         Remove 30:
 

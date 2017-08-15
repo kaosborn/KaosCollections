@@ -1,5 +1,5 @@
 ﻿//
-// Program: RsChart05B.cs
+// Program: RsChart05C.cs
 // Purpose: Show various tree mutation scenarios of SymmetricExceptWith.
 //
 // Usage notes:
@@ -13,7 +13,7 @@ using Kaos.Collections;
 
 namespace ChartApp
 {
-    class RsChart05B
+    class RsChart05C
     {
         static void WriteInfo (Btree<int> tree, bool showStats=false)
         {

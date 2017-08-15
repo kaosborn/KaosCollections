@@ -1,5 +1,5 @@
 ﻿//
-// Program: BtreeChart05A.cs
+// Program: RsChart05A.cs
 // Purpose: Show various tree mutation scenarios.
 //
 // Usage notes:
@@ -13,9 +13,9 @@ using Kaos.Collections;
 
 namespace ChartApp
 {
-    class BtreeChart05A
+    class RsChart05A
     {
-        static RankedDictionary<int,int> tree;
+        static RankedSet<int> tree;
 
         static void WriteInfo (bool showStats=false)
         {
@@ -38,21 +38,21 @@ namespace ChartApp
 
         static void Main()
         {
-            tree = new RankedDictionary<int,int>();
+            tree = new RankedSet<int>();
             tree.Capacity = 5;
 
             Console.WriteLine ("Create sequentially loaded tree of order 5:");
             for (int i = 2; i <= 10; i += 2)
-                tree.Add (i, i + 100);
+                tree.Add (i);
             WriteInfo (true);
 
             Console.WriteLine ("Add 12-40:");
             for (int i = 12; i <= 40; i += 2)
-                tree.Add (i, i + 100);
+                tree.Add (i);
             WriteInfo (true);
 
             Console.WriteLine ("Add 42:");
-            tree.Add (42, 142);
+            tree.Add (42);
             WriteInfo (true);
         }
 
