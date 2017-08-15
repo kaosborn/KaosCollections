@@ -81,7 +81,13 @@ namespace Kaos.Collections
         , ISerializable, IDeserializationCallback
 #endif
     {
+#if NET35 || NET40 || SERIALIZE
+        [NonSerialized]
+#endif
         private KeyCollection keys;
+#if NET35 || NET40 || SERIALIZE
+        [NonSerialized]
+#endif
         private ValueCollection values;
 
         #region Constructors

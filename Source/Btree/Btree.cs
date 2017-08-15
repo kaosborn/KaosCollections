@@ -233,6 +233,9 @@ namespace Kaos.Collections
         }
 
 
+#if NET35 || NET40 || SERIALIZE
+        [NonSerialized]
+#endif
         private object syncRoot = null;
         protected object GetSyncRoot()
         {
