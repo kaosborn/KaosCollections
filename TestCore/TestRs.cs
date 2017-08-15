@@ -550,81 +550,6 @@ namespace CollectionsTest
 
         #endregion
 
-        #region Test enumeration
-
-        [TestMethod]
-        [ExpectedException (typeof (InvalidOperationException))]
-        public void CrashRs_EnumeratorOverflow_InvalidOperation()
-        {
-            Setup (4);
-            for (int ix=0; ix<10; ++ix) setI.Add (ix);
-
-            var iter = setI.GetEnumerator();
-            while (iter.MoveNext())
-            { }
-
-            var val = ((System.Collections.IEnumerator) iter).Current;
-        }
-
-        [TestMethod]
-        public void UnitRs_EnumeratorOverflowNoCrash()
-        {
-            Setup (4);
-            for (int ix=0; ix<10; ++ix) setI.Add (ix);
-
-            var iter = setI.GetEnumerator();
-            while (iter.MoveNext())
-            { }
-
-            var val = iter.Current;
-        }
-
-        [TestMethod]
-        public void UnitRs_GetEnumerator()
-        {
-            int k1 = 0, k2 = 0;
-            Setup (4);
-            for (int ix=0; ix<10; ++ix) setI.Add (ix);
-
-            var iter = setI.GetEnumerator();
-            while (iter.MoveNext())
-            {
-                int val = iter.Current;
-                Assert.AreEqual (k1, val);
-                ++k1;
-            }
-            Assert.AreEqual (10, k1);
-
-            bool isValid = iter.MoveNext();
-            Assert.IsFalse (isValid);
-
-            ((System.Collections.IEnumerator) iter).Reset();
-            while (iter.MoveNext())
-            {
-                int val = iter.Current;
-                Assert.AreEqual (k2, val);
-                ++k2;
-            }
-            Assert.AreEqual (10, k2);
-        }
-
-        [TestMethod]
-        [ExpectedException (typeof (InvalidOperationException))]
-        public void CrashRs_EnumHotUpdate()
-        {
-            Setup (4);
-            for (int ix=0; ix<10; ++ix) setI.Add (ix);
-
-            int n = 0;
-            foreach (int kv in setI)
-            {
-                if (++n == 2)
-                    setI.Add (49);
-            }
-        }
-
-        #endregion
-
         #region Test ISet methods
 
         [TestMethod]
@@ -977,11 +902,9 @@ namespace CollectionsTest
         #region Test bonus methods
 #if ! TEST_BCL
 
-
-
         [TestMethod]
         [ExpectedException (typeof (InvalidOperationException))]
-        public void CrashRs_GetBetweenHotUpdate()
+        public void CrashRsx_GetBetweenHotUpdate()
         {
             Setup (4);
             for (int ix=0; ix<10; ++ix) setI.Add (ix);
@@ -995,7 +918,7 @@ namespace CollectionsTest
         }
 
         [TestMethod]
-        public void UnitRs_GetBetween()
+        public void UnitRsx_GetBetween()
         {
             Setup (4);
             for (int ix=0; ix<20; ++ix) setI.Add (ix);
@@ -1011,7 +934,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void UnitRs_GetFromNull()
+        public void UnitRsx_GetFromNull()
         {
             Setup (4);
 
@@ -1020,7 +943,7 @@ namespace CollectionsTest
         }
 
         [TestMethod]
-        public void UnitRs_GetFrom()
+        public void UnitRsx_GetFrom()
         {
             Setup (4);
             for (int ii = 0; ii < 30; ++ii)
@@ -1038,7 +961,7 @@ namespace CollectionsTest
 
 
         [TestMethod]
-        public void UnitRs_IndexOf()
+        public void UnitRsx_IndexOf()
         {
             Setup (4);
             for (int ii = 0; ii < 50; ++ii)
@@ -1091,6 +1014,81 @@ namespace CollectionsTest
         }
 
 #endif
+        #endregion
+
+        #region Test enumeration
+
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRs_EnumeratorOverflow_InvalidOperation()
+        {
+            Setup (4);
+            for (int ix=0; ix<10; ++ix) setI.Add (ix);
+
+            var iter = setI.GetEnumerator();
+            while (iter.MoveNext())
+            { }
+
+            var val = ((System.Collections.IEnumerator) iter).Current;
+        }
+
+        [TestMethod]
+        public void UnitRs_EnumeratorOverflowNoCrash()
+        {
+            Setup (4);
+            for (int ix=0; ix<10; ++ix) setI.Add (ix);
+
+            var iter = setI.GetEnumerator();
+            while (iter.MoveNext())
+            { }
+
+            var val = iter.Current;
+        }
+
+        [TestMethod]
+        public void UnitRs_GetEnumerator()
+        {
+            int k1 = 0, k2 = 0;
+            Setup (4);
+            for (int ix=0; ix<10; ++ix) setI.Add (ix);
+
+            var iter = setI.GetEnumerator();
+            while (iter.MoveNext())
+            {
+                int val = iter.Current;
+                Assert.AreEqual (k1, val);
+                ++k1;
+            }
+            Assert.AreEqual (10, k1);
+
+            bool isValid = iter.MoveNext();
+            Assert.IsFalse (isValid);
+
+            ((System.Collections.IEnumerator) iter).Reset();
+            while (iter.MoveNext())
+            {
+                int val = iter.Current;
+                Assert.AreEqual (k2, val);
+                ++k2;
+            }
+            Assert.AreEqual (10, k2);
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRs_EnumHotUpdate()
+        {
+            Setup (4);
+            for (int ix=0; ix<10; ++ix) setI.Add (ix);
+
+            int n = 0;
+            foreach (int kv in setI)
+            {
+                if (++n == 2)
+                    setI.Add (49);
+            }
+        }
+
         #endregion
     }
 }
