@@ -12,7 +12,7 @@
           <para>
             <codeEntityReference qualifyHint="false">T:Kaos.Collections.RankedDictionary`2</codeEntityReference>- an improved version of
             <codeEntityReference qualifyHint="false">T:System.Collections.Generic.SortedDictionary`2</codeEntityReference>with additional
-            <codeEntityReference qualifyHint="false">T:System.Collections.Generic.SortedList`2</codeEntityReference>API enhancements.
+            <codeEntityReference qualifyHint="false">T:System.Collections.Generic.SortedList`2</codeEntityReference>enhancements.
           </para>
         </listItem>
         <listItem>
@@ -44,7 +44,30 @@
         </para>
         <list class="bullet">
           <listItem>
-            <para><codeInline>RankedDictionary</codeInline> is enhanced with methods borrowed from <codeInline> SortedList</codeInline>:</para>
+            <para>
+              <codeInline>RankedDictionary</codeInline> is enhanced with properties borrowed from <codeInline>SortedSet</codeInline>:
+            </para>
+            <list class="bullet">
+              <listItem>
+                <para>
+                  Adds <codeInline>Min</codeInline> that returns the minimum key in the dictionary.
+                </para>
+              </listItem>
+              <listItem>
+                <para>
+                  Adds <codeInline>Max</codeInline> that returns the maximum key in the dictionary.
+                </para>
+              </listItem>
+              <listItem>
+                <para>
+                  Adds <codeInline>Reverse()</codeInline> that returns an enumerator of elements from maximum to minimum.
+                </para>
+              </listItem>
+            </list>
+          </listItem>
+
+          <listItem>
+            <para><codeInline>RankedDictionary</codeInline> is enhanced with methods borrowed from <codeInline>SortedList</codeInline>:</para>
             <list class="bullet">
               <listItem>
                 <para>Adds <codeInline>IndexOfKey(key)</codeInline> that returns the position of the element with the supplied key.</para>
@@ -63,6 +86,9 @@
             <list class="bullet">
               <listItem>
                 <para>Implements <codeInline>ElementAt(index)</codeInline> that returns the element at the supplied position.</para>
+              </listItem>
+              <listItem>
+                <para>Implements <codeInline>ElementAtOrDefault(index)</codeInline> that returns the element at the supplied position or the default if past the end of the collection.</para>
               </listItem>
               <listItem>
                 <para>Implements <codeInline>Last()</codeInline> that returns the element at the last position.</para>
@@ -85,18 +111,30 @@
               </listItem>
             </list>
           </listItem>
-            
+
+          <listItem>
+            <para>
+              <codeInline>RankedSet</codeInline> add methods from <codeInline>SortedList</codeInline> for indexing support:
+            </para>
+            <list class="bullet">
+              <listItem>
+                <para>
+                  Adds the method <codeInline>IndexOf(item)</codeInline> that returns the position of the supplied item.
+                </para>
+              </listItem>
+              <listItem>
+                <para>
+                  Adds the method <codeInline>RemoveAt(item)</codeInline> that deletes the item at the supplied position.
+                </para>
+              </listItem>
+            </list>
+          </listItem>
+
           <listItem>
             <para>
               <codeInline>RankedDictionary</codeInline> adds the method <codeInline>TryGetValueAndIndex(key,value,index)</codeInline> that
               retrieves the key's associated value and index in one call.
             </para>
-          </listItem>
-          <listItem>
-            <para><codeInline>RankedSet</codeInline> adds the method <codeInline>IndexOf(item)</codeInline> that returns the position of the supplied item.</para>
-          </listItem>
-          <listItem>
-            <para><codeInline>RankedSet</codeInline> adds the method <codeInline>RemoveAt(item)</codeInline> that deletes the item at the supplied position.</para>
           </listItem>
           <listItem>
             <para>
@@ -141,13 +179,13 @@
           A tree with no elements is represented as an empty leaf.
         </para>
         <para>
-          This structure differs from a typical B+ tree in these ways:
+          This structure differs from a typical B+ tree in three ways:
         </para>
         <list class="bullet">
           <listItem>
             <para>
               While the root may contain as few as two children, other rightmost branches may contain as few as one child.
-              This variation optimizes the structure for bulk loading of presorted data
+              This variation optimizes for time and space when bulk loading of presorted data
               and improves seek performance for data near the end of the collection - both common operations.
               All other branches maintain at least 50% capacity usage following every add and remove operation.
             </para>
