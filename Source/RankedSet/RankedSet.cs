@@ -891,6 +891,95 @@ namespace Kaos.Collections
 
         #endregion
 
+        #region Class comparison
+
+        private class RankedSetEqualityComparer : IEqualityComparer<RankedSet<T>>
+        {
+            private readonly IComparer<T> comparer;
+            private readonly IEqualityComparer<T> equalityComparer;
+
+            public RankedSetEqualityComparer (IEqualityComparer<T> equalityComparer, IComparer<T> comparer=null)
+            {
+                this.comparer = comparer ?? Comparer<T>.Default;
+                this.equalityComparer = equalityComparer ?? EqualityComparer<T>.Default;
+            }
+
+            public bool Equals (RankedSet<T> s1, RankedSet<T> s2) => RankedSet<T>.RankedSetEquals (s1, s2, comparer);
+
+            public int GetHashCode (RankedSet<T> set)
+            {
+                int hashCode = 0;
+                if (set != null)
+                    foreach (T item in set)
+                        hashCode = hashCode ^ (equalityComparer.GetHashCode (item) & 0x7FFFFFFF);
+
+                return hashCode;
+            }
+
+            public override bool Equals (object obComparer)
+            {
+                var rsComparer = obComparer as RankedSetEqualityComparer;
+                return rsComparer != null && comparer == rsComparer.comparer;
+            }
+
+            public override int GetHashCode() => comparer.GetHashCode() ^ equalityComparer.GetHashCode();
+        }
+
+
+        /// <summary>Returns an equality comparer that can be used to create a collection that contains sets.</summary>
+        /// <returns>An equality comparer for creating a collection of sets.</returns>
+        public static IEqualityComparer<RankedSet<T>> CreateSetComparer()
+        {
+            return CreateSetComparer (null);
+        }
+
+
+
+        /// <summary>Returns an equality comparer using a supplied comparer that can be used to create a collection that contains sets.</summary>
+        /// <param name="memberEqualityComparer">Used for creating the returned comparer.</param>
+        /// <returns>An equality comparer for creating a collection of sets.</returns>
+        public static IEqualityComparer<RankedSet<T>> CreateSetComparer (IEqualityComparer<T> memberEqualityComparer)
+        {
+            return new RankedSetEqualityComparer (memberEqualityComparer);
+        }
+
+
+        private bool HasEqualComparer (RankedSet<T> other)
+        {
+            return Comparer == other.Comparer || Comparer.Equals (other.Comparer);
+        }
+
+        private static bool RankedSetEquals (RankedSet<T> set1, RankedSet<T> set2, IComparer<T> comparer)
+        {
+            if (set1 == null)
+                return set2 == null;
+
+            if (set2 == null)
+                return false;
+
+            if (set1.HasEqualComparer (set2))
+                return set1.Count == set2.Count && set1.SetEquals (set2);
+            
+            bool found = false;
+            foreach (T item1 in set1)
+            {
+                found = false;
+                foreach (T item2 in set2)
+                    if (comparer.Compare (item1, item2) == 0)
+                    {
+                        found = true;
+                        break;
+                    }
+
+                if (! found)
+                    return false;
+            }
+
+            return true;
+        }
+
+        #endregion
+
         #region Enumerator
 
         /// <summary>Enumerates the sorted elements of a KeyCollection.</summary>
