@@ -166,6 +166,52 @@ namespace Kaos.Test.Collections
 
         #endregion
 
+        #region Test class comparison
+
+        [TestMethod]
+        public void UnitRs_CreateSetComparer0()
+        {
+            Setup();
+            setI.Add (3); setI.Add (5); setI.Add (7);
+
+#if TEST_BCL
+            var setJ = new SortedSet<int>();
+            var classComparer = SortedSet<int>.CreateSetComparer();
+#else
+            var setJ = new RankedSet<int>();
+            System.Collections.Generic.IEqualityComparer<RankedSet<int>> classComparer
+                = RankedSet<int>.CreateSetComparer();
+#endif
+            setJ.Add (3); setJ.Add (7);
+
+            bool b1 = classComparer.Equals (setI, setJ);
+            Assert.IsFalse (b1);
+
+            setJ.Add (5);
+            bool b2 = classComparer.Equals (setI, setJ);
+            Assert.IsTrue (b2);
+        }
+
+        [TestMethod]
+        public void UnitRs_CreateSetComparer1()
+        {
+            Setup();
+#if TEST_BCL
+            var setJ = new SortedSet<int>();
+            var classComparer = SortedSet<int>.CreateSetComparer();
+#else
+            var setJ = new RankedSet<int>();
+            System.Collections.Generic.IEqualityComparer<RankedSet<int>> classComparer
+                = RankedSet<int>.CreateSetComparer (System.Collections.Generic.EqualityComparer<int>.Default);
+#endif
+            setJ.Add (3); setJ.Add (7);
+
+            bool b1 = classComparer.Equals (setI, setI);
+            Assert.IsTrue (b1);
+        }
+
+#endregion
+
         #region Test properties
 
         [TestMethod]
