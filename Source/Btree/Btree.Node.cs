@@ -13,32 +13,32 @@ using System.Text;
 
 namespace Kaos.Collections
 {
-    public abstract partial class Btree<TKey>
+    public abstract partial class Btree<T>
     {
         /// <summary>Base page of the B+ tree. May be internal (Branch) or terminal (Leaf, PairLeaf).</summary>
         protected abstract class Node
         {
-            protected readonly List<TKey> keys;
+            protected readonly List<T> keys;
 
             public Node (int keyCapacity)
             {
-                this.keys = new List<TKey> (keyCapacity);
+                this.keys = new List<T> (keyCapacity);
             }
 
             public abstract int Weight { get; }
 
             public int KeyCount => keys.Count;
-            public TKey Key0 => keys[0];
+            public T Key0 => keys[0];
 
-            public void AddKey (TKey key) { keys.Add (key); }
-            public TKey GetKey (int index) { return keys[index]; }
-            public int Search (TKey key) { return keys.BinarySearch (key); }
-             public int Search (TKey key, IComparer<TKey> comparer) { return keys.BinarySearch (key, comparer); }
-            public void SetKey (int index, TKey key) { keys[index] = key; }
+            public void AddKey (T key) { keys.Add (key); }
+            public T GetKey (int index) { return keys[index]; }
+            public int Search (T key) { return keys.BinarySearch (key); }
+             public int Search (T key, IComparer<T> comparer) { return keys.BinarySearch (key, comparer); }
+            public void SetKey (int index, T key) { keys[index] = key; }
             public void RemoveKey (int index) { keys.RemoveAt (index); }
             public void RemoveKeys (int index, int count) { keys.RemoveRange (index, count); }
             public void TruncateKeys (int index) { keys.RemoveRange (index, keys.Count - index); }
-            public void InsertKey (int index, TKey key) { keys.Insert (index, key); }
+            public void InsertKey (int index, T key) { keys.Insert (index, key); }
 
 #if DEBUG
             public StringBuilder Append (StringBuilder sb)
@@ -101,7 +101,7 @@ namespace Kaos.Collections
             public void Add (Node node)
             { childNodes.Add (node); }
 
-            public void Add (TKey key, Node node)
+            public void Add (T key, Node node)
             {
                 AddKey (key);
                 childNodes.Add (node);
@@ -162,7 +162,7 @@ namespace Kaos.Collections
                     keys.Add (rightLeaf.keys[ix]);
             }
 
-            public void Insert (int index, TKey key)
+            public void Insert (int index, T key)
             {
                 Debug.Assert (index >= 0 && index <= keys.Count);
                 InsertKey (index, key);

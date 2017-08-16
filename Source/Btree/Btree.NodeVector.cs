@@ -11,7 +11,7 @@ using System.Diagnostics;
 
 namespace Kaos.Collections
 {
-    public abstract partial class Btree<TKey>
+    public abstract partial class Btree<T>
     {
         /// <summary>Stack trace from root to leaf.</summary>
         /// <remarks>
@@ -21,7 +21,7 @@ namespace Kaos.Collections
         /// <exclude />
         protected class NodeVector
         {
-            private readonly Btree<TKey> owner;
+            private readonly Btree<T> owner;
             private readonly List<int> indexStack;
             private readonly List<Node> nodeStack;
 
@@ -29,7 +29,7 @@ namespace Kaos.Collections
 
             /// <summary>Make an empty path.</summary>
             /// <param name="tree">Target of path.</param>
-            private NodeVector (Btree<TKey> tree)
+            private NodeVector (Btree<T> tree)
             {
                 this.owner = tree;
                 this.indexStack = new List<int>();
@@ -40,12 +40,12 @@ namespace Kaos.Collections
             /// <summary>Perform search and store each level of path on the stack.</summary>
             /// <param name="tree">Tree to search.</param>
             /// <param name="key">Value to find.</param>
-            public NodeVector (Btree<TKey> tree, TKey key) : this (tree)
+            public NodeVector (Btree<T> tree, T key) : this (tree)
             {
                 for (Node node = tree.root;;)
                 {
                     this.nodeStack.Add (node);
-                    int ix = tree.Comparer==Comparer<TKey>.Default ? node.Search (key)
+                    int ix = tree.Comparer==Comparer<T>.Default ? node.Search (key)
                                                                    : node.Search (key, tree.Comparer);
                     if (node is Branch branch)
                     {
@@ -63,7 +63,7 @@ namespace Kaos.Collections
             }
 
 
-            public static NodeVector CreateForIndex (Btree<TKey> tree, int index)
+            public static NodeVector CreateForIndex (Btree<T> tree, int index)
             {
                 var path = new NodeVector (tree);
 
@@ -165,7 +165,7 @@ namespace Kaos.Collections
 
             /// <summary>Get nearest key where left child path taken.</summary>
             /// <remarks>On entry, top of path refers to a branch.</remarks>
-            public TKey GetPivot()
+            public T GetPivot()
             {
                 Debug.Assert (TopNode is Branch);
                 for (int level = indexStack.Count - 2; level >= 0; --level)
@@ -175,13 +175,13 @@ namespace Kaos.Collections
                 }
 
                 Debug.Assert (false, "no left pivot");
-                return default (TKey);
+                return default (T);
             }
 
 
             /// <summary>Set nearest key where left child path taken.</summary>
             /// <remarks>On entry, top of vector refers to a branch.</remarks>
-            public void SetPivot (TKey key)
+            public void SetPivot (T key)
             {
                 for (int level = indexStack.Count - 2; level >= 0; --level)
                     if (indexStack[level] > 0)
@@ -267,7 +267,7 @@ namespace Kaos.Collections
 
 
             // Leaf or branch has been split so insert the new anchor into a branch.
-            public void Promote (TKey key, Node newNode, bool isAppend)
+            public void Promote (T key, Node newNode, bool isAppend)
             {
                 for (;;)
                 {
@@ -310,7 +310,7 @@ namespace Kaos.Collections
                             newBranch.Add (branch.GetKey (ix), branch.GetChild (ix));
                         }
 
-                        TKey newPromotion = branch.GetKey (splitIndex - 1);
+                        T newPromotion = branch.GetKey (splitIndex - 1);
                         branch.Truncate (splitIndex - 1);
                         branch.InsertKey (branchIndex, key);
                         branch.Insert (branchIndex + 1, newNode);
@@ -373,7 +373,7 @@ namespace Kaos.Collections
                             continue;
 
                         // Rotate pivot for first key.
-                        TKey pivot = branch.Key0;
+                        T pivot = branch.Key0;
                         branch.RemoveKey (0);
                         branch.RemoveChild (0);
                         SetPivot (pivot);
@@ -451,7 +451,7 @@ namespace Kaos.Collections
             /// <param name="tree">Target of path.</param>
             /// <param name="level">Level of node to seek (root is level 0).</param>
             /// <remarks>Used only for diagnostics.</remarks>
-            public NodeVector (Btree<TKey> tree, int level) : this (tree)
+            public NodeVector (Btree<T> tree, int level) : this (tree)
             {
                 this.IsFound = false;
                 Push (tree.root, 0);

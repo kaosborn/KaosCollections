@@ -17,9 +17,9 @@ using System.Threading;
 namespace Kaos.Collections
 {
     /// <summary>Provides base functionality for other classes in this library.</summary>
-    /// <typeparam name="TKey">The type of the keys in the derived class.</typeparam>
+    /// <typeparam name="T">The type of the keys in the derived class.</typeparam>
     /// <remarks>This class cannot be directly instantiated.</remarks>
-    public abstract partial class Btree<TKey>
+    public abstract partial class Btree<T>
     {
         private const int MinimumOrder = 4;
         private const int DefaultOrder = 128;
@@ -28,7 +28,7 @@ namespace Kaos.Collections
         protected Node root;
         protected Leaf rightmostLeaf;
         protected readonly Leaf leftmostLeaf;
-        protected IComparer<TKey> keyComparer;
+        protected IComparer<T> keyComparer;
         protected int maxKeyCount;
         protected int stage = 0;
 
@@ -40,9 +40,9 @@ namespace Kaos.Collections
         }
 
         /// <exclude />
-        protected Btree (IComparer<TKey> comparer, Leaf startLeaf) : this (startLeaf)
+        protected Btree (IComparer<T> comparer, Leaf startLeaf) : this (startLeaf)
         {
-            this.keyComparer = comparer ?? Comparer<TKey>.Default;
+            this.keyComparer = comparer ?? Comparer<T>.Default;
         }
 
         #region Properties and methods
@@ -84,16 +84,16 @@ namespace Kaos.Collections
 
         /// <summary>Gets the maximum value in the set per the comparer.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
-        public TKey Max => Count==0 ? default (TKey) : rightmostLeaf.GetKey (rightmostLeaf.KeyCount-1);
+        public T Max => Count==0 ? default (T) : rightmostLeaf.GetKey (rightmostLeaf.KeyCount-1);
 
         /// <summary>Gets the minimum value in the set per the comparer.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
-        public TKey Min => Count==0 ? default (TKey) : leftmostLeaf.Key0;
+        public T Min => Count==0 ? default (T) : leftmostLeaf.Key0;
 
         /// <summary>Contains the method used to order elements in the sorted collection.</summary>
         /// <remarks>To override sorting based on the default comparer, supply an
         /// alternate comparer when constructing the collection.</remarks>
-        public IComparer<TKey> Comparer => keyComparer;
+        public IComparer<T> Comparer => keyComparer;
 
 
         /// <summary>Removes all items from the set.</summary>
@@ -125,10 +125,10 @@ namespace Kaos.Collections
         /// <param name="key">Target of search.</param>
         /// <param name="index">When found, holds index of returned Leaf; else ~index of nearest greater key.</param>
         /// <returns>Leaf holding target (found or not).</returns>
-        protected Leaf Find (TKey key, out int index)
+        protected Leaf Find (T key, out int index)
         {
             //  Unfold on default comparer for 5% speed improvement.
-            if (Comparer == Comparer<TKey>.Default)
+            if (Comparer == Comparer<T>.Default)
                 for (Node node = root;;)
                 {
                     index = node.Search (key);
@@ -278,9 +278,9 @@ namespace Kaos.Collections
 
             Leaf lastLeaf;
             if (root is Branch)
-                lastLeaf = CheckBranch ((Branch) root, 1, GetHeight(), true, default (TKey), null);
+                lastLeaf = CheckBranch ((Branch) root, 1, GetHeight(), true, default (T), null);
             else
-                lastLeaf = CheckLeaf ((Leaf) root, true, default (TKey), null);
+                lastLeaf = CheckLeaf ((Leaf) root, true, default (T), null);
 
             if (lastLeaf.rightLeaf != null)
                 throw new InvalidOperationException ("Last leaf has invalid RightLeaf");
@@ -317,7 +317,7 @@ namespace Kaos.Collections
             Branch branch,
             int level, int height,
             bool isRightmost,
-            TKey anchor,  // ignored when isRightmost true
+            T anchor,  // ignored when isRightmost true
             Leaf visited
         )
         {
@@ -333,7 +333,7 @@ namespace Kaos.Collections
             int actualWeight = 0;
             for (int i = 0; i < branch.ChildCount; ++i)
             {
-                TKey anchor0 = i == 0 ? anchor : branch.GetKey (i - 1);
+                T anchor0 = i == 0 ? anchor : branch.GetKey (i - 1);
                 bool isRightmost0 = isRightmost && i < branch.ChildCount;
                 if (i < branch.KeyCount - 1)
                     if (Comparer.Compare (branch.GetKey (i), branch.GetKey (i + 1)) >= 0)
@@ -353,7 +353,7 @@ namespace Kaos.Collections
         }
 
 
-        private Leaf CheckLeaf (Leaf leaf, bool isRightmost, TKey anchor, Leaf visited)
+        private Leaf CheckLeaf (Leaf leaf, bool isRightmost, T anchor, Leaf visited)
         {
             LeafSlotCount += maxKeyCount;
             LeafSlotsUsed += leaf.KeyCount;
@@ -361,7 +361,7 @@ namespace Kaos.Collections
             if (leaf.rightLeaf != null && leaf.KeyCount < (maxKeyCount + 1) / 2)
                 throw new InvalidOperationException ("Leaf underfilled");
 
-            if (! anchor.Equals (default (TKey)) && ! anchor.Equals (leaf.Key0))
+            if (! anchor.Equals (default (T)) && ! anchor.Equals (leaf.Key0))
                 throw new InvalidOperationException ("Leaf has wrong anchor");
 
             for (int i = 0; i < leaf.KeyCount; ++i)
@@ -370,7 +370,7 @@ namespace Kaos.Collections
 
             if (visited == null)
             {
-                if (! anchor.Equals (default (TKey)))
+                if (! anchor.Equals (default (T)))
                     throw new InvalidOperationException ("Inconsistent visited, anchor");
             }
             else
