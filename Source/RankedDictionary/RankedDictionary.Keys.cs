@@ -138,7 +138,7 @@ namespace Kaos.Collections
 
             #region Enumerator
 
-            /// <summary>Enumerates the sorted elements of a KeyCollection.</summary>
+            /// <summary>Enumerates the sorted keys of a <see cref="RankedDictionary{TKey,TValue}.KeyCollection"/>.</summary>
             public sealed class Enumerator : IEnumerator<TKey>
             {
                 private readonly RankedDictionary<TKey,TValue> tree;

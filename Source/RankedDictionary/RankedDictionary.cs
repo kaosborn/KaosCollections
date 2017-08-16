@@ -940,7 +940,7 @@ namespace Kaos.Collections
 
         #region Enumerator
 
-        /// <summary>Provides sequential access to the dictionary.</summary>
+        /// <summary>Enumerates the sorted key/value pairs of a <see cref="RankedDictionary{TKey,TValue}"/>.</summary>
         public sealed class Enumerator : IEnumerator<KeyValuePair<TKey,TValue>>, IDictionaryEnumerator
         {
             private readonly RankedDictionary<TKey,TValue> tree;

@@ -43,6 +43,9 @@ namespace Kaos.Collections
     /// </list>
     /// </para>
     /// </remarks>
+    /// <example>
+    /// <code source="..\Bench\RsExample01\RsExample01.cs" lang="cs" />
+    /// </example>
 #if NET35 || NET40 || SERIALIZE
     [Serializable]
 #endif
@@ -200,7 +203,7 @@ namespace Kaos.Collections
 
 
         /// <summary>Copies the set to a compatible array, starting at the beginning of the target array.</summary>
-        /// <param name="array">A one-dimensional array that is the destination of the items to copy from the set.</param>
+        /// <param name="array">A one-dimensional array that is the destination of the items to copy.</param>
         /// <remarks>This is a O(<em>n</em>) operation.</remarks>
         /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
         /// <exception cref="ArgumentException">When not enough space is available for the copy.</exception>
@@ -208,7 +211,7 @@ namespace Kaos.Collections
         { CopyTo (array, 0, Count); }
 
         /// <summary>Copies the set to a compatible array, starting at the supplied position.</summary>
-        /// <param name="array">A one-dimensional array that is the destination of the items to copy from the set.</param>
+        /// <param name="array">A one-dimensional array that is the destination of the items to copy.</param>
         /// <param name="index">The zero-based starting position.</param>
         /// <remarks>This is a O(<em>n</em>) operation.</remarks>
         /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
@@ -218,7 +221,7 @@ namespace Kaos.Collections
         { CopyTo (array, index, Count); }
 
         /// <summary>Copies a supplied number of items to a compatible array, starting at the supplied position.</summary>
-        /// <param name="array">A one-dimensional array that is the destination of the items to copy from the set.</param>
+        /// <param name="array">A one-dimensional array that is the destination of the items to copy.</param>
         /// <param name="index">The zero-based starting position.</param>
         /// <param name="count">The number of items to copy.</param>
         /// <remarks>This is a O(<em>n</em>) operation.</remarks>
@@ -982,7 +985,7 @@ namespace Kaos.Collections
 
         #region Enumerator
 
-        /// <summary>Enumerates the sorted elements of a KeyCollection.</summary>
+        /// <summary>Enumerates the sorted items of a <see cref="RankedSet{T}"/>.</summary>
         public sealed class Enumerator : IEnumerator<T>
         {
             private readonly RankedSet<T> tree;

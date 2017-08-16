@@ -32,12 +32,14 @@ namespace Kaos.Collections
         protected int maxKeyCount;
         protected int stage = 0;
 
+        /// <exclude />
         protected Btree (Leaf startLeaf)
         {
             this.maxKeyCount = DefaultOrder - 1;
             this.root = this.rightmostLeaf = this.leftmostLeaf = startLeaf;
         }
 
+        /// <exclude />
         protected Btree (IComparer<TKey> comparer, Leaf startLeaf) : this (startLeaf)
         {
             this.keyComparer = comparer ?? Comparer<TKey>.Default;
@@ -108,9 +110,11 @@ namespace Kaos.Collections
 
         #region Nonpublic methods
 
+        /// <exclude />
         protected void StageBump()
         { ++stage; }
 
+        /// <exclude />
         protected void StageCheck (int expected)
         {
             if (stage != expected)
