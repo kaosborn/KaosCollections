@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CollectionsTest
+namespace Kaos.Test.Collections
 {
-    public partial class Test_Btree
+    public partial class TestBtree
     {
         #region Test Keys properties
 

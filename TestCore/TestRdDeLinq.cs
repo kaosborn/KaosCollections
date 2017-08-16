@@ -10,9 +10,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 #endif
 
-namespace CollectionsTest
+namespace Kaos.Test.Collections
 {
-    public partial class Test_Btree
+    public partial class TestBtree
     {
         #region Test bonus LINQ instance implementations
 

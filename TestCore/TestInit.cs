@@ -14,7 +14,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Kaos.Collections;
 #endif
 
-namespace CollectionsTest
+namespace Kaos.Test.Collections
 {
     public class TS0
     {
@@ -49,7 +49,7 @@ namespace CollectionsTest
 
 
     [TestClass]
-    public partial class Test_Btree
+    public partial class TestBtree
     {
         #if TEST_BCL
         SortedDictionary<int,int> tree1;

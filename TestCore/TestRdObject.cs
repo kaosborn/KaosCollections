@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CollectionsTest
+namespace Kaos.Test.Collections
 {
-    public partial class Test_Btree
+    public partial class TestBtree
     {
         #region Test object properties
 
