@@ -19,7 +19,7 @@ namespace Kaos.Collections
         /// along with various helper methods.
         /// </remarks>
         /// <exclude />
-        protected class NodeVector
+        internal class NodeVector
         {
             private readonly Btree<T> owner;
             private readonly List<int> indexStack;
@@ -95,9 +95,9 @@ namespace Kaos.Collections
             public bool IsFound
             { get; private set; }
 
-            public Node TopNode => nodeStack[indexStack.Count - 1];
+            internal Node TopNode => nodeStack[indexStack.Count - 1];
 
-            public int TopIndex => indexStack[indexStack.Count - 1];
+            internal int TopIndex => indexStack[indexStack.Count - 1];
 
             public int Height => indexStack.Count;
 
@@ -127,7 +127,7 @@ namespace Kaos.Collections
 
 
             /// <summary>Get the node to the immediate left of the node specified by NodeVector.</summary>
-            public Node GetLeftNode()
+            internal Node GetLeftNode()
             {
                 Debug.Assert (indexStack.Count == nodeStack.Count);
 
@@ -206,7 +206,7 @@ namespace Kaos.Collections
             }
 
 
-            public void Push (Node newNode, int newNodeIndex)
+            internal void Push (Node newNode, int newNodeIndex)
             {
                 nodeStack.Add (newNode);
                 indexStack.Add (newNodeIndex);
@@ -216,7 +216,7 @@ namespace Kaos.Collections
             /// <summary>Adjust tree path to node to the right.</summary>
             /// <returns>Node to immediate right of current path;
             /// <b>null</b> if current path at rightmost node.</returns>
-            public Node TraverseRight()
+            internal Node TraverseRight()
             {
                 Node node = null;
                 int height = indexStack.Count;
@@ -267,7 +267,7 @@ namespace Kaos.Collections
 
 
             // Leaf or branch has been split so insert the new anchor into a branch.
-            public void Promote (T key, Node newNode, bool isAppend)
+            internal void Promote (T key, Node newNode, bool isAppend)
             {
                 for (;;)
                 {

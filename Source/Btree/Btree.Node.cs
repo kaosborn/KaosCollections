@@ -16,7 +16,7 @@ namespace Kaos.Collections
     public abstract partial class Btree<T>
     {
         /// <summary>Base page of the B+ tree. May be internal (Branch) or terminal (Leaf, PairLeaf).</summary>
-        protected abstract class Node
+        internal abstract class Node
         {
             protected readonly List<T> keys;
 
@@ -59,7 +59,8 @@ namespace Kaos.Collections
         /// <remarks>
         /// Contains copies of the first key ('anchor') of every leaf except the leftmost.
         /// </remarks>
-        protected sealed class Branch : Node
+        /// <exclude />
+        internal sealed class Branch : Node
         {
             private readonly List<Node> childNodes;
             private int weight;
@@ -120,7 +121,7 @@ namespace Kaos.Collections
         }
 
 
-        protected class Leaf : Node
+        internal class Leaf : Node
         {
             public Leaf leftLeaf,
                         rightLeaf;

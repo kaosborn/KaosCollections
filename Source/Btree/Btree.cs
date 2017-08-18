@@ -25,22 +25,22 @@ namespace Kaos.Collections
         private const int DefaultOrder = 128;
         private const int MaximumOrder = 256;
 
-        protected Node root;
-        protected Leaf rightmostLeaf;
-        protected readonly Leaf leftmostLeaf;
-        protected IComparer<T> keyComparer;
-        protected int maxKeyCount;
-        protected int stage = 0;
+        internal Node root;
+        internal Leaf rightmostLeaf;
+        internal readonly Leaf leftmostLeaf;
+        internal IComparer<T> keyComparer;
+        internal int maxKeyCount;
+        internal int stage = 0;
 
         /// <exclude />
-        protected Btree (Leaf startLeaf)
+        internal Btree (Leaf startLeaf)
         {
             this.maxKeyCount = DefaultOrder - 1;
             this.root = this.rightmostLeaf = this.leftmostLeaf = startLeaf;
         }
 
         /// <exclude />
-        protected Btree (IComparer<T> comparer, Leaf startLeaf) : this (startLeaf)
+        internal Btree (IComparer<T> comparer, Leaf startLeaf) : this (startLeaf)
         {
             this.keyComparer = comparer ?? Comparer<T>.Default;
         }
@@ -125,7 +125,7 @@ namespace Kaos.Collections
         /// <param name="key">Target of search.</param>
         /// <param name="index">When found, holds index of returned Leaf; else ~index of nearest greater key.</param>
         /// <returns>Leaf holding target (found or not).</returns>
-        protected Leaf Find (T key, out int index)
+        internal Leaf Find (T key, out int index)
         {
             //  Unfold on default comparer for 5% speed improvement.
             if (Comparer == Comparer<T>.Default)
@@ -154,7 +154,7 @@ namespace Kaos.Collections
         /// <summary>Perform traverse to leaf at index.</summary>
         /// <param name="index">On entry, holds index of collection; on exit holds index of leaf.</param>
         /// <returns>Leaf holding item at index position.</returns>
-        protected Node Find (ref int index)
+        internal Node Find (ref int index)
         {
             Node node = root;
             while (node is Branch branch)
@@ -174,7 +174,7 @@ namespace Kaos.Collections
         }
 
 
-        protected void Remove2 (NodeVector path)
+        internal void Remove2 (NodeVector path)
         {
             StageBump();
 
@@ -241,7 +241,7 @@ namespace Kaos.Collections
         [NonSerialized]
 #endif
         private object syncRoot = null;
-        protected object GetSyncRoot()
+        internal object GetSyncRoot()
         {
             if (syncRoot == null)
                 Interlocked.CompareExchange (ref syncRoot, new object(), null);
