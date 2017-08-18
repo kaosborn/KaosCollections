@@ -76,6 +76,55 @@ namespace Kaos.Collections
             }
         }
 
+
+        internal void CopyKeysTo (Array array, int index, int count)
+        {
+            if (array == null)
+                throw new ArgumentNullException (nameof (array));
+
+            if (array.Rank != 1)
+                throw new ArgumentException ("Multidimension array is not supported on this operation.", nameof (array));
+
+            if (array.GetLowerBound (0) != 0)
+                throw new ArgumentException ("Target array has non-zero lower bound.", nameof (array));
+
+            if (array is T[] genericArray)
+            {
+                CopyKeysTo (genericArray, index, Count);
+                return;
+            }
+
+            if (index < 0)
+                throw new ArgumentOutOfRangeException (nameof (index), "Non-negative number required.");
+
+            if (Count > array.Length - index)
+                throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
+
+            if (array is object[] obArray)
+            {
+                try
+                {
+                    for (Leaf leaf = leftmostLeaf; count > 0; )
+                    {
+                        int limIx = count < leaf.KeyCount ? count : leaf.KeyCount;
+
+                        for (int ix = 0; ix < limIx; ++ix)
+                            obArray[index++] = leaf.GetKey (ix);
+
+                        leaf = leaf.rightLeaf;
+                        if (leaf == null)
+                            break;
+
+                        count -= limIx;
+                    }
+                }
+                catch (ArrayTypeMismatchException)
+                { throw new ArgumentException ("Mismatched array type.", nameof (array)); }
+            }
+            else
+                throw new ArgumentException ("Invalid array type.", nameof (array));
+        }
+
         #endregion
 
         #region Properties and methods

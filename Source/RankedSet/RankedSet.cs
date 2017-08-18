@@ -236,40 +236,7 @@ namespace Kaos.Collections
 
         void ICollection.CopyTo (Array array, int index)
         {
-            if (array == null)
-                throw new ArgumentNullException (nameof (array));
-
-            if (array.Rank != 1)
-                throw new ArgumentException ("Multidimension array is not supported on this operation.", nameof (array));
-
-            if (array.GetLowerBound (0) != 0)
-                throw new ArgumentException ("Target array has non-zero lower bound.", nameof (array));
-
-            if (array is T[] genArray)
-            {
-                CopyKeysTo (genArray, index, Count);
-                return;
-            }
-
-            if (index < 0)
-                throw new ArgumentOutOfRangeException (nameof (index), "Non-negative number required.");
-
-            if (Count > array.Length - index)
-                throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
-
-            if (array is object[] obArray)
-            {
-                try
-                {
-                    int ix = 0;
-                    foreach (var key in this)
-                        obArray[ix++] = key;
-                }
-                catch (ArrayTypeMismatchException)
-                { throw new ArgumentException ("Mismatched array type.", nameof (array)); }
-            }
-            else
-                throw new ArgumentException ("Invalid array type.", nameof (array));
+            CopyKeysTo (array, index, Count);
         }
 
 

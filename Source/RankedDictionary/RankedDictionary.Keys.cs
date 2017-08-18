@@ -95,24 +95,7 @@ namespace Kaos.Collections
 
             void ICollection.CopyTo (Array array, int index)
             {
-                if (array == null)
-                    throw new ArgumentNullException (nameof (array));
-
-                if (array.Rank > 1)
-                    throw new ArgumentException ("Multidimension array is not supported on this operation.", nameof (array));
-
-                if (index < 0)
-                    throw new ArgumentOutOfRangeException (nameof (index), "Index is less than zero.");
-
-                if (Count > array.Length - index)
-                    throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
-
-                for (var leaf = (PairLeaf) tree.leftmostLeaf; leaf != null; leaf = (PairLeaf) leaf.rightLeaf)
-                    for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
-                    {
-                        array.SetValue (leaf.GetKey (leafIndex), index);
-                        ++index;
-                    }
+                tree.CopyKeysTo (array, index, Count);
             }
 
             /// <summary>Gets an enumerator that iterates thru the collection.</summary>
