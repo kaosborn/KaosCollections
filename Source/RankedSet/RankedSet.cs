@@ -208,7 +208,7 @@ namespace Kaos.Collections
         /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
         /// <exception cref="ArgumentException">When not enough space is available for the copy.</exception>
         public void CopyTo (T[] array)
-        { CopyTo (array, 0, Count); }
+        { CopyKeysTo (array, 0, Count); }
 
         /// <summary>Copies the set to a compatible array, starting at the supplied position.</summary>
         /// <param name="array">A one-dimensional array that is the destination of the items to copy.</param>
@@ -218,7 +218,7 @@ namespace Kaos.Collections
         /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero.</exception>
         /// <exception cref="ArgumentException">When not enough space is available for the copy.</exception>
         public void CopyTo (T[] array, int index)
-        { CopyTo (array, index, Count); }
+        { CopyKeysTo (array, index, Count); }
 
         /// <summary>Copies a supplied number of items to a compatible array, starting at the supplied position.</summary>
         /// <param name="array">A one-dimensional array that is the destination of the items to copy.</param>
@@ -230,32 +230,9 @@ namespace Kaos.Collections
         /// <exception cref="ArgumentException">When not enough space is available for the copy.</exception>
         public void CopyTo (T[] array, int index, int count)
         {
-            if (array == null)
-                throw new ArgumentNullException (nameof (array));
-
-            if (index < 0)
-                throw new ArgumentOutOfRangeException (nameof (index), index, "Argument was out of the range of valid values.");
-
-            if (count < 0)
-                throw new ArgumentOutOfRangeException (nameof (count), count, "Argument was out of the range of valid values.");
-
-            if (count > array.Length - index)
-                throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
-
-            for (Leaf leaf = leftmostLeaf; count > 0; )
-            {
-                int limIx = count < leaf.KeyCount ? count : leaf.KeyCount;
-
-                for (int ix = 0; ix < limIx; ++ix)
-                    array[index++] = leaf.GetKey (ix);
-
-                leaf = leaf.rightLeaf;
-                if (leaf == null)
-                    break;
-
-                count -= limIx;
-            }
+            CopyKeysTo (array, index, count);
         }
+
 
         void ICollection.CopyTo (Array array, int index)
         {
@@ -268,17 +245,17 @@ namespace Kaos.Collections
             if (array.GetLowerBound (0) != 0)
                 throw new ArgumentException ("Target array has non-zero lower bound.", nameof (array));
 
+            if (array is T[] genArray)
+            {
+                CopyKeysTo (genArray, index, Count);
+                return;
+            }
+
             if (index < 0)
                 throw new ArgumentOutOfRangeException (nameof (index), "Non-negative number required.");
 
             if (Count > array.Length - index)
                 throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
-
-            if (array is T[] genArray)
-            {
-                CopyTo (genArray, index);
-                return;
-            }
 
             if (array is object[] obArray)
             {

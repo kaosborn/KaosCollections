@@ -64,18 +64,7 @@ namespace Kaos.Collections
             /// <exception cref="ArgumentException">When not enough space is given for the copy.</exception>
             public void CopyTo (TKey[] array, int index)
             {
-                if (array == null)
-                    throw new ArgumentNullException (nameof (array));
-
-                if (index < 0)
-                    throw new ArgumentOutOfRangeException (nameof (index), index, "Argument was out of the range of valid values.");
-
-                if (Count > array.Length - index)
-                    throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
-
-                for (var leaf = (PairLeaf) tree.leftmostLeaf; leaf != null; leaf = (PairLeaf) leaf.rightLeaf)
-                    for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
-                        array[index++] = leaf.GetKey (leafIndex);
+                tree.CopyKeysTo (array, index, tree.Count);
             }
 
 

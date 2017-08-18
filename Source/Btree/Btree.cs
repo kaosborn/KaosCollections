@@ -45,6 +45,39 @@ namespace Kaos.Collections
             this.keyComparer = comparer ?? Comparer<T>.Default;
         }
 
+        #region Nonpublic methods
+
+        internal void CopyKeysTo (T[] array, int index, int count)
+        {
+            if (array == null)
+                throw new ArgumentNullException (nameof (array));
+
+            if (index < 0)
+                throw new ArgumentOutOfRangeException (nameof (index), index, "Argument was out of the range of valid values.");
+
+            if (count < 0)
+                throw new ArgumentOutOfRangeException (nameof (count), count, "Argument was out of the range of valid values.");
+
+            if (count > array.Length - index)
+                throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
+
+            for (Leaf leaf = leftmostLeaf; count > 0; )
+            {
+                int limIx = count < leaf.KeyCount ? count : leaf.KeyCount;
+
+                for (int ix = 0; ix < limIx; ++ix)
+                    array[index++] = leaf.GetKey (ix);
+
+                leaf = leaf.rightLeaf;
+                if (leaf == null)
+                    break;
+
+                count -= limIx;
+            }
+        }
+
+        #endregion
+
         #region Properties and methods
 
         /// <summary>Gets or sets the <em>order</em> of the underlying B+ tree structure.</summary>
