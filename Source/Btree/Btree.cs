@@ -125,6 +125,35 @@ namespace Kaos.Collections
                 throw new ArgumentException ("Invalid array type.", nameof (array));
         }
 
+
+        internal int RemoveWhere2 (Predicate<T> match)
+        {
+            if (match == null)
+                throw new ArgumentNullException (nameof (match));
+
+            int result = 0;
+            int stageFreeze = stage;
+
+            for (Leaf leaf = rightmostLeaf; leaf != null; leaf = leaf.leftLeaf)
+                for (int ix = leaf.KeyCount-1; ix >= 0; --ix)
+                {
+                    T key = leaf.GetKey (ix);
+                    if (match (key))
+                    {
+                        StageCheck (stageFreeze);
+                        var path = new NodeVector (this, key);
+                        if (path.IsFound)
+                        {
+                            Remove2 (path);
+                            stageFreeze = stage;
+                            ++result;
+                        }
+                    }
+                }
+
+            return result;
+        }
+
         #endregion
 
         #region Properties and methods

@@ -382,6 +382,18 @@ namespace Kaos.Collections
             return true;
         }
 
+        /// <summary>Removes all elements that match the condition defined by the supplied predicate.</summary>
+        /// <param name="match">The condition of the items to remove.</param>
+        /// <returns>The number of items removed from the dictionary.</returns>
+        /// <remarks>
+        /// This is a O(<em>n</em> log <em>m</em>) operation
+        /// where <em>m</em> is the count of items removed and <em>n</em> is the size of the dictionary.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException">When <em>match</em> is <b>null</b>.</exception>
+        public int RemoveWhere (Predicate<TKey> match)
+        {
+            return RemoveWhere2 (match);
+        }
 
         /// <summary>Gets the value associated with the supplied key.</summary>
         /// <param name="key">The key of the value to get.</param>

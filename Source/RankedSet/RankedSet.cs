@@ -270,30 +270,7 @@ namespace Kaos.Collections
         /// <exception cref="ArgumentNullException">When <em>match</em> is <b>null</b>.</exception>
         public int RemoveWhere (Predicate<T> match)
         {
-            if (match == null)
-                throw new ArgumentNullException (nameof (match));
-
-            int result = 0;
-            int stageFreeze = stage;
-
-            for (Leaf leaf = rightmostLeaf; leaf != null; leaf = leaf.leftLeaf)
-                for (int ix = leaf.KeyCount-1; ix >= 0; --ix)
-                {
-                    T key = leaf.GetKey (ix);
-                    if (match (key))
-                    {
-                        StageCheck (stageFreeze);
-                        var path = new NodeVector (this, key);
-                        if (path.IsFound)
-                        {
-                            Remove2 (path);
-                            stageFreeze = stage;
-                            ++result;
-                        }
-                    }
-                }
-
-            return result;
+            return RemoveWhere2 (match);
         }
 
 
