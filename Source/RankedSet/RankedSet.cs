@@ -46,11 +46,11 @@ namespace Kaos.Collections
     /// <example>
     /// <code source="..\Bench\RsExample01\RsExample01.cs" lang="cs" />
     /// </example>
+    [DebuggerTypeProxy (typeof (ICollectionDebugView<>))]
+    [DebuggerDisplay ("Count = {Count}")]
 #if NET35 || NET40 || SERIALIZE
     [Serializable]
 #endif
-    [DebuggerTypeProxy (typeof (ICollectionDebugView<>))]
-    [DebuggerDisplay ("Count = {Count}")]
     public class RankedSet<T> :
         Btree<T>
 #if ! NET35
@@ -62,7 +62,8 @@ namespace Kaos.Collections
         , IReadOnlyCollection<T>
 #endif
 #if NET35 || NET40 || SERIALIZE
-        , ISerializable, IDeserializationCallback
+        , ISerializable
+        , IDeserializationCallback
 #endif
     {
         #region Constructors

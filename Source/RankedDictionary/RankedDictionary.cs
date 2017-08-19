@@ -78,7 +78,8 @@ namespace Kaos.Collections
         , IReadOnlyDictionary<TKey,TValue>
 #endif
 #if NET35 || NET40 || SERIALIZE
-        , ISerializable, IDeserializationCallback
+        , ISerializable
+        , IDeserializationCallback
 #endif
     {
 #if NET35 || NET40 || SERIALIZE
