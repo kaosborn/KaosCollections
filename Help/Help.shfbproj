@@ -53,7 +53,7 @@
       <NamespaceSummaryItem name="Kaos.Collections" isDocumented="True">The Kaos.Collections namespace contains the classes RankedDictionary and SortedDictionary along with several supporting nested classes.
 This namespace is intended to work alongside classes contained in the System.Collections.Generic namespace.</NamespaceSummaryItem>
     </NamespaceSummaries>
-    <VisibleItems>InheritedMembers, InheritedFrameworkMembers, ProtectedInternalAsProtected</VisibleItems>
+    <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected</VisibleItems>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
 			 the build.  The others are optional common platform types that may appear. -->
