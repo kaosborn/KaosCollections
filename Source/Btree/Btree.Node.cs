@@ -39,6 +39,7 @@ namespace Kaos.Collections
             public void RemoveKeys (int index, int count) { keys.RemoveRange (index, count); }
             public void TruncateKeys (int index) { keys.RemoveRange (index, keys.Count - index); }
             public void InsertKey (int index, T key) { keys.Insert (index, key); }
+            public void CopyKeysTo (T[] array, int index, int count) { keys.CopyTo (0, array, index, count); }
 
 #if DEBUG
             public StringBuilder Append (StringBuilder sb)

@@ -115,18 +115,20 @@ namespace Kaos.Collections
             if (count > array.Length - index)
                 throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
 
-            for (Leaf leaf = leftmostLeaf; count > 0; )
+            if (count > Count)
+                count = Count;
+            int stopIx = index + count;
+
+            for (Leaf leaf = leftmostLeaf; ; leaf = leaf.rightLeaf)
             {
-                int limIx = count < leaf.KeyCount ? count : leaf.KeyCount;
+                if (leaf.KeyCount >= stopIx - index)
+                {
+                    leaf.CopyKeysTo (array, index, stopIx - index);
+                    return;
+                }
 
-                for (int ix = 0; ix < limIx; ++ix)
-                    array[index++] = leaf.GetKey (ix);
-
-                leaf = leaf.rightLeaf;
-                if (leaf == null)
-                    break;
-
-                count -= limIx;
+                leaf.CopyKeysTo (array, index, leaf.KeyCount);
+                index += leaf.KeyCount;
             }
         }
 
