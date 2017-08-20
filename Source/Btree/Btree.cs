@@ -182,112 +182,6 @@ namespace Kaos.Collections
         }
 
 
-        internal int RemoveWhere2 (Predicate<T> match)
-        {
-            if (match == null)
-                throw new ArgumentNullException (nameof (match));
-
-            int result = 0;
-            int stageFreeze = stage;
-
-            for (Leaf leaf = rightmostLeaf; leaf != null; leaf = leaf.leftLeaf)
-                for (int ix = leaf.KeyCount-1; ix >= 0; --ix)
-                {
-                    T key = leaf.GetKey (ix);
-                    if (match (key))
-                    {
-                        StageCheck (stageFreeze);
-                        var path = new NodeVector (this, key);
-                        if (path.IsFound)
-                        {
-                            Remove2 (path);
-                            stageFreeze = stage;
-                            ++result;
-                        }
-                    }
-                }
-
-            return result;
-        }
-
-        #endregion
-
-        #region Properties and methods
-
-        /// <summary>Gets or sets the <em>order</em> of the underlying B+ tree structure.</summary>
-        /// <remarks>
-        /// <para>
-        /// The <em>order</em> of a tree (also known as branching factor) is the maximum number of child nodes that a branch may reference.
-        /// The minimum number of child node references for a non-rightmost branch is <em>order</em>/2.
-        /// The maximum number of elements in a leaf is <em>order</em>-1.
-        /// The minimum number of elements in a non-rightmost leaf is <em>order</em>/2.
-        /// </para>
-        /// <para>
-        /// Changing this property may degrade performance and is provided for experimental purposes only.
-        /// The default value of 128 should always be adequate.
-        /// </para>
-        /// <para>
-        /// Attempts to set this value when <em>Count</em> is non-zero are ignored.
-        /// Non-negative values below 4 or above 256 are ignored.
-        /// </para>
-        /// </remarks>
-        /// <exception cref="ArgumentOutOfRangeException">When supplied value is less than zero.</exception>
-        public int Capacity
-        {
-            get { return maxKeyCount + 1; }
-            set
-            {
-                if (value < 0)
-                    throw new ArgumentOutOfRangeException ("Must be between " + MinimumOrder + " and " + MaximumOrder + ".");
-
-                if (Count == 0 && value >= MinimumOrder && value <= MaximumOrder)
-                    maxKeyCount = value - 1;
-            }
-        }
-
-        /// <summary>Gets the number of elements in the collection.</summary>
-        /// <remarks>This is a O(1) operation.</remarks>
-        public int Count => root.Weight;
-
-        /// <summary>Gets the maximum value in the collection per the comparer.</summary>
-        /// <remarks>This is a O(1) operation.</remarks>
-        public T Max => Count==0 ? default (T) : rightmostLeaf.GetKey (rightmostLeaf.KeyCount-1);
-
-        /// <summary>Gets the minimum value in the collection per the comparer.</summary>
-        /// <remarks>This is a O(1) operation.</remarks>
-        public T Min => Count==0 ? default (T) : leftmostLeaf.Key0;
-
-        /// <summary>Contains the method used to order elements in the sorted collection.</summary>
-        /// <remarks>To override sorting based on the default comparer, supply an
-        /// alternate comparer when constructing the collection.</remarks>
-        public IComparer<T> Comparer => keyComparer;
-
-
-        /// <summary>Removes all elements from the collection.</summary>
-        /// <remarks>This is a O(1) operation.</remarks>
-        public void Clear()
-        {
-            StageBump();
-            leftmostLeaf.Truncate (0);
-            leftmostLeaf.rightLeaf = null;
-            root = rightmostLeaf = leftmostLeaf;
-        }
-
-        #endregion
-
-        #region Nonpublic methods
-
-        /// <exclude />
-        protected void StageBump()
-        { ++stage; }
-
-        /// <exclude />
-        protected void StageCheck (int expected)
-        {
-            if (stage != expected)
-                throw new InvalidOperationException ("Operation is not valid because collection was modified.");
-        }
-
         /// <summary>Perform lite search for key.</summary>
         /// <param name="key">Target of search.</param>
         /// <param name="index">When found, holds index of returned Leaf; else ~index of nearest greater key.</param>
@@ -338,6 +232,18 @@ namespace Kaos.Collections
                 }
 
             return node;
+        }
+
+
+#if NET35 || NET40 || SERIALIZE
+        [NonSerialized]
+#endif
+        private object syncRoot = null;
+        internal object GetSyncRoot()
+        {
+            if (syncRoot == null)
+                Interlocked.CompareExchange (ref syncRoot, new object(), null);
+            return syncRoot;
         }
 
 
@@ -404,15 +310,107 @@ namespace Kaos.Collections
         }
 
 
-#if NET35 || NET40 || SERIALIZE
-        [NonSerialized]
-#endif
-        private object syncRoot = null;
-        internal object GetSyncRoot()
+        internal int RemoveWhere2 (Predicate<T> match)
         {
-            if (syncRoot == null)
-                Interlocked.CompareExchange (ref syncRoot, new object(), null);
-            return syncRoot;
+            if (match == null)
+                throw new ArgumentNullException (nameof (match));
+
+            int result = 0;
+            int stageFreeze = stage;
+
+            for (Leaf leaf = rightmostLeaf; leaf != null; leaf = leaf.leftLeaf)
+                for (int ix = leaf.KeyCount-1; ix >= 0; --ix)
+                {
+                    T key = leaf.GetKey (ix);
+                    if (match (key))
+                    {
+                        StageCheck (stageFreeze);
+                        var path = new NodeVector (this, key);
+                        if (path.IsFound)
+                        {
+                            Remove2 (path);
+                            stageFreeze = stage;
+                            ++result;
+                        }
+                    }
+                }
+
+            return result;
+        }
+
+
+        /// <exclude />
+        protected void StageBump()
+        { ++stage; }
+
+        /// <exclude />
+        protected void StageCheck (int expected)
+        {
+            if (stage != expected)
+                throw new InvalidOperationException ("Operation is not valid because collection was modified.");
+        }
+
+        #endregion
+
+        #region Properties and methods
+
+        /// <summary>Gets or sets the <em>order</em> of the underlying B+ tree structure.</summary>
+        /// <remarks>
+        /// <para>
+        /// The <em>order</em> of a tree (also known as branching factor) is the maximum number of child nodes that a branch may reference.
+        /// The minimum number of child node references for a non-rightmost branch is <em>order</em>/2.
+        /// The maximum number of elements in a leaf is <em>order</em>-1.
+        /// The minimum number of elements in a non-rightmost leaf is <em>order</em>/2.
+        /// </para>
+        /// <para>
+        /// Changing this property may degrade performance and is provided for experimental purposes only.
+        /// The default value of 128 should always be adequate.
+        /// </para>
+        /// <para>
+        /// Attempts to set this value when <em>Count</em> is non-zero are ignored.
+        /// Non-negative values below 4 or above 256 are ignored.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="ArgumentOutOfRangeException">When supplied value is less than zero.</exception>
+        public int Capacity
+        {
+            get { return maxKeyCount + 1; }
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentOutOfRangeException ("Must be between " + MinimumOrder + " and " + MaximumOrder + ".");
+
+                if (Count == 0 && value >= MinimumOrder && value <= MaximumOrder)
+                    maxKeyCount = value - 1;
+            }
+        }
+
+        /// <summary>Gets the number of elements in the collection.</summary>
+        /// <remarks>This is a O(1) operation.</remarks>
+        public int Count => root.Weight;
+
+        /// <summary>Gets the maximum value in the collection per the comparer.</summary>
+        /// <remarks>This is a O(1) operation.</remarks>
+        public T Max => Count==0 ? default (T) : rightmostLeaf.GetKey (rightmostLeaf.KeyCount-1);
+
+        /// <summary>Gets the minimum value in the collection per the comparer.</summary>
+        /// <remarks>This is a O(1) operation.</remarks>
+        public T Min => Count==0 ? default (T) : leftmostLeaf.Key0;
+
+        /// <summary>Contains the method used to order elements in the sorted collection.</summary>
+        /// <remarks>To override sorting based on the default comparer, supply an
+        /// alternate comparer when constructing the collection.</remarks>
+        public IComparer<T> Comparer => keyComparer;
+
+
+        /// <summary>Removes all elements from the collection.</summary>
+        /// <remarks>This is a O(1) operation.</remarks>
+        public void Clear()
+        {
+            StageBump();
+            leftmostLeaf.Truncate (0);
+            leftmostLeaf.rightLeaf = null;
+            root = rightmostLeaf = leftmostLeaf;
         }
 
         #endregion

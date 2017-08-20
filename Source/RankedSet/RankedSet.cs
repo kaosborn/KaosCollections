@@ -35,6 +35,7 @@ namespace Kaos.Collections
     /// <item><see cref="ElementAt"/></item>
     /// <item><see cref="ElementAtOrDefault"/></item>
     /// <item><see cref="Last"/></item>
+    /// <item><see cref="Reverse"/></item>
     /// </list>
     /// <para>Optimized range enumerators are provided:</para>
     /// <list type="bullet">
@@ -194,11 +195,6 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Returns an enumerator that iterates thru the set.</summary>
-        /// <returns>An enumerator that iterates thru the set in sorted order.</returns>
-        public Enumerator GetEnumerator() => new Enumerator (this);
-
-
         /// <summary>Removes an item from the set.</summary>
         /// <param name="item">The item to remove.</param>
         /// <returns><b>true</b> if <em>item</em> was found and removed; otherwise <b>false</b>.</returns>
@@ -225,27 +221,6 @@ namespace Kaos.Collections
         public int RemoveWhere (Predicate<T> match)
         {
             return RemoveWhere2 (match);
-        }
-
-
-        /// <summary>Returns an IEnumerable that iterates over the set in reverse order.</summary>
-        /// <returns>An enumerator that reverse iterates over the set.</returns>
-        public IEnumerable<T> Reverse()
-        {
-            Enumerator enor = new Enumerator (this, isReverse:true);
-            while (enor.MoveNext())
-                yield return enor.Current;
-        }
-
-
-        IEnumerator<T> IEnumerable<T>.GetEnumerator()
-        {
-            return new Enumerator (this);
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return new Enumerator (this);
         }
 
         #endregion
@@ -657,6 +632,16 @@ namespace Kaos.Collections
             return rightmostLeaf.GetKey (rightmostLeaf.KeyCount-1);
         }
 
+
+        /// <summary>Returns an IEnumerable that iterates over the set in reverse order.</summary>
+        /// <returns>An enumerator that reverse iterates over the set.</returns>
+        public IEnumerable<T> Reverse()
+        {
+            Enumerator enor = new Enumerator (this, isReverse:true);
+            while (enor.MoveNext())
+                yield return enor.Current;
+        }
+
         #endregion
 
         #region Bonus methods
@@ -858,7 +843,16 @@ namespace Kaos.Collections
 
         #endregion
 
-        #region Enumerator
+        #region Enumeration
+
+        IEnumerator<T> IEnumerable<T>.GetEnumerator() => new Enumerator (this);
+
+        IEnumerator IEnumerable.GetEnumerator() => new Enumerator (this);
+
+        /// <summary>Returns an enumerator that iterates thru the set.</summary>
+        /// <returns>An enumerator that iterates thru the set in sorted order.</returns>
+        public Enumerator GetEnumerator() => new Enumerator (this);
+
 
         /// <summary>Enumerates the sorted items of a <see cref="RankedSet{T}"/>.</summary>
         public sealed class Enumerator : IEnumerator<T>

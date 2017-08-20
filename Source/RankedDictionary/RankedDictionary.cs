@@ -201,6 +201,16 @@ namespace Kaos.Collections
             }
         }
 
+        /// <summary>Gets only the collection of keys from this key/value pair collection.</summary>
+        /// <remarks>The keys given by this collection are sorted according to the
+        /// <see cref="Btree{TKey}.Comparer"/> property.</remarks>
+        ICollection<TKey> IDictionary<TKey,TValue>.Keys => (ICollection<TKey>) Keys;
+
+#if ! NET35 && ! NET40
+        IEnumerable<TKey> IReadOnlyDictionary<TKey,TValue>.Keys => Keys;
+
+        IEnumerable<TValue> IReadOnlyDictionary<TKey,TValue>.Values => Values;
+#endif
 
         /// <summary>Gets only the collection of values from this dictionary.</summary>
         /// <remarks>The values given by this collection are sorted in the same
@@ -218,6 +228,16 @@ namespace Kaos.Collections
                 return values;
             }
         }
+
+        /// <summary>Gets only the collection of values from this key/value pair collection.</summary>
+        /// <remarks>The values given by this collection are sorted in the same
+        /// order as their respective keys in the <see cref="Keys"/> collection.</remarks>
+        ICollection<TValue> IDictionary<TKey,TValue>.Values => (ICollection<TValue>) Values;
+
+
+        /// <summary>Indicates that this collection may be modified.</summary>
+        bool ICollection<KeyValuePair<TKey,TValue>>.IsReadOnly => false;
+
 
         #endregion
 
@@ -302,6 +322,19 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>Adds an element with the supplied key/value pair.</summary>
+        /// <param name="keyValuePair">Contains the key and value of the element to add.</param>
+        /// <exception cref="ArgumentException">When an element containing <em>key</em> has already been added.</exception>
+        void ICollection<KeyValuePair<TKey,TValue>>.Add (KeyValuePair<TKey,TValue> keyValuePair)
+        {
+            var path = new NodeVector (this, keyValuePair.Key);
+            if (path.IsFound)
+                throw new ArgumentException ("An entry with the same key already exists.", nameof (keyValuePair));
+
+            Add2 (path, keyValuePair.Key, keyValuePair.Value);
+        }
+
+
         /// <summary>Determines if the collection contains the supplied key.</summary>
         /// <param name="key">Key to find.</param>
         /// <returns><b>true</b> if the collection contains the supplied key; otherwise <b>false</b>.</returns>
@@ -340,6 +373,18 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>Determines if the collection contains the supplied key/value pair.</summary>
+        /// <param name="keyValuePair">Key/value pair to find.</param>
+        /// <returns><b>true</b> if the collection contains the supplied key/value pair; otherwise <b>false</b>.</returns>
+        bool ICollection<KeyValuePair<TKey,TValue>>.Contains (KeyValuePair<TKey,TValue> keyValuePair)
+        {
+            var leaf = (PairLeaf) Find (keyValuePair.Key, out int index);
+            if (index < 0)
+                return false;
+            return EqualityComparer<TValue>.Default.Equals (leaf.GetValue (index), keyValuePair.Value);
+        }
+
+
         /// <summary>Copies the collection to the supplied array offset.</summary>
         /// <param name="array">Destination of copy.</param>
         /// <param name="index">Starting position in <em>array</em> for copy operation.</param>
@@ -363,12 +408,6 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Gets an enumerator that iterates thru the collection.</summary>
-        /// <returns>An enumerator for the collection.</returns>
-        public Enumerator GetEnumerator()
-        { return new Enumerator (this); }
-
-
         /// <summary>Removes the element with the supplied key from the dictionary.</summary>
         /// <param name="key">The key of the element to remove.</param>
         /// <returns><b>true</b> if the element was successfully found and removed; otherwise <b>false</b>.</returns>
@@ -387,6 +426,38 @@ namespace Kaos.Collections
             return true;
         }
 
+        /// <summary>Deletes the supplied key and its associated value from the collection.</summary>
+        /// <param name="keyValuePair">Contains key and value to find and remove.</param>
+        /// <returns><b>true</b> if key/value pair removed; otherwise <b>false</b>.</returns>
+        /// <remarks>No operation is taken unless both key and value match.</remarks>
+        bool ICollection<KeyValuePair<TKey,TValue>>.Remove (KeyValuePair<TKey,TValue> keyValuePair)
+        {
+            var path = new NodeVector (this, keyValuePair.Key);
+            if (path.IsFound)
+                if (EqualityComparer<TValue>.Default.Equals (keyValuePair.Value, ((PairLeaf) path.TopNode).GetValue (path.TopIndex)))
+                {
+                    Remove2 (path);
+                    return true;
+                }
+
+            return false;
+        }
+
+
+        /// <summary>Removes the element at the supplied index.</summary>
+        /// <param name="index">The zero-based position of the element to remove.</param>
+        /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or greater than or equal to the number of elements.</exception>
+        public void RemoveAt (int index)
+        {
+            if (index < 0 || index >= Count)
+                throw new ArgumentOutOfRangeException (nameof (index), "Argument is out of the range of valid values.");
+
+            var path = NodeVector.CreateForIndex (this, index);
+            Remove2 (path);
+        }
+
+
         /// <summary>Removes all elements that match the condition defined by the supplied predicate.</summary>
         /// <param name="match">The condition of the items to remove.</param>
         /// <returns>The number of items removed from the dictionary.</returns>
@@ -399,6 +470,7 @@ namespace Kaos.Collections
         {
             return RemoveWhere2 (match);
         }
+
 
         /// <summary>Gets the value associated with the supplied key.</summary>
         /// <param name="key">The key of the value to get.</param>
@@ -425,77 +497,6 @@ namespace Kaos.Collections
                 value = default (TValue);
                 return false;
             }
-        }
-
-        #endregion
-
-        #region Explicit generic properties and methods interface implementations
-
-        /// <summary>Adds an element with the supplied key/value pair.</summary>
-        /// <param name="keyValuePair">Contains the key and value of the element to add.</param>
-        /// <exception cref="ArgumentException">When an element containing <em>key</em> has already been added.</exception>
-        void ICollection<KeyValuePair<TKey,TValue>>.Add (KeyValuePair<TKey,TValue> keyValuePair)
-        {
-            var path = new NodeVector (this, keyValuePair.Key);
-            if (path.IsFound)
-                throw new ArgumentException ("An entry with the same key already exists.", nameof (keyValuePair));
-
-            Add2 (path, keyValuePair.Key, keyValuePair.Value);
-        }
-
-
-        /// <summary>Determines if the collection contains the supplied key/value pair.</summary>
-        /// <param name="keyValuePair">Key/value pair to find.</param>
-        /// <returns><b>true</b> if the collection contains the supplied key/value pair; otherwise <b>false</b>.</returns>
-        bool ICollection<KeyValuePair<TKey,TValue>>.Contains (KeyValuePair<TKey,TValue> keyValuePair)
-        {
-            var leaf = (PairLeaf) Find (keyValuePair.Key, out int index);
-            if (index < 0)
-                return false;
-            return EqualityComparer<TValue>.Default.Equals (leaf.GetValue (index), keyValuePair.Value);
-        }
-
-
-        IEnumerator<KeyValuePair<TKey,TValue>> IEnumerable<KeyValuePair<TKey,TValue>>.GetEnumerator()
-        { return new Enumerator (this); }
-
-
-        /// <summary>Indicates that this collection may be modified.</summary>
-        bool ICollection<KeyValuePair<TKey,TValue>>.IsReadOnly => false;
-
-
-        /// <summary>Gets only the collection of keys from this key/value pair collection.</summary>
-        /// <remarks>The keys given by this collection are sorted according to the
-        /// <see cref="Btree{TKey}.Comparer"/> property.</remarks>
-        ICollection<TKey> IDictionary<TKey,TValue>.Keys => (ICollection<TKey>) Keys;
-
-
-        /// <summary>Gets only the collection of values from this key/value pair collection.</summary>
-        /// <remarks>The values given by this collection are sorted in the same
-        /// order as their respective keys in the <see cref="Keys"/> collection.</remarks>
-        ICollection<TValue> IDictionary<TKey,TValue>.Values => (ICollection<TValue>) Values;
-
-#if ! NET35 && ! NET40
-        IEnumerable<TKey> IReadOnlyDictionary<TKey,TValue>.Keys => Keys;
-
-        IEnumerable<TValue> IReadOnlyDictionary<TKey,TValue>.Values => Values;
-#endif
-
-        /// <summary>Deletes the supplied key and its associated value from the collection.</summary>
-        /// <param name="keyValuePair">Contains key and value to find and remove.</param>
-        /// <returns><b>true</b> if key/value pair removed; otherwise <b>false</b>.</returns>
-        /// <remarks>No operation is taken unless both key and value match.</remarks>
-        bool ICollection<KeyValuePair<TKey,TValue>>.Remove (KeyValuePair<TKey,TValue> keyValuePair)
-        {
-            var path = new NodeVector (this, keyValuePair.Key);
-            if (path.IsFound)
-                if (EqualityComparer<TValue>.Default.Equals (keyValuePair.Value, ((PairLeaf) path.TopNode).GetValue (path.TopIndex)))
-                {
-                    Remove2 (path);
-                    return true;
-                }
-
-            return false;
         }
 
         #endregion
@@ -638,18 +639,6 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Gets an enumerator that iterates thru the collection.</summary>
-        /// <returns>An enumerator for the collection.</returns>
-        IDictionaryEnumerator IDictionary.GetEnumerator()
-        { return new Enumerator (this, isReverse:false, nonGeneric:true); }
-
-
-        /// <summary>Gets an enumerator that iterates thru the collection.</summary>
-        /// <returns>An enumerator for the collection.</returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        { return new Enumerator (this); }
-
-
         /// <summary>Removes the supplied key and its associated value from the collection.</summary>
         /// <param name="key">Key to remove.</param>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
@@ -664,16 +653,6 @@ namespace Kaos.Collections
                 if (path.IsFound)
                     Remove2 (path);
             }
-        }
-
-
-        /// <summary>Returns an IEnumerable that iterates over the dictionary in reverse order.</summary>
-        /// <returns>An enumerator that reverse iterates over the dictionary.</returns>
-        public IEnumerable<KeyValuePair<TKey,TValue>> Reverse()
-        {
-            Enumerator etor = new Enumerator (this, isReverse:true);
-            while (etor.MoveNext())
-                yield return etor.Current;
         }
 
 
@@ -801,39 +780,6 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Gets the key/value pair at the supplied index.</summary>
-        /// <param name="index">The zero-based index of the element to get.</param>
-        /// <returns>The element at the supplied index.</returns>
-        /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
-        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or greater than or equal to the number of keys.</exception>
-        public KeyValuePair<TKey,TValue> ElementAt (int index)
-        {
-            if (index < 0 || index >= Count)
-                throw new ArgumentOutOfRangeException (nameof (index), "Argument is out of the range of valid values.");
-
-            var leaf = (PairLeaf) Find (ref index);
-            return new KeyValuePair<TKey,TValue> (leaf.GetKey (index), leaf.GetValue (index));
-        }
-
-
-        /// <summary>Gets the key/value pair at the supplied index or the default if index is out of range.</summary>
-        /// <param name="index">The zero-based index of the item to get.</param>
-        /// <returns>The item at the supplied index.</returns>
-        /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
-        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero.</exception>
-        public KeyValuePair<TKey,TValue> ElementAtOrDefault (int index)
-        {
-            if (index < 0)
-                throw new ArgumentOutOfRangeException (nameof (index), "Argument was out of the range of valid values.");
-
-            if (index >= Count)
-                return new KeyValuePair<TKey, TValue> (default (TKey), default (TValue));
-
-            var leaf = (PairLeaf) Find (ref index);
-            return new KeyValuePair<TKey,TValue> (leaf.GetKey (index), leaf.GetValue (index));
-        }
-
-
         /// <summary>Provides range query support with ordered results.</summary>
         /// <param name="key">Minimum value of range.</param>
         /// <returns>An enumerator for the collection for key values greater than or equal to <em>key</em>.</returns>
@@ -904,34 +850,6 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Gets the last key/value pair.</summary>
-        /// <returns>The key/value pair with maximum key in dictionary.</returns>
-        /// <remarks>This is a O(1) operation.</remarks>
-        /// <exception cref="InvalidOperationException">When the collection is empty.</exception>
-        public KeyValuePair<TKey,TValue> Last()
-        {
-            if (Count == 0)
-                throw new InvalidOperationException ("Sequence contains no elements.");
-
-            int ix = rightmostLeaf.KeyCount-1;
-            return new KeyValuePair<TKey,TValue> (rightmostLeaf.GetKey (ix), ((PairLeaf) rightmostLeaf).GetValue (ix));
-        }
-
-
-        /// <summary>Removes the element at the supplied index.</summary>
-        /// <param name="index">The zero-based position of the element to remove.</param>
-        /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
-        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or greater than or equal to the number of elements.</exception>
-        public void RemoveAt (int index)
-        {
-            if (index < 0 || index >= Count)
-                throw new ArgumentOutOfRangeException (nameof (index), "Argument is out of the range of valid values.");
-
-            var path = NodeVector.CreateForIndex (this, index);
-            Remove2 (path);
-        }
-
-
         /// <summary>Gets the value and index associated with the supplied key.</summary>
         /// <param name="key">The key of the value and index to get.</param>
         /// <param name="value">If the key is found, its value is placed here; otherwise it will be loaded with the default value.</param>
@@ -955,7 +873,84 @@ namespace Kaos.Collections
 
         #endregion
 
-        #region Enumerator
+        #region LINQ instance implementation
+
+        /// <summary>Gets the key/value pair at the supplied index.</summary>
+        /// <param name="index">The zero-based index of the element to get.</param>
+        /// <returns>The element at the supplied index.</returns>
+        /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or greater than or equal to the number of keys.</exception>
+        public KeyValuePair<TKey,TValue> ElementAt (int index)
+        {
+            if (index < 0 || index >= Count)
+                throw new ArgumentOutOfRangeException (nameof (index), "Argument is out of the range of valid values.");
+
+            var leaf = (PairLeaf) Find (ref index);
+            return new KeyValuePair<TKey,TValue> (leaf.GetKey (index), leaf.GetValue (index));
+        }
+
+
+        /// <summary>Gets the key/value pair at the supplied index or the default if index is out of range.</summary>
+        /// <param name="index">The zero-based index of the item to get.</param>
+        /// <returns>The item at the supplied index.</returns>
+        /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero.</exception>
+        public KeyValuePair<TKey,TValue> ElementAtOrDefault (int index)
+        {
+            if (index < 0)
+                throw new ArgumentOutOfRangeException (nameof (index), "Argument was out of the range of valid values.");
+
+            if (index >= Count)
+                return new KeyValuePair<TKey, TValue> (default (TKey), default (TValue));
+
+            var leaf = (PairLeaf) Find (ref index);
+            return new KeyValuePair<TKey,TValue> (leaf.GetKey (index), leaf.GetValue (index));
+        }
+
+
+        /// <summary>Gets the last key/value pair.</summary>
+        /// <returns>The key/value pair with maximum key in dictionary.</returns>
+        /// <remarks>This is a O(1) operation.</remarks>
+        /// <exception cref="InvalidOperationException">When the collection is empty.</exception>
+        public KeyValuePair<TKey,TValue> Last()
+        {
+            if (Count == 0)
+                throw new InvalidOperationException ("Sequence contains no elements.");
+
+            int ix = rightmostLeaf.KeyCount-1;
+            return new KeyValuePair<TKey,TValue> (rightmostLeaf.GetKey (ix), ((PairLeaf) rightmostLeaf).GetValue (ix));
+        }
+
+
+        /// <summary>Returns an IEnumerable that iterates over the dictionary in reverse order.</summary>
+        /// <returns>An enumerator that reverse iterates over the dictionary.</returns>
+        public IEnumerable<KeyValuePair<TKey,TValue>> Reverse()
+        {
+            Enumerator etor = new Enumerator (this, isReverse:true);
+            while (etor.MoveNext())
+                yield return etor.Current;
+        }
+
+        #endregion
+
+        #region Enumeration
+
+        /// <summary>Gets an enumerator that iterates thru the collection.</summary>
+        /// <returns>An enumerator for the collection.</returns>
+        public Enumerator GetEnumerator() => new Enumerator (this);
+
+        IEnumerator<KeyValuePair<TKey,TValue>> IEnumerable<KeyValuePair<TKey,TValue>>.GetEnumerator()
+            => new Enumerator (this);
+
+        /// <summary>Gets an enumerator that iterates thru the collection.</summary>
+        /// <returns>An enumerator for the collection.</returns>
+        IDictionaryEnumerator IDictionary.GetEnumerator()
+            => new Enumerator (this, isReverse:false, nonGeneric:true);
+
+        /// <summary>Gets an enumerator that iterates thru the collection.</summary>
+        /// <returns>An enumerator for the collection.</returns>
+        IEnumerator IEnumerable.GetEnumerator() => new Enumerator (this);
+
 
         /// <summary>Enumerates the sorted key/value pairs of a <see cref="RankedDictionary{TKey,TValue}"/>.</summary>
         public sealed class Enumerator : IEnumerator<KeyValuePair<TKey,TValue>>, IDictionaryEnumerator
