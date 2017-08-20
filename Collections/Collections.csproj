@@ -6,7 +6,7 @@
     <RootNamespace>Kaos.Collections</RootNamespace>
     <Version>0.3.6</Version>
     <Authors>Kasey O.</Authors>
-    <Description>Generic collections library for .NET containing RankedDictionary and RankedSet that are replacements for SortedDictionary and SortedSet with improved performance and more capability.</Description>
+    <Description>Generic collections library for .NET containing RankedDictionary and RankedSet that are replacements for SortedDictionary, SortedList, and SortedSet with improved performance and more capability.</Description>
     <AssemblyVersion>0.3.6.0</AssemblyVersion>
     <FileVersion>0.3.6.0</FileVersion>
     <Company>github.com/kaosborn</Company>
@@ -17,7 +17,7 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <RepositoryType>Git</RepositoryType>
     <PackageReleaseNotes>See GitHub page for full documentation (.CHM file) and issue tracking.</PackageReleaseNotes>
-    <PackageTags>Generics Collections SortedDictionary SortedSet List BTree Order Statistic</PackageTags>
+    <PackageTags>Generics Collections SortedDictionary SortedSet SortedList BTree Order Statistic</PackageTags>
     <PackageLicenseUrl>https://github.com/kaosborn/KaosCollections/blob/master/LICENSE.txt</PackageLicenseUrl>
   </PropertyGroup>
 
