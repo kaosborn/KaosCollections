@@ -502,6 +502,23 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
+        public void UnitRd_RemoveWhere()
+        {
+            Setup();
+
+            for (int ix = 0; ix < 1000; ++ix)
+                tree1.Add (ix, ix + 1000);
+
+            int c0 = tree1.Count;
+            int removed = tree1.RemoveWhere (IsEven);
+
+            Assert.AreEqual (500, removed);
+            foreach (int key in tree1.Keys)
+                Assert.IsTrue (key % 2 != 0);
+        }
+
+
+        [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
         public void CrashRd_TryGetValue_ArgumentNull()
         {
