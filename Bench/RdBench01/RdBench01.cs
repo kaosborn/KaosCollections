@@ -54,8 +54,8 @@ namespace BenchApp
 
             Console.WriteLine ("\nRankedDictionary has its own implementation of Last() which does not suffer the");
             Console.WriteLine ("performance hit that SortedDictionary.Last() does.  RankedDictionary also");
-            Console.WriteLine ("supports optimized range queries with its GetFrom(TKey) and");
-            Console.WriteLine ("GetBetween(TKey,TKey) enumerators.\n");
+            Console.WriteLine ("supports optimized range queries with its ElementsFrom(TKey) and");
+            Console.WriteLine ("ElementsBetween(TKey,TKey) enumerators.\n");
 
             var bt = new RankedDictionary<int,int>();
 
@@ -75,7 +75,7 @@ namespace BenchApp
             var time22 = watch2.ElapsedMilliseconds;
 
             // Range query: Sum the middle 100 values.
-            var rangeVals = bt.GetBetween (reps/2-50, reps/2+50).Sum (x => x.Value);
+            var rangeVals = bt.ElementsBetween (reps/2-50, reps/2+50).Sum (x => x.Value);
 
             var time23 = watch2.ElapsedMilliseconds;
 

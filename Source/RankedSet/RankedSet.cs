@@ -39,8 +39,8 @@ namespace Kaos.Collections
     /// </list>
     /// <para>Optimized range enumerators are provided:</para>
     /// <list type="bullet">
-    /// <item><see cref="GetBetween"/></item>
-    /// <item><see cref="GetFrom"/></item>
+    /// <item><see cref="ElementsBetween"/></item>
+    /// <item><see cref="ElementsFrom"/></item>
     /// </list>
     /// </para>
     /// </remarks>
@@ -163,7 +163,7 @@ namespace Kaos.Collections
         /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
         /// <exception cref="ArgumentException">When not enough space is available for the copy.</exception>
         public void CopyTo (T[] array)
-        { CopyKeysTo (array, 0, Count); }
+        { CopyKeysTo1 (array, 0, Count); }
 
         /// <summary>Copies the set to a compatible array, starting at the supplied position.</summary>
         /// <param name="array">A one-dimensional array that is the destination of the items to copy.</param>
@@ -173,7 +173,7 @@ namespace Kaos.Collections
         /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero.</exception>
         /// <exception cref="ArgumentException">When not enough space is available for the copy.</exception>
         public void CopyTo (T[] array, int index)
-        { CopyKeysTo (array, index, Count); }
+        { CopyKeysTo1 (array, index, Count); }
 
         /// <summary>Copies a supplied number of items to a compatible array, starting at the supplied position.</summary>
         /// <param name="array">A one-dimensional array that is the destination of the items to copy.</param>
@@ -185,13 +185,13 @@ namespace Kaos.Collections
         /// <exception cref="ArgumentException">When not enough space is available for the copy.</exception>
         public void CopyTo (T[] array, int index, int count)
         {
-            CopyKeysTo (array, index, count);
+            CopyKeysTo1 (array, index, count);
         }
 
 
         void ICollection.CopyTo (Array array, int index)
         {
-            CopyKeysTo (array, index, Count);
+            CopyKeysTo2 (array, index, Count);
         }
 
 
@@ -401,7 +401,7 @@ namespace Kaos.Collections
                     else
                     { set2 = this; set1 = oSet; }
 
-                    foreach (T key in set2.GetBetween (set1.Min, set1.Max))
+                    foreach (T key in set2.ElementsBetween (set1.Min, set1.Max))
                         if (set1.Contains (key))
                             return true;
                 }
@@ -658,7 +658,7 @@ namespace Kaos.Collections
         /// </para>
         /// </remarks>
         /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
-        public IEnumerable<T> GetBetween (T lower, T upper)
+        public IEnumerable<T> ElementsBetween (T lower, T upper)
         {
             int stageFreeze = stage;
             var leaf = (Leaf) Find (lower, out int index);
@@ -699,7 +699,7 @@ namespace Kaos.Collections
         /// </para>
         /// </remarks>
         /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
-        public IEnumerable<T> GetFrom (T item)
+        public IEnumerable<T> ElementsFrom (T item)
         {
             int stageFreeze = stage;
             var leaf = (Leaf) Find (item, out int index);

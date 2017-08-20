@@ -101,7 +101,7 @@ namespace Kaos.Collections
         }
 
 
-        internal void CopyKeysTo (T[] array, int index, int count)
+        internal void CopyKeysTo1 (T[] array, int index, int count)
         {
             if (array == null)
                 throw new ArgumentNullException (nameof (array));
@@ -133,7 +133,7 @@ namespace Kaos.Collections
         }
 
 
-        internal void CopyKeysTo (Array array, int index, int count)
+        internal void CopyKeysTo2 (Array array, int index, int count)
         {
             if (array == null)
                 throw new ArgumentNullException (nameof (array));
@@ -146,7 +146,7 @@ namespace Kaos.Collections
 
             if (array is T[] genericArray)
             {
-                CopyKeysTo (genericArray, index, Count);
+                CopyKeysTo1 (genericArray, index, Count);
                 return;
             }
 

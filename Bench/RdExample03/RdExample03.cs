@@ -56,19 +56,19 @@ namespace ExampleApp
                 Console.WriteLine (e.Key);
 
             //
-            // Use the GetBetween iterator to query range.
+            // Use the ElementsBetween iterator to query range.
             // Unlike LINQ SkipWhile and TakeWhile, this will perform an optimized (partial scan) lookup.
             //
 
             // BtreeDictionary range operator: O(log n)
-            IEnumerable<KeyValuePair<string,int>> r3 = towns.GetBetween ("K", "M");
+            IEnumerable<KeyValuePair<string,int>> r3 = towns.ElementsBetween ("K", "M");
 
             Console.WriteLine ("\nTowns K-L:");
             foreach (KeyValuePair<string,int> town in r3)
                 Console.WriteLine (town.Key);
 
             // Range operator without upper limit: O(log n)
-            IEnumerable<KeyValuePair<string,int>> r4 = towns.GetFrom ("M");
+            IEnumerable<KeyValuePair<string,int>> r4 = towns.ElementsFrom ("M");
 
             Console.WriteLine ("\nTowns M-R:");
             foreach (KeyValuePair<string,int> town in r4)
@@ -79,7 +79,7 @@ namespace ExampleApp
                     Console.WriteLine (town.Key);
 
             // Range operator without upper limit: O(log n)
-            IEnumerable<KeyValuePair<string,int>> r5 = towns.GetFrom ("T");
+            IEnumerable<KeyValuePair<string,int>> r5 = towns.ElementsFrom ("T");
 
             Console.WriteLine ("\nTowns T-Z:");
             foreach (KeyValuePair<string,int> town in r5)

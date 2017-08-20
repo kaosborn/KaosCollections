@@ -46,8 +46,8 @@ namespace Kaos.Collections
     /// </list>
     /// <para>These optimized range enumerators are included:</para>
     /// <list type="bullet">
-    /// <item><see cref="GetBetween"/></item>
-    /// <item><see cref="GetFrom"/></item>
+    /// <item><see cref="ElementsBetween"/></item>
+    /// <item><see cref="ElementsFrom"/></item>
     /// </list>
     /// <para>Properties and a method have been shared with SortedSet:</para>
     /// <list type="bullet">
@@ -749,7 +749,7 @@ namespace Kaos.Collections
         /// <example>
         /// <code source="..\Bench\RdExample03\RdExample03.cs" lang="cs" />
         /// </example>
-        public IEnumerable<KeyValuePair<TKey,TValue>> GetBetween (TKey lower, TKey upper)
+        public IEnumerable<KeyValuePair<TKey,TValue>> ElementsBetween (TKey lower, TKey upper)
         {
             int stageFreeze = stage;
             var leaf = (PairLeaf) Find (lower, out int index);
@@ -784,7 +784,7 @@ namespace Kaos.Collections
         /// <param name="key">Minimum value of range.</param>
         /// <returns>An enumerator for the collection for key values greater than or equal to <em>key</em>.</returns>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
-        public IEnumerable<KeyValuePair<TKey,TValue>> GetFrom (TKey key)
+        public IEnumerable<KeyValuePair<TKey,TValue>> ElementsFrom (TKey key)
         {
             if (key == null)
                 throw new ArgumentNullException (nameof (key));

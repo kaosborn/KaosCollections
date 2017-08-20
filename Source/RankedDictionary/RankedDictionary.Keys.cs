@@ -64,7 +64,7 @@ namespace Kaos.Collections
             /// <exception cref="ArgumentException">When not enough space is given for the copy.</exception>
             public void CopyTo (TKey[] array, int index)
             {
-                tree.CopyKeysTo (array, index, tree.Count);
+                tree.CopyKeysTo1 (array, index, tree.Count);
             }
 
 
@@ -95,7 +95,7 @@ namespace Kaos.Collections
 
             void ICollection.CopyTo (Array array, int index)
             {
-                tree.CopyKeysTo (array, index, Count);
+                tree.CopyKeysTo2 (array, index, Count);
             }
 
             /// <summary>Gets an enumerator that iterates thru the collection.</summary>

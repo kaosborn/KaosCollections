@@ -502,23 +502,6 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRd_RemoveWhere()
-        {
-            Setup();
-
-            for (int ix = 0; ix < 1000; ++ix)
-                tree1.Add (ix, ix + 1000);
-
-            int c0 = tree1.Count;
-            int removed = tree1.RemoveWhere (IsEven);
-
-            Assert.AreEqual (500, removed);
-            foreach (int key in tree1.Keys)
-                Assert.IsTrue (key % 2 != 0);
-        }
-
-
-        [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
         public void CrashRd_TryGetValue_ArgumentNull()
         {
@@ -998,7 +981,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRdx_GetBetween()
+        public void UnitRdx_ElementsBetween()
         {
             var bt = new RankedDictionary<int,int>();
 
@@ -1007,7 +990,7 @@ namespace Kaos.Test.Collections
 
             int iterations = 0;
             int sumVals = 0;
-            foreach (var kv in bt.GetBetween (35, 55))
+            foreach (var kv in bt.ElementsBetween (35, 55))
             {
                 ++iterations;
                 sumVals += kv.Value;
@@ -1018,7 +1001,7 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void UnitRdx_GetBetweenPassedEnd()
+        public void UnitRdx_ElementsBetweenPassedEnd()
         {
             var btree = new RankedDictionary<int,int>();
 
@@ -1027,7 +1010,7 @@ namespace Kaos.Test.Collections
 
             int iterations = 0;
             int sumVals = 0;
-            foreach (KeyValuePair<int,int> e in btree.GetBetween (500, 1500))
+            foreach (KeyValuePair<int,int> e in btree.ElementsBetween (500, 1500))
             {
                 ++iterations;
                 sumVals += e.Value;
@@ -1039,7 +1022,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRdx_GetFrom()
+        public void UnitRdx_ElementsFrom()
         {
             var btree = new RankedDictionary<int,int>();
 
@@ -1048,7 +1031,7 @@ namespace Kaos.Test.Collections
 
             int firstKey = -1;
             int iterations = 0;
-            foreach (var e in btree.GetFrom (501))
+            foreach (var e in btree.ElementsFrom (501))
             {
                 if (iterations == 0)
                     firstKey = e.Key;
@@ -1060,7 +1043,7 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void UnitRdx_GetFromMissingVal()
+        public void UnitRdx_ElementsFromMissingVal()
         {
 
             var btree = new RankedDictionary<int,int>();
@@ -1071,7 +1054,7 @@ namespace Kaos.Test.Collections
             for (int i = 1; i < 999; i += 2)
             {
                 bool isFirst = true;
-                foreach (var x in btree.GetFrom (i))
+                foreach (var x in btree.ElementsFrom (i))
                 {
                     if (isFirst)
                     {
@@ -1083,7 +1066,7 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void UnitRdx_GetFromPassedEnd()
+        public void UnitRdx_ElementsFromPassedEnd()
         {
             var btree = new RankedDictionary<int,int>();
 
@@ -1091,7 +1074,7 @@ namespace Kaos.Test.Collections
                 btree.Add (i, -i);
 
             int iterations = 0;
-            foreach (var x in btree.GetFrom (2000))
+            foreach (var x in btree.ElementsFrom (2000))
                 ++iterations;
 
             Assert.AreEqual (0, iterations, "SkipUntilKey shouldn't find anything");
@@ -1189,6 +1172,23 @@ namespace Kaos.Test.Collections
 
             bool isOkNot = tree.TryGetValueAndIndex (111, out int v2, out int i2);
             Assert.IsFalse (isOkNot);
+        }
+
+
+        [TestMethod]
+        public void UnitRdx_RemoveWhere()
+        {
+            Setup();
+
+            for (int ix = 0; ix < 1000; ++ix)
+                tree1.Add (ix, ix + 1000);
+
+            int c0 = tree1.Count;
+            int removed = tree1.RemoveWhere (IsEven);
+
+            Assert.AreEqual (500, removed);
+            foreach (int key in tree1.Keys)
+                Assert.IsTrue (key % 2 != 0);
         }
 
 

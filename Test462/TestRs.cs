@@ -950,13 +950,13 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (InvalidOperationException))]
-        public void CrashRsx_GetBetweenHotUpdate()
+        public void CrashRsx_ElementsBetweenHotUpdate()
         {
             Setup (4);
             for (int ix=0; ix<10; ++ix) setI.Add (ix);
 
             int n = 0;
-            foreach (int key in setI.GetBetween (3, 8))
+            foreach (int key in setI.ElementsBetween (3, 8))
             {
                 if (++n == 2)
                     setI.Add (49);
@@ -964,13 +964,13 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void UnitRsx_GetBetween()
+        public void UnitRsx_ElementsBetween()
         {
             Setup (4);
             for (int ix=0; ix<20; ++ix) setI.Add (ix);
 
             int expected = 5;
-            foreach (int key in setI.GetBetween (5, 15))
+            foreach (int key in setI.ElementsBetween (5, 15))
             {
                 Assert.AreEqual (expected, key);
                 ++expected;
@@ -980,23 +980,23 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRsx_GetFromNull()
+        public void UnitRsx_ElementsFromNull()
         {
             Setup (4);
 
-            foreach (var px in personSet.GetFrom (null))
+            foreach (var px in personSet.ElementsFrom (null))
             { }
         }
 
         [TestMethod]
-        public void UnitRsx_GetFrom()
+        public void UnitRsx_ElementsFrom()
         {
             Setup (4);
             for (int ii = 0; ii < 30; ++ii)
                 setI.Add (ii);
 
             int ix = 20;
-            foreach (var kx in setI.GetFrom (ix))
+            foreach (var kx in setI.ElementsFrom (ix))
             {
                 Assert.AreEqual (ix, kx);
                 ++ix;

@@ -23,7 +23,7 @@ namespace ChartApp
 
             // List names starting with 'J'.
             Console.WriteLine ("Musicians J-T");
-            foreach (var name in musicians.GetBetween ("J", "U"))
+            foreach (var name in musicians.ElementsBetween ("J", "U"))
                 Console.WriteLine ("  " + name);
 
             // Create another RankedSet.
