@@ -10,14 +10,14 @@
       <list class="bullet">
         <listItem>
           <para>
-            <codeEntityReference qualifyHint="false">T:Kaos.Collections.RankedDictionary`2</codeEntityReference>- an improved version of
-            <codeEntityReference qualifyHint="false">T:System.Collections.Generic.SortedDictionary`2</codeEntityReference>with additional
-            <codeEntityReference qualifyHint="false">T:System.Collections.Generic.SortedList`2</codeEntityReference>enhancements.
+            <codeEntityReference qualifyHint="false">T:Kaos.Collections.RankedDictionary`2</codeEntityReference>-
+            <codeEntityReference qualifyHint="false">T:System.Collections.Generic.SortedDictionary`2</codeEntityReference> merged with
+            <codeEntityReference qualifyHint="false">T:System.Collections.Generic.SortedList`2</codeEntityReference> plus enhancements and improved performance.
           </para>
         </listItem>
         <listItem>
           <para>
-            <codeEntityReference qualifyHint="false">T:Kaos.Collections.RankedSet`1</codeEntityReference>- an improved version of
+            <codeEntityReference qualifyHint="false">T:Kaos.Collections.RankedSet`1</codeEntityReference>- an enhanced version of
             <codeEntityReference qualifyHint="false">T:System.Collections.Generic.SortedSet`1</codeEntityReference>.
           </para>
         </listItem>
@@ -63,6 +63,11 @@
                   Adds <codeInline>Reverse()</codeInline> that returns an enumerator of elements from maximum to minimum.
                 </para>
               </listItem>
+              <listItem>
+                <para>
+                  Adds <codeInline>RemoveWhere()</codeInline> that removes all elements that meet a supplied condition.
+                </para>
+              </listItem>
             </list>
           </listItem>
 
@@ -82,7 +87,7 @@
           </listItem>
 
           <listItem>
-            <para><codeInline>RankedDictionary</codeInline> and <codeInline>RankedSet</codeInline> implement <codeInline>IEnumerable&lt;T&gt;</codeInline> methods to improve performance:</para>
+            <para><codeInline>RankedDictionary</codeInline> and <codeInline>RankedSet</codeInline> directly implement <codeInline>IEnumerable&lt;T&gt;</codeInline> methods to improve performance:</para>
             <list class="bullet">
               <listItem>
                 <para>Implements <codeInline>ElementAt(index)</codeInline> that returns the element at the supplied position.</para>
@@ -231,7 +236,8 @@
           <listItem>
             <para>
               Full .NET Framework 3.5.
-              This target does not include <codeInline>IReadOnlyDictionary</codeInline>, <codeInline>IReadOnlyCollection</codeInline>, or <codeInline>ISet</codeInline> implementation.
+              This target does not include <codeInline>IReadOnlyDictionary</codeInline>, <codeInline>IReadOnlyCollection</codeInline> implementation.
+              It does not derive from <codeInline>ISet</codeInline> but does implement its members.
             </para>
           </listItem>
         </list>
