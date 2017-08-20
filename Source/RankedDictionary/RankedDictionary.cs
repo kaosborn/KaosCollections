@@ -53,6 +53,7 @@ namespace Kaos.Collections
     /// <list type="bullet">
     /// <item><see cref="Btree{TKey}.Min"/></item>
     /// <item><see cref="Btree{TKey}.Max"/></item>
+    /// <item><see cref="RemoveWhere"/></item>
     /// <item><see cref="Reverse"/></item>
     /// </list>
     /// </para>
@@ -224,7 +225,7 @@ namespace Kaos.Collections
 
         /// <summary>Adds an element with the supplied key and value.</summary>
         /// <param name="key">The key of the element to add.</param>
-        /// <param name="value">The value of the element to add.  May be null.</param>
+        /// <param name="value">The value of the element to add. May be null.</param>
         /// <remarks>
         /// <para>
         /// If <em>key</em> is already in the dictionary, this method takes no action.
@@ -232,7 +233,10 @@ namespace Kaos.Collections
         /// <para>This is a O(log <em>n</em>) operation.</para>
         /// </remarks>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
-        /// <exception cref="ArgumentException">When a key/value pair has already been added with the supplied key.</exception>
+        /// <exception cref="ArgumentException">
+        ///   When a key/value pair already exists with the supplied key;
+        ///   when no comparer is available.
+        /// </exception>
         public void Add (TKey key, TValue value)
         {
             if (key == null)

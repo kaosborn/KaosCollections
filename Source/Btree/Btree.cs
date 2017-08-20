@@ -249,11 +249,11 @@ namespace Kaos.Collections
         /// <remarks>This is a O(1) operation.</remarks>
         public int Count => root.Weight;
 
-        /// <summary>Gets the maximum value in the set per the comparer.</summary>
+        /// <summary>Gets the maximum value in the collection per the comparer.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
         public T Max => Count==0 ? default (T) : rightmostLeaf.GetKey (rightmostLeaf.KeyCount-1);
 
-        /// <summary>Gets the minimum value in the set per the comparer.</summary>
+        /// <summary>Gets the minimum value in the collection per the comparer.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
         public T Min => Count==0 ? default (T) : leftmostLeaf.Key0;
 
@@ -263,7 +263,7 @@ namespace Kaos.Collections
         public IComparer<T> Comparer => keyComparer;
 
 
-        /// <summary>Removes all items from the set.</summary>
+        /// <summary>Removes all elements from the collection.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
         public void Clear()
         {

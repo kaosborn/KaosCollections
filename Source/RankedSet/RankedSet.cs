@@ -68,11 +68,11 @@ namespace Kaos.Collections
     {
         #region Constructors
 
-        /// <summary>Initializes a new set of sorted items that uses the default item comparer.</summary>
+        /// <summary>Initializes a new set that uses the default item comparer.</summary>
         public RankedSet() : base (Comparer<T>.Default, new Leaf())
         { }
 
-        /// <summary>Initializes a new set of sorted items that uses the supplied comparer.</summary>
+        /// <summary>Initializes a new set that uses the supplied comparer.</summary>
         /// <param name="comparer">The comparer to use for sorting items.</param>
         /// <exception cref="InvalidOperationException">When <em>comparer</em> is <b>null</b> and no other comparer available.</exception>
         /// <example>
@@ -135,6 +135,7 @@ namespace Kaos.Collections
         /// </para>
         /// <para>This is a O(log <em>n</em>) operation.</para>
         /// </remarks>
+        /// <exception cref="ArgumentException">When no comparer is available.</exception>
         public bool Add (T item)
         {
             var path = new NodeVector (this, item);
