@@ -106,12 +106,12 @@
             <list class="bullet">
               <listItem>
                 <para>
-                  Adds <codeInline>GetBetween(lower,upper)</codeInline> for elements beginning and ending at the supplied values.
+                  Adds <codeInline>ElementsBetween(lower,upper)</codeInline> for elements beginning and ending at the supplied values.
                 </para>
               </listItem>
               <listItem>
                 <para>
-                  Adds <codeInline>GetFrom(lower)</codeInline> for elements beginning at the supplied value.
+                  Adds <codeInline>ElementsFrom(lower)</codeInline> for elements beginning at the supplied value.
                 </para>
               </listItem>
             </list>
@@ -147,7 +147,7 @@
               <codeEntityReference qualifyHint="false">M:System.Collections.Generic.SortedSet`1.GetViewBetween(`0,`0)</codeEntityReference>
               (which provides a virtual view to a range of a <codeInline>SortedSet</codeInline>)
               is not implemented by <codeInline>RankedSet</codeInline>.
-              Use the <codeInline>GetBetween(lower,upper)</codeInline> enumerator instead.
+              Use the <codeInline>ElementsBetween(lower,upper)</codeInline> enumerator instead.
             </para>
           </listItem>
           <listItem>

@@ -20,10 +20,13 @@
             <para>Rename BtreeDictionary class to RankedDictionary with improved SortedDictionary emulation</para>
           </listItem>
           <listItem>
-            <para>Enhance RankedDictionary with SortedList API</para>
+            <para>Enhance RankedDictionary with SortedList emulation</para>
           </listItem>
           <listItem>
-            <para>Add RankedSet class which emulates SortedSet with order statistic capabilities</para>
+            <para>Add RankedSet generic class which emulates SortedSet with order statistic capabilities</para>
+          </listItem>
+          <listItem>
+            <para>Add RankedBag generic class which provides multiset capabilities</para>
           </listItem>
         </list>
         <para>Version 2.1.1 (2012-03-28)</para>
