@@ -11,8 +11,8 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)IDictionaryDebugView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.Keys.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.KeyCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.PairLeaf.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.Values.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.ValueCollection.cs" />
   </ItemGroup>
 </Project>
