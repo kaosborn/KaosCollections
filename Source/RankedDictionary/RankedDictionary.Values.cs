@@ -32,7 +32,7 @@ namespace Kaos.Collections
 
             #region Constructors
 
-            /// <summary>Makes a new collection that holds the values of a <see cref="RankedDictionary{TKey,TValue}"/>.</summary>
+            /// <summary>Initializes a new collection that reflects the values of a <see cref="RankedDictionary{TKey,TValue}"/>.</summary>
             /// <param name="dictionary"><see cref="RankedDictionary{TKey,TValue}"/> containing these keys.</param>
             /// <exception cref="ArgumentNullException">When <em>dictionary</em> is <b>null</b>.</exception>
             public ValueCollection (RankedDictionary<TKey,TValue> dictionary)
@@ -56,9 +56,9 @@ namespace Kaos.Collections
 
             #region Methods
 
-            /// <summary>Copies values to a supplied array starting as position <em>index</em> in the target.</summary>
-            /// <param name="array">Destination of copy.</param>
-            /// <param name="index">Starting position in <em>array</em> for copy operation.</param>
+            /// <summary>Copies values to a supplied array, starting as the supplied position.</summary>
+            /// <param name="array">A one-dimensional array that is the destination of the copy.</param>
+            /// <param name="index">The zero-based starting position in <em>array</em>.</param>
             /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
             /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero.</exception>
             /// <exception cref="ArgumentException">When not enough space is given for the copy.</exception>
@@ -88,22 +88,37 @@ namespace Kaos.Collections
 
             #region Explicit properties and methods interface implementations
 
+            /// <summary>Indicates that the collection is read-only.</summary>
             bool ICollection<TValue>.IsReadOnly => true;
 
+            /// <summary>Indicates that the collection is not thread safe.</summary>
             bool ICollection.IsSynchronized => false;
 
+            /// <summary>Gets an object that can be used to synchronize access to the collection.</summary>
             object ICollection.SyncRoot => tree.GetSyncRoot();
 
-
+            /// <summary>This implementation always throws a <see cref="NotSupportedException" />.</summary>
+            /// <param name="value">The object to add.</param>
             void ICollection<TValue>.Add (TValue value)
             { throw new NotSupportedException(); }
 
+            /// <summary>This implementation always throws a <see cref="NotSupportedException" />.</summary>
             void ICollection<TValue>.Clear()
             { throw new NotSupportedException(); }
 
+            /// <summary>Determines whether the collection contains the supplied value.</summary>
+            /// <param name="value">The value to locate in the collection.</param>
+            /// <returns><b>true</b> if <em>value</em> is found in the collection; otherwise <b>false</b>.</returns>
             bool ICollection<TValue>.Contains (TValue value)
             { return tree.ContainsValue (value); }
 
+
+            /// <summary>Copies values to a supplied array, starting at the supplied position.</summary>
+            /// <param name="array">A one-dimensional array that is the destination of the copy.</param>
+            /// <param name="index">The zero-based starting position in <em>array</em>.</param>
+            /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
+            /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero.</exception>
+            /// <exception cref="ArgumentException">When not enough space is given for the copy.</exception>
             void ICollection.CopyTo (Array array, int index)
             {
                 if (array == null)
@@ -126,9 +141,14 @@ namespace Kaos.Collections
                     }
             }
 
+            /// <summary>Gets an enumerator that iterates thru the collection.</summary>
+            /// <returns>An enumerator for the collection.</returns>
             IEnumerator IEnumerable.GetEnumerator()
             { return GetEnumerator(); }
 
+            /// <summary>This implementation always throws a <see cref="NotSupportedException"/>.</summary>
+            /// <param name="value">The value to remove.</param>
+            /// <returns><b>true</b> if the object was removed; otherwise <b>false</b>.</returns>
             bool ICollection<TValue>.Remove (TValue value)
             { throw new NotSupportedException(); }
 
@@ -150,6 +170,7 @@ namespace Kaos.Collections
                     ((IEnumerator) this).Reset();
                 }
 
+                /// <summary>Gets the value at the current position.</summary>
                 object IEnumerator.Current
                 {
                     get
@@ -194,6 +215,7 @@ namespace Kaos.Collections
                     return false;
                 }
 
+                /// <summary>Rewinds the enumerator to its initial state.</summary>
                 void IEnumerator.Reset()
                 {
                     stageFreeze = tree.stage;
@@ -201,7 +223,7 @@ namespace Kaos.Collections
                     leaf = (PairLeaf) tree.leftmostLeaf;
                 }
 
-                /// <summary>Releases all resources used by the Enumerator.</summary>
+                /// <summary>Releases all resources used by the enumerator.</summary>
                 public void Dispose() { }
             }
 

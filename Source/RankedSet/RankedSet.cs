@@ -114,16 +114,21 @@ namespace Kaos.Collections
 
         #region Properties
 
+        /// <summary>Indicates that the collection is not read-only.</summary>
         bool ICollection<T>.IsReadOnly => false;
 
+        /// <summary>Indicates that the collection is not thread safe.</summary>
         bool ICollection.IsSynchronized => false;
 
+        /// <summary>Gets an object that can be used to synchronize access to the collection.</summary>
         object ICollection.SyncRoot => GetSyncRoot();
 
         #endregion
 
         #region Methods
 
+        /// <summary>Adds an item to the set.</summary>
+        /// <param name="item">The item to add.</param>
         void ICollection<T>.Add (T item)
         { Add (item); }
 
@@ -148,7 +153,7 @@ namespace Kaos.Collections
 
 
         /// <summary>Determines whether the set contains a supplied item.</summary>
-        /// <param name="item">The item to check for existence in the set.</param>
+        /// <param name="item">The item to locate in the set.</param>
         /// <returns><b>true</b> if the set contains <em>item</em>; otherwise <b>false</b>.</returns>
         public bool Contains (T item)
         {
@@ -157,8 +162,8 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Copies the set to a compatible array, starting at the beginning of the target array.</summary>
-        /// <param name="array">A one-dimensional array that is the destination of the items to copy.</param>
+        /// <summary>Copies the set to a compatible array, starting at the beginning of the array.</summary>
+        /// <param name="array">A one-dimensional array that is the destination of the copy.</param>
         /// <remarks>This is a O(<em>n</em>) operation.</remarks>
         /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
         /// <exception cref="ArgumentException">When not enough space is available for the copy.</exception>
@@ -166,8 +171,8 @@ namespace Kaos.Collections
         { CopyKeysTo1 (array, 0, Count); }
 
         /// <summary>Copies the set to a compatible array, starting at the supplied position.</summary>
-        /// <param name="array">A one-dimensional array that is the destination of the items to copy.</param>
-        /// <param name="index">The zero-based starting position.</param>
+        /// <param name="array">A one-dimensional array that is the destination of the copy.</param>
+        /// <param name="index">The zero-based starting position in <em>array</em>.</param>
         /// <remarks>This is a O(<em>n</em>) operation.</remarks>
         /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero.</exception>
@@ -176,23 +181,21 @@ namespace Kaos.Collections
         { CopyKeysTo1 (array, index, Count); }
 
         /// <summary>Copies a supplied number of items to a compatible array, starting at the supplied position.</summary>
-        /// <param name="array">A one-dimensional array that is the destination of the items to copy.</param>
-        /// <param name="index">The zero-based starting position.</param>
+        /// <param name="array">A one-dimensional array that is the destination of the copy.</param>
+        /// <param name="index">The zero-based starting position in <em>array</em>.</param>
         /// <param name="count">The number of items to copy.</param>
         /// <remarks>This is a O(<em>n</em>) operation.</remarks>
         /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> or <em>count</em> is less than zero.</exception>
         /// <exception cref="ArgumentException">When not enough space is available for the copy.</exception>
         public void CopyTo (T[] array, int index, int count)
-        {
-            CopyKeysTo1 (array, index, count);
-        }
+        { CopyKeysTo1 (array, index, count); }
 
-
+        /// <summary>Copies the set to a compatible array, starting at the supplied array index.</summary>
+        /// <param name="array">A one-dimensional array that is the destination of the copy.</param>
+        /// <param name="index">The zero-based starting position in <em>array</em>.</param>
         void ICollection.CopyTo (Array array, int index)
-        {
-            CopyKeysTo2 (array, index, Count);
-        }
+        { CopyKeysTo2 (array, index, Count); }
 
 
         /// <summary>Removes an item from the set.</summary>
@@ -633,8 +636,8 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Returns an IEnumerable that iterates over the set in reverse order.</summary>
-        /// <returns>An enumerator that reverse iterates over the set.</returns>
+        /// <summary>Returns an IEnumerable that iterates thru the set in reverse order.</summary>
+        /// <returns>An enumerator that reverse iterates thru the set.</returns>
         public IEnumerable<T> Reverse()
         {
             Enumerator enor = new Enumerator (this, isReverse:true);
@@ -797,7 +800,6 @@ namespace Kaos.Collections
         }
 
 
-
         /// <summary>Returns an equality comparer using a supplied comparer that can be used to create a collection that contains sets.</summary>
         /// <param name="memberEqualityComparer">Used for creating the returned comparer.</param>
         /// <returns>An equality comparer for creating a collection of sets.</returns>
@@ -811,6 +813,7 @@ namespace Kaos.Collections
         {
             return Comparer == other.Comparer || Comparer.Equals (other.Comparer);
         }
+
 
         private static bool RankedSetEquals (RankedSet<T> set1, RankedSet<T> set2, IComparer<T> comparer)
         {
@@ -845,13 +848,17 @@ namespace Kaos.Collections
 
         #region Enumeration
 
-        IEnumerator<T> IEnumerable<T>.GetEnumerator() => new Enumerator (this);
-
-        IEnumerator IEnumerable.GetEnumerator() => new Enumerator (this);
-
         /// <summary>Returns an enumerator that iterates thru the set.</summary>
         /// <returns>An enumerator that iterates thru the set in sorted order.</returns>
         public Enumerator GetEnumerator() => new Enumerator (this);
+
+        /// <summary>Returns an enumerator that iterates thru the set.</summary>
+        /// <returns>An enumerator that iterates thru the set in sorted order.</returns>
+        IEnumerator<T> IEnumerable<T>.GetEnumerator() => new Enumerator (this);
+
+        /// <summary>Returns an enumerator that iterates thru the collection.</summary>
+        /// <returns>An enumerator that iterates thru the collection in sorted order.</returns>
+        IEnumerator IEnumerable.GetEnumerator() => new Enumerator (this);
 
 
         /// <summary>Enumerates the sorted items of a <see cref="RankedSet{T}"/>.</summary>
@@ -871,6 +878,7 @@ namespace Kaos.Collections
                 ((IEnumerator) this).Reset();
             }
 
+            /// <summary>Gets the element at the current position.</summary>
             object IEnumerator.Current
             {
                 get
@@ -882,7 +890,7 @@ namespace Kaos.Collections
                 }
             }
 
-            /// <summary>Gets the element at the current position of the enumerator.</summary>
+            /// <summary>Gets the item at the current position.</summary>
             /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
             public T Current
             {
@@ -893,8 +901,8 @@ namespace Kaos.Collections
                 }
             }
 
-            /// <summary>Advances the enumerator to the next element in the collection.</summary>
-            /// <returns><b>true</b> if the enumerator was successfully advanced to the next element; <b>false</b> if the enumerator has passed the end of the collection.</returns>
+            /// <summary>Advances the enumerator to the next item in the set.</summary>
+            /// <returns><b>true</b> if the enumerator was successfully advanced to the next item; <b>false</b> if the enumerator has passed the end of the set.</returns>
             /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
             public bool MoveNext()
             {
@@ -933,13 +941,14 @@ namespace Kaos.Collections
                 return false;
             }
 
+            /// <summary>Rewinds the enumerator to its initial state.</summary>
             void IEnumerator.Reset()
             {
                 stageFreeze = tree.stage;
                 state = -1;
             }
 
-            /// <summary>Releases all resources used by the Enumerator.</summary>
+            /// <summary>Releases all resources used by the enumerator.</summary>
             public void Dispose() { }
         }
 

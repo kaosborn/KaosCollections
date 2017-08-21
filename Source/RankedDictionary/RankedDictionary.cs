@@ -238,7 +238,6 @@ namespace Kaos.Collections
         /// <summary>Indicates that this collection may be modified.</summary>
         bool ICollection<KeyValuePair<TKey,TValue>>.IsReadOnly => false;
 
-
         #endregion
 
         #region Methods
@@ -322,7 +321,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Adds an element with the supplied key/value pair.</summary>
+        /// <summary>Adds an element with the supplied key/value pair!!!</summary>
         /// <param name="keyValuePair">Contains the key and value of the element to add.</param>
         /// <exception cref="ArgumentException">When an element containing <em>key</em> has already been added.</exception>
         void ICollection<KeyValuePair<TKey,TValue>>.Add (KeyValuePair<TKey,TValue> keyValuePair)
@@ -335,10 +334,10 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Determines if the collection contains the supplied key.</summary>
-        /// <param name="key">Key to find.</param>
-        /// <returns><b>true</b> if the collection contains the supplied key; otherwise <b>false</b>.</returns>
-        /// <exception cref="ArgumentNullException">When supplied key is <b>null</b>.</exception>
+        /// <summary>Determines if the dictionary contains the supplied key.</summary>
+        /// <param name="key">The key to locate in the dictionary.</param>
+        /// <returns><b>true</b> if the dictionary contains <em>key</em>; otherwise <b>false</b>.</returns>
+        /// <exception cref="ArgumentNullException">When the supplied key is <b>null</b>.</exception>
         public bool ContainsKey (TKey key)
         {
             if (key == null)
@@ -385,9 +384,9 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Copies the collection to the supplied array offset.</summary>
-        /// <param name="array">Destination of copy.</param>
-        /// <param name="index">Starting position in <em>array</em> for copy operation.</param>
+        /// <summary>Copies the dictionary to a compatible array, starting at the supplied position.</summary>
+        /// <param name="array">A one-dimensional array that is the destination of the copy.</param>
+        /// <param name="index">The zero-based starting position in <em>array</em>.</param>
         /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero.</exception>
         /// <exception cref="ArgumentException">When not enough space is given for the copy.</exception>
@@ -549,15 +548,19 @@ namespace Kaos.Collections
             }
         }
 
+        /// <summary>Indicating that the dictionary is not fixed size.</summary>
         bool IDictionary.IsFixedSize => false;
 
-        /// <summary>Indicates that structure may be modified.</summary>
+        /// <summary>Indicates that the dictionary may be modified.</summary>
         bool IDictionary.IsReadOnly => false;
 
+        /// <summary>Indicates that the collection is not thread safe.</summary>
         bool ICollection.IsSynchronized => false;
 
+        /// <summary>Gets an <see cref="ICollection"/> containing the keys of the dictionary.</summary>
         ICollection IDictionary.Keys => (ICollection) Keys;
 
+        /// <summary>Gets an <see cref="ICollection"/> containing the values of the dictionary.</summary>
         ICollection IDictionary.Values => (ICollection) Values;
 
         #endregion
@@ -588,7 +591,7 @@ namespace Kaos.Collections
 
         /// <summary>Determines whether the dictionary contains a key/value pair with the supplied key.</summary>
         /// <param name="key">The key to locate in the dictionary.</param>
-        /// <returns><b>true</b> if the collection contains the supplied key; otherwise <b>false</b>.</returns>
+        /// <returns><b>true</b> if the dictionary contains <em>key</em>; otherwise <b>false</b>.</returns>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
         bool IDictionary.Contains (object key)
         {
@@ -656,6 +659,7 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>Gets an object that can be used to synchronize access to the collection.</summary>
         object ICollection.SyncRoot => GetSyncRoot();
 
         #endregion
@@ -743,7 +747,7 @@ namespace Kaos.Collections
         /// </para>
         /// <para>
         /// Retrieving the first element is a O(log <em>n</em>) operation.
-        /// Retrieving subsequent elements is a O(1) operation.
+        /// Retrieving subsequent elements is a O(1) operation per element.
         /// </para>
         /// </remarks>
         /// <example>
@@ -922,8 +926,8 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Returns an IEnumerable that iterates over the dictionary in reverse order.</summary>
-        /// <returns>An enumerator that reverse iterates over the dictionary.</returns>
+        /// <summary>Returns an enumerator that iterates thru the dictionary in reverse order.</summary>
+        /// <returns>An enumerator that reverse iterates thru the dictionary.</returns>
         public IEnumerable<KeyValuePair<TKey,TValue>> Reverse()
         {
             Enumerator etor = new Enumerator (this, isReverse:true);
@@ -935,8 +939,8 @@ namespace Kaos.Collections
 
         #region Enumeration
 
-        /// <summary>Gets an enumerator that iterates thru the collection.</summary>
-        /// <returns>An enumerator for the collection.</returns>
+        /// <summary>Gets an enumerator that iterates thru the dictionary.</summary>
+        /// <returns>An enumerator for the dictionary.</returns>
         public Enumerator GetEnumerator() => new Enumerator (this);
 
         IEnumerator<KeyValuePair<TKey,TValue>> IEnumerable<KeyValuePair<TKey,TValue>>.GetEnumerator()
@@ -975,6 +979,7 @@ namespace Kaos.Collections
                 ((IEnumerator) this).Reset();
             }
 
+            /// <summary>Gets the key of the element at the current position.</summary>
             object IDictionaryEnumerator.Key
             {
                 get
@@ -985,6 +990,7 @@ namespace Kaos.Collections
                 }
             }
 
+            /// <summary>Gets the value of the element at the current position.</summary>
             object IDictionaryEnumerator.Value
             {
                 get
@@ -995,6 +1001,7 @@ namespace Kaos.Collections
                 }
             }
 
+            /// <summary>Gets the element at the current position as a <see cref="DictionaryEntry" />.</summary>
             DictionaryEntry IDictionaryEnumerator.Entry
             {
                 get
@@ -1005,6 +1012,7 @@ namespace Kaos.Collections
                 }
             }
 
+            /// <summary>Gets the element at the current position.</summary>
             object IEnumerator.Current
             {
                 get
@@ -1032,8 +1040,8 @@ namespace Kaos.Collections
                 }
             }
 
-            /// <summary>Advances the enumerator to the next location.</summary>
-            /// <returns><b>false</b> if no more data; otherwise <b>true</b>.</returns>
+            /// <summary>Advances the enumerator to the next element in the dictionary.</summary>
+            /// <returns><b>true</b> if the enumerator was successfully advanced to the next element; <b>false</b> if the enumerator has passed the end of the collection.</returns>
             /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
             public bool MoveNext()
             {
@@ -1072,14 +1080,14 @@ namespace Kaos.Collections
                 return false;
             }
 
-            /// <summary>Moves the enumerator back to its initial location.</summary>
+            /// <summary>Rewinds the enumerator to its initial state.</summary>
             void IEnumerator.Reset()
             {
                 stageFreeze = tree.stage;
                 state = -1;
             }
 
-            /// <exclude />
+            /// <summary>Releases all resources used by the enumerator.</summary>
             public void Dispose() { }
         }
 
