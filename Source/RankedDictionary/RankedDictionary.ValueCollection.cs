@@ -70,9 +70,11 @@ namespace Kaos.Collections
             void ICollection<TValue>.Add (TValue value)
             { throw new NotSupportedException(); }
 
+
             /// <summary>This implementation always throws a <see cref="NotSupportedException" />.</summary>
             void ICollection<TValue>.Clear()
             { throw new NotSupportedException(); }
+
 
             /// <summary>Determines whether the collection contains the supplied value.</summary>
             /// <param name="value">The value to locate in the collection.</param>
@@ -133,6 +135,7 @@ namespace Kaos.Collections
                     }
             }
 
+
             /// <summary>This implementation always throws a <see cref="NotSupportedException"/>.</summary>
             /// <param name="value">The value to remove.</param>
             /// <returns><b>true</b> if the object was removed; otherwise <b>false</b>.</returns>
@@ -157,7 +160,7 @@ namespace Kaos.Collections
 
 
             /// <summary>Enumerates the items of a <see cref="RankedDictionary{TKey,TValue}.ValueCollection"/>.</summary>
-            public sealed class Enumerator : IEnumerator<TValue>
+            public sealed class Enumerator : IEnumerator<TValue>, IEnumerator
             {
                 private readonly RankedDictionary<TKey,TValue> tree;
                 private PairLeaf leaf;

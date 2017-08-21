@@ -70,6 +70,7 @@ namespace Kaos.Collections
             void ICollection<TKey>.Add (TKey key)
             { throw new NotSupportedException(); }
 
+
             /// <summary>This implementation always throws a <see cref="NotSupportedException" />.</summary>
             void ICollection<TKey>.Clear()
             { throw new NotSupportedException(); }
@@ -125,7 +126,7 @@ namespace Kaos.Collections
 
 
             /// <summary>Enumerates the sorted keys of a <see cref="RankedDictionary{TKey,TValue}.KeyCollection"/>.</summary>
-            public sealed class Enumerator : IEnumerator<TKey>
+            public sealed class Enumerator : IEnumerator<TKey>, IEnumerator
             {
                 private readonly RankedDictionary<TKey,TValue> tree;
                 private PairLeaf leaf;
