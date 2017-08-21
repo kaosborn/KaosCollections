@@ -52,9 +52,34 @@ namespace Kaos.Collections
             /// <summary>Gets the number of values in the collection.</summary>
             public int Count => tree.Count;
 
+            /// <summary>Indicates that the collection is read-only.</summary>
+            bool ICollection<TValue>.IsReadOnly => true;
+
+            /// <summary>Indicates that the collection is not thread safe.</summary>
+            bool ICollection.IsSynchronized => false;
+
+            /// <summary>Gets an object that can be used to synchronize access to the collection.</summary>
+            object ICollection.SyncRoot => tree.GetSyncRoot();
+
             #endregion
 
             #region Methods
+
+            /// <summary>This implementation always throws a <see cref="NotSupportedException" />.</summary>
+            /// <param name="value">The object to add.</param>
+            void ICollection<TValue>.Add (TValue value)
+            { throw new NotSupportedException(); }
+
+            /// <summary>This implementation always throws a <see cref="NotSupportedException" />.</summary>
+            void ICollection<TValue>.Clear()
+            { throw new NotSupportedException(); }
+
+            /// <summary>Determines whether the collection contains the supplied value.</summary>
+            /// <param name="value">The value to locate in the collection.</param>
+            /// <returns><b>true</b> if <em>value</em> is found in the collection; otherwise <b>false</b>.</returns>
+            bool ICollection<TValue>.Contains (TValue value)
+            { return tree.ContainsValue (value); }
+
 
             /// <summary>Copies values to a supplied array, starting as the supplied position.</summary>
             /// <param name="array">A one-dimensional array that is the destination of the copy.</param>
@@ -77,41 +102,6 @@ namespace Kaos.Collections
                     for (int ix = 0; ix < leaf.KeyCount; ++ix)
                         array[index++] = leaf.GetValue (ix);
             }
-
-
-            /// <summary>Returns an enumerator that iterates thru the ValueCollection.</summary>
-            /// <returns>An enumerator for the collection.</returns>
-            public IEnumerator<TValue> GetEnumerator()
-            { return new Enumerator (tree); }
-
-            #endregion
-
-            #region Explicit properties and methods interface implementations
-
-            /// <summary>Indicates that the collection is read-only.</summary>
-            bool ICollection<TValue>.IsReadOnly => true;
-
-            /// <summary>Indicates that the collection is not thread safe.</summary>
-            bool ICollection.IsSynchronized => false;
-
-            /// <summary>Gets an object that can be used to synchronize access to the collection.</summary>
-            object ICollection.SyncRoot => tree.GetSyncRoot();
-
-            /// <summary>This implementation always throws a <see cref="NotSupportedException" />.</summary>
-            /// <param name="value">The object to add.</param>
-            void ICollection<TValue>.Add (TValue value)
-            { throw new NotSupportedException(); }
-
-            /// <summary>This implementation always throws a <see cref="NotSupportedException" />.</summary>
-            void ICollection<TValue>.Clear()
-            { throw new NotSupportedException(); }
-
-            /// <summary>Determines whether the collection contains the supplied value.</summary>
-            /// <param name="value">The value to locate in the collection.</param>
-            /// <returns><b>true</b> if <em>value</em> is found in the collection; otherwise <b>false</b>.</returns>
-            bool ICollection<TValue>.Contains (TValue value)
-            { return tree.ContainsValue (value); }
-
 
             /// <summary>Copies values to a supplied array, starting at the supplied position.</summary>
             /// <param name="array">A one-dimensional array that is the destination of the copy.</param>
@@ -141,11 +131,6 @@ namespace Kaos.Collections
                     }
             }
 
-            /// <summary>Gets an enumerator that iterates thru the collection.</summary>
-            /// <returns>An enumerator for the collection.</returns>
-            IEnumerator IEnumerable.GetEnumerator()
-            { return GetEnumerator(); }
-
             /// <summary>This implementation always throws a <see cref="NotSupportedException"/>.</summary>
             /// <param name="value">The value to remove.</param>
             /// <returns><b>true</b> if the object was removed; otherwise <b>false</b>.</returns>
@@ -154,7 +139,17 @@ namespace Kaos.Collections
 
             #endregion
 
-            #region Enumerator
+            #region Enumeration
+
+            /// <summary>Returns an enumerator that iterates thru the ValueCollection.</summary>
+            /// <returns>An enumerator for the collection.</returns>
+            public IEnumerator<TValue> GetEnumerator()
+            { return new Enumerator (tree); }
+
+            /// <summary>Gets an enumerator that iterates thru the collection.</summary>
+            /// <returns>An enumerator for the collection.</returns>
+            IEnumerator IEnumerable.GetEnumerator()
+            { return GetEnumerator(); }
 
             /// <summary>Enumerates the items of a <see cref="RankedDictionary{TKey,TValue}.ValueCollection"/>.</summary>
             public sealed class Enumerator : IEnumerator<TValue>

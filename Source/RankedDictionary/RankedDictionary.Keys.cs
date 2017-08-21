@@ -52,31 +52,6 @@ namespace Kaos.Collections
             /// <summary>Gets the number of keys in the collection.</summary>
             public int Count => tree.Count;
 
-            #endregion
-
-            #region Methods
-
-            /// <summary>Copies keys to a supplied array, starting at the supplied position.</summary>
-            /// <param name="array">A one-dimensional array that is the destination of the copy.</param>
-            /// <param name="index">The zero-based starting position in <em>array</em>.</param>
-            /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
-            /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero.</exception>
-            /// <exception cref="ArgumentException">When not enough space is given for the copy.</exception>
-            public void CopyTo (TKey[] array, int index)
-            {
-                tree.CopyKeysTo1 (array, index, tree.Count);
-            }
-
-
-            /// <summary>Returns an enumerator that iterates thru the KeyCollection.</summary>
-            /// <returns>An enumerator for the collection.</returns>
-            public IEnumerator<TKey> GetEnumerator()
-            { return new Enumerator (tree); }
-
-            #endregion
-
-            #region Explicit properties and methods interface implementations
-
             /// <summary>Indicates that the collection is read-only.</summary>
             bool ICollection<TKey>.IsReadOnly => true;
 
@@ -86,6 +61,9 @@ namespace Kaos.Collections
             /// <summary>Gets an object that can be used to synchronize access to the collection.</summary>
             object ICollection.SyncRoot => tree.GetSyncRoot();
 
+            #endregion
+
+            #region Methods
 
             /// <summary>This implementation always throws a <see cref="NotSupportedException" />.</summary>
             /// <param name="key">The object to add.</param>
@@ -103,6 +81,16 @@ namespace Kaos.Collections
             bool ICollection<TKey>.Contains (TKey key)
             { return tree.ContainsKey (key); }
 
+
+            /// <summary>Copies keys to a supplied array, starting at the supplied position.</summary>
+            /// <param name="array">A one-dimensional array that is the destination of the copy.</param>
+            /// <param name="index">The zero-based starting position in <em>array</em>.</param>
+            /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
+            /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero.</exception>
+            /// <exception cref="ArgumentException">When not enough space is given for the copy.</exception>
+            public void CopyTo (TKey[] array, int index)
+            { tree.CopyKeysTo1 (array, index, tree.Count); }
+
             /// <summary>Copies keys to a supplied array, starting at the supplied position.</summary>
             /// <param name="array">A one-dimensional array that is the destination of the copy.</param>
             /// <param name="index">The zero-based starting position in <em>array</em>.</param>
@@ -110,14 +98,8 @@ namespace Kaos.Collections
             /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero.</exception>
             /// <exception cref="ArgumentException">When not enough space is given for the copy.</exception>
             void ICollection.CopyTo (Array array, int index)
-            {
-                tree.CopyKeysTo2 (array, index, Count);
-            }
+            { tree.CopyKeysTo2 (array, index, Count); }
 
-            /// <summary>Gets an enumerator that iterates thru the collection.</summary>
-            /// <returns>An enumerator for the collection.</returns>
-            IEnumerator IEnumerable.GetEnumerator()
-            { return GetEnumerator(); }
 
             /// <summary>This implementation always throws a <see cref="NotSupportedException" />.</summary>
             /// <param name="key">The key to remove.</param>
@@ -127,7 +109,18 @@ namespace Kaos.Collections
 
             #endregion
 
-            #region Enumerator
+            #region Enumeration
+
+            /// <summary>Returns an enumerator that iterates thru the KeyCollection.</summary>
+            /// <returns>An enumerator for the collection.</returns>
+            public IEnumerator<TKey> GetEnumerator()
+            { return new Enumerator (tree); }
+
+            /// <summary>Gets an enumerator that iterates thru the collection.</summary>
+            /// <returns>An enumerator for the collection.</returns>
+            IEnumerator IEnumerable.GetEnumerator()
+            { return GetEnumerator(); }
+
 
             /// <summary>Enumerates the sorted keys of a <see cref="RankedDictionary{TKey,TValue}.KeyCollection"/>.</summary>
             public sealed class Enumerator : IEnumerator<TKey>
