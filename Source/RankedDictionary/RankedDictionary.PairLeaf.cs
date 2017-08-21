@@ -58,6 +58,9 @@ namespace Kaos.Collections
                     Add (source.GetKey (ix), source.GetValue (ix));
             }
 
+            public void CopyValuesTo (TValue[] array, int index, int count)
+            { values.CopyTo (0, array, index, count); }
+
             public override void Coalesce()
             {
                 var right = (PairLeaf) rightLeaf;

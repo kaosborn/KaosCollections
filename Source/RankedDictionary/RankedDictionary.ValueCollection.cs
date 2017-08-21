@@ -99,8 +99,10 @@ namespace Kaos.Collections
                     throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
 
                 for (var leaf = (PairLeaf) tree.leftmostLeaf; leaf != null; leaf = (PairLeaf) leaf.rightLeaf)
-                    for (int ix = 0; ix < leaf.KeyCount; ++ix)
-                        array[index++] = leaf.GetValue (ix);
+                {
+                    leaf.CopyValuesTo (array, index, leaf.ValueCount);
+                    index += leaf.ValueCount;
+                }
             }
 
             /// <summary>Copies values to a supplied array, starting at the supplied position.</summary>
