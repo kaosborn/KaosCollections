@@ -1,7 +1,7 @@
 ﻿//
 // Library: KaosCollections
-// File:    RankedDictionary.Values.cs
-// Purpose: Define Values nested class.
+// File:    RankedDictionary.ValueCollection.cs
+// Purpose: Define ValueCollection nested class.
 //
 // Copyright © 2009-2017 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely
@@ -141,15 +141,18 @@ namespace Kaos.Collections
 
             #region Enumeration
 
-            /// <summary>Returns an enumerator that iterates thru the ValueCollection.</summary>
+            /// <summary>Gets an enumerator that iterates thru the collection.</summary>
             /// <returns>An enumerator for the collection.</returns>
-            public IEnumerator<TValue> GetEnumerator()
-            { return new Enumerator (tree); }
+            public Enumerator GetEnumerator() => new Enumerator (tree);
 
             /// <summary>Gets an enumerator that iterates thru the collection.</summary>
             /// <returns>An enumerator for the collection.</returns>
-            IEnumerator IEnumerable.GetEnumerator()
-            { return GetEnumerator(); }
+            IEnumerator<TValue> IEnumerable<TValue>.GetEnumerator() => new Enumerator (tree);
+
+            /// <summary>Gets an enumerator that iterates thru the collection.</summary>
+            /// <returns>An enumerator for the collection.</returns>
+            IEnumerator IEnumerable.GetEnumerator() => new Enumerator (tree);
+
 
             /// <summary>Enumerates the items of a <see cref="RankedDictionary{TKey,TValue}.ValueCollection"/>.</summary>
             public sealed class Enumerator : IEnumerator<TValue>

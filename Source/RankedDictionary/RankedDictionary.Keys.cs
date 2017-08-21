@@ -1,7 +1,7 @@
 ﻿//
 // Library: KaosCollections
-// File:    RankedDictionary.Keys.cs
-// Purpose: Define Keys nested class.
+// File:    RankedDictionary.KeyCollection.cs
+// Purpose: Define KeyCollection nested class.
 //
 // Copyright © 2009-2017 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely
@@ -111,15 +111,17 @@ namespace Kaos.Collections
 
             #region Enumeration
 
-            /// <summary>Returns an enumerator that iterates thru the KeyCollection.</summary>
+            /// <summary>Gets an enumerator that iterates thru the collection.</summary>
             /// <returns>An enumerator for the collection.</returns>
-            public IEnumerator<TKey> GetEnumerator()
-            { return new Enumerator (tree); }
+            public Enumerator GetEnumerator() => new Enumerator (tree);
 
             /// <summary>Gets an enumerator that iterates thru the collection.</summary>
             /// <returns>An enumerator for the collection.</returns>
-            IEnumerator IEnumerable.GetEnumerator()
-            { return GetEnumerator(); }
+            IEnumerator<TKey> IEnumerable<TKey>.GetEnumerator() => new Enumerator (tree);
+
+            /// <summary>Gets an enumerator that iterates thru the collection.</summary>
+            /// <returns>An enumerator for the collection.</returns>
+            IEnumerator IEnumerable.GetEnumerator() => new Enumerator (tree);
 
 
             /// <summary>Enumerates the sorted keys of a <see cref="RankedDictionary{TKey,TValue}.KeyCollection"/>.</summary>
