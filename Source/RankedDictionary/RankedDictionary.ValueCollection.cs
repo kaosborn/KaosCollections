@@ -160,7 +160,7 @@ namespace Kaos.Collections
 
 
             /// <summary>Enumerates the items of a <see cref="RankedDictionary{TKey,TValue}.ValueCollection"/>.</summary>
-            public sealed class Enumerator : IEnumerator<TValue>, IEnumerator
+            public sealed class Enumerator : IEnumerator<TValue>
             {
                 private readonly RankedDictionary<TKey,TValue> tree;
                 private PairLeaf leaf;
