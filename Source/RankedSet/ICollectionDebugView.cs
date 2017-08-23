@@ -12,16 +12,15 @@ using System.Diagnostics;
 
 namespace Kaos.Collections
 {
-    /// <exclude />
     internal class ICollectionDebugView<T>
     {
         private readonly ICollection<T> target;
 
-        public ICollectionDebugView (ICollection<T> dictionary)
+        public ICollectionDebugView (ICollection<T> collection)
         {
-            if (dictionary == null)
-                throw new ArgumentNullException (nameof (dictionary));
-            this.target = dictionary;
+            if (collection == null)
+                throw new ArgumentNullException (nameof (collection));
+            this.target = collection;
         }
 
         [DebuggerBrowsable (DebuggerBrowsableState.RootHidden)]
