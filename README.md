@@ -34,7 +34,7 @@ This library is Multi-targetted to .NET Standard, .NET 3.5 and .NET 4.
 The documentation project (`.chm`) is included in this project as well.
 
 * The `Collections462` folder contains a .NET 4.62 build of the class library.
-This project is for development use only.
+This project is used for development and testing only.
 
 * The `Help` folder contains a [Sandcastle Help File Builder](https://github.com/EWSoftware/SHFB)
 project that produces documentation based on embedded XML comments.
@@ -44,7 +44,7 @@ This project produces a Microsoft Help v1 file with a `.chm` extension.
 All source is organized using shared projects which are referenced by the build projects.
 
 * The `Test462` folder contains unit tests and some short running stress tests.
-To show compatibility, these tests are may be run against either this library
-or against the related Microsoft classes.
+To show correct emulation, these tests may be run against either this library
+or against the related Microsoft base class library (BCL).
 To run the test suite against the Microsoft classes,
 add the `TEST_BCL` compilation symbol to the test project build properties.
