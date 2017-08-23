@@ -73,10 +73,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Collections462", "Collectio
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "RankedBag", "Source\RankedBag\RankedBag.shproj", "{F7B692F7-C69C-4791-B3AF-6727BB08E016}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "RankedCollection", "Source\RankedCollection\RankedCollection.shproj", "{2DE71C06-F684-4903-96AC-87215CAAAD5C}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Source\RankedCollection\RankedCollection.projitems*{2de71c06-f684-4903-96ac-87215caaad5c}*SharedItemsImports = 13
 		Source\Btree\Btree.projitems*{c385faa0-382e-46e6-9557-3e1760edaab0}*SharedItemsImports = 4
 		Source\RankedBag\RankedBag.projitems*{c385faa0-382e-46e6-9557-3e1760edaab0}*SharedItemsImports = 4
+		Source\RankedCollection\RankedCollection.projitems*{c385faa0-382e-46e6-9557-3e1760edaab0}*SharedItemsImports = 4
 		Source\RankedDictionary\RankedDictionary.projitems*{c385faa0-382e-46e6-9557-3e1760edaab0}*SharedItemsImports = 4
 		Source\RankedSet\RankedSet.projitems*{c385faa0-382e-46e6-9557-3e1760edaab0}*SharedItemsImports = 4
 		Source\RankedSet\RankedSet.projitems*{c39a213b-5aae-4c05-8ca8-946331511d0d}*SharedItemsImports = 13
@@ -237,5 +241,6 @@ Global
 		{385083CF-7AA6-4C60-8E22-BA1EC689C4ED} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{7A3A42FF-EC4D-49A7-A70E-8666CDABF379} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{F7B692F7-C69C-4791-B3AF-6727BB08E016} = {FE32F6EA-9179-43FB-82C5-2D010EC41842}
+		{2DE71C06-F684-4903-96AC-87215CAAAD5C} = {FE32F6EA-9179-43FB-82C5-2D010EC41842}
 	EndGlobalSection
 EndGlobal

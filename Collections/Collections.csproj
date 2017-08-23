@@ -32,4 +32,8 @@
 
   <Import Project="..\Source\Btree\Btree.projitems" Label="Shared" />
 
+  <Import Project="..\Source\RankedBag\RankedBag.projitems" Label="Shared" />
+
+  <Import Project="..\Source\RankedCollection\RankedCollection.projitems" Label="Shared" />
+
 </Project>
