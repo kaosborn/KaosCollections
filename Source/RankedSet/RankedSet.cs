@@ -580,7 +580,7 @@ namespace Kaos.Collections
         }
 
         void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
-        { GetObjectData(info, context); }
+        { GetObjectData (info, context); }
 
         void IDeserializationCallback.OnDeserialization (Object sender)
         { OnDeserialization (sender); }

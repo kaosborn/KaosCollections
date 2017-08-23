@@ -1028,7 +1028,7 @@ namespace Kaos.Collections
                 }
             }
 
-            /// <summary>Gets the key/value pair at the current location.</summary>
+            /// <summary>Gets the key/value pair at the current position.</summary>
             /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
             public KeyValuePair<TKey,TValue> Current
             {
