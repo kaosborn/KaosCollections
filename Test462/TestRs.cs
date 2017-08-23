@@ -327,75 +327,76 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void CrashRs_CopyTo_ArgumentNull()
+        public void CrashRs_CopyTo1_ArgumentNull()
         {
             Setup();
-            string[] nada = null;
-            setS.CopyTo (nada, 0, 1);
+            setI.CopyTo (null);
         }
-
 
         [TestMethod]
-        [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRs_CopyTo1_ArgumentOutOfRange()
+        [ExpectedException (typeof (ArgumentException))]
+        public void CrashRs_CopyTo1_Argument()
         {
-            var s1 = new string[1];
+            var d1 = new int[1];
             Setup();
-            setS.Add ("ee");
-            setS.CopyTo (s1, -1);
+            setI.Add (1); setI.Add (11);
+            setI.CopyTo (d1);
         }
 
+        [TestMethod]
+        public void UnitRs_CopyTo1()
+        {
+            var e3 = new int[] { 3, 5, 7 };
+            var e4 = new int[] { 3, 5, 7, 0 };
+            var d3 = new int[3];
+            var d4 = new int[4];
+            Setup();
+            setI.Add (3); setI.Add (5); setI.Add (7);
+
+            setI.CopyTo (d3);
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (e3, d3));
+
+            setI.CopyTo (d4);
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (e4, d4));
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRs_CopyTo2_ArgumentNull()
+        {
+            Setup();
+            setI.CopyTo (null, 0);
+        }
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
         public void CrashRs_CopyTo2_ArgumentOutOfRange()
         {
-            var s1 = new string[1];
+            var d2 = new int[2];
             Setup();
-            setS.Add ("ee");
-            setS.CopyTo (s1, 0, -1);
+            setI.Add (2);
+            setI.CopyTo (d2, -1);
         }
 
-
         [TestMethod]
-        [ExpectedException (typeof (ArgumentException))]
-        public void CrashRs_CopyTo_Argument()
+        public void UnitRs_CopyTo2A()
         {
-            var s1 = new string[1];
+            var e2 = new int[] { 3, 5 };
+            var e4 = new int[] { 0, 3, 5, 0 };
+            var d2 = new int[2];
+            var d4 = new int[4];
             Setup();
-            setS.Add ("xx");
-            setS.Add ("mm");
+            setI.Add (3); setI.Add (5);
 
-            setS.CopyTo (s1, 0, 2);
+            setI.CopyTo (d2, 0);
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (e2, d2));
+
+            setI.CopyTo (d4, 1);
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (e4, d4));
         }
 
-
         [TestMethod]
-        public void UnitRs_CopyToObjectArray()
-        {
-            var obArr = new object[2];
-            Setup();
-            setI.Add (4); setI.Add (2);
-            ((System.Collections.ICollection) setI).CopyTo (obArr, 0);
-            Assert.AreEqual (2, (int) obArr[0]);
-            Assert.AreEqual (4, (int) obArr[1]);
-        }
-
-
-        [TestMethod]
-        public void UnitRs_CopyTo1()
-        {
-            var s1 = new string[3];
-            Setup();
-            setS.Add ("xx");
-            setS.Add ("mm");
-
-            setS.CopyTo (s1, 1, 2);
-        }
-
-
-        [TestMethod]
-        public void UnitRs_CopyTo2()
+        public void UnitRs_CopyTo2B()
         {
             var i3 = new TS1[3];
             Setup();
@@ -406,21 +407,122 @@ namespace Kaos.Test.Collections
             setTS1.CopyTo (i3, 1, 2);
         }
 
-
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void CrashRs_CopyToOb_ArgumentNull()
+        public void CrashRs_CopyTo3_ArgumentNull()
         {
             Setup();
-            var setSo = (System.Collections.ICollection) setS;
-            object[] nada = null;
-            setSo.CopyTo (nada, 0);
+            setI.CopyTo (null, 0, 0);
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRs_CopyTo3A_ArgumentOutOfRange()
+        {
+            var d2 = new int[2];
+            Setup();
+            setI.Add (2);
+            setI.CopyTo (d2, -1, 0);
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRs_CopyTo3B_ArgumentOutOfRange()
+        {
+            var d2 = new int[2];
+            Setup();
+            setI.Add (2);
+            setI.CopyTo (d2, 0, -1);
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentException))]
+        public void CrashRs_CopyTo3A_Argument()
+        {
+            var d2 = new int[2];
+            Setup();
+            setI.Add (3); setI.Add (5);
+
+            setI.CopyTo (d2, 1, 2);
         }
 
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void CrashRs_CopyToOb1_Argument()
+        public void CrashRs_CopyTo3B_Argument()
+        {
+            var d3 = new int[3];
+            Setup();
+            setI.Add (2); setI.Add (22);
+
+            setI.CopyTo (d3, 1, 3);
+        }
+
+        [TestMethod]
+        public void UnitRs_CopyTo3()
+        {
+            var e2 = new int[] { 0, 0 };
+            var e3 = new int[] { 3, 5, 7 };
+            var e4 = new int[] { 0, 3, 5, 0 };
+            var e5 = new int[] { 0, 3, 5, 7, 0 };
+            var d2 = new int[2];
+            var d3 = new int[3];
+            var d4 = new int[4];
+            var d5 = new int[5];
+
+            Setup();
+            setI.Add (3); setI.Add (5); setI.Add (7);
+
+            setI.CopyTo (d2, 1, 0);
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (e2, d2));
+
+            setI.CopyTo (d3, 0, 3);
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (e3, d3));
+
+            setI.CopyTo (d4, 1, 2);
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (e4, d4));
+
+            setI.CopyTo (d5, 1, 4);
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (e5, d5));
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRs_CopyTo2ng_ArgumentNull()
+        {
+            Setup();
+            var setIo = (System.Collections.ICollection) setI;
+
+            setIo.CopyTo (null, 0);
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRs_CopyTo2ng_ArgumentOutOfRange()
+        {
+            var d1 = new object[1];
+            Setup();
+            var setIo = (System.Collections.ICollection) setI;
+
+            setIo.CopyTo (d1, -1);
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentException))]
+        public void CrashRs_CopyTo2ngA_Argument()
+        {
+            var d2 = new object[2];
+            Setup();
+            setI.Add (3); setI.Add (5);
+            var setIo = (System.Collections.ICollection) setI;
+
+            setIo.CopyTo (d2, 1);
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentException))]
+        public void CrashRs_CopyTo2ngB_Argument()
         {
             Setup();
             var setSo = (System.Collections.ICollection) setS;
@@ -429,10 +531,9 @@ namespace Kaos.Test.Collections
             setSo.CopyTo (multi, 0);
         }
 
-
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void CrashRs_CopyToOb2_Argument()
+        public void CrashRs_CopyTo2ngC_Argument()
         {
             Setup();
             var setSo = (System.Collections.ICollection) setS;
@@ -441,83 +542,22 @@ namespace Kaos.Test.Collections
             setSo.CopyTo (a11, 1);
         }
 
-
         [TestMethod]
-        [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRs_CopyToOb_ArgumentOutOfRange()
+        public void UnitRs_CopyTo2ng()
         {
-            var s1 = new string[1];
+            var e2 = new object[] { 3, 5 };
+            var e4 = new object[] { 0, 3, 5, 0 };
+            var d2 = new object[2];
+            var d4 = new object[4];
             Setup();
-            setS.Add ("ee");
-            var setSo = (System.Collections.ICollection) setS;
+            var setIo = (System.Collections.ICollection) setI;
+            setI.Add (3); setI.Add (5);
 
-            setSo.CopyTo (s1, -1);
-        }
+            setIo.CopyTo (d2, 0);
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (e2, d2));
 
-
-        [TestMethod]
-        [ExpectedException (typeof (ArgumentException))]
-        public void CrashRs_CopyToOb3_Argument()
-        {
-            var s1 = new string[1];
-            Setup();
-            setS.Add ("ee");
-            setS.Add ("bb");
-            var setSo = (System.Collections.ICollection) setS;
-
-            setSo.CopyTo (s1, 0);
-        }
-
-        [TestMethod]
-        [ExpectedException (typeof (ArgumentException))]
-        public void CrashRs_CopyTo3A_Argument()
-        {
-            Setup (4);
-            setI.Add (2); setI.Add (4);
-            var a1 = new int[3];
-            setI.CopyTo (a1, 1, 3);
-        }
-
-        [TestMethod]
-        public void UnitRs_CopyTo3B()
-        {
-            Setup (4);
-            setI.Add (5); setI.Add (0); setI.Add (3);
-            var a1 = new int[] { -1, -1, -1, -1, -1 };
-
-            setI.CopyTo (a1, 1, 4);
-            Assert.AreEqual (-1, a1[0]);
-            Assert.AreEqual (0, a1[1]);
-            Assert.AreEqual (3, a1[2]);
-            Assert.AreEqual (5, a1[3]);
-            Assert.AreEqual (-1, a1[4]);
-        }
-
-        [TestMethod]
-        public void UnitRs_CopyTo3C()
-        {
-            Setup (4);
-            setI.Add (5); setI.Add (0); setI.Add (3);
-            var a1 = new int[] { -1, -1, -1, -1 };
-
-            setI.CopyTo (a1, 1, 2);
-            Assert.AreEqual (-1, a1[0]);
-            Assert.AreEqual (0, a1[1]);
-            Assert.AreEqual (3, a1[2]);
-            Assert.AreEqual (-1, a1[3]);
-        }
-
-        [TestMethod]
-        public void UnitRs_CopyTo3D()
-        {
-            Setup();
-            setI.Add (5); setI.Add (0); setI.Add (3);
-            var a1 = new int[] { -1, -1 };
-
-            setI.CopyTo (a1, 0, 0);
-
-            Assert.AreEqual (-1, a1[0]);
-            Assert.AreEqual (-1, a1[1]);
+            setIo.CopyTo (d4, 1);
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (e2, d2));
         }
 
 
