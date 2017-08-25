@@ -82,6 +82,61 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
+        [ExpectedException (typeof (ArgumentException))]
+        public void CrashRb_Add2_ArgumentNull()
+        {
+            var bag = new RankedBag<int>();
+            var result = bag.Add (1, -1);
+        }
+
+        [TestMethod]
+        public void UnitRb_Add2()
+        {
+            var bagI = new RankedBag<int> (new int[] { 0, 0 });
+            bool retVal = bagI.Add (0, 0);
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (new int[] { 0, 0 }, bagI));
+            Assert.IsTrue (retVal);
+            Assert.AreEqual (2, bagI.Count);
+
+            bagI = new RankedBag<int> (new int[] { 1, 1 });
+            retVal = bagI.Add (2, 0);
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (new int[] { 1, 1 }, bagI));
+            Assert.IsFalse (retVal);
+            Assert.AreEqual (2, bagI.Count);
+
+            bagI = new RankedBag<int> (new int[] { 0, 1 });
+            retVal = bagI.Add (2, 3);
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (new int[] { 0, 1, 2, 2, 2 }, bagI));
+            Assert.IsFalse (retVal);
+            Assert.AreEqual (5, bagI.Count);
+
+            bagI = new RankedBag<int> (new int[] { 0, 1 });
+            retVal = bagI.Add (2, 3);
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (new int[] { 0, 1, 2, 2, 2 }, bagI));
+            Assert.IsFalse (retVal);
+            Assert.AreEqual (5, bagI.Count);
+
+            bagI = new RankedBag<int> (new int[] { 0, 2, 3 });
+            retVal = bagI.Add (1, 2);
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (new int[] { 0, 1, 1, 2, 3 }, bagI));
+            Assert.IsFalse (retVal);
+            Assert.AreEqual (5, bagI.Count);
+
+            bagI = new RankedBag<int> (new int[] { 1, 2, 3, 4 });
+            retVal = bagI.Add (0, 2);
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (new int[] { 0, 0, 1, 2, 3, 4 }, bagI));
+            Assert.IsFalse (retVal);
+            Assert.AreEqual (6, bagI.Count);
+
+            bagI = new RankedBag<int> (new int[] { 0, 2, 3 });
+            retVal = bagI.Add (1, 4);
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (new int[] { 0, 1, 1, 1, 1, 2, 3 }, bagI));
+            Assert.IsFalse (retVal);
+            Assert.AreEqual (7, bagI.Count);
+        }
+
+
+        [TestMethod]
         public void UnitRb_Clear()
         {
             var bagI = new RankedBag<int>();
