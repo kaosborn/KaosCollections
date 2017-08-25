@@ -21,11 +21,17 @@
             <codeEntityReference qualifyHint="false">T:System.Collections.Generic.SortedSet`1</codeEntityReference>.
           </para>
         </listItem>
+        <listItem>
+          <para>
+            <codeEntityReference qualifyHint="false">T:Kaos.Collections.RankedBag`1</codeEntityReference>-
+            a multiset collection data structure.
+          </para>
+        </listItem>
       </list>
       <para>
         All provided classes closely emulate the API of the Microsoft's classes
         while extending capability and improving performance in many common scenarios.
-        Both these classes add array-like functionality so that any element can be accessed by index
+        All classes add array-like functionality so that any element can be accessed by index
         or the index of an element may be determined from the element's key.
       </para>
       <para>
