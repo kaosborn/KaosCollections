@@ -146,13 +146,29 @@ namespace Kaos.Collections
             var path = new NodeVector (this, item);
             bool result = path.IsFound;
 
-            while (count > 0)
-            {
-                //TODO bulk add into leaf
-                AddKey (item, path);
-                --count;
-                path = new NodeVector (this, item);
-            }
+            if (count > 0)
+                for (;;)
+                {
+                    int leafAdds = maxKeyCount - path.TopNode.KeyCount;
+                    if (leafAdds == 0)
+                    {
+                        AddKey (item, path);
+                        --count;
+                    }
+                    else
+                    {
+                        if (leafAdds > count)
+                            leafAdds = count;
+                        path.TopNode.InsertKey (path.TopIndex, item, leafAdds);
+                        path.ChangePathWeight (leafAdds);
+                        count -= leafAdds;
+                    }
+
+                    if (count == 0)
+                        break;
+
+                    path = new NodeVector (this, item);
+                }
 
             return result;
         }

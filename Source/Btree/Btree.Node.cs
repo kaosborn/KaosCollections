@@ -41,6 +41,35 @@ namespace Kaos.Collections
             public void InsertKey (int index, T key) { keys.Insert (index, key); }
             public void CopyKeysTo (T[] array, int index, int count) { keys.CopyTo (0, array, index, count); }
 
+            public void InsertKey (int index, T key, int count)
+            {
+                System.Diagnostics.Debug.Assert (count > 0);
+
+                int startCount = keys.Count,
+                    add0 = count + index - startCount;
+
+                if (add0 >= 0)
+                {
+                    while (--add0 >= 0)
+                        keys.Add (key);
+                    for (int p1 = index; p1 < startCount; ++p1)
+                    {
+                        keys.Add (keys[p1]);
+                        keys[p1] = key;
+                    }
+                }
+                else
+                {
+                    int p3 = startCount - count;
+                    for (int p2 = p3; p2 < startCount; ++p2)
+                        keys.Add (keys[p2]);
+                    while (--p3 >= index)
+                        keys[p3+count] = keys[p3];
+                    while (--count >= 0)
+                        keys[++p3] = key;
+                }
+            }
+
 #if DEBUG
             public StringBuilder Append (StringBuilder sb)
             {

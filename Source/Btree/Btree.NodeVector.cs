@@ -296,12 +296,17 @@ namespace Kaos.Collections
             }
 
 
+            public void ChangePathWeight (int delta)
+            {
+                for (int level = Height-2; level >= 0; --level)
+                    ((Branch) nodeStack[level]).AdjustWeight (delta);
+            }
+
             public void DecrementPathWeight()
             {
                 for (int level = Height-2; level >= 0; --level)
                     ((Branch) nodeStack[level]).DecrementWeight();
             }
-
 
             public void IncrementPathWeight()
             {
