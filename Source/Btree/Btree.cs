@@ -1,7 +1,7 @@
 ﻿//
 // Library: KaosCollections
 // File:    Btree.cs
-// Purpose: Define base functionality for RankedDictionary, RankedSet.
+// Purpose: Define base functionality for RankedDictionary, RankedSet, RankedBag.
 //
 // Copyright © 2009-2017 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely
@@ -476,8 +476,8 @@ namespace Kaos.Collections
                 throw new InvalidOperationException ("Leaf has wrong anchor");
 
             for (int i = 0; i < leaf.KeyCount; ++i)
-                if (i < leaf.KeyCount - 1 && Comparer.Compare (leaf.GetKey (i), leaf.GetKey (i + 1)) >= 0)
-                    throw new InvalidOperationException ("Leaf keys not ascending");
+                if (i < leaf.KeyCount - 1 && Comparer.Compare (leaf.GetKey (i), leaf.GetKey (i + 1)) > 0)
+                    throw new InvalidOperationException ("Leaf keys descending");
 
             if (visited == null)
             {
