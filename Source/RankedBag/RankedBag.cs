@@ -310,9 +310,7 @@ namespace Kaos.Collections
         /// </remarks>
         public int IndexOf (T item)
         {
-            var path = new NodeVector (this, item, seekNext:false);
-            int result = path.GetIndex();
-            return path.IsFound ? result : ~result;
+            return Find (item, out Leaf leaf, out int leafIndex, seekNext:false);
         }
 
 

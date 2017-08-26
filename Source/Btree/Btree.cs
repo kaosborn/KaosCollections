@@ -180,6 +180,66 @@ namespace Kaos.Collections
             return node;
         }
 
+        internal int Find (T key, out Leaf leaf, out int leafIndex, bool seekNext)
+        {
+            bool isFound = false;
+            int treeIndex = 0;
+            leafIndex = 0;
+
+            for (Node node = root;;)
+            {
+                int hi = node.KeyCount;
+                if (seekNext)
+                    for (int lo = 0; lo != hi; )
+                    {
+                        int mid = (lo + hi) >> 1;
+                        int diff = Comparer.Compare (key, node.GetKey (mid));
+                        if (diff < 0)
+                            hi = mid;
+                        else
+                        {
+                            if (diff == 0)
+                                isFound = true;
+                            lo = mid + 1;
+                        }
+                    }
+                else
+                    for (int lo = 0; lo != hi; )
+                    {
+                        int mid = (lo + hi) >> 1;
+                        int diff = Comparer.Compare (key, node.GetKey (mid));
+                        if (diff <= 0)
+                        {
+                            if (diff == 0)
+                                isFound = true;
+                            hi = mid;
+                        }
+                        else
+                            lo = mid + 1;
+                    }
+
+                if (node is Branch branch)
+                {
+                    if (hi <= branch.KeyCount / 2)
+                        for (int ix = 0; ix < hi; ++ix)
+                            treeIndex += branch.GetChild (ix).Weight;
+                    else
+                    {
+                        treeIndex += branch.Weight;
+                        for (int ix = hi; ix <= branch.KeyCount; ++ix)
+                            treeIndex -= branch.GetChild (ix).Weight;
+                    }
+                    node = branch.GetChild (hi);
+                }
+                else
+                {
+                    leafIndex = hi;
+                    leaf = (Leaf) node;
+                    return isFound ? treeIndex + hi : ~ (treeIndex + hi);
+                }
+            }
+        }
+
 
 #if NET35 || NET40 || SERIALIZE
         [NonSerialized]
