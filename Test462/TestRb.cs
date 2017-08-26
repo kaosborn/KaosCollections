@@ -431,10 +431,32 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
+        public void StressRb_Counts()
+        {
+            int reps = 100;
+            for (int order = 4; order <= 136; order += 8)
+            {
+                var bag = new RankedBag<int> { Capacity = order };
+
+                for (int ix = 1; ix <= reps; ++ix)
+                    bag.Add (ix, ix);
+
+                for (int ix = 1; ix <= reps; ++ix)
+                    Assert.AreEqual (ix, bag.GetCount (ix));
+
+                Assert.AreEqual ((reps+1) * reps / 2, bag.Count);
+                Assert.AreEqual (reps, bag.GetDistinctCount());
+            }
+        }
+
+
+        [TestMethod]
         public void UnitRb_IndexOf()
         {
             var bag0 = new RankedBag<int>();
+
             var bag = new RankedBag<int> (new int[] { 3, 5, 5, 7, 7 });
+            bag.Capacity = 4;
 
             Assert.AreEqual (~0, bag0.IndexOf (9));
 
