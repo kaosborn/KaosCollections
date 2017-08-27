@@ -597,30 +597,42 @@ namespace Kaos.Collections
 
         #region Enumeration
 
-        /// <summary>Returns an IEnumerable that iterates thru unique items in the bag.</summary>
-        /// <returns>An enumerator that iterates thru unique items.</returns>
+        /// <summary>Returns an IEnumerable that iterates thru distinct items in the bag.</summary>
+        /// <returns>An enumerator that iterates thru distinct items.</returns>
         /// <remarks>
         /// This is a O(<em>m</em> log(<em>n</em>) operation
-        /// where <em>m</em> is the number of unique items and <em>n</em> is the count of the bag.
+        /// where <em>m</em> is the distinct item count
+        /// and <em>n</em> is the total item count.
         /// </remarks>
         public IEnumerable<T> Distinct()
         {
-            if (Count > 0)
-                for (T key = Min;;)
+            if (Count == 0)
+                yield break;
+
+            int ix = 0;
+            Leaf leaf = leftmostLeaf;
+            for (T key = leaf.Key0;;)
+            {
+                yield return key;
+
+                if (ix < leaf.KeyCount - 1)
                 {
-                    yield return key;
-                    var path = new NodeVector (this, key, seekNext:true);
-                    Leaf leaf = (Leaf) path.TopNode;
-                    var ix = path.TopIndex;
-                    if (ix >= path.TopNode.KeyCount)
-                    {
-                        leaf = leaf.rightLeaf;
-                        if (leaf == null)
-                            yield break;
-                        ix = 0;
-                    }
-                    key = leaf.GetKey (ix);
+                    ++ix;
+                    T nextKey = leaf.GetKey (ix);
+                    if (Comparer.Compare (key, nextKey) != 0)
+                    { key = nextKey; continue; }
                 }
+
+                FindEdgeRight (key, out leaf, out ix);
+                if (ix >= leaf.KeyCount)
+                {
+                    leaf = leaf.rightLeaf;
+                    if (leaf == null)
+                        yield break;
+                    ix = 0;
+                }
+                key = leaf.GetKey (ix);
+            }
         }
 
 
