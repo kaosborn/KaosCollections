@@ -416,6 +416,23 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>Removes the item at the supplied index.</summary>
+        /// <param name="index">The zero-based position of the item to remove.</param>
+        /// <remarks>
+        /// This is a O(log <em>n</em>) operation
+        /// where <em>n</em> is the total item count.
+        /// </remarks>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or greater than or equal to the total item count.</exception>
+        public void RemoveAt (int index)
+        {
+            if (index < 0 || index >= Count)
+                throw new ArgumentOutOfRangeException (nameof (index), "Argument is out of the range of valid values.");
+
+            var path = NodeVector.CreateForIndex (this, index);
+            Remove2 (path);
+        }
+
+
         /// <summary>Removes all items that match the condition defined by the supplied predicate.</summary>
         /// <param name="match">The condition of the items to remove.</param>
         /// <returns>The number of items removed from the bag.</returns>
