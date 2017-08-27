@@ -270,27 +270,44 @@ namespace Kaos.Collections
             return result;
         }
 
+
         /// <summary>Returns the number of distinct items in the bag.</summary>
         /// <returns>The number of distinct items in the bag.</returns>
+        /// <remarks>
+        /// This is a O(<em>m</em> log <em>n</em>) operation
+        /// where <em>m</em> is the number of distinct items
+        /// and <em>n</em> is the total count of the bag.
+        /// </remarks>
         public int GetDistinctCount()
         {
             int result = 0;
 
             if (Count > 0)
             {
-                ++result;
-                T cur = Max;
+                Leaf leaf = leftmostLeaf;
+                int leafIndex = 0;
 
-                for (Leaf leaf = rightmostLeaf; leaf != null; leaf = leaf.leftLeaf)
-                    for (int ix = leaf.KeyCount-1; ix >= 0; --ix)
+                for (T currentKey = leaf.Key0;;)
+                {
+                    ++result;
+                    if (leafIndex < leaf.KeyCount - 1)
                     {
-                        T key = leaf.GetKey (ix);
-                        if (Comparer.Compare (key, cur) != 0)
-                        {
-                            ++result;
-                            cur = key;
-                        }
+                        ++leafIndex;
+                        T nextKey = leaf.GetKey (leafIndex);
+                        if (Comparer.Compare (currentKey, nextKey) != 0)
+                        { currentKey = nextKey; continue; }
                     }
+
+                    FindEdgeRight (currentKey, out leaf, out leafIndex);
+                    if (leafIndex >= leaf.KeyCount)
+                    {
+                        leaf = leaf.rightLeaf;
+                        if (leaf == null)
+                            break;
+                        leafIndex = 0;
+                    }
+                    currentKey = leaf.GetKey (leafIndex);
+                }
             }
 
             return result;

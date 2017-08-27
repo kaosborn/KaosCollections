@@ -240,6 +240,40 @@ namespace Kaos.Collections
             }
         }
 
+        internal bool FindEdgeRight (T key, out Leaf leaf, out int leafIndex)
+        {
+            bool isFound = false;
+            leafIndex = 0;
+
+            for (Node node = root;;)
+            {
+                int hi = node.KeyCount;
+
+                for (int lo = 0; lo != hi; )
+                {
+                    int mid = (lo + hi) >> 1;
+                    int diff = Comparer.Compare (key, node.GetKey (mid));
+                    if (diff < 0)
+                        hi = mid;
+                    else
+                    {
+                        if (diff == 0)
+                            isFound = true;
+                        lo = mid + 1;
+                    }
+                }
+
+                if (node is Branch branch)
+                    node = branch.GetChild (hi);
+                else
+                {
+                    leafIndex = hi;
+                    leaf = (Leaf) node;
+                    return isFound;
+                }
+            }
+        }
+
 
 #if NET35 || NET40 || SERIALIZE
         [NonSerialized]
