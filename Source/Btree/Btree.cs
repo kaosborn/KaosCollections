@@ -541,8 +541,8 @@ namespace Kaos.Collections
                 T anchor0 = i == 0 ? anchor : branch.GetKey (i - 1);
                 bool isRightmost0 = isRightmost && i < branch.ChildCount;
                 if (i < branch.KeyCount - 1)
-                    if (Comparer.Compare (branch.GetKey (i), branch.GetKey (i + 1)) >= 0)
-                        throw new InvalidOperationException ("Branch keys not ascending");
+                    if (Comparer.Compare (branch.GetKey (i), branch.GetKey (i + 1)) > 0)
+                        throw new InvalidOperationException ("Branch keys descending");
 
                 if (level + 1 < height)
                     visited = CheckBranch ((Branch) branch.GetChild (i), level+1, height, isRightmost0, anchor0, visited);
