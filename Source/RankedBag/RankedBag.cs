@@ -327,7 +327,7 @@ namespace Kaos.Collections
         /// </remarks>
         public int IndexOf (T item)
         {
-            return Find (item, out Leaf leaf, out int leafIndex, seekNext:false);
+            return FindEdgeLeftForIndex (item, out Leaf leaf, out int leafIndex);
         }
 
 
@@ -640,10 +640,7 @@ namespace Kaos.Collections
         {
             int stageFreeze = stage;
 
-            var path = new NodeVector (this, lower, seekNext:false);
-            var leaf = (Leaf) path.TopNode;
-            int ix = path.TopIndex;
-
+            FindEdgeLeft (lower, out Leaf leaf, out int ix);
             for (;;)
             {
                 if (ix < leaf.KeyCount)
@@ -681,10 +678,7 @@ namespace Kaos.Collections
         {
             int stageFreeze = stage;
 
-            var path = new NodeVector (this, lower, seekNext:false);
-            var leaf = (Leaf) path.TopNode;
-            int ix = path.TopIndex;
-
+            FindEdgeLeft (lower, out Leaf leaf, out int ix);
             for (;;)
             {
                 if (ix < leaf.KeyCount)

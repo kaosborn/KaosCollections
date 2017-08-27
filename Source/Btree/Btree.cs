@@ -180,7 +180,7 @@ namespace Kaos.Collections
             return node;
         }
 
-        internal int Find (T key, out Leaf leaf, out int leafIndex, bool seekNext)
+        internal int FindEdgeLeftForIndex (T key, out Leaf leaf, out int leafIndex)
         {
             bool isFound = false;
             int treeIndex = 0;
@@ -189,34 +189,19 @@ namespace Kaos.Collections
             for (Node node = root;;)
             {
                 int hi = node.KeyCount;
-                if (seekNext)
-                    for (int lo = 0; lo != hi; )
+                for (int lo = 0; lo != hi;)
+                {
+                    int mid = (lo + hi) >> 1;
+                    int diff = Comparer.Compare (key, node.GetKey (mid));
+                    if (diff <= 0)
                     {
-                        int mid = (lo + hi) >> 1;
-                        int diff = Comparer.Compare (key, node.GetKey (mid));
-                        if (diff < 0)
-                            hi = mid;
-                        else
-                        {
-                            if (diff == 0)
-                                isFound = true;
-                            lo = mid + 1;
-                        }
+                        if (diff == 0)
+                            isFound = true;
+                        hi = mid;
                     }
-                else
-                    for (int lo = 0; lo != hi; )
-                    {
-                        int mid = (lo + hi) >> 1;
-                        int diff = Comparer.Compare (key, node.GetKey (mid));
-                        if (diff <= 0)
-                        {
-                            if (diff == 0)
-                                isFound = true;
-                            hi = mid;
-                        }
-                        else
-                            lo = mid + 1;
-                    }
+                    else
+                        lo = mid + 1;
+                }
 
                 if (node is Branch branch)
                 {
@@ -235,7 +220,41 @@ namespace Kaos.Collections
                 {
                     leafIndex = hi;
                     leaf = (Leaf) node;
-                    return isFound ? treeIndex + hi : ~ (treeIndex + hi);
+                    return isFound ? treeIndex + hi : ~(treeIndex + hi);
+                }
+            }
+        }
+
+        internal bool FindEdgeLeft (T key, out Leaf leaf, out int leafIndex)
+        {
+            bool isFound = false;
+            leafIndex = 0;
+
+            for (Node node = root;;)
+            {
+                int hi = node.KeyCount;
+
+                for (int lo = 0; lo != hi;)
+                {
+                    int mid = (lo + hi) >> 1;
+                    int diff = Comparer.Compare (key, node.GetKey (mid));
+                    if (diff <= 0)
+                    {
+                        if (diff == 0)
+                            isFound = true;
+                        hi = mid;
+                    }
+                    else
+                        lo = mid + 1;
+                }
+
+                if (node is Branch branch)
+                    node = branch.GetChild (hi);
+                else
+                {
+                    leafIndex = hi;
+                    leaf = (Leaf) node;
+                    return isFound;
                 }
             }
         }
