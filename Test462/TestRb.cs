@@ -171,7 +171,9 @@ namespace Kaos.Test.Collections
         [TestMethod]
         public void UnitRb_ContainsAll()
         {
-            var bag = new RankedBag<int>() { 3, 5, 5, 5, 7 };
+            var bag = new RankedBag<int>() { Capacity = 4 };
+            foreach (var x in new int[] { 3, 5, 5, 5, 7, 7, 9 })
+                bag.Add (x);
 
             Assert.IsTrue (bag.ContainsAll (new int[] { }));
             Assert.IsTrue (bag.ContainsAll (new int[] { 5, 5 }));

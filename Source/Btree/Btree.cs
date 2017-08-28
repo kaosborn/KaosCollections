@@ -180,7 +180,7 @@ namespace Kaos.Collections
             return node;
         }
 
-        internal int FindEdgeLeftForIndex (T key, out Leaf leaf, out int leafIndex)
+        internal int FindEdgeForIndex (T key, out Leaf leaf, out int leafIndex, bool leftEdge=false)
         {
             bool isFound = false;
             int treeIndex = 0;
@@ -189,19 +189,34 @@ namespace Kaos.Collections
             for (Node node = root;;)
             {
                 int hi = node.KeyCount;
-                for (int lo = 0; lo != hi;)
-                {
-                    int mid = (lo + hi) >> 1;
-                    int diff = Comparer.Compare (key, node.GetKey (mid));
-                    if (diff <= 0)
+                if (leftEdge)
+                    for (int lo = 0; lo != hi;)
                     {
-                        if (diff == 0)
-                            isFound = true;
-                        hi = mid;
+                        int mid = (lo + hi) >> 1;
+                        int diff = Comparer.Compare (key, node.GetKey (mid));
+                        if (diff <= 0)
+                        {
+                            if (diff == 0)
+                                isFound = true;
+                            hi = mid;
+                        }
+                        else
+                            lo = mid + 1;
                     }
-                    else
-                        lo = mid + 1;
-                }
+                else
+                    for (int lo = 0; lo != hi;)
+                    {
+                        int mid = (lo + hi) >> 1;
+                        int diff = Comparer.Compare (key, node.GetKey (mid));
+                        if (diff < 0)
+                            hi = mid;
+                        else
+                        {
+                            if (diff == 0)
+                                isFound = true;
+                            lo = mid + 1;
+                        }
+                    }
 
                 if (node is Branch branch)
                 {
@@ -233,7 +248,6 @@ namespace Kaos.Collections
             for (Node node = root;;)
             {
                 int hi = node.KeyCount;
-
                 for (int lo = 0; lo != hi;)
                 {
                     int mid = (lo + hi) >> 1;
@@ -267,7 +281,6 @@ namespace Kaos.Collections
             for (Node node = root;;)
             {
                 int hi = node.KeyCount;
-
                 for (int lo = 0; lo != hi; )
                 {
                     int mid = (lo + hi) >> 1;

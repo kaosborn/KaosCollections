@@ -208,17 +208,29 @@ namespace Kaos.Collections
 
             if (Count < oBag.Count)
                 return false;
+            if (oBag.Count == 0)
+                return true;
 
-            foreach (T key in oBag.Distinct())
+            Leaf leaf1 = oBag.leftmostLeaf;
+            int leafIx1 = 0;
+            int treeIx1 = 0;
+            for (;;)
             {
-                //TODO optimize ContainsAll
-                int oCount = oBag.GetCount (key);
-                int tCount = GetCount (key);
-                if (tCount < oCount)
+                T key = leaf1.GetKey (leafIx1);
+                int treeIx2 = oBag.FindEdgeForIndex (key, out Leaf leaf2, out int leafIx2, leftEdge:false);
+                if (treeIx2 - treeIx1 > GetCount (key))
                     return false;
+                if (leafIx2 < leaf2.KeyCount)
+                { leaf1 = leaf2; leafIx1 = leafIx2; }
+                else
+                {
+                    leaf1 = leaf2.rightLeaf;
+                    if (leaf1 == null)
+                        return true;
+                    leafIx1 = 0;
+                }
+                treeIx1 = treeIx2;
             }
-
-            return true;
         }
 
 
@@ -338,7 +350,7 @@ namespace Kaos.Collections
         /// </remarks>
         public int IndexOf (T item)
         {
-            return FindEdgeLeftForIndex (item, out Leaf leaf, out int leafIndex);
+            return FindEdgeForIndex (item, out Leaf leaf, out int leafIndex, leftEdge:true);
         }
 
 
