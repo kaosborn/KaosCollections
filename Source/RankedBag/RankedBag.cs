@@ -51,6 +51,11 @@ namespace Kaos.Collections
 
         /// <summary>Initializes a new bag of sorted items that uses the supplied comparer.</summary>
         /// <param name="comparer">The comparer to use for sorting items.</param>
+        /// <example>
+        /// This program shows usage of a custom comparer combined with serialization.
+        /// Note: Serialization is not supported in .NET Standard 1.0.
+        /// <code source="..\Bench\RbExample05\RbExample05.cs" lang="cs" />
+        /// </example>
         /// <exception cref="InvalidOperationException">When <em>comparer</em> is <b>null</b> and no other comparer available.</exception>
         public RankedBag (IComparer<T> comparer) : base (comparer, new Leaf())
         { }
@@ -60,6 +65,11 @@ namespace Kaos.Collections
         /// <remarks>
         /// This constructor is a O(<em>n</em> log <em>n</em>) operation, where <em>n</em> is the size of <em>collection</em>.
         /// </remarks>
+        /// <example>
+        /// This program shows using his class for some basic statistical calcuations.
+        /// <code source="..\Bench\RbExample03\RbExample03.cs" lang="cs" />
+        /// </example>
+        /// <exception cref="InvalidOperationException">When <em>comparer</em> is <b>null</b> and no other comparer available.</exception>
         /// <exception cref="ArgumentNullException">When <em>collection</em> is <b>null</b>.</exception>
         public RankedBag (IEnumerable<T> collection) : this (collection, Comparer<T>.Default)
         { }
@@ -134,7 +144,7 @@ namespace Kaos.Collections
         /// </para>
         /// <para>
         /// This is a O(<em>m</em> log <em>n</em>) operation
-        /// where <em>m</em> is <em>count</em> and <em>n</em> is the size of the bag.
+        /// where <em>m</em> is <em>count</em> and <em>n</em> is the total item count of the bag.
         /// </para>
         /// </remarks>
         /// <exception cref="ArgumentException">When <em>count</em> is less than zero.</exception>
@@ -253,7 +263,8 @@ namespace Kaos.Collections
         /// <returns>The number of occurrences of the supplied item.</returns>
         /// <remarks>
         /// <para>
-        /// This operation is a O(log <em>n</em>) operation where <em>n</em> is the size of the bag.
+        /// This is a O(log <em>n</em>) operation
+        /// where <em>n</em> is the total item count.
         /// </para>
         /// </remarks>
         public int GetCount (T item)
@@ -275,8 +286,8 @@ namespace Kaos.Collections
         /// <returns>The number of distinct items in the bag.</returns>
         /// <remarks>
         /// This is a O(<em>m</em> log <em>n</em>) operation
-        /// where <em>m</em> is the number of distinct items
-        /// and <em>n</em> is the total count of the bag.
+        /// where <em>m</em> is the distinct item count
+        /// and <em>n</em> is the total item count.
         /// </remarks>
         public int GetDistinctCount()
         {
@@ -319,10 +330,10 @@ namespace Kaos.Collections
         /// <returns>The index of <em>item</em> if found; otherwise the bitwise complement of the insert point.</returns>
         /// <remarks>
         /// <para>
-        /// For duplicate items, the index of the oldest item added is returned.
+        /// For duplicate items, the lowest index is returned.
         /// </para>
         /// <para>
-        /// This operation is a O(log <em>n</em>) operation.
+        /// This is a O(log <em>n</em>) operation.
         /// </para>
         /// </remarks>
         public int IndexOf (T item)
@@ -336,7 +347,7 @@ namespace Kaos.Collections
         /// <returns><b>true</b> if <em>item</em> was found and removed; otherwise <b>false</b>.</returns>
         /// <remarks>
         /// <para>
-        /// For duplicate items, the oldest item added is deleted.
+        /// For duplicate items, the lowest indexed item is deleted.
         /// </para>
         /// <para>
         /// This is a O(log <em>n</em>) operation.
@@ -359,11 +370,12 @@ namespace Kaos.Collections
         /// <returns><b>true</b> if at least one <em>item</em> was found and removed; otherwise <b>false</b>.</returns>
         /// <remarks>
         /// <para>
-        /// For duplicate items, the oldest items added are deleted first.
+        /// For duplicate items, lowest indexed items are deleted first.
         /// </para>
         /// <para>
         /// This is a O(<em>m</em> log <em>n</em>) operation
-        /// where <em>m</em> is <em>count</em> and <em>n</em> is the size of the bag.
+        /// where <em>m</em> is <em>count</em>
+        /// and <em>n</em> is the total item count.
         /// </para>
         /// </remarks>
         /// <exception cref="ArgumentException">When <em>count</em> is less than zero.</exception>
