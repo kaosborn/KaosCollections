@@ -281,16 +281,11 @@ namespace Kaos.Collections
         /// </remarks>
         public int GetCount (T item)
         {
-            int result = 0;
-            var path1 = new NodeVector (this, item, seekNext:false);
-
-            if (path1.IsFound)
-            {
-                var path2 = new NodeVector (this, item, seekNext:true);
-                result = path2.GetIndex() - path1.GetIndex();
-            }
-
-            return result;
+            int treeIx1 = FindEdgeForIndex (item, out Leaf leaf1, out int leafIx1, leftEdge:true);
+            if (treeIx1 < 0)
+                return 0;
+            else
+                return FindEdgeForIndex (item, out Leaf leaf2, out int leafIx2, leftEdge:false) - treeIx1;
         }
 
 
