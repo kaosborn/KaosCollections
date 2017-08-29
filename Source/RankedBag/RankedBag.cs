@@ -382,7 +382,7 @@ namespace Kaos.Collections
         /// <returns><b>true</b> if at least one <em>item</em> was found and removed; otherwise <b>false</b>.</returns>
         /// <remarks>
         /// <para>
-        /// For duplicate items, lowest indexed items are deleted first.
+        /// For duplicate items, lowest indexed items are removed first.
         /// </para>
         /// <para>
         /// This is a O(<em>m</em> log <em>n</em>) operation
@@ -395,9 +395,17 @@ namespace Kaos.Collections
         {
             if (count < 0)
                 throw new ArgumentException ("Must be non-negative.", nameof (count));
+            if (count == 0)
+                return false;
 
-            int actual;
-            for (actual = 0; actual < count; ++actual)
+            int treeDels = GetCount (item);
+            if (treeDels == 0)
+                return false;
+            if (treeDels > count)
+                treeDels = count;
+
+            StageBump();
+            while (treeDels > 0)
             {
                 var path = new NodeVector (this, item, seekNext:false);
                 if (! path.IsFound)
@@ -406,9 +414,16 @@ namespace Kaos.Collections
                 if (path.TopIndex >= path.TopNode.KeyCount)
                     path.TraverseRight();
 
-                Remove2 (path);
+                int leafIx = path.TopIndex;
+                var leaf = (Leaf) path.TopNode;
+
+                int leafDels = Math.Min (treeDels, leaf.KeyCount - leafIx);
+                leaf.RemoveKeys (leafIx, leafDels);
+                path.ChangePathWeight (-leafDels);
+                Balance (path);
+                treeDels -= leafDels;
             }
-            return actual > 0;
+            return true;
         }
 
 

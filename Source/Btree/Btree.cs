@@ -27,7 +27,7 @@ namespace Kaos.Collections
 
         internal Node root;
         internal Leaf rightmostLeaf;
-        internal readonly Leaf leftmostLeaf;
+        internal Leaf leftmostLeaf;
         internal IComparer<T> keyComparer;
         internal int maxKeyCount;
         internal int stage = 0;
@@ -323,29 +323,38 @@ namespace Kaos.Collections
         {
             StageBump();
 
+            ((Leaf) path.TopNode).Remove (path.TopIndex);
+            path.DecrementPathWeight();
+            Balance (path);
+        }
+
+
+        internal void Balance (NodeVector path)
+        {
             int leafIndex = path.TopIndex;
             var leaf = (Leaf) path.TopNode;
-
-            leaf.Remove (leafIndex);
-            path.DecrementPathWeight();
 
             if (leafIndex == 0)
                 if (leaf.KeyCount != 0)
                     path.SetPivot (path.TopNode.Key0);
                 else
                 {
-                    Debug.Assert (leaf.rightLeaf==null, "only rightmost leaf should ever be empty");
-
-                    // Prune empty leaf unless it is leftmost (therefore the only leaf).
-                    if (leaf.leftLeaf != null)
+                    if (leaf.rightLeaf != null)
+                    {
+                        leaf.rightLeaf.leftLeaf = leaf.leftLeaf;
+                        if (leaf.leftLeaf != null)
+                            leaf.leftLeaf.rightLeaf = leaf.rightLeaf;
+                        else
+                            leftmostLeaf = leaf.rightLeaf;
+                        path.Demote();
+                    }
+                    else if (leaf.leftLeaf != null)
                     {
                         leaf.leftLeaf.rightLeaf = leaf.rightLeaf;
-
                         if (leaf.rightLeaf != null)
                             leaf.rightLeaf.leftLeaf = leaf.leftLeaf;
                         else
                             rightmostLeaf = leaf.leftLeaf;
-
                         path.Demote();
                     }
 
