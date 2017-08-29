@@ -371,7 +371,14 @@ namespace Kaos.Collections
             if (! path.IsFound)
                 return false;
 
-            Remove2 (path);
+            StageBump();
+
+            if (path.TopIndex >= path.TopNode.KeyCount)
+                path.TraverseRight();
+            ((Leaf) path.TopNode).RemoveKey (path.TopIndex);
+            path.DecrementPathWeight();
+            Balance (path);
+
             return true;
         }
 
@@ -467,8 +474,12 @@ namespace Kaos.Collections
             if (index < 0 || index >= Count)
                 throw new ArgumentOutOfRangeException (nameof (index), "Argument is out of the range of valid values.");
 
+            StageBump();
+
             var path = NodeVector.CreateForIndex (this, index);
-            Remove2 (path);
+            ((Leaf) path.TopNode).RemoveKey (path.TopIndex);
+            path.DecrementPathWeight();
+            Balance (path);
         }
 
 
