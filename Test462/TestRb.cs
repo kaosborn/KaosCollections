@@ -478,7 +478,10 @@ namespace Kaos.Test.Collections
         public void UnitRb_Remove1()
         {
             var bag0 = new RankedBag<int>();
-            var bag = new RankedBag<int> (new int[] { 3, 5, 5, 7, 7 });
+            var bag = new RankedBag<int>() { Capacity = 4 };
+
+            foreach (int ii in new int[] { 3, 5, 5, 7, 7, 7, 9 })
+                bag.Add (ii);
 
             var rem0 = bag0.Remove (0);
             Assert.IsFalse (rem0);
@@ -486,12 +489,16 @@ namespace Kaos.Test.Collections
             var rem2 = bag.Remove (2);
             Assert.IsFalse (rem2);
 
+            var rem7 = bag.Remove (7);
+            Assert.IsTrue (rem7);
+            Assert.AreEqual (6, bag.Count);
+
             var rem5 = bag.Remove (5);
             Assert.IsTrue (rem5);
-            Assert.AreEqual (4, bag.Count);
+            Assert.AreEqual (5, bag.Count);
 
-            var rem9 = bag.Remove (9);
-            Assert.IsFalse (rem9);
+            var rem10 = bag.Remove (10);
+            Assert.IsFalse (rem10);
         }
 
 
@@ -499,7 +506,10 @@ namespace Kaos.Test.Collections
         public void UnitRb_Remove2()
         {
             var bag0 = new RankedBag<int>();
-            var bag = new RankedBag<int> (new int[] { 3, 5, 5, 7, 7 });
+            var bag = new RankedBag<int>() { Capacity = 4 };
+
+            foreach(int ii in new int[] { 3, 5, 5, 7, 7, 7, 9 })
+                bag.Add (ii);
 
             var rem0 = bag0.Remove (0, 1);
             Assert.IsFalse (rem0);
@@ -507,15 +517,15 @@ namespace Kaos.Test.Collections
             var rem2 = bag.Remove (2, 2);
             Assert.IsFalse (rem2);
 
-            var rem5 = bag.Remove (5, 3);
-            Assert.IsTrue (rem5);
-            Assert.AreEqual (3, bag.Count);
-
             var rem7 = bag.Remove (7, 1);
             Assert.IsTrue (rem7);
-            Assert.AreEqual (2, bag.Count);
+            Assert.AreEqual (6, bag.Count);
 
-            var rem9 = bag.Remove (9);
+            var rem5 = bag.Remove (5, 3);
+            Assert.IsTrue (rem5);
+            Assert.AreEqual (4, bag.Count);
+
+            var rem9 = bag.Remove (10);
             Assert.IsFalse (rem9);
         }
 
@@ -524,7 +534,10 @@ namespace Kaos.Test.Collections
         public void UnitRb_RemoveAll()
         {
             var bag0 = new RankedBag<int>();
-            var bag = new RankedBag<int> (new int[] { 3, 5, 5, 7, 7 });
+            var bag = new RankedBag<int>() { Capacity = 4 };
+
+            foreach (var ii in new int[] { 3, 5, 5, 7, 7 })
+                bag.Add (ii);
 
             int rem0 = bag0.RemoveAll (new int[] { 2 });
             Assert.AreEqual (0, rem0);
@@ -570,6 +583,12 @@ namespace Kaos.Test.Collections
                     Assert.IsFalse (bag.Contains (i3));
                 else
                     Assert.IsTrue (bag.Contains (i3));
+
+            var bag2 = new RankedBag<int>() { Capacity = 4 };
+            for (int ii = 0; ii < 8; ++ii)
+                bag2.Add (ii);
+            bag2.RemoveAt (3);
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (new int[] { 0, 1, 2, 4, 5, 6, 7 }, bag2));
         }
 
 
@@ -600,7 +619,10 @@ namespace Kaos.Test.Collections
         public void UnitRb_RetainAll()
         {
             var bag0 = new RankedBag<int>();
-            var bag = new RankedBag<int> (new int[] { 3, 4, 5, 5, 6, 6, 7, 7, 8 });
+            var bag = new RankedBag<int>() { Capacity = 4 };
+
+            foreach (int ii in new int[] { 3, 4, 5, 5, 6, 6, 7, 7, 8 })
+                bag.Add (ii);
 
             bag0.RetainAll (new int[] { 2, 4 });
             Assert.AreEqual (0, bag0.Count);
