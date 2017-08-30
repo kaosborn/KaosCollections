@@ -620,6 +620,7 @@ namespace Kaos.Test.Collections
         {
             var bag0 = new RankedBag<int>();
             var bag1 = new RankedBag<int>() { Capacity = 4 };
+            var bag2 = new RankedBag<int>() { 3, 5, 7 };
 
             foreach (int ii in new int[] { 3, 4, 5, 5, 6, 6, 7, 7, 8 })
                 bag1.Add (ii);
@@ -631,6 +632,10 @@ namespace Kaos.Test.Collections
             int del1 = bag1.RetainAll (new int[] { 1, 4, 6, 6, 9 });
             Assert.AreEqual (6, del1);
             Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (new int[] { 4, 6, 6 }, bag1));
+
+            int del2 = bag2.RetainAll (new int[] { });
+            Assert.AreEqual (3, del2);
+            Assert.AreEqual (0, bag2.Count);
         }
 
         #endregion

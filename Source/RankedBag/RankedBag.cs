@@ -377,6 +377,27 @@ namespace Kaos.Collections
             return true;
         }
 
+        private void Delete (T item, int count)
+        {
+            while (count > 0)
+            {
+                var path = new NodeVector (this, item, seekNext:false);
+                if (! path.IsFound)
+                    break;
+
+                if (path.TopIndex >= path.TopNode.KeyCount)
+                    path.TraverseRight();
+
+                int leafIx = path.TopIndex;
+                var leaf = (Leaf) path.TopNode;
+
+                int leafDels = Math.Min (count, leaf.KeyCount - leafIx);
+                leaf.RemoveKeys (leafIx, leafDels);
+                path.ChangePathWeight (-leafDels);
+                Balance (path);
+                count -= leafDels;
+            }
+        }
 
         /// <summary>Removes a supplied number of items from the bag.</summary>
         /// <param name="item">The item to remove.</param>
@@ -400,31 +421,14 @@ namespace Kaos.Collections
             if (count == 0)
                 return false;
 
-            int treeDels = GetCount (item);
-            if (treeDels == 0)
+            int toDel = GetCount (item);
+            if (toDel == 0)
                 return false;
-            if (treeDels > count)
-                treeDels = count;
+            if (toDel > count)
+                toDel = count;
 
             StageBump();
-            while (treeDels > 0)
-            {
-                var path = new NodeVector (this, item, seekNext:false);
-                if (! path.IsFound)
-                    break;
-
-                if (path.TopIndex >= path.TopNode.KeyCount)
-                    path.TraverseRight();
-
-                int leafIx = path.TopIndex;
-                var leaf = (Leaf) path.TopNode;
-
-                int leafDels = Math.Min (treeDels, leaf.KeyCount - leafIx);
-                leaf.RemoveKeys (leafIx, leafDels);
-                path.ChangePathWeight (-leafDels);
-                Balance (path);
-                treeDels -= leafDels;
-            }
+            Delete (item, toDel);
             return true;
         }
 
@@ -503,25 +507,42 @@ namespace Kaos.Collections
             if (other == null)
                 throw new ArgumentNullException (nameof (other));
 
-            int removed = 0;
+            int result = 0;
             if (Count > 0)
             {
                 StageBump();
-                var oBag = other as RankedBag<T> ?? new RankedBag<T> (other, Comparer);
 
-                foreach (var key in Distinct())
+                var oBag = other as RankedBag<T> ?? new RankedBag<T> (other, Comparer);
+                if (oBag.Count == 0)
+                { result = Count; Clear(); return result; }
+
+                int treeIx1 = 0;
+                T key2 = leftmostLeaf.Key0;
+
+                for (;;)
                 {
-                    int oCount = oBag.GetCount (key);
-                    int tCount = GetCount (key);
-                    int diff = tCount - oCount;
-                    if (diff > 0)
+                    T key1 = key2;
+                    int treeIx2 = FindEdgeForIndex (key1, out Leaf leaf2, out int leafIx2, leftEdge:false);
+                    int toDel = (treeIx2 - treeIx1) - oBag.GetCount (key1);
+                    if (toDel < 0) toDel = 0;
+
+                    if (leafIx2 < leaf2.KeyCount)
+                        key2 = leaf2.GetKey (leafIx2);
+                    else
                     {
-                        Remove (key, diff);
-                        removed += diff;
+                        leaf2 = leaf2.rightLeaf;
+                        if (leaf2 != null)
+                            key2 = leaf2.Key0;
                     }
+
+                    Delete (key1, toDel);
+                    result += toDel;
+                    if (leaf2 == null)
+                        break;
+                    treeIx1 = treeIx2 - toDel;
                 }
             }
-            return removed;
+            return result;
         }
 
         #endregion
