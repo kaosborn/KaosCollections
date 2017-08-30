@@ -111,7 +111,7 @@ namespace Kaos.Collections
         /// <summary>Adds an item to the bag.</summary>
         /// <param name="item">The item to add.</param>
         void ICollection<T>.Add (T item)
-        { AddKey (item, new NodeVector (this, item, seekNext:true)); }
+        { AddKey (item, new NodeVector (this, item, leftEdge:false)); }
 
         /// <summary>Adds an item to the bag.</summary>
         /// <param name="item">The item to add.</param>
@@ -126,7 +126,7 @@ namespace Kaos.Collections
         /// <exception cref="ArgumentException">When no comparer is available.</exception>
         public bool Add (T item)
         {
-            var path = new NodeVector (this, item, seekNext:true);
+            var path = new NodeVector (this, item, leftEdge:false);
             AddKey (item, path);
             return ! path.IsFound;
         }
@@ -362,7 +362,7 @@ namespace Kaos.Collections
         /// </remarks>
         public bool Remove (T item)
         {
-            var path = new NodeVector (this, item, seekNext:false);
+            var path = new NodeVector (this, item, leftEdge:true);
             if (! path.IsFound)
                 return false;
 
@@ -381,7 +381,7 @@ namespace Kaos.Collections
         {
             while (count > 0)
             {
-                var path = new NodeVector (this, item, seekNext:false);
+                var path = new NodeVector (this, item, leftEdge:true);
                 if (! path.IsFound)
                     break;
 

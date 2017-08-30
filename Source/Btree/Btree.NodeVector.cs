@@ -63,26 +63,12 @@ namespace Kaos.Collections
             }
 
 
-            public NodeVector (Btree<T> tree, T key, bool seekNext) : this (tree)
+            public NodeVector (Btree<T> tree, T key, bool leftEdge) : this (tree)
             {
                 for (Node node = tree.root;;)
                 {
                     int hi = node.KeyCount;
-                    if (seekNext)
-                        for (int lo = 0; lo != hi; )
-                        {
-                            int mid = (lo + hi) >> 1;
-                            int diff = tree.Comparer.Compare (key, node.GetKey (mid));
-                            if (diff < 0)
-                                hi = mid;
-                            else
-                            {
-                                if (diff == 0)
-                                    this.IsFound = true;
-                                lo = mid + 1;
-                            }
-                        }
-                    else
+                    if (leftEdge)
                         for (int lo = 0; lo != hi; )
                         {
                             int mid = (lo + hi) >> 1;
@@ -95,6 +81,20 @@ namespace Kaos.Collections
                             }
                             else
                                 lo = mid + 1;
+                        }
+                    else
+                        for (int lo = 0; lo != hi; )
+                        {
+                            int mid = (lo + hi) >> 1;
+                            int diff = tree.Comparer.Compare (key, node.GetKey (mid));
+                            if (diff < 0)
+                                hi = mid;
+                            else
+                            {
+                                if (diff == 0)
+                                    this.IsFound = true;
+                                lo = mid + 1;
+                            }
                         }
 
                     this.indexStack.Add (hi);
