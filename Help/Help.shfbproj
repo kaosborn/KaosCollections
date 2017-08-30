@@ -53,8 +53,16 @@
       <NamespaceSummaryItem name="Kaos.Collections" isDocumented="True">The Kaos.Collections namespace contains the classes RankedDictionary, RankedSet, and their supporting supporting classes.
 These classes closely emulate the API of the Microsoft's classes they are based on while extending capability and improving performance in many common scenarios.</NamespaceSummaryItem>
     </NamespaceSummaries>
-    <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected</VisibleItems>
-    <PlugInConfigurations />
+    <VisibleItems>ExplicitInterfaceImplementations, InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected</VisibleItems>
+    <PlugInConfigurations>
+      <PlugInConfig id="Member ID Fix-Ups" enabled="True">
+        <configuration>
+  <expressions>
+    <expression matchExpression="{TKey,TValue}" replacementValue="{TKey@TValue}" matchAsRegEx="false" />
+  </expressions>
+</configuration>
+      </PlugInConfig>
+    </PlugInConfigurations>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
 			 the build.  The others are optional common platform types that may appear. -->
