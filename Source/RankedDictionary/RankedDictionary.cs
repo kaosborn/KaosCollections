@@ -207,8 +207,10 @@ namespace Kaos.Collections
         ICollection<TKey> IDictionary<TKey,TValue>.Keys => (ICollection<TKey>) Keys;
 
 #if ! NET35 && ! NET40
+        /// <summary>Gets a collection containing the keys in the dictionary.</summary>
         IEnumerable<TKey> IReadOnlyDictionary<TKey,TValue>.Keys => Keys;
 
+        /// <summary>Gets a collection containing the values in the dictionary.</summary>
         IEnumerable<TValue> IReadOnlyDictionary<TKey,TValue>.Values => Values;
 #endif
 
@@ -943,6 +945,8 @@ namespace Kaos.Collections
         /// <returns>An enumerator for the dictionary.</returns>
         public Enumerator GetEnumerator() => new Enumerator (this);
 
+        /// <summary>Gets an enumerator that iterates thru the dictionary.</summary>
+        /// <returns>An enumerator for the dictionary.</returns>
         IEnumerator<KeyValuePair<TKey,TValue>> IEnumerable<KeyValuePair<TKey,TValue>>.GetEnumerator()
             => new Enumerator (this);
 
