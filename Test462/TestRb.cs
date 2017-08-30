@@ -619,16 +619,18 @@ namespace Kaos.Test.Collections
         public void UnitRb_RetainAll()
         {
             var bag0 = new RankedBag<int>();
-            var bag = new RankedBag<int>() { Capacity = 4 };
+            var bag1 = new RankedBag<int>() { Capacity = 4 };
 
             foreach (int ii in new int[] { 3, 4, 5, 5, 6, 6, 7, 7, 8 })
-                bag.Add (ii);
+                bag1.Add (ii);
 
-            bag0.RetainAll (new int[] { 2, 4 });
+            int del0 = bag0.RetainAll (new int[] { 2, 4 });
+            Assert.AreEqual (0, del0);
             Assert.AreEqual (0, bag0.Count);
 
-            bag.RetainAll (new int[] { 1, 4, 6, 6, 9 });
-            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (new int[] { 4, 6, 6 }, bag));
+            int del1 = bag1.RetainAll (new int[] { 1, 4, 6, 6, 9 });
+            Assert.AreEqual (6, del1);
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (new int[] { 4, 6, 6 }, bag1));
         }
 
         #endregion
@@ -683,6 +685,66 @@ namespace Kaos.Test.Collections
 
             var d5 = new System.Collections.Generic.List<int> (bag2.ElementsFrom (9));
             Assert.AreEqual (0, d5.Count);
+        }
+
+
+
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRb_EnumeratorOverflow_InvalidOperation()
+        {
+            var bag = new RankedBag<int>() { Capacity = 4 };
+            for (int ii=0; ii<10; ++ii) bag.Add (ii);
+
+            var iter = bag.GetEnumerator();
+            while (iter.MoveNext())
+            { }
+
+            var val = ((System.Collections.IEnumerator) iter).Current;
+        }
+
+        [TestMethod]
+        public void UnitRb_GetEnumerator()
+        {
+            var bag = new RankedBag<int>() { Capacity = 4 };
+            int k1 = 0, k2 = 0;
+            for (int ii=0; ii<10; ++ii) bag.Add (ii);
+
+            var iter = bag.GetEnumerator();
+            while (iter.MoveNext())
+            {
+                int val = iter.Current;
+                Assert.AreEqual (k1, val);
+                ++k1;
+            }
+            Assert.AreEqual (10, k1);
+
+            bool isValid = iter.MoveNext();
+            Assert.IsFalse (isValid);
+
+            ((System.Collections.IEnumerator) iter).Reset();
+            while (iter.MoveNext())
+            {
+                int val = iter.Current;
+                Assert.AreEqual (k2, val);
+                ++k2;
+            }
+            Assert.AreEqual (10, k2);
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRb_EnumHotUpdate()
+        {
+            var bag = new RankedBag<int>() { Capacity = 4 };
+            for (int ii=0; ii<10; ++ii) bag.Add (ii);
+
+            int n = 0;
+            foreach (int kv in bag)
+            {
+                if (++n == 2)
+                    bag.Add (49);
+            }
         }
 
         #endregion
