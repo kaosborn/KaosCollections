@@ -736,9 +736,7 @@ namespace Kaos.Collections
         /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
         public int IndexOf (T item)
         {
-            var path = new NodeVector (this, item);
-            int result = path.GetIndex();
-            return path.IsFound ? result : ~result;
+            return FindEdgeForIndex (item, out Leaf leaf, out int leafIndex, leftEdge:true);
         }
 
 

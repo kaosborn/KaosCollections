@@ -831,9 +831,7 @@ namespace Kaos.Collections
             if (key == null)
                 throw new ArgumentNullException (nameof (key));
 
-            var path = new NodeVector (this, key);
-            int result = path.GetIndex();
-            return path.IsFound ? result : ~result;
+            return FindEdgeForIndex (key, out Leaf leaf, out int leafIndex, leftEdge:true);
         }
 
 
