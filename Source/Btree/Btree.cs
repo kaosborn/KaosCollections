@@ -220,7 +220,7 @@ namespace Kaos.Collections
 
                 if (node is Branch branch)
                 {
-                    if (hi <= branch.KeyCount / 2)
+                    if (hi <= branch.KeyCount >> 1)
                         for (int ix = 0; ix < hi; ++ix)
                             treeIndex += branch.GetChild (ix).Weight;
                     else

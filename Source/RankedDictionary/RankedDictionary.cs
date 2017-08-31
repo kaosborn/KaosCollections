@@ -857,21 +857,25 @@ namespace Kaos.Collections
         /// <summary>Gets the value and index associated with the supplied key.</summary>
         /// <param name="key">The key of the value and index to get.</param>
         /// <param name="value">If the key is found, its value is placed here; otherwise it will be loaded with the default value.</param>
-        /// <param name="index">If the key is found, its index is placed here; otherwise it will be -1.</param>
+        /// <param name="index">If the key is found, its index is placed here; otherwise it will be less than zero.</param>
         /// <returns><b>true</b> if supplied key is found; otherwise <b>false</b>.</returns>
         /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
         public bool TryGetValueAndIndex (TKey key, out TValue value, out int index)
         {
-            var path = new NodeVector (this, key);
-            if (! path.IsFound)
+            index = FindEdgeForIndex (key, out Leaf leaf, out int leafIx, leftEdge:true);
+            if (index < 0)
             {
                 value = default (TValue);
-                index = -1;
                 return false;
             }
 
-            value = ((PairLeaf) path.TopNode).GetValue (path.TopIndex);
-            index = path.GetIndex();
+            if (leafIx >= leaf.KeyCount)
+            {
+                leaf = leaf.rightLeaf;
+                leafIx = 0;
+            }
+
+            value = ((PairLeaf) leaf).GetValue (leafIx);
             return true;
         }
 
