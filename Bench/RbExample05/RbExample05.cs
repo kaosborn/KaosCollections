@@ -10,8 +10,7 @@ namespace ExampleApp
     [Serializable]
     public class ExamComparer : Comparer<Exam>
     {
-        public override int Compare (Exam x, Exam y)
-        { return x.Score - y.Score; }
+        public override int Compare (Exam x1, Exam x2) => x1.Score - x2.Score;
     }
 
     [Serializable]
@@ -50,31 +49,31 @@ namespace ExampleApp
             bag1.Add (new Exam (3, "Paul"));
             bag1.Add (new Exam (5, "John"));
 
-            Console.WriteLine ("Where comparer returns equality, items will retain sequence added:");
+            Console.WriteLine ("Where comparer returns equality, items retain sequence added:");
             foreach (var item in bag1)
                 Console.WriteLine ("  " + item);
 
             string fileName = "Exams.bin";
             IFormatter formatter = new BinaryFormatter();
 
-            SerializePersons (fileName, bag1, formatter);
+            SerializeExams (fileName, bag1, formatter);
             Console.WriteLine ("\nWrote " + bag1.Count + " items to file '" + fileName + "'.");
             Console.WriteLine ();
 
-            RankedBag<Exam> bag2 = DeserializePersons (fileName, formatter);
+            RankedBag<Exam> bag2 = DeserializeExams (fileName, formatter);
             Console.WriteLine ("Read back " + bag2.Count + " items:");
 
             foreach (var p2 in bag2)
                 Console.WriteLine ("  " + p2);
         }
 
-        static void SerializePersons (string fn, RankedBag<Exam> set, IFormatter formatter)
+        static void SerializeExams (string fn, RankedBag<Exam> set, IFormatter formatter)
         {
             using (var fs = new FileStream (fn, FileMode.Create))
             { formatter.Serialize (fs, set); }
         }
 
-        static RankedBag<Exam> DeserializePersons (string fn, IFormatter formatter)
+        static RankedBag<Exam> DeserializeExams (string fn, IFormatter formatter)
         {
             using (var fs = new FileStream (fn, FileMode.Open))
             { return (RankedBag<Exam>) formatter.Deserialize (fs); }
@@ -82,7 +81,7 @@ namespace ExampleApp
 
         /* Output:
 
-        Where comparer returns equality, items will retain sequence added:
+        Where comparer returns equality, items retain sequence added:
           2, Ned
           2, Betty
           3, Paul
