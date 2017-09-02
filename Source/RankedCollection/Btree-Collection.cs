@@ -19,7 +19,7 @@ namespace Kaos.Collections
             var leaf = (Leaf) path.TopNode;
             if (leaf.KeyCount < maxKeyCount)
             {
-                leaf.Insert (path.TopIndex, item);
+                leaf.InsertKey (path.TopIndex, item);
                 return true;
             }
 
@@ -47,7 +47,7 @@ namespace Kaos.Collections
                 // Left-side insert: Copy right side to the split leaf.
                 newLeaf.Add (leaf, splitIndex - 1, leaf.KeyCount);
                 leaf.Truncate (splitIndex - 1);
-                leaf.Insert (pathIndex, item);
+                leaf.InsertKey (pathIndex, item);
             }
             else
             {

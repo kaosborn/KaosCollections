@@ -45,8 +45,8 @@ namespace Kaos.Collections
             {
                 System.Diagnostics.Debug.Assert (count > 0);
 
-                int startCount = keys.Count,
-                    add0 = count + index - startCount;
+                int startCount = keys.Count;
+                int add0 = count + index - startCount;
 
                 if (add0 >= 0)
                 {
@@ -191,12 +191,6 @@ namespace Kaos.Collections
             {
                 for (int ix = 0; ix < rightLeaf.KeyCount; ++ix)
                     keys.Add (rightLeaf.keys[ix]);
-            }
-
-            public void Insert (int index, T key)
-            {
-                Debug.Assert (index >= 0 && index <= keys.Count);
-                InsertKey (index, key);
             }
 
             public virtual void Remove (int index)
