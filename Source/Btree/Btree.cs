@@ -32,14 +32,12 @@ namespace Kaos.Collections
         internal int maxKeyCount;
         internal int stage = 0;
 
-        /// <exclude />
         internal Btree (Leaf startLeaf)
         {
             this.maxKeyCount = DefaultOrder - 1;
             this.root = this.rightmostLeaf = this.leftmostLeaf = startLeaf;
         }
 
-        /// <exclude />
         internal Btree (IComparer<T> comparer, Leaf startLeaf) : this (startLeaf)
         {
             this.keyComparer = comparer ?? Comparer<T>.Default;

@@ -12,7 +12,6 @@ using System.Diagnostics;
 
 namespace Kaos.Collections
 {
-    /// <exclude />
     internal class IDictionaryDebugView<K,V>
     {
         private readonly IDictionary<K,V> target;
@@ -37,7 +36,6 @@ namespace Kaos.Collections
     }
 
 
-    /// <exclude />
     internal class ICollectionKeysDebugView<K,V>
     {
         private readonly ICollection<K> target;
@@ -62,7 +60,6 @@ namespace Kaos.Collections
     }
 
 
-    /// <exclude />
     internal class ICollectionValuesDebugView<K,V>
     {
         private readonly ICollection<V> target;

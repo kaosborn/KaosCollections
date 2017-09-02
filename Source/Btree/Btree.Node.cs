@@ -89,7 +89,6 @@ namespace Kaos.Collections
         /// <remarks>
         /// Contains copies of the first key ('anchor') of every leaf except the leftmost.
         /// </remarks>
-        /// <exclude />
         internal sealed class Branch : Node
         {
             private readonly List<Node> childNodes;

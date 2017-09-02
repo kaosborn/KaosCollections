@@ -18,7 +18,6 @@ namespace Kaos.Collections
         /// Provides traversal path to existing key or insertion point for non-existing key
         /// along with various helper methods.
         /// </remarks>
-        /// <exclude />
         internal class NodeVector
         {
             private readonly Btree<T> owner;

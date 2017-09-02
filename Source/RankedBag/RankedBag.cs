@@ -21,9 +21,12 @@ namespace Kaos.Collections
     /// This class is similar to a RankedSet but with duplicate items allowed.
     /// Duplicate items are each stored individually rather than
     /// once with a count of occurrences.
-    /// This allows RankedBag to be used as a multimap as well as a multiset data structure.
+    /// This allows RankedBag to be used as a multimap as well as the more typical multiset.
     /// Multimap usage requires supplying a user-defined comparer to the constructor.
     /// </para>
+    /// <example>
+    /// <code source="..\Bench\RbExample01\RbExample01.cs" lang="cs" />
+    /// </example>
     /// </remarks>
     [DebuggerTypeProxy (typeof (ICollectionDebugView<>))]
     [DebuggerDisplay ("Count = {Count}")]
@@ -52,8 +55,13 @@ namespace Kaos.Collections
         /// <summary>Initializes a new bag of sorted items that uses the supplied comparer.</summary>
         /// <param name="comparer">The comparer to use for sorting items.</param>
         /// <example>
+        /// <para>
         /// This program shows usage of a custom comparer combined with serialization.
+        /// Here, this class is used as a multiset.
+        /// </para>
+        /// <para>
         /// Note: Serialization is not supported in .NET Standard 1.0.
+        /// </para>
         /// <code source="..\Bench\RbExample05\RbExample05.cs" lang="cs" />
         /// </example>
         /// <exception cref="InvalidOperationException">When <em>comparer</em> is <b>null</b> and no other comparer available.</exception>
@@ -66,7 +74,7 @@ namespace Kaos.Collections
         /// This constructor is a O(<em>n</em> log <em>n</em>) operation, where <em>n</em> is the size of <em>collection</em>.
         /// </remarks>
         /// <example>
-        /// This program shows using his class for some basic statistical calcuations.
+        /// This program shows using this class for some basic statistical calcuations.
         /// <code source="..\Bench\RbExample03\RbExample03.cs" lang="cs" />
         /// </example>
         /// <exception cref="InvalidOperationException">When <em>comparer</em> is <b>null</b> and no other comparer available.</exception>
@@ -80,6 +88,10 @@ namespace Kaos.Collections
         /// <remarks>
         /// This constructor is a O(<em>n</em> log <em>n</em>) operation, where <em>n</em> is the size of <em>collection</em>.
         /// </remarks>
+        /// <example>
+        /// This program shows using this class as a multimap.
+        /// <code source="..\Bench\RbExample02\RbExample02.cs" lang="cs" />
+        /// </example>
         /// <exception cref="ArgumentNullException">When <em>collection</em> is <b>null</b>.</exception>
         /// <exception cref="InvalidOperationException">When <em>comparer</em> is <b>null</b> and no other comparer available.</exception>
         public RankedBag (IEnumerable<T> collection, IComparer<T> comparer) : this (comparer)
@@ -490,17 +502,23 @@ namespace Kaos.Collections
         /// where <em>m</em> is the count of items removed and <em>n</em> is the size of the bag.
         /// </remarks>
         /// <exception cref="ArgumentNullException">When <em>match</em> is <b>null</b>.</exception>
+        /// <exception cref="InvalidOperationException">When the collection is updated from the supplied predicate.</exception>
         public int RemoveWhere (Predicate<T> match)
         {
             return RemoveWhere2 (match);
         }
 
 
-        /// <summary>
-        ///  Remove any items of the bag that are not in the supplied collection.
-        /// </summary>
+        /// <summary>Remove any items of the bag that are not in the supplied collection.</summary>
         /// <param name="other">The items to retain.</param>
-        /// <returns>The number of items removed from the bag.</returns>
+        /// <remarks>
+        /// Cardinality is respected by this operation so that
+        /// the occurrences of each item removed is the count of that item in <em>other</em>.
+        /// </remarks>
+        /// <returns>The total number of items removed from the bag.</returns>
+        /// <example>
+        /// <code source="..\Bench\RbExample01\RbExample01.cs" lang="cs" />
+        /// </example>
         /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         public int RetainAll (IEnumerable<T> other)
         {
@@ -663,10 +681,10 @@ namespace Kaos.Collections
 
         #region Enumeration
 
-        /// <summary>Returns an IEnumerable that iterates thru distinct items in the bag.</summary>
+        /// <summary>Returns an IEnumerable that iterates thru thedistinct items of the bag.</summary>
         /// <returns>An enumerator that iterates thru distinct items.</returns>
         /// <remarks>
-        /// This is a O(<em>m</em> log(<em>n</em>) operation
+        /// This is a O(<em>m</em> log <em>n</em>) operation
         /// where <em>m</em> is the distinct item count
         /// and <em>n</em> is the total item count.
         /// </remarks>
@@ -713,6 +731,9 @@ namespace Kaos.Collections
         /// Retrieving each subsequent item is a O(1) operation.
         /// </para>
         /// </remarks>
+        /// <example>
+        /// <code source="..\Bench\RbExample03\RbExample03.cs" lang="cs" />
+        /// </example>
         /// <exception cref="InvalidOperationException">When the bag was modified after the enumerator was created.</exception>
         public IEnumerable<T> ElementsBetween (T lower, T upper)
         {
