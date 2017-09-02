@@ -407,7 +407,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Determines whether the set and a supplied collection share common elements.</summary>
+        /// <summary>Determines whether the set and a supplied collection share common items.</summary>
         /// <param name="other">The collection to compare to this set.</param>
         /// <returns><b>true</b> if the set and <em>other</em> share at least one common item; otherwise <b>false</b>.</returns>
         /// <example>
@@ -673,12 +673,15 @@ namespace Kaos.Collections
 
         #region Bonus methods
 
-        /// <summary>Returns a subset range.</summary>
-        /// <param name="lower">Minimum item value of range.</param>
-        /// <param name="upper">Maximum item value of range.</param>
-        /// <returns>An enumerator for all items between <em>lower</em> and <em>upper</em> inclusive.</returns>
+        /// <summary>Returns an enumerator that iterates over a range with the supplied bounds.</summary>
+        /// <param name="lower">Minimum item value of the range.</param>
+        /// <param name="upper">Maximum item value of the range.</param>
+        /// <returns>An enumerator for the specified range.</returns>
         /// <remarks>
-        /// <para>Neither <em>lower</em> or <em>upper</em> need to be present in the collection.</para>
+        /// <para>
+        /// If either <em>lower</em> or <em>upper</em> are present in the set,
+        /// they will be included in the results.
+        /// </para>
         /// <para>
         /// Retrieving the initial item is a O(log <em>n</em>) operation.
         /// Retrieving each subsequent item is a O(1) operation.
@@ -716,10 +719,13 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Provides range query support with ordered results.</summary>
-        /// <param name="item">Minimum value of range.</param>
-        /// <returns>An enumerator for the set for items greater than or equal to <em>item</em>.</returns>
+        /// <summary>Returns an enumerator that iterates over a range with the supplied lower bound.</summary>
+        /// <param name="item">Minimum item of the range.</param>
+        /// <returns>An enumerator for the specified range.</returns>
         /// <remarks>
+        /// <para>
+        /// If <em>item</em> is present in the set, it will be included in the results.
+        /// </para>
         /// <para>
         /// Retrieving the initial item is a O(log <em>n</em>) operation.
         /// Retrieving each subsequent item is a O(1) operation.

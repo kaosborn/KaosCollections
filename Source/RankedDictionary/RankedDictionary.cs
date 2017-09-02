@@ -340,7 +340,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Adds an element with the supplied key/value pair!!!</summary>
+        /// <summary>Adds an element with the supplied key/value pair.</summary>
         /// <param name="keyValuePair">Contains the key and value of the element to add.</param>
         /// <exception cref="ArgumentException">When an element containing <em>key</em> has already been added.</exception>
         void ICollection<KeyValuePair<TKey,TValue>>.Add (KeyValuePair<TKey,TValue> keyValuePair)
@@ -372,7 +372,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Determines if the collection contains the supplied value.</summary>
+        /// <summary>Determines if the dictionary contains the supplied value.</summary>
         /// <remarks>This operation performs a sequential search.</remarks>
         /// <param name="value">Value to find.</param>
         /// <returns><b>true</b> if the collection contains the supplied value; otherwise <b>false</b>.</returns>
@@ -761,13 +761,14 @@ namespace Kaos.Collections
 
         #region Bonus methods
 
-        /// <summary>Provides range query support.</summary>
-        /// <param name="lower">Minimum inclusive key value of range.</param>
-        /// <param name="upper">Maximum inclusive key value of range.</param>
-        /// <returns>An enumerator for all elements between lower and upper.</returns>
+        /// <summary>Returns an enumerator that iterates over a range with the supplied bounds.</summary>
+        /// <param name="lower">Minimum key of the range.</param>
+        /// <param name="upper">Maximum key of the range.</param>
+        /// <returns>An enumerator for the specified range.</returns>
         /// <remarks>
         /// <para>
-        /// Neither <em>lower</em> or <em>upper</em> need to be present in the collection.
+        /// If either <em>lower</em> or <em>upper</em> are present in the dictionary,
+        /// they will be included in the results.
         /// </para>
         /// <para>
         /// Retrieving the first element is a O(log <em>n</em>) operation.
@@ -808,9 +809,18 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Provides range query support with ordered results.</summary>
-        /// <param name="key">Minimum value of range.</param>
-        /// <returns>An enumerator for the collection for key values greater than or equal to <em>key</em>.</returns>
+        /// <summary>Returns an enumerator that iterates over a range with the supplied lower bound.</summary>
+        /// <param name="key">Minimum key of the range.</param>
+        /// <returns>An enumerator for the specified range.</returns>
+        /// <remarks>
+        /// <para>
+        /// If <em>key</em> is present in the dictionary, it will be included in the results.
+        /// </para>
+        /// <para>
+        /// Retrieving the initial item is a O(log <em>n</em>) operation.
+        /// Retrieving each subsequent item is a O(1) operation.
+        /// </para>
+        /// </remarks>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
         public IEnumerable<KeyValuePair<TKey,TValue>> ElementsFrom (TKey key)
         {
@@ -843,8 +853,8 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Gets the index of the supplied key.</summary>
-        /// <param name="key">The key of the index to get.</param>
+        /// <summary>Gets the index of the element with the supplied key.</summary>
+        /// <param name="key">The key of the element to seek.</param>
         /// <returns>The index of the element with the supplied key if found; otherwise the bitwise complement of the insert point.</returns>
         /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
@@ -857,8 +867,8 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Gets the index of the element with the supplied value.</summary>
-        /// <param name="value">The value of the element of the index to get.</param>
+        /// <summary>Gets the index of the first element with the supplied value.</summary>
+        /// <param name="value">The value of the element to seek.</param>
         /// <returns>The index of the element if found; otherwise -1.</returns>
         /// <remarks>This is a O(<em>n</em>) operation.</remarks>
         public int IndexOfValue (TValue value)

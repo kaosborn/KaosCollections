@@ -705,7 +705,7 @@ namespace Kaos.Collections
 
         #region Enumeration
 
-        /// <summary>Returns an IEnumerable that iterates thru thedistinct items of the bag.</summary>
+        /// <summary>Returns an IEnumerable that iterates thru the distinct items of the bag.</summary>
         /// <returns>An enumerator that iterates thru distinct items.</returns>
         /// <remarks>
         /// This is a O(<em>m</em> log <em>n</em>) operation
@@ -744,12 +744,15 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Returns a subset range.</summary>
-        /// <param name="lower">Minimum item value of range.</param>
-        /// <param name="upper">Maximum item value of range.</param>
-        /// <returns>An enumerator for all items between <em>lower</em> and <em>upper</em> inclusive.</returns>
+        /// <summary>Returns an enumerator that iterates over a range with the supplied bounds.</summary>
+        /// <param name="lower">Minimum item value of the range.</param>
+        /// <param name="upper">Maximum item value of the range.</param>
+        /// <returns>An enumerator for the specified range.</returns>
         /// <remarks>
-        /// <para>Neither <em>lower</em> or <em>upper</em> need to be present in the collection.</para>
+        /// <para>
+        /// If either <em>lower</em> or <em>upper</em> are present in the bag,
+        /// they will be included in the results.
+        /// </para>
         /// <para>
         /// Retrieving the initial item is a O(log <em>n</em>) operation.
         /// Retrieving each subsequent item is a O(1) operation.
@@ -787,10 +790,13 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Provides range query support with ordered results.</summary>
-        /// <param name="lower">Minimum value of range.</param>
-        /// <returns>An enumerator for the bag for items greater than or equal to <em>item</em>.</returns>
+        /// <summary>Returns an enumerator that iterates over a range with the supplied lower bound.</summary>
+        /// <param name="lower">Minimum of the range.</param>
+        /// <returns>An enumerator for the specified range.</returns>
         /// <remarks>
+        /// <para>
+        /// If <em>item</em> is present in the bag, it will be included in the results.
+        /// </para>
         /// <para>
         /// Retrieving the initial item is a O(log <em>n</em>) operation.
         /// Retrieving each subsequent item is a O(1) operation.
