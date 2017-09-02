@@ -51,8 +51,8 @@ namespace Kaos.Collections
     /// </list>
     /// <para>Properties and a method have been shared with SortedSet:</para>
     /// <list type="bullet">
-    /// <item><see cref="Btree{TKey}.Min"/></item>
-    /// <item><see cref="Btree{TKey}.Max"/></item>
+    /// <item><see cref="Min"/></item>
+    /// <item><see cref="Max"/></item>
     /// <item><see cref="RemoveWhere"/></item>
     /// <item><see cref="Reverse"/></item>
     /// </list>
@@ -183,10 +183,20 @@ namespace Kaos.Collections
             }
         }
 
+        /// <summary>Returns a wrapper of the method used to order elements in the dictionary.</summary>
+        /// <remarks>
+        /// To override sorting based on the default comparer,
+        /// supply an alternate comparer when constructing the dictionary.
+        /// </remarks>
+        public IComparer<TKey> Comparer => keyComparer;
+
+        /// <summary>Gets the number of elements in the dictionary.</summary>
+        /// <remarks>This is a O(1) operation.</remarks>
+        public int Count => root.Weight;
 
         /// <summary>Gets only the collection of keys from this dictionary.</summary>
         /// <remarks>The keys given by this collection are sorted according to the
-        /// <see cref="Btree{TKey}.Comparer"/> property.</remarks>
+        /// <see cref="Comparer"/> property.</remarks>
         /// <example>
         /// This trivial example shows how to enumerate the keys of a dictionary.
         /// <code source="..\Bench\RdExample02\RdExample02.cs" lang="cs" />
@@ -203,7 +213,7 @@ namespace Kaos.Collections
 
         /// <summary>Gets only the collection of keys from this key/value pair collection.</summary>
         /// <remarks>The keys given by this collection are sorted according to the
-        /// <see cref="Btree{TKey}.Comparer"/> property.</remarks>
+        /// <see cref="Comparer"/> property.</remarks>
         ICollection<TKey> IDictionary<TKey,TValue>.Keys => (ICollection<TKey>) Keys;
 
 #if ! NET35 && ! NET40
@@ -236,6 +246,13 @@ namespace Kaos.Collections
         /// order as their respective keys in the <see cref="Keys"/> collection.</remarks>
         ICollection<TValue> IDictionary<TKey,TValue>.Values => (ICollection<TValue>) Values;
 
+        /// <summary>Gets the maximum key in the dictionary per the comparer.</summary>
+        /// <remarks>This is a O(1) operation.</remarks>
+        public TKey Max => Count==0 ? default (TKey) : rightmostLeaf.GetKey (rightmostLeaf.KeyCount-1);
+
+        /// <summary>Gets the minimum key in the dictionary per the comparer.</summary>
+        /// <remarks>This is a O(1) operation.</remarks>
+        public TKey Min => Count==0 ? default (TKey) : leftmostLeaf.Key0;
 
         /// <summary>Indicates that this collection may be modified.</summary>
         bool ICollection<KeyValuePair<TKey,TValue>>.IsReadOnly => false;
@@ -334,6 +351,11 @@ namespace Kaos.Collections
 
             Add2 (path, keyValuePair.Key, keyValuePair.Value);
         }
+
+
+        /// <summary>Removes all elements from the dictionary.</summary>
+        /// <remarks>This is a O(1) operation.</remarks>
+        public void Clear() => Initialize();
 
 
         /// <summary>Determines if the dictionary contains the supplied key.</summary>

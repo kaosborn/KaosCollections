@@ -44,8 +44,8 @@ namespace Kaos.Collections
                 for (Node node = tree.root;;)
                 {
                     this.nodeStack.Add (node);
-                    int ix = tree.Comparer==Comparer<T>.Default ? node.Search (key)
-                                                                   : node.Search (key, tree.Comparer);
+                    int ix = tree.keyComparer==Comparer<T>.Default ? node.Search (key)
+                                                                   : node.Search (key, tree.keyComparer);
                     if (node is Branch branch)
                     {
                         ix = (ix < 0) ? ~ix : ix+1;
@@ -71,7 +71,7 @@ namespace Kaos.Collections
                         for (int lo = 0; lo != hi; )
                         {
                             int mid = (lo + hi) >> 1;
-                            int diff = tree.Comparer.Compare (key, node.GetKey (mid));
+                            int diff = tree.keyComparer.Compare (key, node.GetKey (mid));
                             if (diff <= 0)
                             {
                                 if (diff == 0)
@@ -85,7 +85,7 @@ namespace Kaos.Collections
                         for (int lo = 0; lo != hi; )
                         {
                             int mid = (lo + hi) >> 1;
-                            int diff = tree.Comparer.Compare (key, node.GetKey (mid));
+                            int diff = tree.keyComparer.Compare (key, node.GetKey (mid));
                             if (diff < 0)
                                 hi = mid;
                             else

@@ -45,6 +45,9 @@ namespace Kaos.Collections
 
         #region Nonpublic methods
 
+        internal int Size => root.Weight;
+
+
         internal void CopyKeysTo1 (T[] array, int index, int count)
         {
             if (array == null)
@@ -59,8 +62,8 @@ namespace Kaos.Collections
             if (count > array.Length - index)
                 throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
 
-            if (count > Count)
-                count = Count;
+            if (count > Size)
+                count = Size;
             int stopIx = index + count;
 
             for (Leaf leaf = leftmostLeaf; ; leaf = leaf.rightLeaf)
@@ -90,14 +93,14 @@ namespace Kaos.Collections
 
             if (array is T[] genericArray)
             {
-                CopyKeysTo1 (genericArray, index, Count);
+                CopyKeysTo1 (genericArray, index, Size);
                 return;
             }
 
             if (index < 0)
                 throw new ArgumentOutOfRangeException (nameof (index), "Non-negative number required.");
 
-            if (Count > array.Length - index)
+            if (Size > array.Length - index)
                 throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
 
             if (array is object[] obArray)
@@ -133,7 +136,7 @@ namespace Kaos.Collections
         internal Leaf Find (T key, out int index)
         {
             //  Unfold on default comparer for 5% speed improvement.
-            if (Comparer == Comparer<T>.Default)
+            if (keyComparer == Comparer<T>.Default)
                 for (Node node = root;;)
                 {
                     index = node.Search (key);
@@ -146,7 +149,7 @@ namespace Kaos.Collections
             else
                 for (Node node = root;;)
                 {
-                    index = node.Search (key, Comparer);
+                    index = node.Search (key, keyComparer);
 
                     if (node is Branch branch)
                         node = branch.GetChild (index < 0 ? ~index : index + 1);
@@ -191,7 +194,7 @@ namespace Kaos.Collections
                     for (int lo = 0; lo != hi;)
                     {
                         int mid = (lo + hi) >> 1;
-                        int diff = Comparer.Compare (key, node.GetKey (mid));
+                        int diff = keyComparer.Compare (key, node.GetKey (mid));
                         if (diff <= 0)
                         {
                             if (diff == 0)
@@ -205,7 +208,7 @@ namespace Kaos.Collections
                     for (int lo = 0; lo != hi;)
                     {
                         int mid = (lo + hi) >> 1;
-                        int diff = Comparer.Compare (key, node.GetKey (mid));
+                        int diff = keyComparer.Compare (key, node.GetKey (mid));
                         if (diff < 0)
                             hi = mid;
                         else
@@ -249,7 +252,7 @@ namespace Kaos.Collections
                 for (int lo = 0; lo != hi;)
                 {
                     int mid = (lo + hi) >> 1;
-                    int diff = Comparer.Compare (key, node.GetKey (mid));
+                    int diff = keyComparer.Compare (key, node.GetKey (mid));
                     if (diff <= 0)
                     {
                         if (diff == 0)
@@ -282,7 +285,7 @@ namespace Kaos.Collections
                 for (int lo = 0; lo != hi; )
                 {
                     int mid = (lo + hi) >> 1;
-                    int diff = Comparer.Compare (key, node.GetKey (mid));
+                    int diff = keyComparer.Compare (key, node.GetKey (mid));
                     if (diff < 0)
                         hi = mid;
                     else
@@ -314,6 +317,15 @@ namespace Kaos.Collections
             if (syncRoot == null)
                 Interlocked.CompareExchange (ref syncRoot, new object(), null);
             return syncRoot;
+        }
+
+
+        internal void Initialize()
+        {
+            StageBump();
+            leftmostLeaf.Truncate (0);
+            leftmostLeaf.rightLeaf = null;
+            root = rightmostLeaf = leftmostLeaf;
         }
 
 
@@ -459,37 +471,9 @@ namespace Kaos.Collections
                 if (value < 0)
                     throw new ArgumentOutOfRangeException ("Must be between " + MinimumOrder + " and " + MaximumOrder + ".");
 
-                if (Count == 0 && value >= MinimumOrder && value <= MaximumOrder)
+                if (Size == 0 && value >= MinimumOrder && value <= MaximumOrder)
                     maxKeyCount = value - 1;
             }
-        }
-
-        /// <summary>Gets the number of elements in the collection.</summary>
-        /// <remarks>This is a O(1) operation.</remarks>
-        public int Count => root.Weight;
-
-        /// <summary>Gets the maximum value in the collection per the comparer.</summary>
-        /// <remarks>This is a O(1) operation.</remarks>
-        public T Max => Count==0 ? default (T) : rightmostLeaf.GetKey (rightmostLeaf.KeyCount-1);
-
-        /// <summary>Gets the minimum value in the collection per the comparer.</summary>
-        /// <remarks>This is a O(1) operation.</remarks>
-        public T Min => Count==0 ? default (T) : leftmostLeaf.Key0;
-
-        /// <summary>Contains the method used to order elements in the sorted collection.</summary>
-        /// <remarks>To override sorting based on the default comparer, supply an
-        /// alternate comparer when constructing the collection.</remarks>
-        public IComparer<T> Comparer => keyComparer;
-
-
-        /// <summary>Removes all elements from the collection.</summary>
-        /// <remarks>This is a O(1) operation.</remarks>
-        public void Clear()
-        {
-            StageBump();
-            leftmostLeaf.Truncate (0);
-            leftmostLeaf.rightLeaf = null;
-            root = rightmostLeaf = leftmostLeaf;
         }
 
         #endregion
@@ -580,7 +564,7 @@ namespace Kaos.Collections
                 T anchor0 = i == 0 ? anchor : branch.GetKey (i - 1);
                 bool isRightmost0 = isRightmost && i < branch.ChildCount;
                 if (i < branch.KeyCount - 1)
-                    if (Comparer.Compare (branch.GetKey (i), branch.GetKey (i + 1)) > 0)
+                    if (keyComparer.Compare (branch.GetKey (i), branch.GetKey (i + 1)) > 0)
                         throw new InvalidOperationException ("Branch keys descending");
 
                 if (level + 1 < height)
@@ -609,7 +593,7 @@ namespace Kaos.Collections
                 throw new InvalidOperationException ("Leaf has wrong anchor");
 
             for (int i = 0; i < leaf.KeyCount; ++i)
-                if (i < leaf.KeyCount - 1 && Comparer.Compare (leaf.GetKey (i), leaf.GetKey (i + 1)) > 0)
+                if (i < leaf.KeyCount - 1 && keyComparer.Compare (leaf.GetKey (i), leaf.GetKey (i + 1)) > 0)
                     throw new InvalidOperationException ("Leaf keys descending");
 
             if (visited == null)

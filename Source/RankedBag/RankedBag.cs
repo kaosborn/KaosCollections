@@ -113,6 +113,25 @@ namespace Kaos.Collections
         /// <summary>Indicates that the collection is not thread safe.</summary>
         bool ICollection.IsSynchronized => false;
 
+        /// <summary>Gets the maximum item in the bag per the comparer.</summary>
+        /// <remarks>This is a O(1) operation.</remarks>
+        public T Max => Count==0 ? default (T) : rightmostLeaf.GetKey (rightmostLeaf.KeyCount-1);
+
+        /// <summary>Gets the minimum item in the bag per the comparer.</summary>
+        /// <remarks>This is a O(1) operation.</remarks>
+        public T Min => Count==0 ? default (T) : leftmostLeaf.Key0;
+
+        /// <summary>Returns a wrapper of the method used to order items in the bag.</summary>
+        /// <remarks>
+        /// To override sorting based on the default comparer,
+        /// supply an alternate comparer when constructing the bag.
+        /// </remarks>
+        public IComparer<T> Comparer => keyComparer;
+
+        /// <summary>Gets the number of items in the bag.</summary>
+        /// <remarks>This is a O(1) operation.</remarks>
+        public int Count => root.Weight;
+
         /// <summary>Gets an object that can be used to synchronize access to the collection.</summary>
         object ICollection.SyncRoot => GetSyncRoot();
 
@@ -194,6 +213,11 @@ namespace Kaos.Collections
 
             return result;
         }
+
+
+        /// <summary>Removes all items from the bag.</summary>
+        /// <remarks>This is a O(1) operation.</remarks>
+        public void Clear() => Initialize();
 
 
         /// <summary>Determines whether a supplied item exists in the bag.</summary>

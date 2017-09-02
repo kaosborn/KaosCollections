@@ -114,11 +114,30 @@ namespace Kaos.Collections
 
         #region Properties
 
+        /// <summary>Returns a wrapper of the method used to order items in the set.</summary>
+        /// <remarks>
+        /// To override sorting based on the default comparer,
+        /// supply an alternate comparer when constructing the set.
+        /// </remarks>
+        public IComparer<T> Comparer => keyComparer;
+
+        /// <summary>Gets the number of items in the set.</summary>
+        /// <remarks>This is a O(1) operation.</remarks>
+        public int Count => root.Weight;
+
         /// <summary>Indicates that the collection is not read-only.</summary>
         bool ICollection<T>.IsReadOnly => false;
 
         /// <summary>Indicates that the collection is not thread safe.</summary>
         bool ICollection.IsSynchronized => false;
+
+        /// <summary>Gets the maximum item in the set per the comparer.</summary>
+        /// <remarks>This is a O(1) operation.</remarks>
+        public T Max => Count==0 ? default (T) : rightmostLeaf.GetKey (rightmostLeaf.KeyCount-1);
+
+        /// <summary>Gets the minimum item in the set per the comparer.</summary>
+        /// <remarks>This is a O(1) operation.</remarks>
+        public T Min => Count==0 ? default (T) : leftmostLeaf.Key0;
 
         /// <summary>Gets an object that can be used to synchronize access to the collection.</summary>
         object ICollection.SyncRoot => GetSyncRoot();
@@ -150,6 +169,11 @@ namespace Kaos.Collections
 
             return AddKey (item, path);
         }
+
+
+        /// <summary>Removes all items from the set.</summary>
+        /// <remarks>This is a O(1) operation.</remarks>
+        public void Clear() => Initialize();
 
 
         /// <summary>Determines whether the set contains a supplied item.</summary>
