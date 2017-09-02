@@ -41,12 +41,12 @@ namespace ChartApp
 
             var comp = RankedSet<string>.CreateSetComparer();
 
-            HashSet<RankedSet<string>> bag = new HashSet<RankedSet<string>> (comp);
-            bag.Add (musicians);
-            bag.Add (painters);
+            HashSet<RankedSet<string>> setOfSets = new HashSet<RankedSet<string>> (comp);
+            setOfSets.Add (musicians);
+            setOfSets.Add (painters);
 
-            Console.WriteLine ("\nAll sets in bag:");
-            foreach (var set in bag)
+            Console.WriteLine ("\nAll sets in hash set:");
+            foreach (var set in setOfSets)
             {
                 Console.WriteLine ("  " + set.Count + " items:");
                 foreach (var item in set)

@@ -36,5 +36,17 @@ namespace ExampleApp
                 Console.Write (" " + score);
             Console.WriteLine();
         }
+
+        /* Output:
+
+        Count = 8, median = 4.5, mean = 5
+        Variance = 4
+        Standard deviation = 2
+
+        Low score: 2
+        High score: 9
+        Scores within 1 standard deviation: 4 4 4 5 5 7
+
+        */
     }
 }
