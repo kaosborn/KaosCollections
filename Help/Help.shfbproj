@@ -50,17 +50,17 @@
     <ContentPlacement>AboveNamespaces</ContentPlacement>
     <ProjectSummary>Free to use and share.</ProjectSummary>
     <NamespaceSummaries>
-      <NamespaceSummaryItem name="Kaos.Collections" isDocumented="True">The Kaos.Collections namespace contains the classes RankedDictionary, RankedSet, and their supporting supporting classes.
+      <NamespaceSummaryItem name="Kaos.Collections" isDocumented="True">The Kaos.Collections namespace contains the classes RankedDictionary, RankedSet, RankedBag and their supporting classes.
 These classes closely emulate the API of the Microsoft's classes they are based on while extending capability and improving performance in many common scenarios.</NamespaceSummaryItem>
     </NamespaceSummaries>
     <VisibleItems>ExplicitInterfaceImplementations, InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected</VisibleItems>
     <PlugInConfigurations>
       <PlugInConfig id="Member ID Fix-Ups" enabled="True">
         <configuration>
-  <expressions>
-    <expression matchExpression="{TKey,TValue}" replacementValue="{TKey@TValue}" matchAsRegEx="false" />
-  </expressions>
-</configuration>
+          <expressions>
+            <expression matchExpression="{TKey,TValue}" replacementValue="{TKey@TValue}" matchAsRegEx="false" />
+          </expressions>
+        </configuration>
       </PlugInConfig>
     </PlugInConfigurations>
   </PropertyGroup>

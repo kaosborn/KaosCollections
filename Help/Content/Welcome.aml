@@ -56,12 +56,12 @@
             <list class="bullet">
               <listItem>
                 <para>
-                  Adds <codeInline>Min</codeInline> that returns the minimum key in the dictionary.
+                  Adds <codeInline>MinKey</codeInline> that returns the minimum key in the dictionary.
                 </para>
               </listItem>
               <listItem>
                 <para>
-                  Adds <codeInline>Max</codeInline> that returns the maximum key in the dictionary.
+                  Adds <codeInline>MaxKey</codeInline> that returns the maximum key in the dictionary.
                 </para>
               </listItem>
               <listItem>
@@ -71,7 +71,7 @@
               </listItem>
               <listItem>
                 <para>
-                  Adds <codeInline>RemoveWhere()</codeInline> that removes all elements that meet a supplied condition.
+                  Adds <codeInline>RemoveWhere(predicate)</codeInline> that removes all elements that meet a supplied condition.
                 </para>
               </listItem>
             </list>
