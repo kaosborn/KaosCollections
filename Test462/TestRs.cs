@@ -580,9 +580,49 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (count0-1, setI.Count);
         }
 
-
+        static int rwCounter = 9;
         static bool IsEven (int val) { return val % 2 == 0; }
-        static bool IsTrue (int val) { return true; }
+        static bool IsAlways (int val) { return true; }
+        static bool IsHotAlways (int val) { staticSetI.Add (++rwCounter); return true; }
+#if TEST_BCL
+        static SortedSet<int> staticSetI = new SortedSet<int>();
+#else
+        static RankedSet<int> staticSetI = new RankedSet<int>();
+#endif
+
+        [TestMethod]
+#if ! TEST_BCL
+        [ExpectedException (typeof (InvalidOperationException))]
+#endif
+        public void UnitRs_RemoveWhereHotPredicate_InvalidOperation()
+        {
+            Setup (4);
+            staticSetI.Add (3); staticSetI.Add (4);
+
+            // This does not throw for BCL, but it really should:
+            staticSetI.RemoveWhere (IsHotAlways);
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void UnitRs_RemoveWhereHotEtor_InvalidOperation()
+        {
+            Setup (4);
+            setI.Add (3); setI.Add (4);
+
+            foreach (var key in setI)
+                setI.RemoveWhere (IsEven);
+        }
+
+        [TestMethod]
+        public void UnitRs_RemoveWhereHotNonUpdate()
+        {
+            Setup (4);
+            setI.Add (3); setI.Add (5);
+
+            foreach (var key in setI)
+                setI.RemoveWhere (IsEven);
+        }
 
         [TestMethod]
         public void UnitRs_RemoveWhere()
@@ -596,11 +636,11 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (4, removeCount);
             Assert.AreEqual (3, setI.Count);
 
-            removeCount = setI.RemoveWhere (IsTrue);
+            removeCount = setI.RemoveWhere (IsAlways);
             Assert.AreEqual (3, removeCount);
             Assert.AreEqual (0, setI.Count);
 
-            removeCount = setI.RemoveWhere (IsTrue);
+            removeCount = setI.RemoveWhere (IsAlways);
             Assert.AreEqual (0, removeCount);
         }
 
@@ -634,9 +674,9 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (0, expected);
         }
 
-        #endregion
+#endregion
 
-        #region Test ISet methods
+#region Test ISet methods
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
@@ -983,9 +1023,9 @@ namespace Kaos.Test.Collections
             Assert.IsFalse (personSet.SetEquals (pa));
         }
 
-        #endregion
+#endregion
 
-        #region Test bonus methods
+#region Test bonus methods
 #if ! TEST_BCL
 
         [TestMethod]
@@ -1069,8 +1109,7 @@ namespace Kaos.Test.Collections
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
         public void CrashRsx_RemoveAtA_ArgumentOutOfRange()
         {
-            var d1 = new RankedSet<int>();
-            d1.Add (42);
+            var d1 = new RankedSet<int>() { 42 };
             d1.RemoveAt (-1);
         }
 
@@ -1100,9 +1139,9 @@ namespace Kaos.Test.Collections
         }
 
 #endif
-        #endregion
+#endregion
 
-        #region Test enumeration
+#region Test enumeration
 
         [TestMethod]
         [ExpectedException (typeof (InvalidOperationException))]
@@ -1175,6 +1214,6 @@ namespace Kaos.Test.Collections
             }
         }
 
-        #endregion
+#endregion
     }
 }
