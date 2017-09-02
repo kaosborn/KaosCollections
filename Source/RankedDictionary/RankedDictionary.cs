@@ -51,8 +51,8 @@ namespace Kaos.Collections
     /// </list>
     /// <para>Properties and a method have been shared with SortedSet:</para>
     /// <list type="bullet">
-    /// <item><see cref="Min"/></item>
-    /// <item><see cref="Max"/></item>
+    /// <item><see cref="MinKey"/></item>
+    /// <item><see cref="MaxKey"/></item>
     /// <item><see cref="RemoveWhere"/></item>
     /// <item><see cref="Reverse"/></item>
     /// </list>
@@ -248,11 +248,11 @@ namespace Kaos.Collections
 
         /// <summary>Gets the maximum key in the dictionary per the comparer.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
-        public TKey Max => Count==0 ? default (TKey) : rightmostLeaf.GetKey (rightmostLeaf.KeyCount-1);
+        public TKey MaxKey => Count==0 ? default (TKey) : rightmostLeaf.GetKey (rightmostLeaf.KeyCount-1);
 
         /// <summary>Gets the minimum key in the dictionary per the comparer.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
-        public TKey Min => Count==0 ? default (TKey) : leftmostLeaf.Key0;
+        public TKey MinKey => Count==0 ? default (TKey) : leftmostLeaf.Key0;
 
         /// <summary>Indicates that this collection may be modified.</summary>
         bool ICollection<KeyValuePair<TKey,TValue>>.IsReadOnly => false;
@@ -810,11 +810,11 @@ namespace Kaos.Collections
 
 
         /// <summary>Returns an enumerator that iterates over a range with the supplied lower bound.</summary>
-        /// <param name="key">Minimum key of the range.</param>
+        /// <param name="lower">Minimum key of the range.</param>
         /// <returns>An enumerator for the specified range.</returns>
         /// <remarks>
         /// <para>
-        /// If <em>key</em> is present in the dictionary, it will be included in the results.
+        /// If <em>lower</em> is present in the dictionary, it will be included in the results.
         /// </para>
         /// <para>
         /// Retrieving the initial item is a O(log <em>n</em>) operation.
@@ -822,13 +822,13 @@ namespace Kaos.Collections
         /// </para>
         /// </remarks>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
-        public IEnumerable<KeyValuePair<TKey,TValue>> ElementsFrom (TKey key)
+        public IEnumerable<KeyValuePair<TKey,TValue>> ElementsFrom (TKey lower)
         {
-            if (key == null)
-                throw new ArgumentNullException (nameof (key));
+            if (lower == null)
+                throw new ArgumentNullException (nameof (lower));
 
             int stageFreeze = stage;
-            var leaf = (PairLeaf) Find (key, out int index);
+            var leaf = (PairLeaf) Find (lower, out int index);
 
             // When the supplied start key is not be found, start with the next highest key.
             if (index < 0)

@@ -720,11 +720,11 @@ namespace Kaos.Collections
 
 
         /// <summary>Returns an enumerator that iterates over a range with the supplied lower bound.</summary>
-        /// <param name="item">Minimum item of the range.</param>
+        /// <param name="lower">Minimum of the range.</param>
         /// <returns>An enumerator for the specified range.</returns>
         /// <remarks>
         /// <para>
-        /// If <em>item</em> is present in the set, it will be included in the results.
+        /// If <em>lower</em> is present in the set, it will be included in the results.
         /// </para>
         /// <para>
         /// Retrieving the initial item is a O(log <em>n</em>) operation.
@@ -732,10 +732,10 @@ namespace Kaos.Collections
         /// </para>
         /// </remarks>
         /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
-        public IEnumerable<T> ElementsFrom (T item)
+        public IEnumerable<T> ElementsFrom (T lower)
         {
             int stageFreeze = stage;
-            var leaf = (Leaf) Find (item, out int index);
+            var leaf = (Leaf) Find (lower, out int index);
 
             // When the supplied start key is not be found, start with the next highest key.
             if (index < 0)
