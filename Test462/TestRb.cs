@@ -455,6 +455,60 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRb_ElementAt1_ArgumentOutOfRange()
+        {
+            var bag = new RankedBag<int>();
+            int key = bag.ElementAt (-1);
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRb_ElementAt2_ArgumentOutOfRange()
+        {
+            var bag = new RankedBag<int>();
+            int key = bag.ElementAt (0);
+        }
+
+        [TestMethod]
+        public void UnitRb_ElementAt()
+        {
+            int n = 800;
+            var bag = new RankedBag<int>() { Capacity = 5 };
+
+            for (int ii = 0; ii <= n; ++ii)
+                bag.Add (ii/2);
+
+            for (int ii = 0; ii <= n; ++ii)
+            {
+                int key = bag.ElementAt (ii);
+                Assert.AreEqual (ii/2, key);
+            }
+        }
+
+
+        [TestMethod]
+        public void UnitRb_ElementAtOrDefault()
+        {
+            var bag = new RankedBag<int>();
+
+            int keyM1 = bag.ElementAtOrDefault (-1);
+            Assert.AreEqual (default (int), keyM1);
+
+            int key0 = bag.ElementAtOrDefault (0);
+            Assert.AreEqual (default (int), key0);
+
+            bag.Add (9);
+
+            int key00 = bag.ElementAtOrDefault (0);
+            Assert.AreEqual (9, key00);
+
+            int key1 = bag.ElementAtOrDefault (1);
+            Assert.AreEqual (default (int), key1);
+        }
+
+
+        [TestMethod]
         public void UnitRb_IndexOf()
         {
             var bag0 = new RankedBag<int>();
