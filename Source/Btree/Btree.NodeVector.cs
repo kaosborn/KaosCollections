@@ -148,23 +148,6 @@ namespace Kaos.Collections
 
             #region Methods
 
-            /// <summary>Get the node to the immediate left of the node specified by NodeVector.</summary>
-            internal Node GetLeftNode()
-            {
-                Debug.Assert (indexStack.Count == nodeStack.Count);
-
-                for (int level = indexStack.Count - 2; level >= 0; --level)
-                    if (indexStack[level] > 0)
-                        for (Node node = ((Branch) nodeStack[level]).GetChild (indexStack[level]-1);;)
-                            if (++level < indexStack.Count-1)
-                                node = ((Branch) node).GetChild (node.KeyCount);
-                            else
-                                return node;
-
-                return null;
-            }
-
-
             public void TiltLeft (int delta)
             {
                 for (int level = indexStack.Count-2; level >= 0; --level)
