@@ -68,6 +68,57 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (0, bagI.Count);
         }
 
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRb_Ctor1_ArgumentNull()
+        {
+            var bag = new RankedBag<int> ((System.Collections.Generic.IEnumerable<int>) null);
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRb_Ctor2_ArgumentNull()
+        {
+            var bag = new RankedBag<int>((System.Collections.Generic.IEnumerable<int>) null, null);
+        }
+
+        #endregion
+
+        #region Test properties
+
+        [TestMethod]
+        public void TestRb_IsSynchronized()
+        {
+            var bag = new RankedBag<int>();
+            var bagX = (System.Collections.ICollection) bag;
+            bool isSync = bagX.IsSynchronized;
+            Assert.IsFalse (isSync);
+        }
+
+        [TestMethod]
+        public void TestRb_MinMax()
+        {
+            var bag = new RankedBag<int>();
+            var min0 = bag.Min;
+            var max0 = bag.Max;
+
+            bag.Add (3); bag.Add (5); bag.Add (7);
+            var min1 = bag.Min;
+            var max1 = bag.Max;
+
+            Assert.AreEqual (3, min1);
+            Assert.AreEqual (7, max1);
+        }
+
+        [TestMethod]
+        public void TestRb_SyncRoot()
+        {
+            var bag = new RankedBag<int>();
+            var bagX = (System.Collections.ICollection) bag;
+            object sr = bagX.SyncRoot;
+        }
+
         #endregion
 
         #region Test methods
@@ -137,6 +188,18 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
+        public void UnitRb_AddEx1()
+        {
+            var bag1 = new RankedBag<int>();
+            var bagX = (System.Collections.Generic.ICollection<int>) bag1;
+
+            bagX.Add (5);
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (new int[] { 5 }, bag1));
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (new int[] { 5 }, bagX));
+        }
+
+
+        [TestMethod]
         public void UnitRb_Clear()
         {
             var bagI = new RankedBag<int>();
@@ -172,14 +235,21 @@ namespace Kaos.Test.Collections
         public void UnitRb_ContainsAll()
         {
             var bag = new RankedBag<int>() { Capacity = 4 };
-            foreach (var x in new int[] { 3, 5, 5, 5, 7, 7, 9 })
-                bag.Add (x);
+            foreach (var ii in new int[] { 3, 5, 5, 5, 7, 7, 9 })
+                bag.Add (ii);
+
+            var bag2 = new RankedBag<int>() { Capacity = 4 };
+            foreach (var ii in bag)
+                bag2.Add (ii);
 
             Assert.IsTrue (bag.ContainsAll (new int[] { }));
             Assert.IsTrue (bag.ContainsAll (new int[] { 5, 5 }));
             Assert.IsTrue (bag.ContainsAll (new int[] { 5, 5, 5 }));
             Assert.IsTrue (bag.ContainsAll (new int[] { 5, 7 }));
             Assert.IsFalse (bag.ContainsAll (new int[] { 5, 5, 5, 5 }));
+            Assert.IsFalse (bag.ContainsAll (new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }));
+
+            Assert.IsTrue (bag.ContainsAll (bag2));
         }
 
 
@@ -555,6 +625,13 @@ namespace Kaos.Test.Collections
             Assert.IsFalse (rem10);
         }
 
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentException))]
+        public void UnitRb_Remove2_Argument()
+        {
+            var bag = new RankedBag<int>();
+            bag.Remove (1, -1);
+        }
 
         [TestMethod]
         public void UnitRb_Remove2()
@@ -574,6 +651,9 @@ namespace Kaos.Test.Collections
 
             var rem2 = bag1.Remove (2, 2);
             Assert.IsFalse (rem2);
+
+            var rem70 = bag1.Remove (7, 0);
+            Assert.IsFalse (rem70);
 
             var rem7 = bag1.Remove (7, 1);
             Assert.IsTrue (rem7);
@@ -786,7 +866,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (InvalidOperationException))]
-        public void CrashRb_EnumeratorOverflow_InvalidOperation()
+        public void CrashRb_EtorOverflow_InvalidOperation()
         {
             var bag = new RankedBag<int>() { Capacity = 4 };
             for (int ii=0; ii<10; ++ii) bag.Add (ii);
@@ -796,6 +876,18 @@ namespace Kaos.Test.Collections
             { }
 
             var val = ((System.Collections.IEnumerator) iter).Current;
+        }
+
+        [TestMethod]
+        public void UnitRb_ExGetEnumerator()
+        {
+            var bag = new RankedBag<int>() { Capacity = 4 };
+            bag.Add (5);
+
+            var bagX = ((System.Collections.Generic.ICollection<int>) bag);
+            var etorX = bagX.GetEnumerator();
+            etorX.MoveNext();
+            Assert.AreEqual (5, etorX.Current);
         }
 
         [TestMethod]
