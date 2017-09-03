@@ -649,29 +649,28 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (InvalidOperationException))]
-        public void CrashRd_EnumeratorObjectPair1_InvalidOperation()
+        public void CrashRd_EtorObjectPair1_InvalidOperation()
         {
             Setup();
             tree2.Add ("cc", 3);
-            IEnumerator<KeyValuePair<string,int>> kvEnum = tree2.GetEnumerator();
+            IEnumerator<KeyValuePair<string,int>> kvEtor = tree2.GetEnumerator();
 
-            object jp = ((System.Collections.IEnumerator) kvEnum).Current;
+            object jp = ((System.Collections.IEnumerator) kvEtor).Current;
         }
 
 
         [TestMethod]
         [ExpectedException (typeof (InvalidOperationException))]
-        public void CrashRd_EnumeratorObjectPair2_InvalidOperation()
+        public void CrashRd_EtorObjectPair2_InvalidOperation()
         {
             Setup();
             tree2.Add ("cc", 3);
-            IEnumerator<KeyValuePair<string,int>> kvEnum = tree2.GetEnumerator();
-            kvEnum.MoveNext();
-            kvEnum.MoveNext();
+            IEnumerator<KeyValuePair<string,int>> kvEtor = tree2.GetEnumerator();
+            kvEtor.MoveNext();
+            kvEtor.MoveNext();
 
-            object jp = ((System.Collections.IEnumerator) kvEnum).Current;
+            object jp = ((System.Collections.IEnumerator) kvEtor).Current;
         }
-
 
         [TestMethod]
         public void UnitRd_EnumeratorPair()

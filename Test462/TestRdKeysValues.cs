@@ -1,10 +1,31 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#if TEST_BCL
+using System.Collections.Generic;
+#else
+using Kaos.Collections;
+#endif
 
 namespace Kaos.Test.Collections
 {
     public partial class TestBtree
     {
+        #region Test keys constructor
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRdkCtor1_ArgumentNull()
+        {
+            Setup();
+#if TEST_BCL
+            var keys = new SortedDictionary<int,int>.KeyCollection (null);
+#else
+            var keys = new RankedDictionary<int,int>.KeyCollection (null);
+#endif
+        }
+
+        #endregion
+
         #region Test Keys properties
 
         [TestMethod]
@@ -150,7 +171,7 @@ namespace Kaos.Test.Collections
         #region Test Keys enumeration
 
         [TestMethod]
-        public void UnitRdk_KeysGetEnumerator()
+        public void UnitRdk_KeysGetEtor()
         {
             int n = 100;
             Setup();
@@ -168,10 +189,29 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (n, actualCount);
         }
 
+        [TestMethod]
+        public void UnitRdk_GetEtorExplicit()
+        {
+            int n = 10;
+            Setup();
+
+            for (int k = 0; k < n; ++k)
+                tree2.Add (k.ToString(), k);
+
+            int expected = 0;
+            var etor = genKeys2.GetEnumerator();
+            while (etor.MoveNext())
+            {
+                var key = etor.Current;
+                Assert.AreEqual (expected.ToString(), key);
+                ++expected;
+            }
+            Assert.AreEqual (n, expected);
+        }
 
         [TestMethod]
         [ExpectedException (typeof (InvalidOperationException))]
-        public void CrashRdk_EnumHotUpdate()
+        public void CrashRdk_EtorHotUpdate()
         {
             Setup (4);
             tree2.Add ("vv", 1);
@@ -188,6 +228,22 @@ namespace Kaos.Test.Collections
 
         #endregion
 
+
+        #region Test values constructor
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRdvCtor1_ArgumentNull()
+        {
+            Setup();
+#if TEST_BCL
+            var vals = new SortedDictionary<int,int>.ValueCollection (null);
+#else
+            var vals = new RankedDictionary<int,int>.ValueCollection (null);
+#endif
+        }
+
+        #endregion
 
         #region Test Values properties
 
@@ -335,7 +391,7 @@ namespace Kaos.Test.Collections
         #region Test Values enumeration
 
         [TestMethod]
-        public void UnitRdv_ValuesGetEnumerator()
+        public void UnitRdv_ValuesGetEtor()
         {
             int n = 100;
             Setup();
@@ -353,10 +409,29 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (n, actualCount);
         }
 
+        [TestMethod]
+        public void UnitRdv_GetEtorExplicit()
+        {
+            int n = 10;
+            Setup();
+
+            for (int k = 0; k < n; ++k)
+                tree2.Add(k.ToString(), k);
+
+            int expected = 0;
+            var etor = genValues2.GetEnumerator();
+            while (etor.MoveNext())
+            {
+                var val = etor.Current;
+                Assert.AreEqual (expected, val);
+                ++expected;
+            }
+            Assert.AreEqual (n, expected);
+        }
 
         [TestMethod]
         [ExpectedException (typeof (InvalidOperationException))]
-        public void CrashRdv_EnumHotUpdate()
+        public void CrashRdv_EtorHotUpdate()
         {
             Setup (4);
             tree2.Add ("vv", 1);

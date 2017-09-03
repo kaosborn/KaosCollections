@@ -506,27 +506,37 @@ namespace Kaos.Test.Collections
         public void UnitRb_Remove2()
         {
             var bag0 = new RankedBag<int>();
-            var bag = new RankedBag<int>() { Capacity = 4 };
+            var bag1 = new RankedBag<int>() { Capacity = 4 };
+            var bag2 = new RankedBag<int>() { Capacity = 4 };
 
-            foreach(int ii in new int[] { 3, 5, 5, 7, 7, 7, 9 })
-                bag.Add (ii);
+            foreach (int ii in new int[] { 3, 5, 5, 7, 7, 7, 9 })
+                bag1.Add (ii);
+
+            foreach (int ii in new int[] { 3, 3, 3, 5, 5, 5, 7, 7, 7, 9 })
+                bag2.Add(ii);
 
             var rem0 = bag0.Remove (0, 1);
             Assert.IsFalse (rem0);
 
-            var rem2 = bag.Remove (2, 2);
+            var rem2 = bag1.Remove (2, 2);
             Assert.IsFalse (rem2);
 
-            var rem7 = bag.Remove (7, 1);
+            var rem7 = bag1.Remove (7, 1);
             Assert.IsTrue (rem7);
-            Assert.AreEqual (6, bag.Count);
+            Assert.AreEqual (6, bag1.Count);
 
-            var rem5 = bag.Remove (5, 3);
+            var rem5 = bag1.Remove (5, 3);
             Assert.IsTrue (rem5);
-            Assert.AreEqual (4, bag.Count);
+            Assert.AreEqual (4, bag1.Count);
 
-            var rem9 = bag.Remove (10);
+            var rem9 = bag1.Remove (10);
             Assert.IsFalse (rem9);
+
+            var rem53 = bag2.Remove (5, 3);
+            Assert.IsTrue(rem53);
+
+            var rem33 = bag2.Remove (3, 3);
+            Assert.IsTrue(rem33);
         }
 
 
@@ -643,11 +653,34 @@ namespace Kaos.Test.Collections
         #region Test enumeration
 
         [TestMethod]
+        public void UnitRb_Distinct()
+        {
+            var bag0 = new RankedBag<int>();
+            var bag1 = new RankedBag<int> { Capacity = 4 };
+
+            int n0 = 0, n1 = 0;
+            foreach (var ii in new int[] { 3, 5, 5, 7, 7 })
+                bag1.Add (ii);
+
+            foreach (var k0 in bag0)
+                ++n0;
+
+            foreach (var k1 in bag1)
+                ++n1;
+
+            Assert.AreEqual (0, n0);
+            Assert.AreEqual (5, n1);
+        }
+
+        [TestMethod]
         public void UnitRb_ElementsBetween()
         {
             var bag0 = new RankedBag<int>();
-            var bag1 = new RankedBag<int> (new int[] { 3, 4, 5, 5, 6, 6, 7, 7, 8 });
+            var bag1 = new RankedBag<int>() { Capacity = 4 };
             var bag2 = new RankedBag<int> (new int[] { 5, 5, 5, 5, 5 });
+
+            foreach (var k1 in new int[] { 3, 4, 5, 5, 6, 6, 7, 7, 8 })
+                bag1.Add (k1);
 
             var d0 = new System.Collections.Generic.List<int> (bag0.ElementsBetween (2, 4));
             Assert.AreEqual (0, d0.Count);
@@ -673,8 +706,11 @@ namespace Kaos.Test.Collections
         public void UnitRb_ElementsFrom()
         {
             var bag0 = new RankedBag<int>();
-            var bag1 = new RankedBag<int> (new int[] { 3, 4, 5, 5, 6, 6, 7, 7, 8 });
+            var bag1 = new RankedBag<int>() { Capacity = 4 };
             var bag2 = new RankedBag<int> (new int[] { 5, 5, 5, 5, 5 });
+
+            foreach (var i1 in new int[] { 3, 4, 5, 5, 6, 6, 7, 7, 8 })
+                bag1.Add (i1);
 
             var d0 = new System.Collections.Generic.List<int> (bag0.ElementsFrom (0));
             Assert.AreEqual (0, d0.Count);
@@ -712,17 +748,22 @@ namespace Kaos.Test.Collections
         public void UnitRb_GetEnumerator()
         {
             var bag = new RankedBag<int>() { Capacity = 4 };
-            int k1 = 0, k2 = 0;
+            int e1 = 0, e2 = 0;
             for (int ii=0; ii<10; ++ii) bag.Add (ii);
 
             var iter = bag.GetEnumerator();
             while (iter.MoveNext())
             {
-                int val = iter.Current;
-                Assert.AreEqual (k1, val);
-                ++k1;
+                int actual = iter.Current;
+                object expectedOb = ((System.Collections.IEnumerator) iter).Current;
+                Assert.AreEqual (e1, actual);
+                Assert.AreEqual (e1, expectedOb);
+                ++e1;
             }
-            Assert.AreEqual (10, k1);
+            Assert.AreEqual (10, e1);
+
+            int actualEnd = iter.Current;
+            Assert.AreEqual (default (int), actualEnd);
 
             bool isValid = iter.MoveNext();
             Assert.IsFalse (isValid);
@@ -731,10 +772,10 @@ namespace Kaos.Test.Collections
             while (iter.MoveNext())
             {
                 int val = iter.Current;
-                Assert.AreEqual (k2, val);
-                ++k2;
+                Assert.AreEqual (e2, val);
+                ++e2;
             }
-            Assert.AreEqual (10, k2);
+            Assert.AreEqual (10, e2);
         }
 
         [TestMethod]

@@ -273,25 +273,6 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRd_ObjectGetKeysEnumerator()
-        {
-            Setup();
-
-            foreach (int k in iVals1)
-                tree1.Add (k, k + 1000);
-
-            int actualCount = 0;
-            foreach (DictionaryEntry de in objCol1)
-            {
-                Assert.AreEqual ((int) de.Key + 1000, de.Value);
-                ++actualCount;
-            }
-
-            Assert.AreEqual (iVals1.Length, actualCount);
-        }
-
-
-        [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
         public void CrashRd_ObjectRemove_ArgumentNull()
         {
@@ -314,6 +295,50 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (0, objCol1.Count);
 
             objCol1.Remove ("ignore wrong type");
+        }
+
+        #endregion
+
+        #region Test object enumeration
+
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRd_EtorObjectKey_InvalidOperation()
+        {
+            Setup();
+            tree2.Add ("cc", 3);
+            System.Collections.IDictionaryEnumerator oEtor2
+                = ((System.Collections.IDictionary) tree2).GetEnumerator();
+            var key = oEtor2.Key;
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRd_EtorObjectValue_InvalidOperation()
+        {
+            Setup();
+            tree2.Add ("cc", 3);
+            System.Collections.IDictionaryEnumerator oEtor2
+                = ((System.Collections.IDictionary) tree2).GetEnumerator();
+            var val = oEtor2.Value;
+        }
+
+        [TestMethod]
+        public void UnitRd_ObjectEntryEtor()
+        {
+            Setup();
+
+            foreach (int k in iVals1)
+                tree1.Add (k, k + 1000);
+
+            int actualCount = 0;
+            foreach (DictionaryEntry de in objCol1)
+            {
+                Assert.AreEqual ((int) de.Key + 1000, de.Value);
+                ++actualCount;
+            }
+
+            Assert.AreEqual (iVals1.Length, actualCount);
         }
 
         #endregion

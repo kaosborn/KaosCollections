@@ -324,6 +324,22 @@ namespace Kaos.Test.Collections
             Assert.IsFalse (setS.Contains ("bb"));
         }
 
+        [TestMethod]
+        public void StressRs_Contains()
+        {
+            Setup (4);
+
+            for (int ii = 1; ii <= 9999; ii+=2)
+                setI.Add (ii);
+
+            Assert.IsTrue (setI.Contains (1));
+            Assert.IsFalse (setI.Contains (0));
+            Assert.IsTrue (setI.Contains (499));
+            Assert.IsFalse (setI.Contains (500));
+            Assert.IsTrue (setI.Contains (9999));
+            Assert.IsFalse (setI.Contains (10000));
+        }
+
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
@@ -543,13 +559,26 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
+        [ExpectedException (typeof(ArgumentException))]
+        public void CrashRs_CopyTo2ngD_Argument()
+        {
+            Setup();
+            setI.Add(3); setI.Add(5);
+            var sa = new string[2];
+            var oa = (object[]) sa;
+            ((System.Collections.ICollection) setI).CopyTo (oa, 0);
+        }
+
+        [TestMethod]
         public void UnitRs_CopyTo2ng()
         {
             var e2 = new object[] { 3, 5 };
-            var e4 = new object[] { 0, 3, 5, 0 };
+            var e4 = new object[] { null, 3, 5, null };
+            var e6 = new object[] { null, 3, 5, 7, 9, 11 };
             var d2 = new object[2];
             var d4 = new object[4];
-            Setup();
+            var d6 = new object[6];
+            Setup (4);
             var setIo = (System.Collections.ICollection) setI;
             setI.Add (3); setI.Add (5);
 
@@ -557,7 +586,11 @@ namespace Kaos.Test.Collections
             Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (e2, d2));
 
             setIo.CopyTo (d4, 1);
-            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (e2, d2));
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (e4, d4));
+
+            setI.Add (7); setI.Add (9); setI.Add (11);
+            setIo.CopyTo (d6, 1);
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (e6, d6));
         }
 
 
@@ -625,6 +658,14 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void UnitRs_RemoveWhere_ArgumentNull()
+        {
+            Setup();
+            setI.RemoveWhere (null);
+        }
+
+        [TestMethod]
         public void UnitRs_RemoveWhere()
         {
             Setup (4);
@@ -676,7 +717,7 @@ namespace Kaos.Test.Collections
 
 #endregion
 
-#region Test ISet methods
+        #region Test ISet methods
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
@@ -848,6 +889,7 @@ namespace Kaos.Test.Collections
             Assert.IsTrue (setI.IsSubsetOf (a357));
             Assert.IsFalse (setI.IsSubsetOf (a35));
             Assert.IsFalse (setI.IsSubsetOf (empty));
+            Assert.IsFalse (setI.IsSubsetOf (new int[] { 3, 5, 8 }));
         }
 
 
@@ -876,6 +918,7 @@ namespace Kaos.Test.Collections
             Assert.IsTrue (setI.IsProperSubsetOf (a35779));
             Assert.IsFalse (setI.IsProperSubsetOf (a357));
             Assert.IsFalse (setI.IsProperSubsetOf (a35));
+            Assert.IsFalse (setI.IsProperSubsetOf (new int[] { 1, 2, 3, 4 }));
             Assert.IsFalse (setI.IsProperSubsetOf (empty));
         }
 
@@ -938,6 +981,7 @@ namespace Kaos.Test.Collections
             Assert.IsTrue (setI.IsProperSupersetOf (a35));
             Assert.IsTrue (setI.IsProperSupersetOf (a355));
             Assert.IsTrue (setI.IsProperSupersetOf (empty));
+            Assert.IsFalse (setI.IsProperSupersetOf (new int[] { 2, 4 }));
         }
 
 
@@ -950,7 +994,20 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void UnitRs_Overlaps()
+        public void UnitRs_OverlapsSet()
+        {
+            Setup();
+            setI.Add (3); setI.Add (5); setI.Add (7);
+            Assert.IsTrue(setI.Overlaps(setI));
+
+#if ! TEST_BCL
+            var rs = new RankedSet<int> { 5, 6 };
+            Assert.IsTrue (setI.Overlaps (rs));
+#endif
+        }
+
+        [TestMethod]
+        public void UnitRs_OverlapsArray()
         {
             var a35779 = new int[] { 3, 5, 7, 7, 9 };
             var a357 = new int[] { 3, 5, 7 };
@@ -1023,9 +1080,9 @@ namespace Kaos.Test.Collections
             Assert.IsFalse (personSet.SetEquals (pa));
         }
 
-#endregion
+        #endregion
 
-#region Test bonus methods
+        #region Test bonus methods
 #if ! TEST_BCL
 
         [TestMethod]
@@ -1090,17 +1147,19 @@ namespace Kaos.Test.Collections
         public void UnitRsx_IndexOf()
         {
             Setup (4);
-            for (int ii = 0; ii < 50; ++ii)
-                setI.Add (ii*2);
+            for (int ii = 0; ii <= 98; ii+=2)
+                setI.Add (ii);
 
             var iz = setI.IndexOf (-1);
             var i0 = setI.IndexOf (0);
             var i8 = setI.IndexOf (8);
+            var i98 = setI.IndexOf (98);
             var i100 = setI.IndexOf (100);
 
             Assert.AreEqual (~0, iz);
             Assert.AreEqual (0, i0);
             Assert.AreEqual (4, i8);
+            Assert.AreEqual (49, i98);
             Assert.AreEqual (~50, i100);
         }
 
@@ -1139,9 +1198,9 @@ namespace Kaos.Test.Collections
         }
 
 #endif
-#endregion
+        #endregion
 
-#region Test enumeration
+        #region Test enumeration
 
         [TestMethod]
         [ExpectedException (typeof (InvalidOperationException))]
@@ -1214,6 +1273,6 @@ namespace Kaos.Test.Collections
             }
         }
 
-#endregion
+        #endregion
     }
 }
