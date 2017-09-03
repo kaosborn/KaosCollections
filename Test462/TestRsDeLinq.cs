@@ -49,27 +49,23 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRsq_ElementAtOD1_ArgumentOutOfRange()
-        {
-            Setup();
-            int key = setI.ElementAt (-1);
-        }
-
-        [TestMethod]
-        public void UnitRsq_ElementAtOD2()
+        public void UnitRsq_ElementAtOrDefault()
         {
             Setup();
 
-            int item1 = setI.ElementAtOrDefault (0);
-            Assert.AreEqual (default (int), item1);
+            int keyM1 = setI.ElementAtOrDefault (-1);
+            Assert.AreEqual (default (int), keyM1);
+
+            int key0 = setI.ElementAtOrDefault (0);
+            Assert.AreEqual (default (int), key0);
 
             setI.Add (9);
-            int item2 = setI.ElementAtOrDefault (0);
-            Assert.AreEqual (9, item2);
 
-            int item3 = setI.ElementAtOrDefault (1);
-            Assert.AreEqual (default (int), item3);
+            int key00 = setI.ElementAtOrDefault (0);
+            Assert.AreEqual (9, key00);
+
+            int key1 = setI.ElementAtOrDefault (1);
+            Assert.AreEqual (default (int), key1);
         }
 
 

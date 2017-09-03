@@ -50,30 +50,27 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRdq_ElementAtOD1_ArgumentOutOfRange()
-        {
-            Setup();
-            KeyValuePair<int,int> pair = tree1.ElementAt (-1);
-        }
-
-        [TestMethod]
-        public void UnitRdq_ElementAtOD2()
+        public void UnitRdq_ElementAtOrDefault()
         {
             Setup();
 
-            KeyValuePair<int,int> pair1 = tree1.ElementAtOrDefault (0);
-            Assert.AreEqual (default (int), pair1.Key);
-            Assert.AreEqual (default (int), pair1.Value);
+            KeyValuePair<int,int> pairM1 = tree1.ElementAtOrDefault (-1);
+            Assert.AreEqual (default (int), pairM1.Key);
+            Assert.AreEqual (default (int), pairM1.Value);
+
+            KeyValuePair<int,int> pair0 = tree1.ElementAtOrDefault (0);
+            Assert.AreEqual (default (int), pair0.Key);
+            Assert.AreEqual (default (int), pair0.Value);
 
             tree1.Add (9, -9);
-            KeyValuePair<int,int> pair2 = tree1.ElementAtOrDefault (0);
-            Assert.AreEqual (9, pair2.Key);
-            Assert.AreEqual (-9, pair2.Value);
 
-            KeyValuePair<int,int> pair3 = tree1.ElementAtOrDefault (1);
-            Assert.AreEqual (default (int), pair3.Key);
-            Assert.AreEqual (default (int), pair3.Value);
+            KeyValuePair<int,int> pair00 = tree1.ElementAtOrDefault (0);
+            Assert.AreEqual (9, pair00.Key);
+            Assert.AreEqual (-9, pair00.Value);
+
+            KeyValuePair<int,int> pair1 = tree1.ElementAtOrDefault (1);
+            Assert.AreEqual (default (int), pair1.Key);
+            Assert.AreEqual (default (int), pair1.Value);
         }
 
 
