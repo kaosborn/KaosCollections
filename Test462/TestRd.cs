@@ -679,6 +679,10 @@ namespace Kaos.Test.Collections
             tree2.Add ("nine", 9);
             IEnumerator<KeyValuePair<string,int>> kvEnum = tree2.GetEnumerator();
 
+            KeyValuePair<string, int> pair0 = kvEnum.Current;
+            Assert.AreEqual (default (int), pair0.Value);
+            Assert.AreEqual (default (string), pair0.Key);
+
             kvEnum.MoveNext();
             KeyValuePair<string,int> pair = kvEnum.Current;
             Assert.AreEqual (9, pair.Value);
@@ -945,6 +949,22 @@ namespace Kaos.Test.Collections
 #if ! TEST_BCL
 
         [TestMethod]
+        public void UnitRd_MinMax()
+        {
+            var rd = new RankedDictionary<int,int>() { Capacity = 4 };
+
+            for (int i1 = 1; i1 <= 99; ++i1)
+                rd.Add (i1, i1 + 100);
+
+            int min = rd.MinKey;
+            int max = rd.MaxKey;
+
+            Assert.AreEqual (1, min);
+            Assert.AreEqual (99, max);
+        }
+
+
+        [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
         public void CrashRdx_Capacity_ArgumentOutOfRange()
         {
@@ -1021,6 +1041,15 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void UnitRdx_ElementsFrom_ArgumentNull()
+        {
+            var rd = new RankedDictionary<string,int>();
+            foreach (var pair in rd.ElementsFrom (null))
+            { }
+        }
+
+        [TestMethod]
         public void UnitRdx_ElementsFrom()
         {
             var btree = new RankedDictionary<int,int>();
@@ -1044,7 +1073,6 @@ namespace Kaos.Test.Collections
         [TestMethod]
         public void UnitRdx_ElementsFromMissingVal()
         {
-
             var btree = new RankedDictionary<int,int>();
 
             for (int i = 0; i < 1000; i += 2)
@@ -1079,6 +1107,14 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (0, iterations, "SkipUntilKey shouldn't find anything");
         }
 
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void UnitRdx_IndexOf_ArgumentNull()
+        {
+            var rd = new RankedDictionary<string,int>();
+            int ix = rd.IndexOfKey (null);
+        }
 
         [TestMethod]
         public void UnitRdx_IndexOfKey()

@@ -119,6 +119,14 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (2, objCol4.Count);
         }
 
+
+        [TestMethod]
+        public void TestRd_SyncRoot()
+        {
+            Setup();
+            object sr = objCol2.SyncRoot;
+        }
+
         #endregion
 
         #region Test object methods
@@ -307,9 +315,9 @@ namespace Kaos.Test.Collections
         {
             Setup();
             tree2.Add ("cc", 3);
-            System.Collections.IDictionaryEnumerator oEtor2
+            System.Collections.IDictionaryEnumerator oEtor
                 = ((System.Collections.IDictionary) tree2).GetEnumerator();
-            var key = oEtor2.Key;
+            var key = oEtor.Key;
         }
 
         [TestMethod]
@@ -318,9 +326,39 @@ namespace Kaos.Test.Collections
         {
             Setup();
             tree2.Add ("cc", 3);
-            System.Collections.IDictionaryEnumerator oEtor2
+            System.Collections.IDictionaryEnumerator oEtor
                 = ((System.Collections.IDictionary) tree2).GetEnumerator();
-            var val = oEtor2.Value;
+            var val = oEtor.Value;
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void CrashRd_EtorObjectCurrent_InvalidOperation()
+        {
+            Setup();
+            tree2.Add("cc", 3);
+            System.Collections.IDictionaryEnumerator oEtor
+                = ((System.Collections.IDictionary)tree2).GetEnumerator();
+            var val = oEtor.Current;
+        }
+
+        [TestMethod]
+        public void UnitRd_ExObjectEtor()
+        {
+            Setup();
+            tree1.Add (3, 33);
+            tree1.Add (5, 55);
+
+            System.Collections.IDictionaryEnumerator oxEtor
+                = ((System.Collections.IDictionary) tree1).GetEnumerator();
+            oxEtor.MoveNext();
+            object key = oxEtor.Key;
+            object val = oxEtor.Value;
+            DictionaryEntry de = oxEtor.Entry;
+            Assert.AreEqual (3, key);
+            Assert.AreEqual (33, val);
+            Assert.AreEqual (3, de.Key);
+            Assert.AreEqual (33, de.Value);
         }
 
         [TestMethod]

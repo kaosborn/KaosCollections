@@ -675,6 +675,14 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRb_RemoveAll_ArgumentNull()
+        {
+            var bag = new RankedBag<int>();
+            bag.RemoveAll (null);
+        }
+
+        [TestMethod]
         public void UnitRb_RemoveAll()
         {
             var bag0 = new RankedBag<int>();
@@ -773,7 +781,7 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (0, del0);
             Assert.AreEqual (0, bag0.Count);
 
-            int del1 = bag1.RetainAll (new int[] { 1, 4, 6, 6, 9 });
+            int del1 = bag1.RetainAll (new int[] { 1, 4, 4, 6, 6, 9 });
             Assert.AreEqual (6, del1);
             Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (new int[] { 4, 6, 6 }, bag1));
 
@@ -792,18 +800,18 @@ namespace Kaos.Test.Collections
             var bag0 = new RankedBag<int>();
             var bag1 = new RankedBag<int> { Capacity = 4 };
 
-            int n0 = 0, n1 = 0;
+            int a0 = 0, a1 = 0;
             foreach (var ii in new int[] { 3, 5, 5, 7, 7 })
                 bag1.Add (ii);
 
-            foreach (var k0 in bag0)
-                ++n0;
+            foreach (var k0 in bag0.Distinct())
+                ++a0;
 
-            foreach (var k1 in bag1)
-                ++n1;
+            foreach (var k1 in bag1.Distinct())
+                ++a1;
 
-            Assert.AreEqual (0, n0);
-            Assert.AreEqual (5, n1);
+            Assert.AreEqual (0, a0);
+            Assert.AreEqual (3, a1);
         }
 
         [TestMethod]
@@ -862,6 +870,24 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (0, d5.Count);
         }
 
+
+        [TestMethod]
+        public void UnitRb_Reverse()
+        {
+            int n = 800;
+            var bag = new RankedBag<int> { Capacity = 4 };
+
+            for (int i1 = 0; i1 < n; ++i1)
+                bag.Add (i1/2);
+
+            int i2 = n-1;
+            foreach (var ii in bag.Reverse())
+            {
+                Assert.AreEqual (i2 / 2, ii);
+                --i2;
+            }
+            Assert.AreEqual (i2, -1);
+        }
 
 
         [TestMethod]

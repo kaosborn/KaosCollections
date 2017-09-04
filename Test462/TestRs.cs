@@ -210,9 +210,19 @@ namespace Kaos.Test.Collections
             Assert.IsTrue (b1);
         }
 
-#endregion
+        #endregion
 
         #region Test properties
+
+        [TestMethod]
+        public void TestRs_IsSynchronized()
+        {
+            Setup();
+            var xSet = (System.Collections.ICollection) setI;
+            bool isSync = xSet.IsSynchronized;
+            Assert.IsFalse (isSync);
+        }
+
 
         [TestMethod]
         public void UnitRs_Max()
@@ -245,6 +255,15 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (1, setI.Min);
         }
 
+
+        [TestMethod]
+        public void TestRs_SyncRoot()
+        {
+            Setup();
+            var xSet = (System.Collections.ICollection) setI;
+            object sr = xSet.SyncRoot;
+        }
+
         #endregion
 
         #region Test methods
@@ -275,6 +294,20 @@ namespace Kaos.Test.Collections
             Assert.IsFalse (isOk);
 
             Assert.AreEqual (3, setS.Count);
+        }
+
+
+        [TestMethod]
+        public void UnitRs_ExAdd()
+        {
+            Setup();
+
+            var xSet = (System.Collections.Generic.ICollection<int>) setI;
+            xSet.Add (3); xSet.Add (5);
+
+            Assert.AreEqual (2, setI.Count);
+            xSet.Add (3);
+            Assert.AreEqual (2, setI.Count);
         }
 
 
@@ -1106,13 +1139,21 @@ namespace Kaos.Test.Collections
             Setup (4);
             for (int ix=0; ix<20; ++ix) setI.Add (ix);
 
-            int expected = 5;
+            int expected1 = 5;
             foreach (int key in setI.ElementsBetween (5, 15))
             {
-                Assert.AreEqual (expected, key);
-                ++expected;
+                Assert.AreEqual (expected1, key);
+                ++expected1;
             }
-            Assert.AreEqual (expected, 16);
+            Assert.AreEqual (expected1, 16);
+
+            int expected2 = 15;
+            foreach (int key in setI.ElementsBetween (15, 25))
+            {
+                Assert.AreEqual (expected2, key);
+                ++expected2;
+            }
+            Assert.AreEqual (expected2, 20);
         }
 
 
@@ -1209,24 +1250,37 @@ namespace Kaos.Test.Collections
             Setup (4);
             for (int ix=0; ix<10; ++ix) setI.Add (ix);
 
-            var iter = setI.GetEnumerator();
-            while (iter.MoveNext())
+            var etor = setI.GetEnumerator();
+            while (etor.MoveNext())
             { }
 
-            var val = ((System.Collections.IEnumerator) iter).Current;
+            var val = ((System.Collections.IEnumerator) etor).Current;
         }
 
         [TestMethod]
-        public void UnitRs_EnumeratorOverflowNoCrash()
+        public void UnitRs_EtorOverflowNoCrash()
         {
             Setup (4);
             for (int ix=0; ix<10; ++ix) setI.Add (ix);
 
-            var iter = setI.GetEnumerator();
-            while (iter.MoveNext())
+            var etor = setI.GetEnumerator();
+            while (etor.MoveNext())
             { }
 
-            var val = iter.Current;
+            var val = etor.Current;
+        }
+
+        [TestMethod]
+        public void UnitRs_ExGetEnumerator()
+        {
+            Setup(4);
+            for (int ix = 1; ix < 10; ++ix) setI.Add (ix);
+
+            var xSet = (System.Collections.Generic.ICollection<int>) setI;
+            var xEtor = xSet.GetEnumerator();
+
+            xEtor.MoveNext();
+            Assert.AreEqual(1, xEtor.Current);
         }
 
         [TestMethod]
