@@ -599,6 +599,25 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void CrashRb_Last_InvalidOperation()
+        {
+            var bag = new RankedBag<int>();
+            int key = bag.Last();
+        }
+
+        [TestMethod]
+        public void UnitRb_Last()
+        {
+            var bag = new RankedBag<int>() { Capacity = 4 };
+            for (int ii = 99; ii >= 0; --ii) bag.Add (ii);
+
+            int key = bag.Last();
+            Assert.AreEqual (99, key);
+        }
+
+
+        [TestMethod]
         public void UnitRb_Remove1()
         {
             var bag0 = new RankedBag<int>();
@@ -897,23 +916,23 @@ namespace Kaos.Test.Collections
             var bag = new RankedBag<int>() { Capacity = 4 };
             for (int ii=0; ii<10; ++ii) bag.Add (ii);
 
-            var iter = bag.GetEnumerator();
-            while (iter.MoveNext())
+            var etor = bag.GetEnumerator();
+            while (etor.MoveNext())
             { }
 
-            var val = ((System.Collections.IEnumerator) iter).Current;
+            var val = ((System.Collections.IEnumerator) etor).Current;
         }
 
         [TestMethod]
         public void UnitRb_ExGetEnumerator()
         {
-            var bag = new RankedBag<int>() { Capacity = 4 };
+            var bag = new RankedBag<int>();
             bag.Add (5);
 
-            var bagX = ((System.Collections.Generic.ICollection<int>) bag);
-            var etorX = bagX.GetEnumerator();
-            etorX.MoveNext();
-            Assert.AreEqual (5, etorX.Current);
+            var xBag = ((System.Collections.Generic.ICollection<int>) bag);
+            var xEtor = xBag.GetEnumerator();
+            xEtor.MoveNext();
+            Assert.AreEqual (5, xEtor.Current);
         }
 
         [TestMethod]
@@ -923,27 +942,27 @@ namespace Kaos.Test.Collections
             int e1 = 0, e2 = 0;
             for (int ii=0; ii<10; ++ii) bag.Add (ii);
 
-            var iter = bag.GetEnumerator();
-            while (iter.MoveNext())
+            var etor = bag.GetEnumerator();
+            while (etor.MoveNext())
             {
-                int actual = iter.Current;
-                object expectedOb = ((System.Collections.IEnumerator) iter).Current;
-                Assert.AreEqual (e1, actual);
-                Assert.AreEqual (e1, expectedOb);
+                int gActual = etor.Current;
+                object oActual = ((System.Collections.IEnumerator) etor).Current;
+                Assert.AreEqual (e1, gActual);
+                Assert.AreEqual (e1, oActual);
                 ++e1;
             }
             Assert.AreEqual (10, e1);
 
-            int actualEnd = iter.Current;
-            Assert.AreEqual (default (int), actualEnd);
+            int gActualEnd = etor.Current;
+            Assert.AreEqual (default (int), gActualEnd);
 
-            bool isValid = iter.MoveNext();
+            bool isValid = etor.MoveNext();
             Assert.IsFalse (isValid);
 
-            ((System.Collections.IEnumerator) iter).Reset();
-            while (iter.MoveNext())
+            ((System.Collections.IEnumerator) etor).Reset();
+            while (etor.MoveNext())
             {
-                int val = iter.Current;
+                int val = etor.Current;
                 Assert.AreEqual (e2, val);
                 ++e2;
             }

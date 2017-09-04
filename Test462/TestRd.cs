@@ -953,6 +953,12 @@ namespace Kaos.Test.Collections
         {
             var rd = new RankedDictionary<int,int>() { Capacity = 4 };
 
+            int min0 = rd.MinKey;
+            int max0 = rd.MaxKey;
+
+            Assert.AreEqual (default (int), min0);
+            Assert.AreEqual (default (int), max0);
+
             for (int i1 = 1; i1 <= 99; ++i1)
                 rd.Add (i1, i1 + 100);
 

@@ -74,19 +74,17 @@ namespace Kaos.Test.Collections
         public void CrashRsq_Last_InvalidOperation()
         {
             Setup();
-            var item = setI.Last();
+            var key = setI.Last();
         }
 
         [TestMethod]
         public void UnitRsq_Last()
         {
-            Setup();
-            setI.Add (7);
-            setI.Add (5);
-            setI.Add (3);
+            Setup (4);
+            for (int ii = 99; ii >= 0; --ii) setI.Add (ii);
 
-            int item = setI.Last();
-            Assert.AreEqual (7, item, "didn't get expected last key");
+            int key = setI.Last();
+            Assert.AreEqual (99, key);
         }
 
         #endregion

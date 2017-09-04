@@ -171,10 +171,23 @@ namespace Kaos.Test.Collections
         #region Test Keys enumeration
 
         [TestMethod]
-        public void UnitRdk_KeysGetEtor()
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRdk_Current_InvalidOperation()
+        {
+            Setup();
+            tree2.Add ("CC", 3);
+
+            System.Collections.ICollection oKeys = objCol2.Keys;
+            var etor = oKeys.GetEnumerator();
+
+            object cur = etor.Current;
+        }
+
+        [TestMethod]
+        public void UnitRdk_GetEnumerator()
         {
             int n = 100;
-            Setup();
+            Setup (4);
 
             for (int k = 0; k < n; ++k)
                 tree1.Add (k, k + 1000);
@@ -190,7 +203,7 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void UnitRdk_GetEtorExplicit()
+        public void UnitRdk_ExGetEnumerator()
         {
             int n = 10;
             Setup();
@@ -200,6 +213,10 @@ namespace Kaos.Test.Collections
 
             int expected = 0;
             var etor = genKeys2.GetEnumerator();
+
+            var rewoundKey = etor.Current;
+            Assert.AreEqual (rewoundKey, default (string));
+
             while (etor.MoveNext())
             {
                 var key = etor.Current;
@@ -391,7 +408,20 @@ namespace Kaos.Test.Collections
         #region Test Values enumeration
 
         [TestMethod]
-        public void UnitRdv_ValuesGetEtor()
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void CrashRdv_Current_InvalidOperation()
+        {
+            Setup();
+            tree2.Add ("CC", 3);
+
+            System.Collections.ICollection oVals = objCol2.Values;
+            var etor = oVals.GetEnumerator();
+
+            object cur = etor.Current;
+        }
+
+        [TestMethod]
+        public void UnitRdv_GetEnumerator()
         {
             int n = 100;
             Setup();
@@ -410,16 +440,20 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void UnitRdv_GetEtorExplicit()
+        public void UnitRdv_ExGetEnumerator()
         {
             int n = 10;
             Setup();
 
             for (int k = 0; k < n; ++k)
-                tree2.Add(k.ToString(), k);
+                tree2.Add (k.ToString(), k);
 
             int expected = 0;
             var etor = genValues2.GetEnumerator();
+
+            var rewoundVal = etor.Current;
+            Assert.AreEqual (rewoundVal, default (int));
+
             while (etor.MoveNext())
             {
                 var val = etor.Current;

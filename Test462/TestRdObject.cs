@@ -333,6 +333,17 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
+        public void CrashRd_EtorObjectEntry_InvalidOperation()
+        {
+            Setup();
+            tree2.Add ("cc", 3);
+            System.Collections.IDictionaryEnumerator oEtor
+                = ((System.Collections.IDictionary) tree2).GetEnumerator();
+            DictionaryEntry entry = oEtor.Entry;
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void CrashRd_EtorObjectCurrent_InvalidOperation()
         {
             Setup();

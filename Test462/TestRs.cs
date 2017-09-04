@@ -626,25 +626,27 @@ namespace Kaos.Test.Collections
             Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (e6, d6));
         }
 
-
         [TestMethod]
         public void UnitRs_Remove()
         {
-            bool isOk;
+            int n = 3200;
             Setup (4);
+            for (int ii = n; ii >= 0; --ii)
+                setI.Add (ii);
 
-            foreach (int x1 in iVals1)
-                setI.Add (x1);
-            int count0 = setI.Count;
+            int expected = n+1;
+            for (int i2 = n; i2 >= 0; i2 -= 10)
+            {
+                bool isRemoved = setI.Remove (i2);
+                --expected;
+                Assert.IsTrue (isRemoved);
+            }
 
-            isOk = setI.Remove (18);
-            Assert.IsTrue (isOk);
-            Assert.AreEqual (count0-1, setI.Count);
-
-            isOk = setI.Remove (18);
-            Assert.IsFalse (isOk);
-            Assert.AreEqual (count0-1, setI.Count);
+            Assert.AreEqual (expected, setI.Count);
+            bool isRemoved2 = setI.Remove (10);
+            Assert.IsFalse (isRemoved2);
         }
+
 
         static int rwCounter = 9;
         static bool IsEven (int val) { return val % 2 == 0; }
@@ -1217,25 +1219,25 @@ namespace Kaos.Test.Collections
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
         public void CrashRsx_RemoveAtB_ArgumentOutOfRange()
         {
-            var d1 = new RankedSet<int>();
-            d1.RemoveAt (0);
+            var key = new RankedSet<int>();
+            key.RemoveAt (0);
         }
 
         [TestMethod]
         public void UnitRsx_RemoveAt()
         {
-            var d1 = new RankedSet<int>();
+            var set = new RankedSet<int>() { Capacity = 5 };
             for (int ii = 0; ii < 5000; ++ii)
-                d1.Add (ii);
+                set.Add (ii);
 
             for (int i2 = 4990; i2 >= 0; i2 -= 10)
-                d1.RemoveAt (i2);
+                set.RemoveAt (i2);
 
             for (int i2 = 0; i2 < 5000; ++i2)
                 if (i2 % 10 == 0)
-                    Assert.IsFalse (d1.Contains (i2));
+                    Assert.IsFalse (set.Contains (i2));
                 else
-                    Assert.IsTrue (d1.Contains (i2));
+                    Assert.IsTrue (set.Contains (i2));
         }
 
 #endif
@@ -1245,7 +1247,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (InvalidOperationException))]
-        public void CrashRs_EnumeratorOverflow_InvalidOperation()
+        public void CrashRs_EtorOverflow_InvalidOperation()
         {
             Setup (4);
             for (int ix=0; ix<10; ++ix) setI.Add (ix);
@@ -1255,6 +1257,18 @@ namespace Kaos.Test.Collections
             { }
 
             var val = ((System.Collections.IEnumerator) etor).Current;
+        }
+
+        [TestMethod]
+        public void UnitRs_ExGetEnumerator()
+        {
+            Setup();
+            setI.Add (5);
+
+            var xSet = ((System.Collections.Generic.ICollection<int>) setI);
+            var xEtor = xSet.GetEnumerator();
+            xEtor.MoveNext();
+            Assert.AreEqual (5, xEtor.Current);
         }
 
         [TestMethod]
@@ -1271,45 +1285,37 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void UnitRs_ExGetEnumerator()
-        {
-            Setup(4);
-            for (int ix = 1; ix < 10; ++ix) setI.Add (ix);
-
-            var xSet = (System.Collections.Generic.ICollection<int>) setI;
-            var xEtor = xSet.GetEnumerator();
-
-            xEtor.MoveNext();
-            Assert.AreEqual(1, xEtor.Current);
-        }
-
-        [TestMethod]
         public void UnitRs_GetEnumerator()
         {
-            int k1 = 0, k2 = 0;
+            int e1 = 0, e2 = 0;
             Setup (4);
             for (int ix=0; ix<10; ++ix) setI.Add (ix);
 
-            var iter = setI.GetEnumerator();
-            while (iter.MoveNext())
+            var etor = setI.GetEnumerator();
+            while (etor.MoveNext())
             {
-                int val = iter.Current;
-                Assert.AreEqual (k1, val);
-                ++k1;
+                int gActual = etor.Current;
+                object oActual = ((System.Collections.IEnumerator) etor).Current;
+                Assert.AreEqual (e1, gActual);
+                Assert.AreEqual (e1, oActual);
+                ++e1;
             }
-            Assert.AreEqual (10, k1);
+            Assert.AreEqual (10, e1);
 
-            bool isValid = iter.MoveNext();
+            int gActualEnd = etor.Current;
+            Assert.AreEqual (default (int), gActualEnd);
+
+            bool isValid = etor.MoveNext();
             Assert.IsFalse (isValid);
 
-            ((System.Collections.IEnumerator) iter).Reset();
-            while (iter.MoveNext())
+            ((System.Collections.IEnumerator) etor).Reset();
+            while (etor.MoveNext())
             {
-                int val = iter.Current;
-                Assert.AreEqual (k2, val);
-                ++k2;
+                int val = etor.Current;
+                Assert.AreEqual (e2, val);
+                ++e2;
             }
-            Assert.AreEqual (10, k2);
+            Assert.AreEqual (10, e2);
         }
 
         [TestMethod]
