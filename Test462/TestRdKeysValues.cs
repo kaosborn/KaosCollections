@@ -14,7 +14,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void CrashRdkCtor1_ArgumentNull()
+        public void CrashRdk_Ctor1_ArgumentNull()
         {
             Setup();
 #if TEST_BCL
@@ -250,7 +250,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void CrashRdvCtor1_ArgumentNull()
+        public void CrashRdv_Ctor1_ArgumentNull()
         {
             Setup();
 #if TEST_BCL

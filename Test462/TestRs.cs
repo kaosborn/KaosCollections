@@ -215,7 +215,7 @@ namespace Kaos.Test.Collections
         #region Test properties
 
         [TestMethod]
-        public void TestRs_IsSynchronized()
+        public void UnitRs_IsSynchronized()
         {
             Setup();
             var xSet = (System.Collections.ICollection) setI;
@@ -257,7 +257,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void TestRs_SyncRoot()
+        public void UnitRs_SyncRoot()
         {
             Setup();
             var xSet = (System.Collections.ICollection) setI;
@@ -662,7 +662,7 @@ namespace Kaos.Test.Collections
 #if ! TEST_BCL
         [ExpectedException (typeof (InvalidOperationException))]
 #endif
-        public void UnitRs_RemoveWhereHotPredicate_InvalidOperation()
+        public void CrashRs_RemoveWhereHotPredicate_InvalidOperation()
         {
             Setup (4);
             staticSetI.Add (3); staticSetI.Add (4);
@@ -673,7 +673,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (InvalidOperationException))]
-        public void UnitRs_RemoveWhereHotEtor_InvalidOperation()
+        public void CrashRs_RemoveWhereHotEtor_InvalidOperation()
         {
             Setup (4);
             setI.Add (3); setI.Add (4);
@@ -694,7 +694,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void UnitRs_RemoveWhere_ArgumentNull()
+        public void CrashRs_RemoveWhere_ArgumentNull()
         {
             Setup();
             setI.RemoveWhere (null);

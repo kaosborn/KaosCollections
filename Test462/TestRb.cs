@@ -88,7 +88,7 @@ namespace Kaos.Test.Collections
         #region Test properties
 
         [TestMethod]
-        public void TestRb_IsSynchronized()
+        public void UnitRb_IsSynchronized()
         {
             var bag = new RankedBag<int>();
             var bagX = (System.Collections.ICollection) bag;
@@ -97,7 +97,7 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void TestRb_MinMax()
+        public void UnitRb_MinMax()
         {
             var bag = new RankedBag<int>();
             var min0 = bag.Min;
@@ -112,7 +112,7 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void TestRb_SyncRoot()
+        public void UnitRb_SyncRoot()
         {
             var bag = new RankedBag<int>();
             var bagX = (System.Collections.ICollection) bag;
@@ -646,7 +646,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void UnitRb_Remove2_Argument()
+        public void CrashRb_Remove2_Argument()
         {
             var bag = new RankedBag<int>();
             bag.Remove (1, -1);

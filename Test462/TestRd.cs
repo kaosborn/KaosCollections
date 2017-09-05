@@ -1048,7 +1048,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void UnitRdx_ElementsFrom_ArgumentNull()
+        public void CrashRdx_ElementsFrom_ArgumentNull()
         {
             var rd = new RankedDictionary<string,int>();
             foreach (var pair in rd.ElementsFrom (null))
@@ -1116,7 +1116,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void UnitRdx_IndexOf_ArgumentNull()
+        public void CrashRdx_IndexOf_ArgumentNull()
         {
             var rd = new RankedDictionary<string,int>();
             int ix = rd.IndexOfKey (null);

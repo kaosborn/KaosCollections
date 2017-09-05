@@ -43,7 +43,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void CrashRd_ObjectItemGetBadKey()
+        public void UnitRd_ObjectItemGetBadKey()
         {
             Setup();
             objCol2.Add ("foo", 10);
@@ -121,7 +121,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void TestRd_SyncRoot()
+        public void UnitRd_SyncRoot()
         {
             Setup();
             object sr = objCol2.SyncRoot;
