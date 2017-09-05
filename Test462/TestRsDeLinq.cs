@@ -35,15 +35,16 @@ namespace Kaos.Test.Collections
         [TestMethod]
         public void UnitRsq_ElementAt()
         {
-            Setup();
+            int n = 800;
+            Setup (4);
 
-            for (int ii = 0; ii <= 800; ii+=2)
+            for (int ii = 0; ii <= n; ii += 2)
                 setI.Add (ii);
 
-            for (int ii = 0; ii <= 400; ii+=2)
+            for (int ix = 0; ix <= n/2; ++ix)
             {
-                int key = setI.ElementAt (ii);
-                Assert.AreEqual (ii*2, key);
+                int key = setI.ElementAt (ix);
+                Assert.AreEqual (ix * 2, key);
             }
         }
 

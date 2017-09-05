@@ -134,6 +134,17 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (Person.names.Length+2, personSet.Count);
         }
 
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRs_Ctor1B_ArgumentNull()
+        {
+            var nullArg = (System.Collections.Generic.ICollection<int>) null;
+#if TEST_BCL
+            var set = new SortedSet<int>(nullArg);
+#else
+            var set = new RankedSet<int>(nullArg);
+#endif
+        }
 
         [TestMethod]
         public void UnitRs_Ctor1B()
@@ -868,6 +879,8 @@ namespace Kaos.Test.Collections
             setI.SymmetricExceptWith (a5599);
             Assert.AreEqual (1, setI.Count);
             Assert.AreEqual (9, setI.Min);
+
+            setI.SymmetricExceptWith(new int[] { 5, 11 });
         }
 
 

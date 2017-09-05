@@ -540,7 +540,7 @@ namespace Kaos.Test.Collections
 #if TEST_BCL
             var sd = new SortedDictionary<string,int> (StringComparer.Ordinal);
 #else
-            var sd = new RankedDictionary<string,int> (StringComparer.Ordinal);
+            var sd = new RankedDictionary<string,int> (StringComparer.Ordinal) { Capacity = 4 };
 #endif
 
             for (char c = 'A'; c <= 'Z'; ++c)
