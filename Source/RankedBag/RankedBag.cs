@@ -303,7 +303,7 @@ namespace Kaos.Collections
         /// <param name="array">A one-dimensional array that is the destination of the copy.</param>
         /// <param name="index">The zero-based starting position in <em>array</em>.</param>
         void ICollection.CopyTo (Array array, int index)
-        { CopyKeysTo2 (array, index, Count); }
+        { CopyKeysTo2 (array, index); }
 
 
         /// <summary>Returns the number of occurrences of the supplied item in the bag.</summary>

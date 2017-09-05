@@ -99,7 +99,7 @@ namespace Kaos.Collections
             /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero.</exception>
             /// <exception cref="ArgumentException">When not enough space is given for the copy.</exception>
             void ICollection.CopyTo (Array array, int index)
-            { tree.CopyKeysTo2 (array, index, Count); }
+            { tree.CopyKeysTo2 (array, index); }
 
 
             /// <summary>This implementation always throws a <see cref="NotSupportedException" />.</summary>

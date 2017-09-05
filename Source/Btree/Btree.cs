@@ -80,7 +80,7 @@ namespace Kaos.Collections
         }
 
 
-        internal void CopyKeysTo2 (Array array, int index, int count)
+        internal void CopyKeysTo2 (Array array, int index)
         {
             if (array == null)
                 throw new ArgumentNullException (nameof (array));
@@ -104,26 +104,14 @@ namespace Kaos.Collections
                 throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
 
             if (array is object[] obArray)
-            {
                 try
                 {
-                    for (Leaf leaf = leftmostLeaf; count > 0; )
-                    {
-                        int limIx = count < leaf.KeyCount ? count : leaf.KeyCount;
-
-                        for (int ix = 0; ix < limIx; ++ix)
+                    for (Leaf leaf = leftmostLeaf; leaf != null; leaf = leaf.rightLeaf)
+                        for (int ix = 0; ix < leaf.KeyCount; ++ix)
                             obArray[index++] = leaf.GetKey (ix);
-
-                        leaf = leaf.rightLeaf;
-                        if (leaf == null)
-                            break;
-
-                        count -= limIx;
-                    }
                 }
                 catch (ArrayTypeMismatchException)
                 { throw new ArgumentException ("Mismatched array type.", nameof (array)); }
-            }
             else
                 throw new ArgumentException ("Invalid array type.", nameof (array));
         }
