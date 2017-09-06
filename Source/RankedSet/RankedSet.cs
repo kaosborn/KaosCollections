@@ -510,13 +510,6 @@ namespace Kaos.Collections
                         if (! oEtor.MoveNext())
                             return;
                         oKey = oEtor.Current;
-
-                        if (ix >= leaf.KeyCount)
-                        {
-                            leaf = leaf.rightLeaf;
-                            ix -= leaf.KeyCount;
-                            break;
-                        }
                     }
 
             for (;;)

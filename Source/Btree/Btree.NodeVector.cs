@@ -108,12 +108,14 @@ namespace Kaos.Collections
 
             public static NodeVector CreateForIndex (Btree<T> tree, int index)
             {
+                System.Diagnostics.Debug.Assert (index < tree.Size);
                 var path = new NodeVector (tree);
 
                 Node node = tree.root;
                 while (node is Branch branch)
-                    for (int ix = 0; ix <= node.KeyCount; ++ix)
+                    for (int ix = 0; ; ++ix)
                     {
+                        System.Diagnostics.Debug.Assert (ix <= node.KeyCount);
                         Node child = branch.GetChild (ix);
                         int cw = child.Weight;
                         if (cw > index)
@@ -173,14 +175,12 @@ namespace Kaos.Collections
             public T GetPivot()
             {
                 Debug.Assert (TopNode is Branch);
-                for (int level = indexStack.Count - 2; level >= 0; --level)
+                for (int level = indexStack.Count - 2; ; --level)
                 {
+                    System.Diagnostics.Debug.Assert (level >= 0);
                     if (indexStack[level] > 0)
                         return nodeStack[level].GetKey (indexStack[level] - 1);
                 }
-
-                Debug.Assert (false, "no left pivot");
-                return default (T);
             }
 
 

@@ -152,9 +152,10 @@ namespace Kaos.Collections
         /// <returns>Leaf holding item at index position.</returns>
         internal Node Find (ref int index)
         {
+            System.Diagnostics.Debug.Assert (index < Size);
             Node node = root;
             while (node is Branch branch)
-                for (int ix = 0; ix <= node.KeyCount; ++ix)
+                for (int ix = 0; ; ++ix)
                 {
                     Node child = branch.GetChild (ix);
                     int cw = child.Weight;
