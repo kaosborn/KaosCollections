@@ -42,6 +42,12 @@ namespace Kaos.Test.Collections
             Assert.IsTrue (tree2.Values is System.Collections.IEnumerable);
             Assert.IsTrue (tree2.Values is System.Collections.ICollection);
             Assert.IsTrue (tree2.Values is System.Collections.Generic.IReadOnlyCollection<int>);
+
+            Setup();
+            System.Collections.IEnumerable roKeys
+                = ((System.Collections.Generic.IReadOnlyDictionary<string,int>) tree2).Keys;
+            System.Collections.IEnumerable roVals
+                = ((System.Collections.Generic.IReadOnlyDictionary<string,int>) tree2).Values;
         }
 
 

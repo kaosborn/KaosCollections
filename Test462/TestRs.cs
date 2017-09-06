@@ -858,29 +858,22 @@ namespace Kaos.Test.Collections
         [TestMethod]
         public void UnitRs_SymmetricExceptWith()
         {
-            var a37 = new int[] { 3, 7 };
-            var a357 = new int[] { 3, 5, 7 };
-            var a5599 = new int[] { 5, 5, 9, 9 };
-            var empty = new int[] { };
-            Setup();
+            Setup (4);
 
-            setI.SymmetricExceptWith (empty);
+            setI.SymmetricExceptWith (new int[] { });
             Assert.AreEqual (0, setI.Count);
 
-            setI.SymmetricExceptWith (a37);
-            Assert.AreEqual (2, setI.Count);
-            Assert.AreEqual (3, setI.Min);
-            Assert.AreEqual (7, setI.Max);
+            setI.SymmetricExceptWith (new int[] { 4, 5, 6 });
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (new int[] { 4, 5, 6}, setI));
 
-            setI.SymmetricExceptWith (a357);
-            Assert.AreEqual (1, setI.Count);
-            Assert.AreEqual (5, setI.Min);
+            setI.SymmetricExceptWith (new int[] { 5, 7, 8 });
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (new int[] { 4, 6, 7, 8 }, setI));
 
-            setI.SymmetricExceptWith (a5599);
-            Assert.AreEqual (1, setI.Count);
-            Assert.AreEqual (9, setI.Min);
+            setI.SymmetricExceptWith (new int[] { 1, 2, 7, 8 });
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (new int[] { 1, 2, 4, 6 }, setI));
 
-            setI.SymmetricExceptWith(new int[] { 5, 11 });
+            setI.SymmetricExceptWith (new int[] { 2, 3 });
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual(new int[] { 1, 3, 4, 6 }, setI));
         }
 
 
@@ -1046,12 +1039,20 @@ namespace Kaos.Test.Collections
         {
             Setup();
             setI.Add (3); setI.Add (5); setI.Add (7);
-            Assert.IsTrue(setI.Overlaps(setI));
+            Assert.IsTrue (setI.Overlaps (setI));
 
-#if ! TEST_BCL
-            var rs = new RankedSet<int> { 5, 6 };
-            Assert.IsTrue (setI.Overlaps (rs));
+#if TEST_BCL
+            var set1 = new SortedSet<int> { 5, 6 };
+            var set2 = new SortedSet<int> { 1, 8 };
+#else
+            var set1 = new RankedSet<int> { 5, 6 };
+            var set2 = new RankedSet<int> { 1, 8 };
 #endif
+            bool isOlap1 = setI.Overlaps (set1);
+            bool isOlap2 = setI.Overlaps (set2);
+
+            Assert.IsTrue (setI.Overlaps (set1));
+            Assert.IsFalse (setI.Overlaps (set2));
         }
 
         [TestMethod]
