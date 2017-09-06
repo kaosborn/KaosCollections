@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="TestInit.cs" />
     <Compile Include="TestRb.cs" />
+    <Compile Include="TestRbSerialization.cs" />
     <Compile Include="TestRd.cs" />
     <Compile Include="TestRdDeLinq.cs" />
     <Compile Include="TestRdKeysValues.cs" />
