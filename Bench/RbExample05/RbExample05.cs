@@ -49,7 +49,7 @@ namespace ExampleApp
             bag1.Add (new Exam (3, "Paul"));
             bag1.Add (new Exam (5, "John"));
 
-            Console.WriteLine ("Where comparer returns equality, items retain sequence added:");
+            Console.WriteLine ("Items are inserted after other items that compare equally:");
             foreach (var item in bag1)
                 Console.WriteLine ("  " + item);
 
@@ -67,10 +67,10 @@ namespace ExampleApp
                 Console.WriteLine ("  " + p2);
         }
 
-        static void SerializeExams (string fn, RankedBag<Exam> set, IFormatter formatter)
+        static void SerializeExams (string fn, RankedBag<Exam> bag, IFormatter formatter)
         {
             using (var fs = new FileStream (fn, FileMode.Create))
-            { formatter.Serialize (fs, set); }
+            { formatter.Serialize (fs, bag); }
         }
 
         static RankedBag<Exam> DeserializeExams (string fn, IFormatter formatter)
@@ -81,7 +81,7 @@ namespace ExampleApp
 
         /* Output:
 
-        Where comparer returns equality, items retain sequence added:
+        Items are inserted after other items that compare equally:
           2, Ned
           2, Betty
           3, Paul
