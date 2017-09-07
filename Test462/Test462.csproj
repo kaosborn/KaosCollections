@@ -60,6 +60,7 @@
     <Compile Include="TestRs.cs" />
     <Compile Include="TestRsDeLinq.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestRsSerialization.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
