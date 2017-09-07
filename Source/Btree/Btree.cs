@@ -350,10 +350,7 @@ namespace Kaos.Collections
                     else if (leaf.leftLeaf != null)
                     {
                         leaf.leftLeaf.rightLeaf = leaf.rightLeaf;
-                        if (leaf.rightLeaf != null)
-                            leaf.rightLeaf.leftLeaf = leaf.leftLeaf;
-                        else
-                            rightmostLeaf = leaf.leftLeaf;
+                        rightmostLeaf = leaf.leftLeaf;
                         path.Demote();
                     }
 
