@@ -149,6 +149,12 @@
           </listItem>
           <listItem>
             <para>
+              <codeInline>RankedDictionary</codeInline> implements the <codeInline>ISerializable</codeInline> interface
+              where <codeInline>SortedDictionary</codeInline> does not follow this convention due to legacy constraints.
+            </para>
+          </listItem>
+          <listItem>
+            <para>
               The <codeInline>SortedSet</codeInline> method
               <codeEntityReference qualifyHint="false">M:System.Collections.Generic.SortedSet`1.GetViewBetween(`0,`0)</codeEntityReference>
               (which provides a virtual view to a range of a <codeInline>SortedSet</codeInline>)
@@ -184,13 +190,13 @@
           </listItem>
         </list>
         <para>
-          <codeInline>RankedDictionary</codeInline> and <codeInline>RankedSet</codeInline> store all elements in leaves at the same depth.
+          As a B+ tree, all elements are stored in leaf nodes at the same depth.
           The leaf level is a sorted doubly linked list with head and tail pointers.
           The first key of every leaf (except the leftmost) is copied to one branch for subdividing.
           A tree with no elements is represented as an empty leaf.
         </para>
         <para>
-          This structure differs from a typical B+ tree in three ways:
+          This structure differs from a common B+ tree in three ways:
         </para>
         <list class="bullet">
           <listItem>
@@ -210,7 +216,7 @@
           </listItem>
           <listItem>
             <para>
-              Every branch tracks the number of elements (weight) in all of its descendent leaves.
+              Every branch stores the number of elements (weight) in all of its descendent leaves.
               For example, the weight of the root is the total number of elements in every leaf.
             </para>
           </listItem>
