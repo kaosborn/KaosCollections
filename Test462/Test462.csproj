@@ -56,6 +56,7 @@
     <Compile Include="TestRdKeysValues.cs" />
     <Compile Include="TestRdLinq.cs" />
     <Compile Include="TestRdObject.cs" />
+    <Compile Include="TestRdSerialization.cs" />
     <Compile Include="TestRdStress.cs" />
     <Compile Include="TestRs.cs" />
     <Compile Include="TestRsDeLinq.cs" />
