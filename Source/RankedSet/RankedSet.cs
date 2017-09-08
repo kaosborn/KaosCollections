@@ -52,7 +52,7 @@ namespace Kaos.Collections
 #if NET35 || NET40 || SERIALIZE
     [Serializable]
 #endif
-    public class RankedSet<T> :
+    public partial class RankedSet<T> :
         Btree<T>
 #if ! NET35
         , ISet<T>
@@ -775,39 +775,6 @@ namespace Kaos.Collections
         #endregion
 
         #region Class comparison
-
-        private class RankedSetEqualityComparer : IEqualityComparer<RankedSet<T>>
-        {
-            private readonly IComparer<T> comparer;
-            private readonly IEqualityComparer<T> equalityComparer;
-
-            public RankedSetEqualityComparer (IEqualityComparer<T> equalityComparer, IComparer<T> comparer=null)
-            {
-                this.comparer = comparer ?? Comparer<T>.Default;
-                this.equalityComparer = equalityComparer ?? EqualityComparer<T>.Default;
-            }
-
-            public bool Equals (RankedSet<T> s1, RankedSet<T> s2) => RankedSet<T>.RankedSetEquals (s1, s2, comparer);
-
-            public int GetHashCode (RankedSet<T> set)
-            {
-                int hashCode = 0;
-                if (set != null)
-                    foreach (T item in set)
-                        hashCode = hashCode ^ (equalityComparer.GetHashCode (item) & 0x7FFFFFFF);
-
-                return hashCode;
-            }
-
-            public override bool Equals (object obComparer)
-            {
-                var rsComparer = obComparer as RankedSetEqualityComparer;
-                return rsComparer != null && comparer == rsComparer.comparer;
-            }
-
-            public override int GetHashCode() => comparer.GetHashCode() ^ equalityComparer.GetHashCode();
-        }
-
 
         /// <summary>Returns an equality comparer that can be used to create a collection that contains sets.</summary>
         /// <returns>An equality comparer for creating a collection of sets.</returns>
