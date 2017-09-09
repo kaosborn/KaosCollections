@@ -12,6 +12,18 @@ using Kaos.Collections;
 
 namespace Kaos.Test.Collections
 {
+    public class UserComparer : System.Collections.Generic.Comparer<User>
+    {
+        public override int Compare(User x, User y) => string.Compare(x.Name, y.Name);
+    }
+
+    public class User : System.IComparable<User>
+    {
+        public string Name { get; private set; }
+        public User(string name) { this.Name = name; }
+        public int CompareTo(User other) => string.Compare(this.Name, other.Name);
+    }
+
     public partial class TestBtree
     {
 #if TEST_BCL
@@ -25,7 +37,7 @@ namespace Kaos.Test.Collections
 #endif
 
         [TestMethod]
-        public void UnitRsc_ComparerEquals()
+        public void UnitRsc_Equals()
         {
 #if TEST_BCL
             var setComparer2 = SortedSet<string>.CreateSetComparer();
@@ -49,7 +61,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void TestRsc_ComparerGetHashCode()
+        public void TestRsc_GetHashCode()
         {
             int comparerHashCode = setComparer.GetHashCode();
 
@@ -58,7 +70,18 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRsc_SetEquals()
+        public void TestRsc_SetGetHashCode()
+        {
+            int hc0 = setComparer.GetHashCode (setS1);
+            setS1.Add ("ABC");
+            int hc1 = setComparer.GetHashCode (setS1);
+
+            Assert.AreNotEqual (hc0, hc1);
+        }
+
+
+        [TestMethod]
+        public void UnitRsc_SetEquals1()
         {
             setS1.Add ("ABC");
             setS2.Add ("DEF");
@@ -84,15 +107,29 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void TestRsc_SetGetHashCode()
+        public void TestRsc_SetEquals2()
         {
-            setS1.Add ("ABC");
-            setS2.Add ("DEF");
+#if TEST_BCL
+            var cp = SortedSet<User>.CreateSetComparer();
+            var user1 = new SortedSet<User>(new UserComparer());
+            var user2 = new SortedSet<User>(new UserComparer());
+#else
+            var cp = RankedSet<User>.CreateSetComparer();
+            var user1 = new RankedSet<User>(new UserComparer());
+            var user2 = new RankedSet<User>(new UserComparer());
+#endif
+            bool eq0 = cp.Equals (user1, user2);
+            Assert.IsTrue (eq0);
 
-            int h1 = setS1.GetHashCode();
-            int h2 = setS2.GetHashCode();
+            user1.Add (new User ("admin"));
+            user2.Add (new User ("tester"));
+            bool eq1 = cp.Equals (user1, user2);
+            Assert.IsFalse (eq1);
 
-            Assert.AreNotEqual (h1, h2);
+            user1.Add (new User ("tester"));
+            user2.Add (new User ("admin"));
+            bool eq2 = cp.Equals (user1, user2);
+            Assert.IsTrue (eq2);
         }
     }
 }
