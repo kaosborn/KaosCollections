@@ -593,15 +593,19 @@ namespace Kaos.Collections
 #if NET35 || NET40 || SERIALIZE
 
         private SerializationInfo serializationInfo;
+
+        /// <summary>Initializes a new instance of the bag that contains serialized data.</summary>
+        /// <param name="info">The object that contains the information required to serialize the bag.</param>
+        /// <param name="context">The structure that contains the source and destination of the serialized stream.</param>
         protected RankedBag (SerializationInfo info, StreamingContext context) : base (new Btree<T>.Leaf())
         {
             this.serializationInfo = info;
         }
 
 
-        /// <summary>Populates a SerializationInfo with target data.</summary>
-        /// <param name="info">The SerializationInfo to populate.</param>
-        /// <param name="context">The destination.</param>
+        /// <summary>Returns the data needed to serialize the bag.</summary>
+        /// <param name="info">An object that contains the information required to serialize the bag.</param>
+        /// <param name="context">A structure that contains the source and destination of the serialized stream.</param>
         /// <exception cref="ArgumentNullException">When <em>info</em> is <b>null</b>.</exception>
         protected virtual void GetObjectData (SerializationInfo info, StreamingContext context)
         {
@@ -617,6 +621,11 @@ namespace Kaos.Collections
             info.AddValue ("Items", items, typeof (T[]));
         }
 
+
+        /// <summary>Implements the deserialization callback and raises the deserialization event when completed.</summary>
+        /// <param name="sender">The source of the deserialization event.</param>
+        /// <exception cref="ArgumentNullException">When <em>sender</em> is <b>null</b>.</exception>
+        /// <exception cref="SerializationException">When the associated <em>SerializationInfo</em> is invalid.</exception>
         protected virtual void OnDeserialization (object sender)
         {
             if (keyComparer != null)
@@ -645,9 +654,18 @@ namespace Kaos.Collections
             serializationInfo = null;
         }
 
+        /// <summary>Returns the data needed to serialize the set.</summary>
+        /// <param name="info">An object that contains the information required to serialize the set.</param>
+        /// <param name="context">A structure that contains the source and destination of the serialized stream.</param>
+        /// <exception cref="ArgumentNullException">When <em>info</em> is <b>null</b>.</exception>
         void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
         { GetObjectData (info, context); }
 
+
+        /// <summary>Implements the deserialization callback and raises the deserialization event when completed.</summary>
+        /// <param name="sender">The source of the deserialization event.</param>
+        /// <exception cref="ArgumentNullException">When <em>sender</em> is <b>null</b>.</exception>
+        /// <exception cref="SerializationException">When the associated <em>SerializationInfo</em> is invalid.</exception>
         void IDeserializationCallback.OnDeserialization (Object sender)
         { OnDeserialization (sender); }
 
