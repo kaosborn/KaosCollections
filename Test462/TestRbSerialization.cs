@@ -14,12 +14,9 @@ using Kaos.Collections;
 
 namespace Kaos.Test.Collections
 {
-#if !TEST_BCL
     [Serializable]
-    public class ExamComparerScore : System.Collections.Generic.Comparer<Exam>
-    {
-        public override int Compare (Exam x1, Exam x2) => x1.Score - x2.Score;
-    }
+    public class ScoreComparer : System.Collections.Generic.Comparer<Exam>
+    { public override int Compare (Exam x1, Exam x2) => x1.Score - x2.Score; }
 
     [Serializable]
     public class Exam : ISerializable
@@ -41,18 +38,13 @@ namespace Kaos.Test.Collections
             info.AddValue ("Score", Score, typeof (int));
             info.AddValue ("Name", Name, typeof (string));
         }
-
-        public static RankedBag<Exam> Deserialize (string fileName)
-        {
-            IFormatter formatter = new BinaryFormatter();
-            using (var fs = new FileStream (fileName, FileMode.Open))
-            { return (RankedBag<Exam>) formatter.Deserialize (fs); }
-        }
     }
 
+
+#if !TEST_BCL
     public class ExamBag : RankedBag<Exam>
     {
-        public ExamBag() : base (new ExamComparerScore())
+        public ExamBag() : base (new ScoreComparer())
         { }
 
         public ExamBag (SerializationInfo info, StreamingContext context) : base (info, context)
@@ -81,8 +73,8 @@ namespace Kaos.Test.Collections
         [TestMethod]
         public void UnitRb_Serialization()
         {
-            string fileName = "RbExams.bin";
-            var bag1 = new RankedBag<Exam> (new ExamComparerScore());
+            string fileName = "BagOfExams.bin";
+            var bag1 = new RankedBag<Exam> (new ScoreComparer());
             bag1.Add (new Exam (5, "Floyd"));
 
             IFormatter formatter = new BinaryFormatter();
@@ -96,6 +88,5 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (1, bag2.Count);
         }
     }
-
 #endif
 }
