@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle ("Collections462")]
-[assembly: AssemblyDescription ("for test only")]
+[assembly: AssemblyTitle ("KaosCollections")]
+[assembly: AssemblyDescription ("for test and documentation only")]
 [assembly: AssemblyConfiguration ("")]
 [assembly: AssemblyCompany ("")]
 [assembly: AssemblyProduct ("KaosCollections")]
@@ -11,4 +11,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture ("")]
 [assembly: ComVisible (false)]
 [assembly: Guid ("c385faa0-382e-46e6-9557-3e1760edaab0")]
-[assembly: AssemblyVersion ("0.1.0.0")]
+[assembly: AssemblyVersion ("0.3.7.1")]
