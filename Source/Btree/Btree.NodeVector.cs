@@ -152,7 +152,9 @@ namespace Kaos.Collections
 
             public void TiltLeft (int delta)
             {
-                for (int level = indexStack.Count-2; level >= 0; --level)
+                for (int level = indexStack.Count-2; ; --level)
+                {
+                    Debug.Assert (level >= 0, "One-sided tilt");
                     if (indexStack[level] == 0)
                         ((Branch) nodeStack[level]).AdjustWeight (- delta);
                     else if (level >= indexStack.Count-2)
@@ -165,8 +167,7 @@ namespace Kaos.Collections
                                 return;
                             bh = (Branch) bh.GetChild (bh.KeyCount);
                         }
-
-                Debug.Assert (false, "tilt one sided");
+                }
             }
 
 
