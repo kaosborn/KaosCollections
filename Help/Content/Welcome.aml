@@ -6,6 +6,7 @@
         The KaosCollections library contains classes that work alongside the
         <codeEntityReference>N:System.Collections.Generic</codeEntityReference>
         classes. The primary classes are:
+        The primary classes contained in this library are:
       </para>
       <list class="bullet">
         <listItem>
@@ -31,7 +32,7 @@
       <para>
         All provided classes closely emulate the API of the Microsoft's classes
         while extending capability and improving performance in many common scenarios.
-        All classes add array-like functionality so that any element can be accessed by index
+        All classes add list functionality so that any element can be accessed by index
         or the index of an element may be determined from the element's key.
       </para>
       <para>
@@ -49,6 +50,11 @@
           The APIs of <codeInline>RankedDictionary</codeInline> and <codeInline>RankedSet</codeInline> closely adhere to Microsoft's related generic classes with a few exceptions:
         </para>
         <list class="bullet">
+          <listItem>
+            <para>
+              Microsoft does not offer a bag or multiset class like <codeInline>RankedBag</codeInline>.
+            </para>
+          </listItem>
           <listItem>
             <para>
               <codeInline>RankedDictionary</codeInline> is enhanced with properties borrowed from <codeInline>SortedSet</codeInline>:
@@ -175,8 +181,8 @@
       <title>Data structure</title>
       <content>
         <para>
-          The data structure used by <codeInline>RankedDictionary</codeInline> and <codeInline>RankedSet</codeInline> is an order statistic B+ tree variant.
-          An order statistic tree adds two capabilities to a tree:
+          The data structure used by all ranked classes is an order statistic B+ tree variant.
+          A tree becomes an order statistic tree with the addition of two traits:
         </para>
         <list class="bullet">
           <listItem>
@@ -237,6 +243,7 @@
             <para>
               .NETStandard 1.0.
               Use this for any .NET Core application or any .NET Framework application at or above .NET 4.5.
+              This target does not include binary serialization support.
             </para>
           </listItem>
           <listItem>
