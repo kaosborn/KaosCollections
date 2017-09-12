@@ -85,6 +85,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RbChart01", "Bench\RbChart0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RbExample01", "Bench\RbExample01\RbExample01.csproj", "{96762A0A-D54C-45FE-A20C-1521C35D0624}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RbChart02", "Bench\RbChart02\RbChart02.csproj", "{2083724C-9A9B-4F95-8AA2-C43A1246FAAD}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Source\RankedCollection\RankedCollection.projitems*{2de71c06-f684-4903-96ac-87215caaad5c}*SharedItemsImports = 13
@@ -237,6 +239,10 @@ Global
 		{96762A0A-D54C-45FE-A20C-1521C35D0624}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96762A0A-D54C-45FE-A20C-1521C35D0624}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96762A0A-D54C-45FE-A20C-1521C35D0624}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2083724C-9A9B-4F95-8AA2-C43A1246FAAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2083724C-9A9B-4F95-8AA2-C43A1246FAAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2083724C-9A9B-4F95-8AA2-C43A1246FAAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2083724C-9A9B-4F95-8AA2-C43A1246FAAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -277,6 +283,7 @@ Global
 		{476A91D1-5CF5-4673-9D7D-1354FCE38A72} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{0775B280-DDD4-4D2B-8383-E6E5E7167C55} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{96762A0A-D54C-45FE-A20C-1521C35D0624} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
+		{2083724C-9A9B-4F95-8AA2-C43A1246FAAD} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {201DA9DF-651F-47A0-B578-167533C3D874}
