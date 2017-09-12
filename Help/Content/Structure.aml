@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="60a5899d-5be3-4389-8ab8-71ba6c2d00ac" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <introduction>
+      <para>
+        Microsoft-supplied sorted classes internally use a binary tree data structure.
+        This structure has some negative space and performance implications:
+      </para>
+      <list class="bullet">
+        <listItem>
+          <para>Elements require individual allocations increasing space requirements.</para>
+        </listItem>
+        <listItem>
+          <para>Elements require individual allocations eliminating locality speed advantages.</para>
+        </listItem>
+        <listItem>
+          <para>Enumeration requires a tree traversal with a callback for each element.</para>
+        </listItem>
+        <listItem>
+          <para>Accessing the first and last elements require a tree traversal.</para>
+        </listItem>
+      </list>
+      </introduction>
+
+    <section>
+      <title>Internal data structure used by KaosCollections
+    </title>
+      <content>
+        <para>
+          The data structure used by all ranked classes is an order statistic B+ tree variant.
+          A tree becomes an order statistic tree with the addition of two traits:
+        </para>
+        <list class="bullet">
+          <listItem>
+            <para>
+              Select(<legacyItalic>i</legacyItalic>) — find the <legacyItalic>i</legacyItalic>'th smallest element in the tree (i.e. retrieve key by index).
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              Rank(<legacyItalic>x</legacyItalic>) – find the rank of item <legacyItalic>x</legacyItalic> in the tree (i.e. retrieve index by key).
+              The names of the classes in the KaosCollections library are derived from this operation.
+            </para>
+          </listItem>
+        </list>
+        <para>
+          As a B+ tree, all elements are stored in leaf nodes at the same depth.
+          The leaf level is a sorted doubly linked list with head and tail pointers.
+          The first key of every leaf (except the leftmost) is copied to one branch for subdividing.
+          A tree with no elements is represented as an empty leaf.
+        </para>
+        <para>
+          This structure differs from a common B+ tree in three ways:
+        </para>
+        <list class="bullet">
+          <listItem>
+            <para>
+              While the root may contain as few as two children, other rightmost branches may contain as few as one child.
+              This variation optimizes for time and space when bulk loading of presorted data
+              and improves seek performance for data near the end of the collection - both common operations.
+              All other branches maintain at least 50% capacity usage following every add and remove operation.
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              The rightmost leaf may contain as few as one item.
+              Again, this variation optimizes the structure for bulk loading of presorted data.
+              All other leaves maintain at least 50% capacity usage following every add and remove operation.
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              Every branch stores the number of elements (weight) in all of its descendent leaves.
+              For example, the weight of the root is the total number of elements in every leaf.
+            </para>
+          </listItem>
+        </list>
+      </content>
+    </section>
+
+    <relatedTopics>
+      <externalLink>
+        <linkText>wikipedia.org/wiki/B+tree</linkText>
+        <linkAlternateText>B+ tree</linkAlternateText>
+        <linkUri>https://en.wikipedia.org/wiki/B%2Btree</linkUri>
+      </externalLink>
+      <externalLink>
+        <linkText>wikipedia.org/wiki/Order_statistic_tree</linkText>
+        <linkAlternateText>Order statistic tree</linkAlternateText>
+        <linkUri>https://en.wikipedia.org/wiki/Order_statistic_tree</linkUri>
+      </externalLink>
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>

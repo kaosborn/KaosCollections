@@ -3,10 +3,7 @@
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
     <introduction>
       <para>
-        The KaosCollections library contains classes that work alongside the
-        <codeEntityReference>N:System.Collections.Generic</codeEntityReference>
-        classes. The primary classes are:
-        The primary classes contained in this library are:
+        KaosCollections consists of three primary classes:
       </para>
       <list class="bullet">
         <listItem>
@@ -36,233 +33,46 @@
         or the index of an element may be determined from the element's key.
       </para>
       <para>
-        The performance bump is due to the B+ tree variant used by KaosCollections.
-        The structure used by <codeInline>SortedDictionary</codeInline> and <codeInline>SortedSet</codeInline> is a binary tree
-        which greatly increases tree height and number of allocations compared to a B+ tree.
-        Also in a B+ tree, data is grouped together in leaves which improves performance due to data locality.
+        This library is built as a .NET Standard project with multi-targeting.
+        All targeted binaries are available in the distributed NuGet package.
+        Current targets are:
+      </para>
+      <list class="bullet">
+        <listItem>
+          <para>
+            .NETStandard 1.0.
+            Use this for any .NET Core application or any .NET Framework application at or above .NET 4.5.
+            This target does not include binary serialization support.
+          </para>
+        </listItem>
+        <listItem>
+          <para>
+            Full .NET Framework 4.0.
+            This target does not include <codeInline>IReadOnlyDictionary</codeInline> or <codeInline>IReadOnlyCollection</codeInline> implementation.
+          </para>
+        </listItem>
+        <listItem>
+          <para>
+            Full .NET Framework 3.5.
+            This target does not include <codeInline>IReadOnlyDictionary</codeInline>, <codeInline>IReadOnlyCollection</codeInline> implementation.
+            It does not derive from <codeInline>ISet</codeInline> but does implement its members.
+          </para>
+        </listItem>
+      </list>
+      <para>
+        Off-line documentation is available as a MS-Help 1 (.chm) file.
+        Also, installing as a NuGet package will provide IntelliSense and object browser documentation.
+        On-line documentation is available at the link below.
       </para>
     </introduction>
-
-    <section>
-      <title>API differences between System.Collections.Generic and Kaos.Collections</title>
-      <content>
-        <para>
-          The APIs of <codeInline>RankedDictionary</codeInline> and <codeInline>RankedSet</codeInline> closely adhere to Microsoft's related generic classes with a few exceptions:
-        </para>
-        <list class="bullet">
-          <listItem>
-            <para>
-              Microsoft does not offer a bag or multiset class like <codeInline>RankedBag</codeInline>.
-            </para>
-          </listItem>
-          <listItem>
-            <para>
-              <codeInline>RankedDictionary</codeInline> is enhanced with properties borrowed from <codeInline>SortedSet</codeInline>:
-            </para>
-            <list class="bullet">
-              <listItem>
-                <para>
-                  Adds <codeInline>MinKey</codeInline> that returns the minimum key in the dictionary.
-                </para>
-              </listItem>
-              <listItem>
-                <para>
-                  Adds <codeInline>MaxKey</codeInline> that returns the maximum key in the dictionary.
-                </para>
-              </listItem>
-              <listItem>
-                <para>
-                  Adds <codeInline>Reverse()</codeInline> that returns an enumerator of elements from maximum to minimum.
-                </para>
-              </listItem>
-              <listItem>
-                <para>
-                  Adds <codeInline>RemoveWhere(predicate)</codeInline> that removes all elements that meet a supplied condition.
-                </para>
-              </listItem>
-            </list>
-          </listItem>
-
-          <listItem>
-            <para><codeInline>RankedDictionary</codeInline> is enhanced with methods borrowed from <codeInline>SortedList</codeInline>:</para>
-            <list class="bullet">
-              <listItem>
-                <para>Adds <codeInline>IndexOfKey(key)</codeInline> that returns the position of the element with the supplied key.</para>
-              </listItem>
-              <listItem>
-                <para>Adds <codeInline>IndexOfValue(value)</codeInline> that returns the position of the first element with the supplied value.</para>
-              </listItem>
-              <listItem>
-                <para>Adds <codeInline>RemoveAt(index)</codeInline> that deletes the element at the supplied position.</para>
-              </listItem>
-            </list>
-          </listItem>
-
-          <listItem>
-            <para><codeInline>RankedDictionary</codeInline> and <codeInline>RankedSet</codeInline> directly implement <codeInline>IEnumerable&lt;T&gt;</codeInline> methods to improve performance:</para>
-            <list class="bullet">
-              <listItem>
-                <para>Implements <codeInline>ElementAt(index)</codeInline> that returns the element at the supplied position.</para>
-              </listItem>
-              <listItem>
-                <para>Implements <codeInline>ElementAtOrDefault(index)</codeInline> that returns the element at the supplied position or the default if past the end of the collection.</para>
-              </listItem>
-              <listItem>
-                <para>Implements <codeInline>Last()</codeInline> that returns the element at the last position.</para>
-              </listItem>
-            </list>
-          </listItem>
-
-          <listItem>
-            <para><codeInline>RankedDictionary</codeInline> and <codeInline>RankedSet</codeInline> add enumerators for range query support:</para>
-            <list class="bullet">
-              <listItem>
-                <para>
-                  Adds <codeInline>ElementsBetween(lower,upper)</codeInline> for elements beginning and ending at the supplied values.
-                </para>
-              </listItem>
-              <listItem>
-                <para>
-                  Adds <codeInline>ElementsFrom(lower)</codeInline> for elements beginning at the supplied value.
-                </para>
-              </listItem>
-            </list>
-          </listItem>
-
-          <listItem>
-            <para>
-              <codeInline>RankedSet</codeInline> add methods from <codeInline>SortedList</codeInline> for indexing support:
-            </para>
-            <list class="bullet">
-              <listItem>
-                <para>
-                  Adds the method <codeInline>IndexOf(item)</codeInline> that returns the position of the supplied item.
-                </para>
-              </listItem>
-              <listItem>
-                <para>
-                  Adds the method <codeInline>RemoveAt(item)</codeInline> that deletes the item at the supplied position.
-                </para>
-              </listItem>
-            </list>
-          </listItem>
-
-          <listItem>
-            <para>
-              <codeInline>RankedDictionary</codeInline> adds the method <codeInline>TryGetValueAndIndex(key,value,index)</codeInline> that
-              retrieves the key's associated value and index in one call.
-            </para>
-          </listItem>
-          <listItem>
-            <para>
-              <codeInline>RankedDictionary</codeInline> implements the <codeInline>ISerializable</codeInline> interface
-              where <codeInline>SortedDictionary</codeInline> does not follow this convention due to legacy constraints.
-            </para>
-          </listItem>
-          <listItem>
-            <para>
-              The <codeInline>SortedSet</codeInline> method
-              <codeEntityReference qualifyHint="false">M:System.Collections.Generic.SortedSet`1.GetViewBetween(`0,`0)</codeEntityReference>
-              (which provides a virtual view to a range of a <codeInline>SortedSet</codeInline>)
-              is not implemented by <codeInline>RankedSet</codeInline>.
-              Use the <codeInline>ElementsBetween(lower,upper)</codeInline> enumerator instead.
-            </para>
-          </listItem>
-          <listItem>
-            <para>
-              There are a few error conditions that result in different exceptions being thrown.
-            </para>
-          </listItem>
-        </list>
-      </content>
-    </section>
-
-    <section>
-      <title>Data structure</title>
-      <content>
-        <para>
-          The data structure used by all ranked classes is an order statistic B+ tree variant.
-          A tree becomes an order statistic tree with the addition of two traits:
-        </para>
-        <list class="bullet">
-          <listItem>
-            <para>Select(<legacyItalic>i</legacyItalic>) — find the <legacyItalic>i</legacyItalic>'th smallest element in the tree (i.e. retrieve key by index).</para>
-          </listItem>
-          <listItem>
-            <para>
-              Rank(<legacyItalic>x</legacyItalic>) – find the rank of item <legacyItalic>x</legacyItalic> in the tree (i.e. retrieve index by key).
-              The names of the classes in the KaosCollections library are derived from this operation.
-            </para>
-          </listItem>
-        </list>
-        <para>
-          As a B+ tree, all elements are stored in leaf nodes at the same depth.
-          The leaf level is a sorted doubly linked list with head and tail pointers.
-          The first key of every leaf (except the leftmost) is copied to one branch for subdividing.
-          A tree with no elements is represented as an empty leaf.
-        </para>
-        <para>
-          This structure differs from a common B+ tree in three ways:
-        </para>
-        <list class="bullet">
-          <listItem>
-            <para>
-              While the root may contain as few as two children, other rightmost branches may contain as few as one child.
-              This variation optimizes for time and space when bulk loading of presorted data
-              and improves seek performance for data near the end of the collection - both common operations.
-              All other branches maintain at least 50% capacity usage following every add and remove operation.
-            </para>
-          </listItem>
-          <listItem>
-            <para>
-              The rightmost leaf may contain as few as one item.
-              Again, this variation optimizes the structure for bulk loading of presorted data.
-              All other leaves maintain at least 50% capacity usage following every add and remove operation.
-            </para>
-          </listItem>
-          <listItem>
-            <para>
-              Every branch stores the number of elements (weight) in all of its descendent leaves.
-              For example, the weight of the root is the total number of elements in every leaf.
-            </para>
-          </listItem>
-        </list>
-      </content>
-      </section>
 
     <section>
       <title>Distribution</title>
       <content>
         <para>
-          This library is built as a .NET Standard project with multi-targeting.
-          All targeted binaries are available in the distributed NuGet package.
-          Current targets are:
-        </para>
-        <list class="bullet">
-          <listItem>
-            <para>
-              .NETStandard 1.0.
-              Use this for any .NET Core application or any .NET Framework application at or above .NET 4.5.
-              This target does not include binary serialization support.
-            </para>
-          </listItem>
-          <listItem>
-            <para>
-              Full .NET Framework 4.0.
-              This target does not include <codeInline>IReadOnlyDictionary</codeInline> or <codeInline>IReadOnlyCollection</codeInline> implementation.
-            </para>
-          </listItem>
-          <listItem>
-            <para>
-              Full .NET Framework 3.5.
-              This target does not include <codeInline>IReadOnlyDictionary</codeInline>, <codeInline>IReadOnlyCollection</codeInline> implementation.
-              It does not derive from <codeInline>ISet</codeInline> but does implement its members.
-            </para>
-          </listItem>
-        </list>
-        <para>
-          Documentation is currently distributed as a MS-Help 1 (.CHM) file.
-          Also, installing as a NuGet package will provide IntelliSense and object browser documentation.
+          Complete source code and documentation is hosted at GitHub.com.
+          Primary binary hosting is now at NuGet.org with downloads also available at GitHub.com.
+          Complete documentation is available for download at GitHub.com as a .chm file.
         </para>
       </content>
     </section>
@@ -280,6 +90,16 @@
 
     <relatedTopics>
       <link xlink:href="90402bce-1f31-45f8-b0ea-0a73408bd45a" />
+      <externalLink>
+        <linkText>github.com/kaosborn/KaosCollections</linkText>
+        <linkAlternateText>repository</linkAlternateText>
+        <linkUri>https://github.com/kaosborn/KaosCollections</linkUri>
+      </externalLink>
+      <externalLink>
+        <linkText>kaosborn.github.io/help/KaosCollections/index.html</linkText>
+        <linkAlternateText>on-line documentation</linkAlternateText>
+        <linkUri>https://kaosborn.github.io/help/KaosCollections/index.html</linkUri>
+      </externalLink>
       <externalLink>
         <linkText>wikipedia.org/wiki/B+tree</linkText>
         <linkAlternateText>B+ tree</linkAlternateText>

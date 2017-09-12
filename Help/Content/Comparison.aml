@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="937c1b5d-48fb-470d-8145-85fc116e2b22" revisionNumber="1">
+  <developerConceptualDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <summary>
+      <para>
+        The API of the <codeInline>Kaos.Collections</codeInline> namespace
+        borrows heavily from <codeInline>System.Collections.Generic</codeInline> namespace classes:
+      </para>
+      <list class="bullet">
+        <listItem><para><codeInline>SortedDictionary</codeInline></para></listItem>
+        <listItem><para><codeInline>SortedSet</codeInline></para></listItem>
+        <listItem><para><codeInline>List</codeInline></para></listItem>
+        <listItem><para><codeInline>Enumerable</codeInline></para></listItem>
+      </list>
+    <para>
+      There is no .NET bag class. Here, the API of 
+       <codeInline>RankedBag</codeInline> draws from the Java Apache <codeInline>Bag</codeInline> interface.
+    </para>
+    </summary>
+
+    <section>
+      <title>Differences from System.Collections.Generic</title>
+      <content>
+        <para>
+          The APIs of <codeInline>RankedDictionary</codeInline> and <codeInline>RankedSet</codeInline> closely adhere to Microsoft's related generic classes with a few exceptions:
+        </para>
+        <list class="bullet">
+          <listItem>
+            <para>
+              <codeInline>RankedDictionary</codeInline> is enhanced with properties borrowed from <codeInline>SortedSet</codeInline>:
+            </para>
+            <list class="bullet">
+              <listItem>
+                <para>
+                  Adds <codeInline>MinKey</codeInline> that returns the minimum key in the dictionary.
+                </para>
+              </listItem>
+              <listItem>
+                <para>
+                  Adds <codeInline>MaxKey</codeInline> that returns the maximum key in the dictionary.
+                </para>
+              </listItem>
+              <listItem>
+                <para>
+                  Adds <codeInline>Reverse()</codeInline> that returns an enumerator of elements from maximum to minimum.
+                </para>
+              </listItem>
+              <listItem>
+                <para>
+                  Adds <codeInline>RemoveWhere(predicate)</codeInline> that removes all elements that meet a supplied condition.
+                </para>
+              </listItem>
+            </list>
+          </listItem>
+
+          <listItem>
+            <para>
+              <codeInline>RankedDictionary</codeInline> is enhanced with methods borrowed from <codeInline>SortedList</codeInline>:
+            </para>
+            <list class="bullet">
+              <listItem>
+                <para>
+                  Adds <codeInline>IndexOfKey(key)</codeInline> that returns the position of the element with the supplied key.
+                </para>
+              </listItem>
+              <listItem>
+                <para>
+                  Adds <codeInline>IndexOfValue(value)</codeInline> that returns the position of the first element with the supplied value.
+                </para>
+              </listItem>
+              <listItem>
+                <para>
+                  Adds <codeInline>RemoveAt(index)</codeInline> that deletes the element at the supplied position.
+                </para>
+              </listItem>
+            </list>
+          </listItem>
+
+          <listItem>
+            <para>
+              <codeInline>RankedDictionary</codeInline> and <codeInline>RankedSet</codeInline> directly implement <codeInline>IEnumerable&lt;T&gt;</codeInline> methods to improve performance:
+            </para>
+            <list class="bullet">
+              <listItem>
+                <para>
+                  Implements <codeInline>ElementAt(index)</codeInline> that returns the element at the supplied position.
+                </para>
+              </listItem>
+              <listItem>
+                <para>
+                  Implements <codeInline>ElementAtOrDefault(index)</codeInline> that returns the element at the supplied position or the default if past the end of the collection.
+                </para>
+              </listItem>
+              <listItem>
+                <para>
+                  Implements <codeInline>Last()</codeInline> that returns the element at the last position.
+                </para>
+              </listItem>
+            </list>
+          </listItem>
+
+          <listItem>
+            <para>
+              <codeInline>RankedDictionary</codeInline> and <codeInline>RankedSet</codeInline> add enumerators for range query support:
+            </para>
+            <list class="bullet">
+              <listItem>
+                <para>
+                  Adds <codeInline>ElementsBetween(lower,upper)</codeInline> for elements beginning and ending at the supplied values.
+                </para>
+              </listItem>
+              <listItem>
+                <para>
+                  Adds <codeInline>ElementsFrom(lower)</codeInline> for elements beginning at the supplied value.
+                </para>
+              </listItem>
+            </list>
+          </listItem>
+
+          <listItem>
+            <para>
+              <codeInline>RankedSet</codeInline> add methods from <codeInline>SortedList</codeInline> for indexing support:
+            </para>
+            <list class="bullet">
+              <listItem>
+                <para>
+                  Adds the method <codeInline>IndexOf(item)</codeInline> that returns the position of the supplied item.
+                </para>
+              </listItem>
+              <listItem>
+                <para>
+                  Adds the method <codeInline>RemoveAt(item)</codeInline> that deletes the item at the supplied position.
+                </para>
+              </listItem>
+            </list>
+          </listItem>
+
+          <listItem>
+            <para>
+              <codeInline>RankedDictionary</codeInline> adds the method <codeInline>TryGetValueAndIndex(key,value,index)</codeInline> that
+              retrieves the key's associated value and index in one call.
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              <codeInline>RankedDictionary</codeInline> implements the <codeInline>ISerializable</codeInline> interface
+              where <codeInline>SortedDictionary</codeInline> does not follow this convention due to legacy constraints.
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              The <codeInline>SortedSet</codeInline> method
+              <codeEntityReference qualifyHint="false">M:System.Collections.Generic.SortedSet`1.GetViewBetween(`0,`0)</codeEntityReference>
+              (which provides a virtual view to a range of a <codeInline>SortedSet</codeInline>)
+              is not implemented by <codeInline>RankedSet</codeInline>.
+              Use the <codeInline>ElementsBetween(lower,upper)</codeInline> enumerator instead.
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              There are a few error conditions that result in different exceptions being thrown.
+            </para>
+          </listItem>
+        </list>
+      </content>
+    </section>
+
+    <relatedTopics>
+      <externalLink>
+        <linkText>msdn.microsoft.com/en-us/library/system.collections.generic(v=vs.110).aspx</linkText>
+        <linkAlternateText>System.Collections.Generic Namespace</linkAlternateText>
+        <linkUri>https://msdn.microsoft.com/en-us/library/system.collections.generic(v=vs.110).aspx</linkUri>
+      </externalLink>
+      <externalLink>
+        <linkText>https://commons.apache.org/proper/commons-collections/javadocs/api-2.1.1/org/apache/commons/collections/Bag.html</linkText>
+        <linkAlternateText>Bag interface</linkAlternateText>
+        <linkUri>https://commons.apache.org/proper/commons-collections/javadocs/api-2.1.1/org/apache/commons/collections/Bag.html</linkUri>
+      </externalLink>
+    </relatedTopics>
+  </developerConceptualDocument>
+</topic>
