@@ -8,7 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-#if NET35 || NET40 || SERIALIZE
+#if NET35 || NET40 || NET45 || SERIALIZE
 using System.Runtime.Serialization;
 #endif
 
@@ -30,7 +30,7 @@ namespace Kaos.Collections
     /// </remarks>
     [DebuggerTypeProxy (typeof (ICollectionDebugView<>))]
     [DebuggerDisplay ("Count = {Count}")]
-#if NET35 || NET40 || SERIALIZE
+#if NET35 || NET40 || NET45 || SERIALIZE
     [Serializable]
 #endif
     public class RankedBag<T> :
@@ -40,7 +40,7 @@ namespace Kaos.Collections
 #if ! NET35 && ! NET40
         , IReadOnlyCollection<T>
 #endif
-#if NET35 || NET40 || SERIALIZE
+#if NET35 || NET40 || NET45 || SERIALIZE
         , ISerializable
         , IDeserializationCallback
 #endif
@@ -435,6 +435,7 @@ namespace Kaos.Collections
             }
         }
 
+
         /// <summary>Removes a supplied number of items from the bag.</summary>
         /// <param name="item">The item to remove.</param>
         /// <param name="count">The number of items to remove.</param>
@@ -590,7 +591,7 @@ namespace Kaos.Collections
         #endregion
 
         #region ISerializable implementation and support
-#if NET35 || NET40 || SERIALIZE
+#if NET35 || NET40 || NET45 || SERIALIZE
 
         private SerializationInfo serializationInfo;
 

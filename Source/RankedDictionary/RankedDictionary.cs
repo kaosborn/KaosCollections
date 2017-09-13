@@ -10,7 +10,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-#if NET35 || NET40 || SERIALIZE
+#if NET35 || NET40 || NET45 || SERIALIZE
 using System.Runtime.Serialization;
 #endif
 
@@ -68,7 +68,7 @@ namespace Kaos.Collections
     /// </example>
     [DebuggerTypeProxy (typeof (IDictionaryDebugView<,>))]
     [DebuggerDisplay ("Count = {Count}")]
-#if NET35 || NET40 || SERIALIZE
+#if NET35 || NET40 || NET45 || SERIALIZE
     [Serializable]
 #endif
     public partial class RankedDictionary<TKey,TValue> :
@@ -78,16 +78,16 @@ namespace Kaos.Collections
 #if ! NET35 && ! NET40
         , IReadOnlyDictionary<TKey,TValue>
 #endif
-#if NET35 || NET40 || SERIALIZE
+#if NET35 || NET40 || NET45 || SERIALIZE
         , ISerializable
         , IDeserializationCallback
 #endif
     {
-#if NET35 || NET40 || SERIALIZE
+#if NET35 || NET40 || NET45 || SERIALIZE
         [NonSerialized]
 #endif
         private KeyCollection keys;
-#if NET35 || NET40 || SERIALIZE
+#if NET35 || NET40 || NET45 || SERIALIZE
         [NonSerialized]
 #endif
         private ValueCollection values;
@@ -689,7 +689,7 @@ namespace Kaos.Collections
         #endregion
 
         #region ISerializable implementation and support
-#if NET35 || NET40 || SERIALIZE
+#if NET35 || NET40 || NET45 || SERIALIZE
 
         private SerializationInfo serializationInfo;
 
