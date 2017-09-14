@@ -61,7 +61,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void TestRsc_GetHashCode()
+        public void UnitRsc_GetHashCode()
         {
             int comparerHashCode = setComparer.GetHashCode();
 
@@ -70,7 +70,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void TestRsc_SetGetHashCode()
+        public void UnitRsc_SetGetHashCode()
         {
             int hc0 = setComparer.GetHashCode (setS1);
             setS1.Add ("ABC");
@@ -107,7 +107,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void TestRsc_SetEquals2()
+        public void UnitRsc_SetEquals2()
         {
 #if TEST_BCL
             var cp = SortedSet<User>.CreateSetComparer();
