@@ -328,6 +328,79 @@ namespace Kaos.Collections
         }
 
 
+        internal void RemoveRange2 (NodeVector path1, NodeVector path2)
+        {
+            var leaf1 = (Leaf) path1.TopNode; int ix1 = path1.TopIndex, deltaW1 = 0;
+            var leaf2 = (Leaf) path2.TopNode; int ix2 = path2.TopIndex, deltaW2 = 0;
+            int j1 = ix1 == 0 && leaf1.leftLeaf == null ? 0 : 1;
+            int j2 = ix2 == leaf2.KeyCount ? 0 : 1;
+
+            if (j1 != 0 && ix1 == 0)
+            { leaf1 = leaf1.leftLeaf; ix1 = leaf1.KeyCount; path1.TraverseLeft(); }
+            if (leaf1 == leaf2)
+            {
+                path2.ChangePathWeight (ix1-ix2);
+                leaf2.RemoveRange (ix1, ix2-ix1);
+                if (ix1 == 0) path2.SetPivot (leaf2.Key0);
+                Balance (path2);
+                return;
+            }
+
+            if (j2 == 0)
+            { leaf1.rightLeaf = null; rightmostLeaf = leaf1; }
+            else
+            {   deltaW2 = -ix2; if (j1!=0) leaf1.rightLeaf = leaf2; leaf2.RemoveRange (0, ix2);
+                if (j1 == 0)
+                { leaf2.leftLeaf = null; leftmostLeaf = leaf2; }
+                else
+                { if (ix2 != 0) path2.SetPivot (leaf2.Key0);
+                  deltaW1 = ix1-leaf1.KeyCount; leaf2.leftLeaf = leaf1; leaf1.RemoveRange (ix1, leaf1.KeyCount-ix1); }
+            }
+            for (int level = path2.Height-2; level >= 0; --level)
+            {
+                var bh1 = (Branch) path1.GetNode (level); ix1 = path1.GetIndex (level);
+                var bh2 = (Branch) path2.GetNode (level); ix2 = path2.GetIndex (level);
+                if (bh1 == bh2)
+                {
+                    for (int ix = ix1+j1; ix < ix2+1-j2; ++ix) deltaW1 -= bh2.GetChild(ix).Weight;
+                    if (j1 == 0)
+                        bh2.RemoveChildRange2 (0, ix2-ix1);
+                    else
+                        bh2.RemoveChildRange1 (ix1, ix2-ix1-j2);
+                    bh2.AdjustWeight (deltaW1 + deltaW2);
+                }
+                else
+                {
+                    if (j1 != 0)
+                    {
+                        if (ix1 <= bh1.KeyCount)
+                        {
+                            for (int ix = ix1+1; ix <= bh1.KeyCount; ++ix) deltaW1 -= bh1.GetChild(ix).Weight;
+                            bh1.RemoveChildRange1 (ix1, bh1.KeyCount - ix1);
+                        }
+                        bh1.AdjustWeight (deltaW1);
+                    }
+                    if (j2 != 0)
+                    {
+                        if (ix2 > 0)
+                        {
+                            for (int ix = 0; ix < ix2; ++ix) deltaW2 -= bh2.GetChild(ix).Weight;
+                            path2.SetPivot (bh2.GetKey (ix2-1), level);
+                            bh2.RemoveChildRange2 (0, ix2);
+                        }
+                        bh2.AdjustWeight (deltaW2);
+                    }
+                }
+            }
+
+            if (j1 != 0)
+                Balance (path1);  //TODO still underfilled
+
+            while (root is Branch && root.KeyCount == 0)
+                root = ((Branch) root).Child0;
+        }
+
+
         internal void Balance (NodeVector path)
         {
             int leafIndex = path.TopIndex;
