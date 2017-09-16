@@ -212,6 +212,16 @@ namespace Kaos.Collections
                     }
             }
 
+            public void SetPivot (T key, int level)
+            {
+                while (--level >= 0)
+                    if (indexStack[level] > 0)
+                    {
+                        nodeStack[level].SetKey(indexStack[level] - 1, key);
+                        return;
+                    }
+            }
+
 
             public void Clear()
             {
