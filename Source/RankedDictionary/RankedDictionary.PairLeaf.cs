@@ -97,6 +97,12 @@ namespace Kaos.Collections
                 values.RemoveAt (index);
                 base.Remove (index);
             }
+
+            public override void RemoveRange (int index, int count)
+            {
+                base.RemoveRange (index, count);
+                values.RemoveRange (index, count);
+            }
         }
     }
 }

@@ -111,7 +111,7 @@ namespace Kaos.Collections
 
             public Node GetChild (int childIndex) => childNodes[childIndex];
 
-            /// <summary>Number of key/value pairs in descendent leaves.</summary>
+            /// <summary>Number of elements in child leaves.</summary>
             public override int Weight
             { get { return weight; } }
 
@@ -126,6 +126,25 @@ namespace Kaos.Collections
             {
                 TruncateKeys (index);
                 childNodes.RemoveRange (index + 1, childNodes.Count - (index + 1));
+            }
+
+            
+            public void RemoveChildRange1 (int index, int count)
+            {
+                if (count > 0)
+                {
+                    childNodes.RemoveRange (index+1, count);
+                    keys.RemoveRange (index, count);
+                }
+            }
+
+            public void RemoveChildRange2 (int index, int count)
+            {
+                if (count > 0)
+                {
+                    childNodes.RemoveRange (index, count);
+                    keys.RemoveRange (index, count);
+                }
             }
 
             public void Add (Node node)
@@ -195,6 +214,11 @@ namespace Kaos.Collections
             public virtual void Remove (int index)
             {
                 keys.RemoveAt (index);
+            }
+
+            public virtual void RemoveRange (int index, int count)
+            {
+                keys.RemoveRange (index, count);
             }
 
             public virtual void Shift (int shiftCount)
