@@ -151,15 +151,19 @@ namespace Kaos.Collections
             public bool IsFound
             { get; private set; }
 
-            internal Node TopNode => nodeStack[indexStack.Count - 1];
+            internal Node TopNode => nodeStack[indexStack.Count-1];
 
-            internal int TopIndex => indexStack[indexStack.Count - 1];
+            internal int TopIndex => indexStack[indexStack.Count-1];
 
             public int Height => indexStack.Count;
 
             #endregion
 
             #region Methods
+
+            internal Node GetNode (int index) { return nodeStack[index]; }
+
+            internal int GetIndex (int index) { return indexStack[index]; }
 
             public void TiltLeft (int delta)
             {
