@@ -108,8 +108,19 @@ namespace Kaos.Collections
 
             public static NodeVector CreateForIndex (Btree<T> tree, int index)
             {
-                System.Diagnostics.Debug.Assert (index < tree.Size);
+                System.Diagnostics.Debug.Assert (index <= tree.Size);
                 var path = new NodeVector (tree);
+                if (index >= tree.Size)
+                    for (Node n0 = tree.root; n0 != null;)
+                    {
+                        path.indexStack.Add (n0.KeyCount);
+                        path.nodeStack.Add (n0);
+
+                        if (n0 is Branch bh)
+                            n0 = bh.GetChild (bh.KeyCount);
+                        else
+                            return path;
+                    }
 
                 Node node = tree.root;
                 while (node is Branch branch)
