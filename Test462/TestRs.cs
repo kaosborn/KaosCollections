@@ -1254,6 +1254,25 @@ namespace Kaos.Test.Collections
                     Assert.IsTrue (set.Contains (i2));
         }
 
+
+        [TestMethod]
+        public void StressRs_RemoveRange()
+        {
+            for (int width = 1; width <= 33; ++width)
+            {
+                for (int count = 1; count <= width; ++count)
+                    for (int index = 0; index <= width - count; ++index)
+                    {
+                        var set = new RankedSet<int> { Capacity = 4 };
+                        for (int ii = 0; ii < width; ++ii) set.Add (ii);
+                        set.RemoveRange (index, count);
+#if DEBUG
+                        set.SanityCheck();
+#endif
+                    }
+            }
+        }
+
 #endif
         #endregion
 
