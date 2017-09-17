@@ -36,6 +36,19 @@ namespace Kaos.Collections
             }
 
 
+            /// <summary>Make an copy with indexes of zero.</summary>
+            /// <param name="path">Target of copy.</param>
+            /// <param name="count">Depth of copy.</param>
+            public NodeVector (NodeVector path, int count)
+            {
+                this.owner = path.owner;
+                this.indexStack = new List<int>(count);
+                this.nodeStack = new List<Node>(count);
+                for (int ix = 0; ix < count; ++ix)
+                { this.indexStack.Add (path.indexStack[ix]); this.nodeStack.Add (path.nodeStack[ix]); }
+            }
+
+
             /// <summary>Perform search and store each level of path on the stack.</summary>
             /// <param name="tree">Tree to search.</param>
             /// <param name="key">Value to find.</param>

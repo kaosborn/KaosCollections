@@ -43,6 +43,8 @@ namespace Kaos.Collections
             this.keyComparer = comparer ?? Comparer<T>.Default;
         }
 
+        private bool IsLeafUnderflow (Leaf leaf) => leaf.KeyCount < (maxKeyCount + 1) / 2;
+
         #region Nonpublic methods
 
         internal int Size => root.Weight;
@@ -356,6 +358,7 @@ namespace Kaos.Collections
                 { if (ix2 != 0) path2.SetPivot (leaf2.Key0);
                   deltaW1 = ix1-leaf1.KeyCount; leaf2.leftLeaf = leaf1; leaf1.RemoveRange (ix1, leaf1.KeyCount-ix1); }
             }
+
             for (int level = path2.Height-2; level >= 0; --level)
             {
                 var bh1 = (Branch) path1.GetNode (level); ix1 = path1.GetIndex (level);
@@ -393,8 +396,27 @@ namespace Kaos.Collections
                 }
             }
 
-            if (j1 != 0)
-                BalanceLeaf (path1);  //TODO still underfilled
+            if (j2 != 0)
+            {
+                if (j1 == 0)
+                { path1 = NodeVector.CreateForIndex (this, 0); leaf1 = leftmostLeaf; }
+
+                leaf2 = leaf1.rightLeaf;
+                if (leaf2 != null)
+                {
+                    if (IsLeafUnderflow (leaf1))
+                    {
+                        var leafPath = new NodeVector (path1, path1.Height);
+                        BalanceLeaf (leafPath);
+                    }
+                    if (leaf2.rightLeaf != null && IsLeafUnderflow (leaf2)) // leaf2.KeyCount < Capacity / 2)
+                    {
+                        var leafPath = new NodeVector (path1, path1.Height);
+                        leafPath.TraverseRight();
+                        BalanceLeaf (leafPath);
+                    }
+                }
+            }
 
             while (root is Branch && root.KeyCount == 0)
                 root = ((Branch) root).Child0;
