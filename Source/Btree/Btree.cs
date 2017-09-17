@@ -394,7 +394,7 @@ namespace Kaos.Collections
             }
 
             if (j1 != 0)
-                Balance (path1);  //TODO still underfilled
+                BalanceLeaf (path1);  //TODO still underfilled
 
             while (root is Branch && root.KeyCount == 0)
                 root = ((Branch) root).Child0;
@@ -402,6 +402,14 @@ namespace Kaos.Collections
 
 
         internal void Balance (NodeVector path)
+        {
+            BalanceLeaf (path);
+            while (root is Branch && root.KeyCount == 0)
+                root = ((Branch) root).Child0;
+        }
+
+
+        internal void BalanceLeaf (NodeVector path)
         {
             int leafIndex = path.TopIndex;
             var leaf = (Leaf) path.TopNode;

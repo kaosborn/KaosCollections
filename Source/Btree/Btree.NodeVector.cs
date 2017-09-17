@@ -448,12 +448,8 @@ namespace Kaos.Collections
 
                     var right = (Branch) TraverseRight();
                     if (right == null)
-                    {
-                        if (branch == owner.root && branch.KeyCount == 0)
-                            // Prune an empty root.
-                            owner.root = branch.Child0;
+                        // Must be an empty root.  Prune later.
                         return;
-                    }
 
                     if (branch.KeyCount + right.KeyCount < owner.maxKeyCount)
                     {
