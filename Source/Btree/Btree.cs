@@ -335,7 +335,10 @@ namespace Kaos.Collections
             var leaf1 = (Leaf) path1.TopNode; int ix1 = path1.TopIndex, deltaW1 = 0;
             var leaf2 = (Leaf) path2.TopNode; int ix2 = path2.TopIndex, deltaW2 = 0;
             int j1 = ix1 == 0 && leaf1.leftLeaf == null ? 0 : 1;
-            int j2 = ix2 == leaf2.KeyCount ? 0 : 1;
+            int j2 = ix2 == leaf2.KeyCount && leaf2.rightLeaf == null ? 0 : 1;
+
+            if (j1 == 0 && j2 == 0)
+            { Initialize(); return; }
 
             if (j1 != 0 && ix1 == 0)
             { leaf1 = leaf1.leftLeaf; ix1 = leaf1.KeyCount; path1.TraverseLeft(); }

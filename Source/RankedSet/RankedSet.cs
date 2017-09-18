@@ -257,9 +257,6 @@ namespace Kaos.Collections
             if (count == 0)
                 return;
 
-            if (count == Size)
-            { Clear(); return; }
-
             var path1 = NodeVector.CreateForIndex (this, index);
             var path2 = NodeVector.CreateForIndex (this, index+count);
 
