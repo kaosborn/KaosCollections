@@ -420,6 +420,12 @@ namespace Kaos.Collections
                 }
             }
 
+            TrimRoot();
+        }
+
+
+        private void TrimRoot()
+        {
             while (root is Branch && root.KeyCount == 0)
                 root = ((Branch) root).Child0;
         }
@@ -428,12 +434,10 @@ namespace Kaos.Collections
         internal void Balance (NodeVector path)
         {
             BalanceLeaf (path);
-            while (root is Branch && root.KeyCount == 0)
-                root = ((Branch) root).Child0;
+            TrimRoot();
         }
 
-
-        internal void BalanceLeaf (NodeVector path)
+        private void BalanceLeaf (NodeVector path)
         {
             int leafIndex = path.TopIndex;
             var leaf = (Leaf) path.TopNode;
