@@ -484,7 +484,7 @@ namespace Kaos.Collections
                     }
 
                     // Branch underflow?
-                    if (branch.KeyCount < owner.maxKeyCount / 2)
+                    if (owner.IsUnderflow (branch.ChildCount))
                     {
                         // Balance branches to keep ratio.  Rotate thru the pivot.
                         int shifts = (branch.KeyCount + right.KeyCount - 1) / 2 - branch.KeyCount;

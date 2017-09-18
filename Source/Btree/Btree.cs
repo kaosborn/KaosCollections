@@ -43,12 +43,11 @@ namespace Kaos.Collections
             this.keyComparer = comparer ?? Comparer<T>.Default;
         }
 
-        private bool IsLeafUnderflow (Leaf leaf) => leaf.KeyCount < (maxKeyCount + 1) / 2;
-
         #region Nonpublic methods
 
         internal int Size => root.Weight;
 
+        private bool IsUnderflow (int count) => count < ((maxKeyCount + 1) >> 1);
 
         internal void CopyKeysTo1 (T[] array, int index, int count)
         {
@@ -407,12 +406,12 @@ namespace Kaos.Collections
                 leaf2 = leaf1.rightLeaf;
                 if (leaf2 != null)
                 {
-                    if (IsLeafUnderflow (leaf1))
+                    if (IsUnderflow (leaf1.KeyCount))
                     {
                         var leafPath = new NodeVector (path1, path1.Height);
                         BalanceLeaf (leafPath);
                     }
-                    if (leaf2.rightLeaf != null && IsLeafUnderflow (leaf2)) // leaf2.KeyCount < Capacity / 2)
+                    if (leaf2.rightLeaf != null && IsUnderflow (leaf2.KeyCount))
                     {
                         var leafPath = new NodeVector (path1, path1.Height);
                         leafPath.TraverseRight();
@@ -644,7 +643,7 @@ namespace Kaos.Collections
             BranchSlotCount += maxKeyCount;
             BranchSlotsUsed += branch.KeyCount;
 
-            //TODO if (! isRightmost && (branch.KeyCount + 1) < maxKeyCount / 2)
+            //TODO if (! isRightmost && IsUnderflow (branch.ChildCount))
             //    throw new InvalidOperationException ("Branch underflow");
 
             if (branch.ChildCount != branch.KeyCount + 1)
@@ -678,7 +677,7 @@ namespace Kaos.Collections
             LeafSlotCount += maxKeyCount;
             LeafSlotsUsed += leaf.KeyCount;
 
-            if (leaf.rightLeaf != null && IsLeafUnderflow (leaf))
+            if (leaf.rightLeaf != null && IsUnderflow (leaf.KeyCount))
                 throw new InvalidOperationException ("Leaf underflow");
 
             if (! anchor.Equals (default (T)) && ! anchor.Equals (leaf.Key0))
