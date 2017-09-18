@@ -641,8 +641,8 @@ namespace Kaos.Collections
             BranchSlotCount += maxKeyCount;
             BranchSlotsUsed += branch.KeyCount;
 
-            if (! isRightmost && (branch.KeyCount + 1) < maxKeyCount / 2)
-                throw new InvalidOperationException ("Branch underfilled");
+            //TODO if (! isRightmost && (branch.KeyCount + 1) < maxKeyCount / 2)
+            //    throw new InvalidOperationException ("Branch underflow");
 
             if (branch.ChildCount != branch.KeyCount + 1)
                 throw new InvalidOperationException ("Branch mismatched ChildCount, KeyCount");
@@ -651,7 +651,7 @@ namespace Kaos.Collections
             for (int i = 0; i < branch.ChildCount; ++i)
             {
                 T anchor0 = i == 0 ? anchor : branch.GetKey (i - 1);
-                bool isRightmost0 = isRightmost && i < branch.ChildCount;
+                bool isRightmost0 = isRightmost && i == branch.KeyCount;
                 if (i < branch.KeyCount - 1)
                     if (keyComparer.Compare (branch.GetKey (i), branch.GetKey (i + 1)) > 0)
                         throw new InvalidOperationException ("Branch keys descending");
