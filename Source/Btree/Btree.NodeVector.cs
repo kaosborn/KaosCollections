@@ -443,7 +443,7 @@ namespace Kaos.Collections
                     if (TopIndex == 0)
                     {
                         if (branch.KeyCount == 0)
-                            // Cascade when rightmost branch is empty.
+                            // Cascade when rightmost branch is keyless.
                             continue;
 
                         // Rotate pivot for first key.
@@ -454,7 +454,7 @@ namespace Kaos.Collections
                     }
                     else
                     {
-                        // Typical branch pivot delete.
+                        // Delete pivot.
                         branch.RemoveKey (TopIndex - 1);
                         branch.RemoveChild (TopIndex);
                     }
@@ -464,56 +464,69 @@ namespace Kaos.Collections
                         // Must be an empty root.  Prune later.
                         return;
 
-                    if (branch.KeyCount + right.KeyCount < owner.maxKeyCount)
-                    {
-                        // Coalesce left: move pivot and right sibling nodes.
-                        branch.AddKey (GetPivot());
-
-                        for (int ix = 0; ; ++ix)
-                        {
-                            branch.Add (right.GetChild (ix));
-                            if (ix >= right.KeyCount)
-                                break;
-                            branch.AddKey (right.GetKey (ix));
-                        }
-                        branch.AdjustWeight (+ right.Weight);
-                        TiltLeft (+ right.Weight);
-
-                        // Cascade demotion.
-                        continue;
-                    }
-
-                    // Branch underflow?
-                    if (owner.IsUnderflow (branch.ChildCount))
-                    {
-                        // Balance branches to keep ratio.  Rotate thru the pivot.
-                        int shifts = (branch.KeyCount + right.KeyCount - 1) / 2 - branch.KeyCount;
-                        branch.AddKey (GetPivot());
-
-                        int delta = 0;
-                        for (int rightIndex = 0; ; ++rightIndex)
-                        {
-                            branch.Add (right.GetChild (rightIndex));
-                            delta += right.GetChild (rightIndex).Weight;
-
-                            if (rightIndex >= shifts)
-                                break;
-
-                            branch.AddKey (right.GetKey (rightIndex));
-                        }
-
-                        SetPivot (right.GetKey (shifts));
-                        right.Remove (0, shifts + 1);
-                        branch.AdjustWeight (+ delta);
-                        right.AdjustWeight (- delta);
-                        TiltLeft (delta);
-                    }
-
-                    return;
+                    if (! BalanceBranch2 (branch))
+                        return;
                 }
             }
 
-#endregion
+            public void BalanceBranch (Branch left)
+            {
+                if (BalanceBranch2 (left))
+                    Demote();
+            }
+
+            private bool BalanceBranch2 (Branch branch)
+            {
+                var right = (Branch) TopNode;
+                if (branch.KeyCount + right.KeyCount < owner.maxKeyCount)
+                {
+                    // Coalesce left: move pivot and right sibling nodes.
+                    branch.AddKey (GetPivot());
+
+                    for (int ix = 0; ; ++ix)
+                    {
+                        branch.Add (right.GetChild (ix));
+                        if (ix >= right.KeyCount)
+                            break;
+                        branch.AddKey (right.GetKey (ix));
+                    }
+                    branch.AdjustWeight (+ right.Weight);
+                    TiltLeft (+ right.Weight);
+
+                    // Pivot must still be removed.
+                    return true;
+                }
+
+                // Branch underflow?
+                if (owner.IsUnderflow (branch.ChildCount))
+                {
+                    // Balance branches to keep ratio.  Rotate thru the pivot.
+                    int shifts = (branch.KeyCount + right.KeyCount - 1) / 2 - branch.KeyCount;
+                    branch.AddKey (GetPivot());
+
+                    int delta = 0;
+                    for (int rightIndex = 0; ; ++rightIndex)
+                    {
+                        branch.Add (right.GetChild (rightIndex));
+                        delta += right.GetChild (rightIndex).Weight;
+
+                        if (rightIndex >= shifts)
+                            break;
+
+                        branch.AddKey (right.GetKey (rightIndex));
+                    }
+
+                    SetPivot (right.GetKey (shifts));
+                    right.Remove (0, shifts + 1);
+                    branch.AdjustWeight (+ delta);
+                    right.AdjustWeight (- delta);
+                    TiltLeft (delta);
+                }
+
+                return false;
+            }
+
+            #endregion
 
 #if DEBUG
 
