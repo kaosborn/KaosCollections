@@ -675,8 +675,8 @@ namespace Kaos.Collections
             LeafSlotCount += maxKeyCount;
             LeafSlotsUsed += leaf.KeyCount;
 
-            //if (leaf.rightLeaf != null && leaf.KeyCount < (maxKeyCount + 1) / 2)
-            //TODO     throw new InvalidOperationException ("Leaf underflow");
+            if (leaf.rightLeaf != null && IsLeafUnderflow (leaf))
+                throw new InvalidOperationException ("Leaf underflow");
 
             if (! anchor.Equals (default (T)) && ! anchor.Equals (leaf.Key0))
                 throw new InvalidOperationException ("Leaf has wrong anchor");
