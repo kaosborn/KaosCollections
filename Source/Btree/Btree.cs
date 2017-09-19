@@ -688,8 +688,8 @@ namespace Kaos.Collections
             BranchSlotCount += maxKeyCount;
             BranchSlotsUsed += branch.KeyCount;
 
-            //TODO if (! isRightmost && IsUnderflow (branch.ChildCount))
-            //    throw new InvalidOperationException ("Branch underflow");
+            if (! isRightmost && IsUnderflow (branch.ChildCount))
+                throw new InvalidOperationException ("Branch underflow");
 
             if (branch.ChildCount != branch.KeyCount + 1)
                 throw new InvalidOperationException ("Branch mismatched ChildCount, KeyCount");
