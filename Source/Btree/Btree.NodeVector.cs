@@ -20,7 +20,7 @@ namespace Kaos.Collections
         /// </remarks>
         internal class NodeVector
         {
-            private readonly Btree<T> owner;
+            private readonly Btree<T> btree;
             private readonly List<int> indexStack;
             private readonly List<Node> nodeStack;
 
@@ -30,7 +30,7 @@ namespace Kaos.Collections
             /// <param name="tree">Target of path.</param>
             private NodeVector (Btree<T> tree)
             {
-                this.owner = tree;
+                this.btree = tree;
                 this.indexStack = new List<int>();
                 this.nodeStack = new List<Node>();
             }
@@ -41,11 +41,14 @@ namespace Kaos.Collections
             /// <param name="count">Depth of copy.</param>
             public NodeVector (NodeVector path, int count)
             {
-                this.owner = path.owner;
+                this.btree = path.btree;
                 this.indexStack = new List<int>(count);
                 this.nodeStack = new List<Node>(count);
                 for (int ix = 0; ix < count; ++ix)
-                { this.indexStack.Add (path.indexStack[ix]); this.nodeStack.Add (path.nodeStack[ix]); }
+                {
+                    this.indexStack.Add (path.indexStack[ix]);
+                    this.nodeStack.Add (path.nodeStack[ix]);
+                }
             }
 
 
@@ -121,7 +124,8 @@ namespace Kaos.Collections
 
             public static NodeVector CreateForIndex (Btree<T> tree, int index)
             {
-                System.Diagnostics.Debug.Assert (index <= tree.Size);
+                Debug.Assert (index <= tree.Size);
+
                 var path = new NodeVector (tree);
                 if (index >= tree.Size)
                     for (Node n0 = tree.root; n0 != null;)
@@ -139,7 +143,8 @@ namespace Kaos.Collections
                 while (node is Branch branch)
                     for (int ix = 0; ; ++ix)
                     {
-                        System.Diagnostics.Debug.Assert (ix <= node.KeyCount);
+                        Debug.Assert (ix <= node.KeyCount);
+
                         Node child = branch.GetChild (ix);
                         int cw = child.Weight;
                         if (cw > index)
@@ -206,7 +211,7 @@ namespace Kaos.Collections
                 Debug.Assert (TopNode is Branch);
                 for (int level = indexStack.Count - 2; ; --level)
                 {
-                    System.Diagnostics.Debug.Assert (level >= 0);
+                    Debug.Assert (level >= 0);
                     if (indexStack[level] > 0)
                         return nodeStack[level].GetKey (indexStack[level] - 1);
                 }
@@ -250,10 +255,10 @@ namespace Kaos.Collections
             }
 
 
-            internal void Push (Node newNode, int newNodeIndex)
+            internal void Push (Node node, int nodeIndex)
             {
-                nodeStack.Add (newNode);
-                indexStack.Add (newNodeIndex);
+                nodeStack.Add (node);
+                indexStack.Add (nodeIndex);
             }
 
 
@@ -348,9 +353,9 @@ namespace Kaos.Collections
                     if (Height == 1)
                     {
                         // Graft new root.
-                        Debug.Assert (owner.root == TopNode);
-                        owner.root = new Branch (owner.maxKeyCount, TopNode, TopNode.Weight + newNode.Weight);
-                        ((Branch) owner.root).Add (key, newNode);
+                        Debug.Assert (btree.root == TopNode);
+                        btree.root = new Branch (btree.maxKeyCount, TopNode, TopNode.Weight + newNode.Weight);
+                        ((Branch) btree.root).Add (key, newNode);
                         break;
                     }
 
@@ -358,7 +363,7 @@ namespace Kaos.Collections
                     var branch = (Branch) TopNode;
                     int branchIndex = TopIndex;
 
-                    if (branch.KeyCount < owner.maxKeyCount)
+                    if (branch.KeyCount < btree.maxKeyCount)
                     {
                         // Typical case where branch has room.
                         branch.InsertKey (branchIndex, key);
@@ -367,7 +372,7 @@ namespace Kaos.Collections
                     }
 
                     // Branch is full so right split a new branch.
-                    var newBranch = new Branch (owner.maxKeyCount);
+                    var newBranch = new Branch (btree.maxKeyCount);
                     int splitIndex = isAppend ? branch.KeyCount - 1 : (branch.KeyCount + 1) / 2;
 
                     if (branchIndex < splitIndex)
@@ -475,22 +480,22 @@ namespace Kaos.Collections
                     Demote();
             }
 
-            private bool BalanceBranch2 (Branch branch)
+            private bool BalanceBranch2 (Branch left)
             {
                 var right = (Branch) TopNode;
-                if (branch.KeyCount + right.KeyCount < owner.maxKeyCount)
+                if (left.KeyCount + right.KeyCount < btree.maxKeyCount)
                 {
                     // Coalesce left: move pivot and right sibling nodes.
-                    branch.AddKey (GetPivot());
+                    left.AddKey (GetPivot());
 
-                    for (int ix = 0; ; ++ix)
+                    for (int ix1 = 0; ; ++ix1)
                     {
-                        branch.Add (right.GetChild (ix));
-                        if (ix >= right.KeyCount)
+                        left.Add (right.GetChild (ix1));
+                        if (ix1 >= right.KeyCount)
                             break;
-                        branch.AddKey (right.GetKey (ix));
+                        left.AddKey (right.GetKey (ix1));
                     }
-                    branch.AdjustWeight (+ right.Weight);
+                    left.AdjustWeight (+ right.Weight);
                     TiltLeft (+ right.Weight);
 
                     // Pivot must still be removed.
@@ -498,27 +503,27 @@ namespace Kaos.Collections
                 }
 
                 // Branch underflow?
-                if (owner.IsUnderflow (branch.ChildCount))
+                if (btree.IsUnderflow (left.ChildCount))
                 {
                     // Balance branches to keep ratio.  Rotate thru the pivot.
-                    int shifts = (branch.KeyCount + right.KeyCount - 1) / 2 - branch.KeyCount;
-                    branch.AddKey (GetPivot());
+                    int shifts = (left.KeyCount + right.KeyCount - 1) / 2 - left.KeyCount;
+                    left.AddKey (GetPivot());
 
                     int delta = 0;
-                    for (int rightIndex = 0; ; ++rightIndex)
+                    for (int ix2 = 0; ; ++ix2)
                     {
-                        branch.Add (right.GetChild (rightIndex));
-                        delta += right.GetChild (rightIndex).Weight;
+                        left.Add (right.GetChild (ix2));
+                        delta += right.GetChild (ix2).Weight;
 
-                        if (rightIndex >= shifts)
+                        if (ix2 >= shifts)
                             break;
 
-                        branch.AddKey (right.GetKey (rightIndex));
+                        left.AddKey (right.GetKey (ix2));
                     }
 
                     SetPivot (right.GetKey (shifts));
                     right.Remove (0, shifts + 1);
-                    branch.AdjustWeight (+ delta);
+                    left.AdjustWeight (+ delta);
                     right.AdjustWeight (- delta);
                     TiltLeft (delta);
                 }
@@ -530,7 +535,7 @@ namespace Kaos.Collections
             public void Balance()
             {
                 BalanceLeaf();
-                owner.TrimRoot();
+                btree.TrimRoot();
             }
 
             public void BalanceLeaf()
@@ -549,24 +554,24 @@ namespace Kaos.Collections
                             if (leaf1.leftLeaf != null)
                                 leaf1.leftLeaf.rightLeaf = leaf1.rightLeaf;
                             else
-                                owner.leftmostLeaf = leaf1.rightLeaf;
+                                btree.leftmostLeaf = leaf1.rightLeaf;
                             Demote();
                         }
                         else if (leaf1.leftLeaf != null)
                         {
                             leaf1.leftLeaf.rightLeaf = leaf1.rightLeaf;
-                            owner.rightmostLeaf = leaf1.leftLeaf;
+                            btree.rightmostLeaf = leaf1.leftLeaf;
                             Demote();
                         }
 
                         return;
                     }
 
-                if (owner.IsUnderflow (leaf1.KeyCount))
+                if (btree.IsUnderflow (leaf1.KeyCount))
                 {
                     Leaf leaf2 = leaf1.rightLeaf;
                     if (leaf2 != null)
-                        if (leaf1.KeyCount + leaf2.KeyCount > owner.maxKeyCount)
+                        if (leaf1.KeyCount + leaf2.KeyCount > btree.maxKeyCount)
                         {
                             // Balance leaves by shifting pairs from right leaf.
                             int shifts = (leaf1.KeyCount + leaf2.KeyCount + 1) / 2 - leaf1.KeyCount;
@@ -580,7 +585,7 @@ namespace Kaos.Collections
                             leaf1.Coalesce();
                             leaf1.rightLeaf = leaf2.rightLeaf;
                             if (leaf2.rightLeaf == null)
-                                owner.rightmostLeaf = leaf1;
+                                btree.rightmostLeaf = leaf1;
                             else
                                 leaf2.rightLeaf.leftLeaf = leaf1;
                             TraverseRight();
