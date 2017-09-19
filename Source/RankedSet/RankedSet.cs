@@ -254,9 +254,6 @@ namespace Kaos.Collections
             if (count > Size - index)
                 throw new ArgumentException ("Argument was out of the range of valid values.");
 
-            if (count == 0)
-                return;
-
             var path1 = NodeVector.CreateForIndex (this, index);
             var path2 = NodeVector.CreateForIndex (this, index+count);
 

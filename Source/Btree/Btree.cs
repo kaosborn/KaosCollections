@@ -341,12 +341,18 @@ namespace Kaos.Collections
 
             if (j1 != 0 && ix1 == 0)
             { leaf1 = leaf1.leftLeaf; ix1 = leaf1.KeyCount; path1.TraverseLeft(); }
+
             if (leaf1 == leaf2)
             {
-                path2.ChangePathWeight (ix1-ix2);
-                leaf2.RemoveRange (ix1, ix2-ix1);
-                if (ix1 == 0) path2.SetPivot (leaf2.Key0);
-                Balance (path2);
+                int count = ix2 - ix1;
+                if (count > 0)
+                {
+                    path2.ChangePathWeight (-count);
+                    leaf2.RemoveRange (ix1, count);
+                    if (ix1 == 0)
+                        path2.SetPivot (leaf2.Key0);
+                    Balance (path2);
+                }
                 return;
             }
 
