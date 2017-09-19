@@ -325,7 +325,7 @@ namespace Kaos.Collections
 
             ((Leaf) path.TopNode).Remove (path.TopIndex);
             path.DecrementPathWeight();
-            Balance (path);
+            path.Balance();
         }
 
 
@@ -351,7 +351,7 @@ namespace Kaos.Collections
                     leaf2.RemoveRange (ix1, count);
                     if (ix1 == 0)
                         path2.SetPivot (leaf2.Key0);
-                    Balance (path2);
+                    path2.Balance();
                 }
                 return;
             }
@@ -415,7 +415,7 @@ namespace Kaos.Collections
                     if (IsUnderflow (leaf1.KeyCount))
                     {
                         path2 = new NodeVector (path1, path1.Height);
-                        BalanceLeaf (path2);
+                        path2.BalanceLeaf();
                         if (j1 != 0)
                         {
                             Leaf leaf3;
@@ -425,7 +425,7 @@ namespace Kaos.Collections
                             else
                                 leaf3 = (Leaf) path2.TopNode;
                             if (IsUnderflow (leaf1.KeyCount))
-                                BalanceLeaf (path2);
+                                path2.BalanceLeaf();
                         }
                     }
                     if (leaf2.rightLeaf != null && IsUnderflow (leaf2.KeyCount))
@@ -433,7 +433,7 @@ namespace Kaos.Collections
                         var leafPath = new NodeVector (path1, path1.Height);
                         leafPath.TraverseRight();
                         if (leafPath.Height > 0)
-                            BalanceLeaf (leafPath);
+                            leafPath.BalanceLeaf();
                     }
                 }
 
@@ -475,71 +475,6 @@ namespace Kaos.Collections
         {
             while (root is Branch && root.KeyCount == 0)
                 root = ((Branch) root).Child0;
-        }
-
-
-        internal void Balance (NodeVector path)
-        {
-            BalanceLeaf (path);
-            TrimRoot();
-        }
-
-        private void BalanceLeaf (NodeVector path)
-        {
-            int leafIndex = path.TopIndex;
-            var leaf = (Leaf) path.TopNode;
-
-            if (leafIndex == 0)
-                if (leaf.KeyCount != 0)
-                    path.SetPivot (path.TopNode.Key0);
-                else
-                {
-                    if (leaf.rightLeaf != null)
-                    {
-                        leaf.rightLeaf.leftLeaf = leaf.leftLeaf;
-                        if (leaf.leftLeaf != null)
-                            leaf.leftLeaf.rightLeaf = leaf.rightLeaf;
-                        else
-                            leftmostLeaf = leaf.rightLeaf;
-                        path.Demote();
-                    }
-                    else if (leaf.leftLeaf != null)
-                    {
-                        leaf.leftLeaf.rightLeaf = leaf.rightLeaf;
-                        rightmostLeaf = leaf.leftLeaf;
-                        path.Demote();
-                    }
-
-                    return;
-                }
-
-            // Leaf underflow?
-            if (leaf.KeyCount < (maxKeyCount + 1) / 2)
-            {
-                Leaf rightLeaf = leaf.rightLeaf;
-                if (rightLeaf != null)
-                    if (leaf.KeyCount + rightLeaf.KeyCount > maxKeyCount)
-                    {
-                        // Balance leaves by shifting pairs from right leaf.
-                        int shifts = (leaf.KeyCount + rightLeaf.KeyCount + 1) / 2 - leaf.KeyCount;
-                        leaf.Shift (shifts);
-                        path.TraverseRight();
-                        path.SetPivot (rightLeaf.Key0);
-                        path.TiltLeft (shifts);
-                    }
-                    else
-                    {
-                        leaf.Coalesce();
-                        leaf.rightLeaf = rightLeaf.rightLeaf;
-                        if (rightLeaf.rightLeaf == null)
-                            rightmostLeaf = leaf;
-                        else
-                            rightLeaf.rightLeaf.leftLeaf = leaf;
-                        path.TraverseRight();
-                        path.TiltLeft (rightLeaf.KeyCount);
-                        path.Demote();
-                    }
-            }
         }
 
 

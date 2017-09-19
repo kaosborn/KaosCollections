@@ -408,7 +408,7 @@ namespace Kaos.Collections
                 path.TraverseRight();
             ((Leaf) path.TopNode).RemoveKey (path.TopIndex);
             path.DecrementPathWeight();
-            Balance (path);
+            path.Balance();
 
             return true;
         }
@@ -430,7 +430,7 @@ namespace Kaos.Collections
                 int leafDels = Math.Min (count, leaf.KeyCount - leafIx);
                 leaf.RemoveKeys (leafIx, leafDels);
                 path.ChangePathWeight (-leafDels);
-                Balance (path);
+                path.Balance();
                 count -= leafDels;
             }
         }
@@ -515,7 +515,7 @@ namespace Kaos.Collections
             var path = NodeVector.CreateForIndex (this, index);
             ((Leaf) path.TopNode).RemoveKey (path.TopIndex);
             path.DecrementPathWeight();
-            Balance (path);
+            path.Balance();
         }
 
 

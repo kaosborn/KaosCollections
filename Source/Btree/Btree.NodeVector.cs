@@ -526,6 +526,70 @@ namespace Kaos.Collections
                 return false;
             }
 
+
+            public void Balance()
+            {
+                BalanceLeaf();
+                owner.TrimRoot();
+            }
+
+            public void BalanceLeaf()
+            {
+                var leaf1 = (Leaf) TopNode;
+                int ix1 = TopIndex;
+
+                if (ix1 == 0)
+                    if (leaf1.KeyCount != 0)
+                        SetPivot (leaf1.Key0);
+                    else
+                    {
+                        if (leaf1.rightLeaf != null)
+                        {
+                            leaf1.rightLeaf.leftLeaf = leaf1.leftLeaf;
+                            if (leaf1.leftLeaf != null)
+                                leaf1.leftLeaf.rightLeaf = leaf1.rightLeaf;
+                            else
+                                owner.leftmostLeaf = leaf1.rightLeaf;
+                            Demote();
+                        }
+                        else if (leaf1.leftLeaf != null)
+                        {
+                            leaf1.leftLeaf.rightLeaf = leaf1.rightLeaf;
+                            owner.rightmostLeaf = leaf1.leftLeaf;
+                            Demote();
+                        }
+
+                        return;
+                    }
+
+                if (owner.IsUnderflow (leaf1.KeyCount))
+                {
+                    Leaf leaf2 = leaf1.rightLeaf;
+                    if (leaf2 != null)
+                        if (leaf1.KeyCount + leaf2.KeyCount > owner.maxKeyCount)
+                        {
+                            // Balance leaves by shifting pairs from right leaf.
+                            int shifts = (leaf1.KeyCount + leaf2.KeyCount + 1) / 2 - leaf1.KeyCount;
+                            leaf1.Shift (shifts);
+                            TraverseRight();
+                            SetPivot (leaf2.Key0);
+                            TiltLeft (shifts);
+                        }
+                        else
+                        {
+                            leaf1.Coalesce();
+                            leaf1.rightLeaf = leaf2.rightLeaf;
+                            if (leaf2.rightLeaf == null)
+                                owner.rightmostLeaf = leaf1;
+                            else
+                                leaf2.rightLeaf.leftLeaf = leaf1;
+                            TraverseRight();
+                            TiltLeft (leaf2.KeyCount);
+                            Demote();
+                        }
+                }
+            }
+
             #endregion
 
 #if DEBUG
