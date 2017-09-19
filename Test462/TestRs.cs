@@ -1225,16 +1225,16 @@ namespace Kaos.Test.Collections
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
         public void CrashRsx_RemoveAtA_ArgumentOutOfRange()
         {
-            var d1 = new RankedSet<int>() { 42 };
-            d1.RemoveAt (-1);
+            var set = new RankedSet<int>() { 42 };
+            set.RemoveAt (-1);
         }
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
         public void CrashRsx_RemoveAtB_ArgumentOutOfRange()
         {
-            var key = new RankedSet<int>();
-            key.RemoveAt (0);
+            var set = new RankedSet<int>();
+            set.RemoveAt (0);
         }
 
         [TestMethod]
@@ -1256,14 +1256,30 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void StressRs_RemoveRange()
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRsx_RemoveRangeA_ArgumentOutOfRange()
+        {
+            var set = new RankedSet<int>();
+            set.RemoveRange (-1, 0);
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRsx_RemoveRangeB_ArgumentOutOfRange()
+        {
+            var set = new RankedSet<int>();
+            set.RemoveRange (0, -1);
+        }
+
+        [TestMethod]
+        public void StressRsx_RemoveRange()
         {
             for (int width = 1; width <= 33; ++width)
             {
                 for (int count = 1; count <= width; ++count)
                     for (int index = 0; index <= width - count; ++index)
                     {
-                        var set = new RankedSet<int> { Capacity = 4 };
+                        var set = new RankedSet<int> { Capacity = 6 };
                         for (int ii = 0; ii < width; ++ii) set.Add (ii);
                         set.RemoveRange (index, count);
 #if DEBUG
