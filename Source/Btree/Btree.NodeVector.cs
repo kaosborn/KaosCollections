@@ -183,6 +183,29 @@ namespace Kaos.Collections
 
             internal int GetIndex (int index) { return indexStack[index]; }
 
+
+            public int GetTreeIndex()
+            {
+                int level = Height-1;
+                int result = indexStack[level];
+                while (--level >= 0)
+                {
+                    var branch = (Branch) nodeStack[level];
+                    int ix = indexStack[level];
+                    if (ix <= branch.ChildCount >> 1)
+                        while (--ix >= 0)
+                            result += branch.GetChild(ix).Weight;
+                    else
+                    {
+                        result += branch.Weight;
+                        for (int ii = branch.ChildCount; --ii >= ix;)
+                            result -= branch.GetChild(ii).Weight;
+                    }
+                }
+                return result;
+            }
+
+
             public void TiltLeft (int delta)
             {
                 for (int level = indexStack.Count-2; ; --level)
