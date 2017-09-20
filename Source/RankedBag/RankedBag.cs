@@ -445,9 +445,7 @@ namespace Kaos.Collections
         /// For duplicate items, lowest indexed items are removed first.
         /// </para>
         /// <para>
-        /// This is a O(<em>m</em> log <em>n</em>) operation
-        /// where <em>m</em> is <em>count</em>
-        /// and <em>n</em> is the total item count.
+        /// This is a O(log <em>n</em>) operation <em>n</em> is the total item count.
         /// </para>
         /// </remarks>
         /// <exception cref="ArgumentException">When <em>count</em> is less than zero.</exception>
@@ -458,15 +456,23 @@ namespace Kaos.Collections
             if (count == 0)
                 return false;
 
-            int toDel = GetCount (item);
-            if (toDel == 0)
+            var path1 = new NodeVector (this, item, leftEdge:true);
+            if (! path1.IsFound)
                 return false;
-            if (toDel > count)
-                toDel = count;
+
+            var path2 = new NodeVector (this, item, leftEdge:false);
+            int ix1 = path1.GetTreeIndex();
+            int ix2 = path2.GetTreeIndex();
+            if (ix2 - ix1 > count)
+            {
+                ix2 = ix1 + count;
+                path2 = NodeVector.CreateForIndex (this, ix2);
+            }
 
             StageBump();
-            Delete (item, toDel);
-            return true;
+            RemoveRange2 (path1, path2);
+
+            return ix2 - ix1 > 0;
         }
 
 

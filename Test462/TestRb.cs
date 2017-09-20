@@ -663,7 +663,7 @@ namespace Kaos.Test.Collections
                 bag1.Add (ii);
 
             foreach (int ii in new int[] { 3, 3, 3, 5, 5, 5, 7, 7, 7, 9 })
-                bag2.Add(ii);
+                bag2.Add (ii);
 
             var rem0 = bag0.Remove (0, 1);
             Assert.IsFalse (rem0);
@@ -686,10 +686,10 @@ namespace Kaos.Test.Collections
             Assert.IsFalse (rem9);
 
             var rem53 = bag2.Remove (5, 3);
-            Assert.IsTrue(rem53);
+            Assert.IsTrue (rem53);
 
             var rem33 = bag2.Remove (3, 3);
-            Assert.IsTrue(rem33);
+            Assert.IsTrue (rem33);
         }
 
 
