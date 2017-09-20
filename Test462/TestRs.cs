@@ -1272,11 +1272,86 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
+        [ExpectedException (typeof (ArgumentException))]
+        public void CrashRsx_RemoveRange_Argument()
+        {
+            var set = new RankedSet<int>();
+            set.Add (3); set.Add (5);
+            set.RemoveRange (1, 2);
+        }
+
+        [TestMethod]
+        public void UnitRsx_RemoveRange()
+        {
+            var set0 = new RankedSet<int>() { Capacity=7 };
+            for (int ii=0; ii<9; ++ii) set0.Add (ii);
+
+            var set1 = new RankedSet<int>() { Capacity=4 };
+            for (int ii=0; ii<13; ++ii) set1.Add (ii);
+
+            var set2 = new RankedSet<int>() { Capacity=4 };
+            for (int ii=0; ii<19; ++ii) set2.Add (ii);
+
+            var set3 = new RankedSet<int>() { Capacity=4 };
+            for (int ii=0; ii<22; ++ii) set3.Add (ii);
+
+            var set4 = new RankedSet<int>() { Capacity=7 };
+            for (int ii=0; ii<7; ++ii) set4.Add (ii);
+
+            var set5 = new RankedSet<int>() { Capacity=7 };
+            for (int ii=0; ii<8; ++ii) set5.Add (ii);
+
+            var set6 = new RankedSet<int>() { Capacity=7 };
+            for (int ii=0; ii<13; ++ii) set6.Add (ii);
+
+            var set7 = new RankedSet<int>() { Capacity=7 };
+            for (int ii=0; ii<13; ++ii) set7.Add (ii);
+
+            var set8 = new RankedSet<int>() { Capacity=5 };
+            for (int ii=0; ii<21; ++ii) set8.Add (ii);
+
+            var set9 = new RankedSet<int>() { Capacity=7 };
+            for (int ii=0; ii<7; ++ii) set9.Add (ii);
+
+            var setA = new RankedSet<int>() { Capacity = 7 };
+            for (int ii = 0; ii < 500; ++ii) setA.Add (ii);
+
+            var setE = new RankedSet<int>();
+
+            set0.RemoveRange (0, 2);
+            set1.RemoveRange (10, 2);
+            set2.RemoveRange (0, 6);
+            set3.RemoveRange (9, 6);
+            set4.RemoveRange (6, 1);
+            set5.RemoveRange (5, 2);
+            set6.RemoveRange (6, 4);
+            set7.RemoveRange (1, 6);
+            set8.RemoveRange (12, 4);
+            set9.RemoveRange (1, 5);
+            setA.RemoveRange (0, 500);
+            setE.RemoveRange (0, 0);
+#if DEBUG
+            set0.SanityCheck();
+            set1.SanityCheck();
+            set2.SanityCheck();
+            set3.SanityCheck();
+            set4.SanityCheck();
+            set5.SanityCheck();
+            set6.SanityCheck();
+            set7.SanityCheck();
+            set8.SanityCheck();
+            set9.SanityCheck();
+            setA.SanityCheck();
+            setE.SanityCheck();
+#endif
+        }
+
+        [TestMethod]
         public void StressRsx_RemoveRange()
         {
-            for (int width = 1; width <= 33; ++width)
+            for (int width = 1; width <= 19; ++width)
             {
-                for (int count = 1; count <= width; ++count)
+                for (int count = 0; count <= width; ++count)
                     for (int index = 0; index <= width - count; ++index)
                     {
                         var set = new RankedSet<int> { Capacity = 6 };
