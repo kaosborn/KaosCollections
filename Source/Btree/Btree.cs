@@ -351,8 +351,6 @@ namespace Kaos.Collections
                 {
                     path2.ChangePathWeight (-count);
                     leaf2.RemoveRange (ix1, count);
-                    if (ix1 == 0)
-                        path2.SetPivot (leaf2.Key0);
                     path2.Balance();
                 }
                 return;
