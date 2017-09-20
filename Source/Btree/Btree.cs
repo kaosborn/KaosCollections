@@ -341,6 +341,8 @@ namespace Kaos.Collections
 
             if (j1 != 0 && ix1 == 0)
             { leaf1 = leaf1.leftLeaf; ix1 = leaf1.KeyCount; path1.TraverseLeft(); }
+            if (j2 != 0 && ix2 == leaf2.KeyCount)
+            { leaf2 = leaf2.rightLeaf; ix2 = 0; path2.TraverseRight(); }
 
             if (leaf1 == leaf2)
             {
