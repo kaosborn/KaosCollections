@@ -385,31 +385,28 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Removes an item from the collection.</summary>
+        /// <summary>Removes all occurences an item from the bag.</summary>
         /// <param name="item">The item to remove.</param>
-        /// <returns><b>true</b> if <em>item</em> was found and removed; otherwise <b>false</b>.</returns>
+        /// <returns><b>true</b> if any items were removed; otherwise <b>false</b>.</returns>
         /// <remarks>
         /// <para>
-        /// For duplicate items, the lowest indexed item is deleted.
+        /// To remove only one item, use <see cref="Remove(T, int)"/>.
         /// </para>
         /// <para>
-        /// This is a O(log <em>n</em>) operation.
+        /// This is a O(log <em>n</em>) operation where <em>n</em> is the total item count.
         /// </para>
         /// </remarks>
         public bool Remove (T item)
         {
-            var path = new NodeVector (this, item, leftEdge:true);
-            if (! path.IsFound)
+            var path1 = new NodeVector (this, item, leftEdge:true);
+            if (! path1.IsFound)
                 return false;
+
+            var path2 = new NodeVector (this, item, leftEdge:false);
 
             StageBump();
 
-            if (path.TopIndex >= path.TopNode.KeyCount)
-                path.TraverseRight();
-            ((Leaf) path.TopNode).RemoveKey (path.TopIndex);
-            path.DecrementPathWeight();
-            path.Balance();
-
+            RemoveRange2 (path1, path2);
             return true;
         }
 
@@ -440,7 +437,7 @@ namespace Kaos.Collections
         /// <summary>Removes a supplied number of items from the bag.</summary>
         /// <param name="item">The item to remove.</param>
         /// <param name="count">The number of items to remove.</param>
-        /// <returns><b>true</b> if at least one <em>item</em> was found and removed; otherwise <b>false</b>.</returns>
+        /// <returns>The number of items removed.</returns>
         /// <remarks>
         /// <para>
         /// For duplicate items, lowest indexed items are removed first.
@@ -450,11 +447,11 @@ namespace Kaos.Collections
         /// </para>
         /// </remarks>
         /// <exception cref="ArgumentException">When <em>count</em> is less than zero.</exception>
-        public bool Remove (T item, int count)
+        public int Remove (T item, int count)
         {
             if (count < 0)
                 throw new ArgumentException ("Must be non-negative.", nameof (count));
-            return Delete (item, count) > 0;
+            return Delete (item, count);
         }
 
 

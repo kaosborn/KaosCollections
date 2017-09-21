@@ -626,21 +626,21 @@ namespace Kaos.Test.Collections
             foreach (int ii in new int[] { 3, 5, 5, 7, 7, 7, 9 })
                 bag.Add (ii);
 
-            var rem0 = bag0.Remove (0);
+            bool rem0 = bag0.Remove (0);
             Assert.IsFalse (rem0);
 
-            var rem2 = bag.Remove (2);
+            bool rem2 = bag.Remove (2);
             Assert.IsFalse (rem2);
 
-            var rem7 = bag.Remove (7);
+            bool rem7 = bag.Remove (7);
             Assert.IsTrue (rem7);
-            Assert.AreEqual (6, bag.Count);
+            Assert.AreEqual (4, bag.Count);
 
-            var rem5 = bag.Remove (5);
+            bool rem5 = bag.Remove (5);
             Assert.IsTrue (rem5);
-            Assert.AreEqual (5, bag.Count);
+            Assert.AreEqual (2, bag.Count);
 
-            var rem10 = bag.Remove (10);
+            bool rem10 = bag.Remove (10);
             Assert.IsFalse (rem10);
         }
 
@@ -666,30 +666,35 @@ namespace Kaos.Test.Collections
                 bag2.Add (ii);
 
             var rem0 = bag0.Remove (0, 1);
-            Assert.IsFalse (rem0);
+            Assert.AreEqual (0, rem0);
 
             var rem2 = bag1.Remove (2, 2);
-            Assert.IsFalse (rem2);
+            Assert.AreEqual (0, rem2);
 
             var rem70 = bag1.Remove (7, 0);
-            Assert.IsFalse (rem70);
+            Assert.AreEqual (0, rem70);
 
             var rem7 = bag1.Remove (7, 1);
-            Assert.IsTrue (rem7);
+            Assert.AreEqual (1, rem7);
             Assert.AreEqual (6, bag1.Count);
 
             var rem5 = bag1.Remove (5, 3);
-            Assert.IsTrue (rem5);
+            Assert.AreEqual (2, rem5);
             Assert.AreEqual (4, bag1.Count);
 
             var rem9 = bag1.Remove (10);
             Assert.IsFalse (rem9);
 
             var rem53 = bag2.Remove (5, 3);
-            Assert.IsTrue (rem53);
+            Assert.AreEqual (3, rem53);
 
             var rem33 = bag2.Remove (3, 3);
-            Assert.IsTrue (rem33);
+            Assert.AreEqual (3, rem33);
+
+            var rem99 = bag2.Remove (9, 9);
+            Assert.AreEqual (1, rem99);
+
+            Assert.AreEqual (3, bag2.Count);
         }
 
 
