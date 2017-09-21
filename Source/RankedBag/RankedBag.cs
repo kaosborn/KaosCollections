@@ -413,26 +413,27 @@ namespace Kaos.Collections
             return true;
         }
 
-        private void Delete (T item, int count)
+
+        private int Delete (T item, int count)
         {
-            while (count > 0)
+            if (count == 0)
+                return 0;
+
+            var path1 = new NodeVector (this, item, leftEdge:true);
+            if (! path1.IsFound)
+                return 0;
+
+            var path2 = NodeVector.CreateForOffset (path1, count);
+            if (path2 == null || Comparer.Compare (path2.GetLeftKey(), item) != 0)
             {
-                var path = new NodeVector (this, item, leftEdge:true);
-                if (! path.IsFound)
-                    break;
-
-                if (path.TopIndex >= path.TopNode.KeyCount)
-                    path.TraverseRight();
-
-                int leafIx = path.TopIndex;
-                var leaf = (Leaf) path.TopNode;
-
-                int leafDels = Math.Min (count, leaf.KeyCount - leafIx);
-                leaf.RemoveKeys (leafIx, leafDels);
-                path.ChangePathWeight (-leafDels);
-                path.Balance();
-                count -= leafDels;
+                path2 = new NodeVector (this, item, leftEdge:false);
+                count = path2.GetTreeIndex() - path1.GetTreeIndex();
             }
+
+            StageBump();
+            RemoveRange2 (path1, path2);
+
+            return count;
         }
 
 
@@ -453,26 +454,7 @@ namespace Kaos.Collections
         {
             if (count < 0)
                 throw new ArgumentException ("Must be non-negative.", nameof (count));
-            if (count == 0)
-                return false;
-
-            var path1 = new NodeVector (this, item, leftEdge:true);
-            if (! path1.IsFound)
-                return false;
-
-            var path2 = new NodeVector (this, item, leftEdge:false);
-            int ix1 = path1.GetTreeIndex();
-            int ix2 = path2.GetTreeIndex();
-            if (ix2 - ix1 > count)
-            {
-                ix2 = ix1 + count;
-                path2 = NodeVector.CreateForIndex (this, ix2);
-            }
-
-            StageBump();
-            RemoveRange2 (path1, path2);
-
-            return ix2 - ix1 > 0;
+            return Delete (item, count) > 0;
         }
 
 
