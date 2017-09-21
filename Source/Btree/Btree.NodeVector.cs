@@ -121,6 +121,47 @@ namespace Kaos.Collections
                 }
             }
 
+            public static NodeVector CreateForOffset (NodeVector path, int offset)
+            {
+                var result = new NodeVector (path, path.Height);
+                int level = path.Height - 1;
+                var leaf = (Leaf) result.nodeStack[level];
+                int rix = leaf.KeyCount - result.indexStack[level];
+                if (rix >= offset)
+                {
+                    result.indexStack[level] += offset;
+                    return result;
+                }
+
+                offset -= rix;
+                while (--level >= 0)
+                {
+                    var bh = (Branch) result.nodeStack[level];
+                    for (int ix = result.indexStack[level]+1; ix <= bh.KeyCount;)
+                    {
+                        Node node = bh.GetChild(ix);
+                        int wt = node.Weight;
+                        if (wt < offset)
+                        { ++ix; offset -= wt; }
+                        else
+                        {
+                            result.indexStack[level] = ix;
+                            result.nodeStack[level] = bh;
+                            ++level;
+                            if (node is Leaf)
+                            {
+                                result.nodeStack[level] = node;
+                                result.indexStack[level] = offset;
+                                return result;
+                            }
+                            ix = 0;
+                            bh = (Branch) node;
+                        }
+                    }
+                }
+                return null;
+            }
+
 
             public static NodeVector CreateForIndex (Btree<T> tree, int index)
             {
@@ -182,6 +223,16 @@ namespace Kaos.Collections
             internal Node GetNode (int index) { return nodeStack[index]; }
 
             internal int GetIndex (int index) { return indexStack[index]; }
+
+
+            public T GetLeftKey()
+            {
+                var leaf = (Leaf) TopNode;
+                int ix = TopIndex;
+                if (ix == 0)
+                { leaf = leaf.leftLeaf; ix = leaf.KeyCount; }
+                return leaf.GetKey (ix-1);
+            }
 
 
             public int GetTreeIndex()
