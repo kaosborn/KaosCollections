@@ -1201,6 +1201,45 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRdx_RemoveRangeA_ArgumentOutOfRange()
+        {
+            var d1 = new RankedDictionary<int,int>();
+            d1.RemoveRange (-1, 0);
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRdx_RemoveRangeB_ArgumentOutOfRange()
+        {
+            var d1 = new RankedDictionary<int,int>();
+            d1.RemoveRange (0, -1);
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentException))]
+        public void CrashRdx_RemoveRange_Argument()
+        {
+            var d1 = new RankedDictionary<int,int>();
+            d1.Add (3, 33); d1.Add (5, 55);
+            d1.RemoveRange (1, 2);
+        }
+
+        [TestMethod]
+        public void UnitRdx_RemoveRange()
+        {
+            var d1 = new RankedDictionary<int,int>() { Capacity=7 };
+            for (int ii=0; ii<20; ++ii) d1.Add (ii, -ii);
+
+            d1.RemoveRange (12, 4);
+            Assert.AreEqual (16, d1.Count);
+#if DEBUG
+            d1.SanityCheck();
+#endif
+        }
+
+
+        [TestMethod]
         public void UnitRdx_TryGetValueIndex()
         {
             var tree = new RankedDictionary<int,int>();

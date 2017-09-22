@@ -909,6 +909,34 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>Removes a range of elements from the dictionary.</summary>
+        /// <param name="index">The zero-based starting index of the range of items to remove.</param>
+        /// <param name="count">The number of items to remove.</param>
+        /// <remarks>This is a O(log <em>n</em>) operation where <em>n</em> is <see cref="Count"/>.</remarks>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> or <em>count</em> is less than zero.</exception>
+        /// <exception cref="ArgumentException">When <em>index</em> and <em>count</em> do not denote a valid range of items in the dictionary.</exception>
+        public void RemoveRange (int index, int count)
+        {
+            if (index < 0)
+                throw new ArgumentOutOfRangeException ("Argument was out of the range of valid values.", nameof (index));
+
+            if (count < 0)
+                throw new ArgumentOutOfRangeException ("Argument was out of the range of valid values.", nameof (count));
+
+            if (count > Size - index)
+                throw new ArgumentException ("Argument was out of the range of valid values.");
+
+            if (count == 0)
+                return;
+
+            var path1 = NodeVector.CreateForIndex (this, index);
+            var path2 = NodeVector.CreateForIndex (this, index+count);
+
+            StageBump();
+            RemoveRange2 (path1, path2);
+        }
+
+
         /// <summary>Gets the value and index associated with the supplied key.</summary>
         /// <param name="key">The key of the value and index to get.</param>
         /// <param name="value">If the key is found, its value is placed here; otherwise it will be loaded with the default value.</param>
