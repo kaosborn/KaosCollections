@@ -608,6 +608,10 @@ namespace Kaos.Collections
                 btree.TrimRoot();
             }
 
+            /// <summary>Balance tree and fixup pivot after removal.</summary>
+            /// <remarks>
+            /// On exit an empty root is not pruned.
+            /// </remarks>
             public void BalanceLeaf()
             {
                 var leaf1 = (Leaf) TopNode;
@@ -623,10 +627,7 @@ namespace Kaos.Collections
                         if (leaf1.leftLeaf != null)
                         {
                             leaf1.leftLeaf.rightLeaf = leaf1.rightLeaf;
-                            if (leaf1.rightLeaf != null)
-                                leaf1.rightLeaf.leftLeaf = leaf1.leftLeaf;
-                            else
-                                btree.rightmostLeaf = leaf1.leftLeaf;
+                            btree.rightmostLeaf = leaf1.leftLeaf;
                             Demote();
                         }
 
