@@ -421,7 +421,7 @@ namespace Kaos.Collections
                 return 0;
 
             var path2 = NodeVector.CreateForOffset (path1, count);
-            if (path2 == null || Comparer.Compare (path2.GetLeftKey(), item) != 0)
+            if (path2 == null || Comparer.Compare (path2.LeftKey, item) != 0)
             {
                 path2 = new NodeVector (this, item, leftEdge:false);
                 count = path2.GetTreeIndex() - path1.GetTreeIndex();

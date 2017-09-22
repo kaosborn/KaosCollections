@@ -121,8 +121,12 @@ namespace Kaos.Collections
                 }
             }
 
+
+            // On exit: path is left-edge normalized.
             public static NodeVector CreateForOffset (NodeVector path, int offset)
             {
+                Debug.Assert (offset >= 0);
+
                 var result = new NodeVector (path, path.Height);
                 int level = path.Height - 1;
                 var leaf = (Leaf) result.nodeStack[level];
@@ -224,15 +228,7 @@ namespace Kaos.Collections
 
             internal int GetIndex (int index) { return indexStack[index]; }
 
-
-            public T GetLeftKey()
-            {
-                var leaf = (Leaf) TopNode;
-                int ix = TopIndex;
-                if (ix == 0)
-                { leaf = leaf.leftLeaf; ix = leaf.KeyCount; }
-                return leaf.GetKey (ix-1);
-            }
+            public T LeftKey => ((Leaf) TopNode).GetKey (TopIndex-1);
 
 
             public int GetTreeIndex()
@@ -310,7 +306,7 @@ namespace Kaos.Collections
                     if (indexStack[level] > 0)
                     {
                         nodeStack[level].SetKey(indexStack[level] - 1, key);
-                        return;
+                        break;
                     }
             }
 
@@ -622,19 +618,15 @@ namespace Kaos.Collections
                         SetPivot (leaf1.Key0);
                     else
                     {
-                        if (leaf1.rightLeaf != null)
-                        {
-                            leaf1.rightLeaf.leftLeaf = leaf1.leftLeaf;
-                            if (leaf1.leftLeaf != null)
-                                leaf1.leftLeaf.rightLeaf = leaf1.rightLeaf;
-                            else
-                                btree.leftmostLeaf = leaf1.rightLeaf;
-                            Demote();
-                        }
-                        else if (leaf1.leftLeaf != null)
+                        Debug.Assert (leaf1.rightLeaf==null, "only rightmost leaf should ever be empty");
+
+                        if (leaf1.leftLeaf != null)
                         {
                             leaf1.leftLeaf.rightLeaf = leaf1.rightLeaf;
-                            btree.rightmostLeaf = leaf1.leftLeaf;
+                            if (leaf1.rightLeaf != null)
+                                leaf1.rightLeaf.leftLeaf = leaf1.leftLeaf;
+                            else
+                                btree.rightmostLeaf = leaf1.leftLeaf;
                             Demote();
                         }
 
