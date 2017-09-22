@@ -91,13 +91,6 @@ namespace Kaos.Collections
                 values.Insert (index, value);
             }
 
-            public override void Remove (int index)
-            {
-                Debug.Assert (index >= 0 && index <= ValueCount);
-                values.RemoveAt (index);
-                base.Remove (index);
-            }
-
             public override void RemoveRange (int index, int count)
             {
                 base.RemoveRange (index, count);

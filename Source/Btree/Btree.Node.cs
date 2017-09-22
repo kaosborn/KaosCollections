@@ -211,11 +211,6 @@ namespace Kaos.Collections
                     keys.Add (rightLeaf.keys[ix]);
             }
 
-            public virtual void Remove (int index)
-            {
-                keys.RemoveAt (index);
-            }
-
             public virtual void RemoveRange (int index, int count)
             {
                 keys.RemoveRange (index, count);

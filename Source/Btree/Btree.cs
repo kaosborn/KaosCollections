@@ -322,10 +322,15 @@ namespace Kaos.Collections
         internal void Remove2 (NodeVector path)
         {
             StageBump();
-
-            ((Leaf) path.TopNode).Remove (path.TopIndex);
+            ((Leaf) path.TopNode).RemoveRange (path.TopIndex, 1);
             path.DecrementPathWeight();
             path.Balance();
+        }
+
+
+        internal void RemoveAt2 (int index)
+        {
+            Remove2 (NodeVector.CreateForIndex (this, index));
         }
 
 
