@@ -658,12 +658,16 @@ namespace Kaos.Test.Collections
             var bag0 = new RankedBag<int>();
             var bag1 = new RankedBag<int>() { Capacity = 4 };
             var bag2 = new RankedBag<int>() { Capacity = 4 };
+            var bag3 = new RankedBag<int>() { Capacity = 5 };
 
             foreach (int ii in new int[] { 3, 5, 5, 7, 7, 7, 9 })
                 bag1.Add (ii);
 
             foreach (int ii in new int[] { 3, 3, 3, 5, 5, 5, 7, 7, 7, 9 })
                 bag2.Add (ii);
+
+            for (int ii=0; ii<41; ++ii)
+                bag3.Add (ii/5);
 
             var rem0 = bag0.Remove (0, 1);
             Assert.AreEqual (0, rem0);
@@ -695,6 +699,16 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (1, rem99);
 
             Assert.AreEqual (3, bag2.Count);
+
+            var rem35 = bag3.Remove (3, 9);
+            Assert.AreEqual (5, rem35);
+            Assert.AreEqual (36, bag3.Count);
+            Assert.IsFalse (bag3.Contains (3));
+
+            var rem65 = bag3.Remove (6, 99);
+            Assert.AreEqual (5, rem65);
+            Assert.AreEqual (31, bag3.Count);
+            Assert.IsFalse (bag3.Contains (6));
         }
 
 
