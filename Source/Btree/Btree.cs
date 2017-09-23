@@ -375,7 +375,12 @@ namespace Kaos.Collections
             }
 
             if (j2 == 0)
-            { leaf1.rightLeaf = null; rightmostLeaf = leaf1; }
+            {
+                leaf1.rightLeaf = null;
+                rightmostLeaf = leaf1;
+                deltaW1 = ix1 - leaf1.KeyCount;
+                leaf1.RemoveRange (ix1, leaf1.KeyCount - ix1);
+            }
             else
             {   deltaW2 = -ix2; if (j1!=0) leaf1.rightLeaf = leaf2; leaf2.RemoveRange (0, ix2);
                 if (j1 == 0)
