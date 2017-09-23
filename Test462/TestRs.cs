@@ -1357,6 +1357,7 @@ namespace Kaos.Test.Collections
                         var set = new RankedSet<int> { Capacity = 6 };
                         for (int ii = 0; ii < width; ++ii) set.Add (ii);
                         set.RemoveRange (index, count);
+                        Assert.AreEqual (width-count, set.Count);
 #if DEBUG
                         set.SanityCheck();
 #endif

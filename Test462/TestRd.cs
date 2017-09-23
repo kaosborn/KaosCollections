@@ -1231,6 +1231,9 @@ namespace Kaos.Test.Collections
             var d1 = new RankedDictionary<int,int>() { Capacity=7 };
             for (int ii=0; ii<20; ++ii) d1.Add (ii, -ii);
 
+            d1.RemoveRange (20, 0);
+            Assert.AreEqual (20, d1.Count);
+
             d1.RemoveRange (12, 4);
             Assert.AreEqual (16, d1.Count);
 #if DEBUG
