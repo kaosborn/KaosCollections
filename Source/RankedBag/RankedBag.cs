@@ -405,21 +405,21 @@ namespace Kaos.Collections
             var path2 = new NodeVector (this, item, leftEdge:false);
 
             StageBump();
-
-            RemoveRange2 (path1, path2);
+            Delete (path1, path2);
             return true;
         }
 
 
-        private int Delete (T item, int count)
+        private int Remove2 (T item, int count)
         {
-            if (count == 0)
+            if (count <= 0)
                 return 0;
 
             var path1 = new NodeVector (this, item, leftEdge:true);
             if (! path1.IsFound)
                 return 0;
 
+            // Seek by offset is faster, so try that first.
             var path2 = NodeVector.CreateForOffset (path1, count);
             if (path2 == null || Comparer.Compare (path2.LeftKey, item) != 0)
             {
@@ -428,8 +428,7 @@ namespace Kaos.Collections
             }
 
             StageBump();
-            RemoveRange2 (path1, path2);
-
+            Delete (path1, path2);
             return count;
         }
 
@@ -451,7 +450,7 @@ namespace Kaos.Collections
         {
             if (count < 0)
                 throw new ArgumentException ("Must be non-negative.", nameof (count));
-            return Delete (item, count);
+            return Remove2 (item, count);
         }
 
 
@@ -537,21 +536,21 @@ namespace Kaos.Collections
             int result = 0;
             if (Count > 0)
             {
-                StageBump();
-
                 var oBag = other as RankedBag<T> ?? new RankedBag<T> (other, Comparer);
                 if (oBag.Count == 0)
-                { result = Count; Clear(); return result; }
+                {
+                    result = Count;
+                    if (result != 0)
+                    { StageBump(); Clear(); }
+                    return result;
+                }
 
-                int treeIx1 = 0;
                 T key2 = leftmostLeaf.Key0;
-
-                for (;;)
+                for (int treeIx1 = 0;;)
                 {
                     T key1 = key2;
                     int treeIx2 = FindEdgeForIndex (key1, out Leaf leaf2, out int leafIx2, leftEdge:false);
-                    int toDel = (treeIx2 - treeIx1) - oBag.GetCount (key1);
-                    if (toDel < 0) toDel = 0;
+                    int toDelete = (treeIx2 - treeIx1) - oBag.GetCount (key1);
 
                     if (leafIx2 < leaf2.KeyCount)
                         key2 = leaf2.GetKey (leafIx2);
@@ -562,13 +561,14 @@ namespace Kaos.Collections
                             key2 = leaf2.Key0;
                     }
 
-                    Delete (key1, toDel);
-                    result += toDel;
+                    int deleted = Remove2 (key1, toDelete);
+                    result += deleted;
                     if (leaf2 == null)
                         break;
-                    treeIx1 = treeIx2 - toDel;
+                    treeIx1 = treeIx2 - deleted;
                 }
             }
+
             return result;
         }
 

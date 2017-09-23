@@ -334,7 +334,20 @@ namespace Kaos.Collections
         }
 
 
-        internal void RemoveRange2 (NodeVector path1, NodeVector path2)
+        internal void RemoveRange2 (int index, int count)
+        {
+            if (count == 0)
+                return;
+
+            var path1 = NodeVector.CreateForIndex (this, index);
+            var path2 = NodeVector.CreateForIndex (this, index + count);
+
+            StageBump();
+            Delete (path1, path2);
+        }
+
+
+        internal void Delete (NodeVector path1, NodeVector path2)
         {
             var leaf1 = (Leaf) path1.TopNode; int ix1 = path1.TopIndex, deltaW1 = 0;
             var leaf2 = (Leaf) path2.TopNode; int ix2 = path2.TopIndex, deltaW2 = 0;
