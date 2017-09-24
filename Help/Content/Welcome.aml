@@ -53,6 +53,11 @@
         </listItem>
         <listItem>
           <para>
+            Full .NET Framework 4.5. This target contains the full API.
+          </para>
+        </listItem>
+        <listItem>
+          <para>
             Full .NET Framework 3.5.
             This target does not include <codeInline>IReadOnlyDictionary</codeInline>, <codeInline>IReadOnlyCollection</codeInline> implementation.
             It does not derive from <codeInline>ISet</codeInline> but does implement its members.
@@ -61,7 +66,7 @@
       </list>
       <para>
         Off-line documentation is available as a MS-Help 1 (.chm) file.
-        Also, installing as a NuGet package will provide IntelliSense and object browser documentation.
+        Installing as a NuGet package will provide IntelliSense and object browser documentation.
         On-line documentation is available at the link below.
       </para>
     </introduction>
@@ -71,7 +76,8 @@
       <content>
         <para>
           Complete source code and documentation is hosted at GitHub.com.
-          Primary binary hosting is now at NuGet.org with downloads also available at GitHub.com.
+          Primary binary hosting is at NuGet.org
+          with GitHub.com also serving binary downloads.
           Complete documentation is available for download at GitHub.com as a .chm file.
         </para>
       </content>

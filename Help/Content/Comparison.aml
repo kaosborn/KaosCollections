@@ -76,6 +76,11 @@
                   Adds <codeInline>RemoveAt(index)</codeInline> that deletes the element at the supplied position.
                 </para>
               </listItem>
+              <listItem>
+                <para>
+                  Adds <codeInline>RemoveRange(index,count)</codeInline> that deletes a range of elements.
+                </para>
+              </listItem>
             </list>
           </listItem>
 
@@ -133,6 +138,11 @@
               <listItem>
                 <para>
                   Adds the method <codeInline>RemoveAt(item)</codeInline> that deletes the item at the supplied position.
+                </para>
+              </listItem>
+              <listItem>
+                <para>
+                  Adds <codeInline>RemoveRange(index,count)</codeInline> that deletes a range of elements.
                 </para>
               </listItem>
             </list>
