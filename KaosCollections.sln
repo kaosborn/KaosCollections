@@ -89,6 +89,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RbChart02", "Bench\RbChart0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RsStress02", "Bench\RsStress02\RsStress02.csproj", "{9C399188-73F9-4A6D-ABAD-7241C2F1E197}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{81515E76-D81C-44F6-A6EC-7830CD05E949}"
+	ProjectSection(SolutionItems) = preProject
+		Images\KaosCollections.svg = Images\KaosCollections.svg
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Source\RankedCollection\RankedCollection.projitems*{2de71c06-f684-4903-96ac-87215caaad5c}*SharedItemsImports = 13

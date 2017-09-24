@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="256" height="256" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <defs>
+  <marker refY="50" refX="50" markerHeight="5" markerWidth="5" viewBox="0 0 100 100" orient="auto" markerUnits="strokeWidth" id="arrow">
+   <path stroke-width="10" d="m100,50l-100,40l30,-40l-30,-40l100,40z" fill="#000000" stroke="#000000"/>
+  </marker>
+ </defs>
+ <g>
+  <title>KaosCollections</title>
+
+  <rect ry="4" rx="4" x="4" y="8" width="250" height="214" stroke-width="4" stroke="#C5EAF1" fill="#54C3EE"/>
+
+  <line marker-end="url(#arrow)" x1= "66" y1="99" x2= "52" y2="124" stroke-width="2" stroke="#000000"/>
+  <line marker-end="url(#arrow)" x1="174" y1="99" x2="188" y2="124" stroke-width="2" stroke="#000000"/>
+
+  <rect x="50" y="30" width="140" height="68" stroke-width="4" fill="#FF5000" stroke="#000000" id="root"/>
+  <line x1= "85" y1="32" x2= "85" y2="96" stroke-width="2" stroke="#000000"/>
+  <line x1="155" y1="32" x2="155" y2="96" stroke-width="2" stroke="#000000"/>
+  <circle cx="120" cy="28" r="3" stroke="#000000" fill="#000000"/>
+
+  <rect x="14" y="130" width="140" height="68" stroke-width="4" fill="#FF5000" stroke="#000000" id="leaf0"/>
+  <line x1="84" y1="132" x2="84" y2="196" stroke-width="2" stroke="#000000"/>
+  <circle cx="12" cy="164" r="3" stroke="#000000" fill="#000000"/>
+
+  <rect x="174" y="130" width="70" height="68" stroke-width="4" fill="#FF5000" stroke="#000000" id="leaf1"/>
+  <circle cx="246" cy="164" r="3" stroke="#000000" fill="#000000"/>
+
+  <circle cx="156" cy="164" r="3" stroke="#000000" fill="#000000"/>
+  <circle cx="172" cy="164" r="3" stroke="#000000" fill="#000000"/>
+  <line x1="156" y1="164" x2="172" y2="164" stroke-width="2" stroke="#000000"/>
+
+  <text x="121" y= "82" font-size="50" font-family="serif" text-anchor="middle">3</text>
+  <text x= "50" y="182" font-size="50" font-family="serif" text-anchor="middle">1</text>
+  <text x="119" y="182" font-size="50" font-family="serif" text-anchor="middle">2</text>
+  <text x="213" y="182" font-size="50" font-family="serif" text-anchor="middle">3</text>
+ </g>
+</svg>
