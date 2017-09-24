@@ -437,12 +437,12 @@ namespace Kaos.Collections
                 {
                     if (IsUnderflow (leaf1.KeyCount))
                     {
-                        path2 = new NodeVector (path1, path1.Height);
+                        path2.Copy (path1, path1.Height);
                         path2.BalanceLeaf();
                         if (j1 != 0)
                         {
                             Leaf leaf3;
-                            path2 = new NodeVector (path1, path1.Height);
+                            path2.Copy (path1, path1.Height);
                             if (! IsUnderflow (leaf1.KeyCount) && leaf1.rightLeaf != null && IsUnderflow (leaf1.rightLeaf.KeyCount))
                                 leaf3 = (Leaf) path2.TraverseRight();
                             else
@@ -453,10 +453,10 @@ namespace Kaos.Collections
                     }
                     if (leaf2.rightLeaf != null && IsUnderflow (leaf2.KeyCount))
                     {
-                        var leafPath = new NodeVector (path1, path1.Height);
-                        leafPath.TraverseRight();
-                        if (leafPath.Height > 0)
-                            leafPath.BalanceLeaf();
+                        path2.Copy (path1, path1.Height);
+                        path2.TraverseRight();
+                        if (path2.Height > 0)
+                            path2.BalanceLeaf();
                     }
                 }
 
@@ -465,12 +465,12 @@ namespace Kaos.Collections
                     var branch = (Branch) path1.GetNode (ht-1);
                     if (IsUnderflow (branch.ChildCount))
                     {
-                        path2 = new NodeVector (path1, ht);
+                        path2.Copy (path1, ht);
                         var right = (Branch) path2.TraverseRight();
                         if (right != null)
                         {
                             path2.BalanceBranch (branch);
-                            path2 = new NodeVector (path1, ht);
+                            path2.Copy (path1, ht);
                             right = (Branch) path2.TraverseRight();
                             if (right != null)
                                 path2.BalanceBranch (branch);
@@ -478,7 +478,7 @@ namespace Kaos.Collections
                     }
                     else if (j1 != 0)
                     {
-                        path2 = new NodeVector (path1, ht);
+                        path2.Copy (path1, ht);
                         var right1 = (Branch) path2.TraverseRight();
                         if (right1 != null && IsUnderflow (right1.ChildCount))
                         {

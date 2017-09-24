@@ -28,7 +28,7 @@ namespace Kaos.Collections
 
             /// <summary>Make an empty path.</summary>
             /// <param name="tree">Target of path.</param>
-            private NodeVector (Btree<T> tree)
+            public NodeVector (Btree<T> tree)
             {
                 this.btree = tree;
                 this.indexStack = new List<int>();
@@ -39,15 +39,12 @@ namespace Kaos.Collections
             /// <summary>Make an copy with indexes of zero.</summary>
             /// <param name="path">Target of copy.</param>
             /// <param name="count">Depth of copy.</param>
-            public NodeVector (NodeVector path, int count)
+            private NodeVector (NodeVector path, int count) : this (path.btree)
             {
-                this.btree = path.btree;
-                this.indexStack = new List<int>(count);
-                this.nodeStack = new List<Node>(count);
                 for (int ix = 0; ix < count; ++ix)
                 {
-                    this.indexStack.Add (path.indexStack[ix]);
-                    this.nodeStack.Add (path.nodeStack[ix]);
+                    indexStack.Add (path.indexStack[ix]);
+                    nodeStack.Add (path.nodeStack[ix]);
                 }
             }
 
@@ -118,6 +115,19 @@ namespace Kaos.Collections
                         node = branch.GetChild (hi);
                     else
                         return;
+                }
+            }
+
+
+            public void Copy (NodeVector path, int count)
+            {
+                Debug.Assert (btree == path.btree);
+                indexStack.Clear();
+                nodeStack.Clear();
+                for (int ix = 0; ix < count; ++ix)
+                {
+                    indexStack.Add (path.indexStack[ix]);
+                    nodeStack.Add (path.nodeStack[ix]);
                 }
             }
 
@@ -610,7 +620,7 @@ namespace Kaos.Collections
 
             /// <summary>Balance tree and fixup pivot after removal.</summary>
             /// <remarks>
-            /// On exit an empty root is not pruned.
+            /// On exit, an empty root is not pruned.
             /// </remarks>
             public void BalanceLeaf()
             {
