@@ -502,6 +502,27 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>Removes a range of elements from the bag.</summary>
+        /// <param name="index">The zero-based starting index of the range of items to remove.</param>
+        /// <param name="count">The number of items to remove.</param>
+        /// <remarks>This is a O(log <em>n</em>) operation where <em>n</em> is <see cref="Count"/>.</remarks>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> or <em>count</em> is less than zero.</exception>
+        /// <exception cref="ArgumentException">When <em>index</em> and <em>count</em> do not denote a valid range of items in the set.</exception>
+        public void RemoveRange (int index, int count)
+        {
+            if (index < 0)
+                throw new ArgumentOutOfRangeException ("Argument was out of the range of valid values.", nameof (index));
+
+            if (count < 0)
+                throw new ArgumentOutOfRangeException ("Argument was out of the range of valid values.", nameof (count));
+
+            if (count > Size - index)
+                throw new ArgumentException ("Argument was out of the range of valid values.");
+
+            RemoveRange2 (index, count);
+        }
+
+
         /// <summary>Removes all items that match the condition defined by the supplied predicate.</summary>
         /// <param name="match">The condition of the items to remove.</param>
         /// <returns>The number of items removed from the bag.</returns>

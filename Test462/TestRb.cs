@@ -783,6 +783,48 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRb_RemoveRangeA_ArgumentOutOfRange()
+        {
+            var bag = new RankedBag<int>();
+            bag.RemoveRange (-1, 0);
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRb_RemoveRangeB_ArgumentOutOfRange()
+        {
+            var bag = new RankedBag<int>();
+            bag.RemoveRange (0, -1);
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentException))]
+        public void CrashRb_RemoveRange_Argument()
+        {
+            var bag = new RankedBag<int>();
+            bag.Add (3); bag.Add (5);
+            bag.RemoveRange (1, 2);
+        }
+
+        [TestMethod]
+        public void UnitRb_RemoveRange()
+        {
+            var bag = new RankedBag<int>() { Capacity=7 };
+            for (int ii=0; ii<20; ++ii) bag.Add (ii);
+
+            bag.RemoveRange (20, 0);
+            Assert.AreEqual (20, bag.Count);
+
+            bag.RemoveRange (12, 4);
+            Assert.AreEqual (16, bag.Count);
+#if DEBUG
+            bag.SanityCheck();
+#endif
+        }
+
+
+        [TestMethod]
         public void UnitRb_RemoveWhere()
         {
             var bag0 = new RankedBag<int>();
