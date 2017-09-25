@@ -427,64 +427,65 @@ namespace Kaos.Collections
                 }
             }
 
+            // Deletions complete. Now fixup underflows, leaf first:
+
             if (j2 != 0)
             {
                 if (j1 == 0)
                 { path1 = NodeVector.CreateForIndex (this, 0); leaf1 = leftmostLeaf; }
 
-                leaf2 = leaf1.rightLeaf;
-                if (leaf2 != null)
+                if (leaf1.rightLeaf != null)
                 {
                     if (IsUnderflow (leaf1.KeyCount))
                     {
                         path2.Copy (path1, path1.Height);
                         path2.BalanceLeaf();
-                        if (j1 != 0)
+                        if (j1 != 0 && leaf1.rightLeaf != null && IsUnderflow (leaf1.KeyCount))
                         {
-                            Leaf leaf3;
                             path2.Copy (path1, path1.Height);
-                            if (! IsUnderflow (leaf1.KeyCount) && leaf1.rightLeaf != null && IsUnderflow (leaf1.rightLeaf.KeyCount))
-                                leaf3 = (Leaf) path2.TraverseRight();
-                            else
-                                leaf3 = (Leaf) path2.TopNode;
-                            if (IsUnderflow (leaf1.KeyCount))
-                                path2.BalanceLeaf();
+                            path2.BalanceLeaf();
                         }
                     }
-                    if (leaf2.rightLeaf != null && IsUnderflow (leaf2.KeyCount))
+                    if (j1 != 0)
                     {
-                        path2.Copy (path1, path1.Height);
-                        path2.TraverseRight();
-                        if (path2.Height > 0)
+                        leaf2 = leaf1.rightLeaf;
+                        if (leaf2 != null && leaf2.rightLeaf != null && IsUnderflow (leaf2.KeyCount))
+                        {
+                            path2.Copy (path1, path1.Height);
+                            path2.TraverseRight();
                             path2.BalanceLeaf();
+                        }
                     }
                 }
 
-                for (int ht = path1.Height-1; ht > 1; --ht)
+                for (int level = path1.Height-1; level > 1; --level)
                 {
-                    var branch = (Branch) path1.GetNode (ht-1);
-                    if (IsUnderflow (branch.ChildCount))
+                    var branch1 = (Branch) path1.GetNode (level-1);
+                    if (IsUnderflow (branch1.ChildCount))
                     {
-                        path2.Copy (path1, ht);
-                        var right = (Branch) path2.TraverseRight();
-                        if (right != null)
+                        path2.Copy (path1, level);
+                        var branch2 = (Branch) path2.TraverseRight();
+                        if (branch2 == null)
+                            continue;
+                        path2.BalanceBranch (branch1);
+                        if (j1 != 0 && IsUnderflow (branch1.ChildCount))
                         {
-                            path2.BalanceBranch (branch);
-                            path2.Copy (path1, ht);
-                            right = (Branch) path2.TraverseRight();
-                            if (right != null)
-                                path2.BalanceBranch (branch);
+                            path2.Copy (path1, level);
+                            branch2 = (Branch) path2.TraverseRight();
+                            if (branch2 == null)
+                                continue;
+                            path2.BalanceBranch (branch1);
                         }
                     }
-                    else if (j1 != 0)
+                    if (j1 != 0)
                     {
-                        path2.Copy (path1, ht);
-                        var right1 = (Branch) path2.TraverseRight();
-                        if (right1 != null && IsUnderflow (right1.ChildCount))
+                        path2.Copy (path1, level);
+                        branch1 = (Branch) path2.TraverseRight();
+                        if (branch1 != null && IsUnderflow (branch1.ChildCount))
                         {
-                            var right2 = (Branch) path2.TraverseRight();
-                            if (right2 != null)
-                                path2.BalanceBranch (right1);
+                            var branch2 = (Branch) path2.TraverseRight();
+                            if (branch2 != null)
+                                path2.BalanceBranch (branch1);
                         }
                     }
                 }
