@@ -8,7 +8,6 @@
 //
 
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Text;
 
 namespace Kaos.Collections
@@ -148,7 +147,9 @@ namespace Kaos.Collections
             }
 
             public void Add (Node node)
-            { childNodes.Add (node); }
+            {
+                childNodes.Add (node);
+            }
 
             public void Add (T key, Node node)
             {

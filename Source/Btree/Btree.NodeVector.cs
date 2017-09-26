@@ -234,9 +234,9 @@ namespace Kaos.Collections
 
             #region Methods
 
-            internal Node GetNode (int index) { return nodeStack[index]; }
+            internal Node GetNode (int index) => nodeStack[index];
 
-            internal int GetIndex (int index) { return indexStack[index]; }
+            internal int GetIndex (int index) => indexStack[index];
 
             public T LeftKey => ((Leaf) TopNode).GetKey (TopIndex-1);
 

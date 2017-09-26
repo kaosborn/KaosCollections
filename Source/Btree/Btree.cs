@@ -9,7 +9,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Text;
 using System.Threading;
 
@@ -386,8 +385,12 @@ namespace Kaos.Collections
                 if (j1 == 0)
                 { leaf2.leftLeaf = null; leftmostLeaf = leaf2; }
                 else
-                { if (ix2 != 0) path2.SetPivot (leaf2.Key0);
-                  deltaW1 = ix1-leaf1.KeyCount; leaf2.leftLeaf = leaf1; leaf1.RemoveRange (ix1, leaf1.KeyCount-ix1); }
+                {
+                    if (ix2 != 0)
+                        path2.SetPivot (leaf2.Key0);
+                    deltaW1 = ix1-leaf1.KeyCount;
+                    leaf2.leftLeaf = leaf1; leaf1.RemoveRange (ix1, leaf1.KeyCount-ix1);
+                }
             }
 
             for (int level = path2.Height-2; level >= 0; --level)
@@ -396,7 +399,8 @@ namespace Kaos.Collections
                 var bh2 = (Branch) path2.GetNode (level); ix2 = path2.GetIndex (level);
                 if (bh1 == bh2)
                 {
-                    for (int ix = ix1+j1; ix < ix2+1-j2; ++ix) deltaW1 -= bh2.GetChild(ix).Weight;
+                    for (int ix = ix1+j1; ix < ix2+1-j2; ++ix)
+                        deltaW1 -= bh2.GetChild(ix).Weight;
                     if (j1 == 0)
                         bh2.RemoveChildRange2 (0, ix2-ix1);
                     else
@@ -409,7 +413,8 @@ namespace Kaos.Collections
                     {
                         if (ix1 <= bh1.KeyCount)
                         {
-                            for (int ix = ix1+1; ix <= bh1.KeyCount; ++ix) deltaW1 -= bh1.GetChild(ix).Weight;
+                            for (int ix = ix1+1; ix <= bh1.KeyCount; ++ix)
+                                deltaW1 -= bh1.GetChild(ix).Weight;
                             bh1.RemoveChildRange1 (ix1, bh1.KeyCount - ix1);
                         }
                         bh1.AdjustWeight (deltaW1);
@@ -418,7 +423,8 @@ namespace Kaos.Collections
                     {
                         if (ix2 > 0)
                         {
-                            for (int ix = 0; ix < ix2; ++ix) deltaW2 -= bh2.GetChild(ix).Weight;
+                            for (int ix = 0; ix < ix2; ++ix)
+                                deltaW2 -= bh2.GetChild(ix).Weight;
                             path2.SetPivot (bh2.GetKey (ix2-1), level);
                             bh2.RemoveChildRange2 (0, ix2);
                         }
