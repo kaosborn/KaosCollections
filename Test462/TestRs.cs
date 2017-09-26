@@ -1313,23 +1313,31 @@ namespace Kaos.Test.Collections
             var set9 = new RankedSet<int>() { Capacity=7 };
             for (int ii=0; ii<7; ++ii) set9.Add (ii);
 
-            var setA = new RankedSet<int>() { Capacity = 7 };
-            for (int ii = 0; ii < 500; ++ii) setA.Add (ii);
+            var setA = new RankedSet<int>() { Capacity = 6 };
+            for (int ii = 0; ii < 31; ++ii) setA.Add (ii);
 
-            var setE = new RankedSet<int>();
+            var setB = new RankedSet<int>() { Capacity = 6 };
+            for (int ii = 0; ii < 56; ++ii) setB.Add (ii);
 
-            set0.RemoveRange (0, 2);
-            set1.RemoveRange (10, 2);
-            set2.RemoveRange (0, 6);
-            set3.RemoveRange (9, 6);
-            set4.RemoveRange (6, 1);
-            set5.RemoveRange (5, 2);
-            set6.RemoveRange (6, 4);
-            set7.RemoveRange (1, 6);
-            set8.RemoveRange (12, 4);
-            set9.RemoveRange (1, 5);
-            setA.RemoveRange (0, 500);
-            setE.RemoveRange (0, 0);
+            var setY = new RankedSet<int>() { Capacity = 7 };
+            for (int ii = 0; ii < 500; ++ii) setY.Add (ii);
+
+            var setZ = new RankedSet<int>();
+
+            set0.RemoveRange (0, 2);  Assert.AreEqual (7, set0.Count);
+            set1.RemoveRange (10,2);  Assert.AreEqual (11,set1.Count);
+            set2.RemoveRange (0, 6);  Assert.AreEqual (13,set2.Count);
+            set3.RemoveRange (9, 6);  Assert.AreEqual (16,set3.Count);
+            set4.RemoveRange (6, 1);  Assert.AreEqual (6, set4.Count);
+            set5.RemoveRange (5, 2);  Assert.AreEqual (6, set5.Count);
+            set6.RemoveRange (6, 4);  Assert.AreEqual (9, set6.Count);
+            set7.RemoveRange (1, 6);  Assert.AreEqual (7, set7.Count);
+            set8.RemoveRange (12,4);  Assert.AreEqual (17,set8.Count);
+            set9.RemoveRange (1, 5);  Assert.AreEqual (2, set9.Count);
+            setA.RemoveRange (5, 23); Assert.AreEqual (8, setA.Count);
+            setB.RemoveRange (5, 40); Assert.AreEqual (16,setB.Count);
+            setY.RemoveRange (0,500); Assert.AreEqual (0, setY.Count);
+            setZ.RemoveRange (0, 0);  Assert.AreEqual (0, setZ.Count);
 #if DEBUG
             set0.SanityCheck();
             set1.SanityCheck();
@@ -1342,7 +1350,9 @@ namespace Kaos.Test.Collections
             set8.SanityCheck();
             set9.SanityCheck();
             setA.SanityCheck();
-            setE.SanityCheck();
+            setB.SanityCheck();
+            setY.SanityCheck();
+            setZ.SanityCheck();
 #endif
         }
 
