@@ -1,12 +1,50 @@
+![logo](Images/KaosCollections-256.png)
+
+# KaosCollections
+
+### Overview
+
+KaosCollections is a .NET library that provides generic collection classes
+for storing elements that are both sorted and indexed.
+By using an advanced underlying data structure, these classes provide
+both superior performance and capability to their Microsoft Base Class Library equivalents.
+
+The Primary classes provided are:
+
+* `RankedDictionary<TKey,TValue>` - for sorted dictionaries.
+* `RankedSet<T>` - for sorted sets.
+* `RankedBag<T>` - for multisets.
+
+Both `RankedDictionary` and `RankedSet` closely emulate the API of their BCL counterparts
+while `RankedBag` has no BCL counterpart.
+
+This library is built as a .NET Standard project with multi-targeting to:
+
+* .NETStandard 1.0.
+* Full .NET Framework 4.5.
+* Full .NET Framework 4.0.
+* Full .NET Framework 3.5.
+
+Building this project requires Visual Studio 2017.
+
 ### Documentation
 
 For complete project documentation, see:
 
 https://kaosborn.github.io/help/KaosCollections/index.html
 
+An offline version of this documentation is also provided as a `.chm` file:
+
+https://github.com/kaosborn/KaosCollections/releases
+
 Benchmarks are available here:
 
 https://github.com/kaosborn/KaosCollections/wiki/Benchmarks
+
+### Distribution
+
+Future versions will be released on Nuget.org.
+Current beta versions are available on GitHub.com.
 
 ### Project status and roadmap
 
@@ -17,6 +55,9 @@ Work is in nearing completion for:
 - [ ] Documentation (including examples)
 - [X] Impact analysis of .NET Standard 2.0 including serialization
 - [X] RankedBag<T> class
+- [X] Add RemoveRange methods
+
+Release of version 4 is planned real soon now.
 
 ### Project layout
 
@@ -34,23 +75,19 @@ These programs exist to:
 * The `Collections` folder contains the primary build of the class library.
 Building the Release configuration of the project contained in this folder
 will produce a `.nuget` file for distribution.
-This library is Multi-targetted to .NET Standard 1.0, .NET 3.5 and .NET 4.
 
 * The `Collections462` folder contains a .NET 4.62 build of the class library.
 This project is used for development and testing only.
 
 * The `Help` folder contains a [Sandcastle Help File Builder](https://github.com/EWSoftware/SHFB)
 project that produces documentation from embedded XML comments.
-Output is a Microsoft Help v1 file with a `.chm` extension and a static web site.
-The help file is distributed for off-line use.
-The web site is https://kaosborn.github.io/help/KaosCollections/index.html
 
 * The `Source` folder contains all source code for KaosCollections.
 All source is organized using shared projects which are referenced by the build projects.
 
 * The `Test462` folder contains unit tests and some short running stress tests.
-Code coverage is greater than 99%.
+Code coverage is 99%.
 To verify correct emulation, these tests may be run against either this library
-or against the emulated base class library (BCL) classes.
+or against the emulated BCL classes.
 To run the test suite against the Microsoft classes,
 add the `TEST_BCL` compilation symbol to the test project build properties.
