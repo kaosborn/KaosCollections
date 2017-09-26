@@ -393,43 +393,50 @@ namespace Kaos.Collections
                 }
             }
 
+            //int level = path2.Height - 2;
             for (int level = path2.Height-2; level >= 0; --level)
             {
                 var bh1 = (Branch) path1.GetNode (level); ix1 = path1.GetIndex (level);
                 var bh2 = (Branch) path2.GetNode (level); ix2 = path2.GetIndex (level);
                 if (bh1 == bh2)
                 {
-                    for (int ix = ix1+j1; ix < ix2+1-j2; ++ix)
+                    int ix9 = ix2+1-j2;
+                    for (int ix = ix1+j1; ix < ix9; ++ix)
                         deltaW1 -= bh2.GetChild(ix).Weight;
                     if (j1 == 0)
                         bh2.RemoveChildRange2 (0, ix2-ix1);
                     else
                         bh2.RemoveChildRange1 (ix1, ix2-ix1-j2);
-                    bh2.AdjustWeight (deltaW1 + deltaW2);
+                    for (;;)
+                    {
+                        bh2.AdjustWeight (deltaW1 + deltaW2);
+                        if (--level < 0)
+                            break;
+                        bh2 = (Branch) path2.GetNode (level);
+                    }
+                    break;
                 }
-                else
+
+                if (j1 != 0)
                 {
-                    if (j1 != 0)
+                    if (ix1 <= bh1.KeyCount)
                     {
-                        if (ix1 <= bh1.KeyCount)
-                        {
-                            for (int ix = ix1+1; ix <= bh1.KeyCount; ++ix)
-                                deltaW1 -= bh1.GetChild(ix).Weight;
-                            bh1.RemoveChildRange1 (ix1, bh1.KeyCount - ix1);
-                        }
-                        bh1.AdjustWeight (deltaW1);
+                        for (int ix = ix1+1; ix <= bh1.KeyCount; ++ix)
+                            deltaW1 -= bh1.GetChild(ix).Weight;
+                        bh1.RemoveChildRange1 (ix1, bh1.KeyCount - ix1);
                     }
-                    if (j2 != 0)
+                    bh1.AdjustWeight (deltaW1);
+                }
+                if (j2 != 0)
+                {
+                    if (ix2 > 0)
                     {
-                        if (ix2 > 0)
-                        {
-                            for (int ix = 0; ix < ix2; ++ix)
-                                deltaW2 -= bh2.GetChild(ix).Weight;
-                            path2.SetPivot (bh2.GetKey (ix2-1), level);
-                            bh2.RemoveChildRange2 (0, ix2);
-                        }
-                        bh2.AdjustWeight (deltaW2);
+                        for (int ix = 0; ix < ix2; ++ix)
+                            deltaW2 -= bh2.GetChild(ix).Weight;
+                        path2.SetPivot (bh2.GetKey (ix2-1), level);
+                        bh2.RemoveChildRange2 (0, ix2);
                     }
+                    bh2.AdjustWeight (deltaW2);
                 }
             }
 
