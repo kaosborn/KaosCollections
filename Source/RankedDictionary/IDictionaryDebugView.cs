@@ -12,6 +12,9 @@ using System.Diagnostics;
 
 namespace Kaos.Collections
 {
+#if ! NET35 && ! NETSTANDARD1_0
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+#endif
     internal class IDictionaryDebugView<K,V>
     {
         private readonly IDictionary<K,V> target;
@@ -36,6 +39,9 @@ namespace Kaos.Collections
     }
 
 
+#if ! NET35 && ! NETSTANDARD1_0
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+#endif
     internal class ICollectionKeysDebugView<K,V>
     {
         private readonly ICollection<K> target;
@@ -60,6 +66,9 @@ namespace Kaos.Collections
     }
 
 
+#if ! NET35 && ! NETSTANDARD1_0
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+#endif
     internal class ICollectionValuesDebugView<K,V>
     {
         private readonly ICollection<V> target;

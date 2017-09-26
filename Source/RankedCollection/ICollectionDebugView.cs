@@ -12,6 +12,9 @@ using System.Diagnostics;
 
 namespace Kaos.Collections
 {
+#if ! NET35 && ! NETSTANDARD1_0
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+#endif
     internal class ICollectionDebugView<T>
     {
         private readonly ICollection<T> target;
