@@ -9,6 +9,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using Kaos.Collections;
 [assembly: AssemblyVersion ("0.1.0.0")]
@@ -35,7 +36,10 @@ namespace StressApp
                             try
                             {
                                 set.RemoveRange (index, count);
+
                                 Debug.Assert (set.Count == width-count);
+                                Debug.Assert (set.Count == set.Count());
+                                Debug.Assert (set.Count == set.Reverse().Count());
 #if DEBUG
                                 set.SanityCheck();
 #endif
