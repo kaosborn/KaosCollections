@@ -15,21 +15,21 @@ namespace ChartApp
 {
     class RsChart05B
     {
-        static RankedSet<int> tree;
+        static RankedSet<int> set;
 
         static void WriteInfo (bool showStats=false)
         {
             Console.WriteLine();
 #if DEBUG
-            foreach (var lx in tree.GenerateTreeText())
+            foreach (var lx in set.GenerateTreeText())
                 Console.WriteLine (lx);
 
-            tree.SanityCheck();
+            set.SanityCheck();
             Console.WriteLine();
 
             if (showStats)
             {
-                Console.WriteLine (tree.GetTreeStatsText());
+                Console.WriteLine (set.GetTreeStatsText());
                 Console.WriteLine();
             }
 #endif
@@ -37,41 +37,40 @@ namespace ChartApp
 
         static void Main()
         {
-            tree = new RankedSet<int>();
-            tree.Capacity = 5;
+            set = new RankedSet<int>() { Capacity=5 };
 
             Console.WriteLine ("Create sequentially loaded tree of order 5:");
             for (int i = 2; i <= 66; i += 2)
-                tree.Add (i);
+                set.Add (i);
             WriteInfo();
 
             Console.WriteLine ("Thin the tree by removing several keys:");
             foreach (int i in new int[] { 4,6,14,16,18,20,22,24,26,30,36,38,46 })
-                tree.Remove (i);
+                set.Remove (i);
             WriteInfo();
 
             Console.WriteLine ("Coalesce leaves, balance branches by removing 12:");
-            tree.Remove (12);
+            set.Remove (12);
             WriteInfo();
 
             Console.WriteLine ("Change a branch by removing 10:");
-            tree.Remove (10);
+            set.Remove (10);
             WriteInfo();
 
             Console.WriteLine ("Change the root by removing 50:");
-            tree.Remove (50);
+            set.Remove (50);
             WriteInfo();
 
             Console.WriteLine ("Coalesce leaves by removing 40:");
-            tree.Remove (40);
+            set.Remove (40);
             WriteInfo();
 
             Console.WriteLine ("Prune rightmost leaf by removing 66:");
-            tree.Remove (66);
+            set.Remove (66);
             WriteInfo();
 
             Console.WriteLine ("Coalesce leaves and branches, prune root by removing 8:");
-            tree.Remove (8);
+            set.Remove (8);
             WriteInfo();
         }
 

@@ -19,8 +19,7 @@ namespace BenchApp
     {
         static void Main()
         {
-            var tree = new RankedDictionary<int,int>();
-            tree.Capacity = 4;
+            var dary = new RankedDictionary<int,int>() { Capacity = 4 };
 
             for (int w = 1; w < 21; ++w)
             {
@@ -30,13 +29,13 @@ namespace BenchApp
                     {
                         for (int m = 0; m < permAdd.Choices; ++m)
                         {
-                            tree.Add (permAdd[m], permAdd[m] + 100);
+                            dary.Add (permAdd[m], permAdd[m] + 100);
 #if DEBUG
                             if (permDel.Rank == 0)
                             {
                                 try
                                 {
-                                    tree.SanityCheck();
+                                    dary.SanityCheck();
                                 }
                                 catch (DataMisalignedException ex)
                                 {
@@ -50,11 +49,11 @@ namespace BenchApp
 
                         for (int m = 0; m < permDel.Choices; ++m)
                         {
-                            tree.Remove (permDel[m]);
+                            dary.Remove (permDel[m]);
 #if DEBUG
                             try
                             {
-                                tree.SanityCheck();
+                                dary.SanityCheck();
                             }
                             catch (DataMisalignedException ex)
                             {
@@ -66,9 +65,9 @@ namespace BenchApp
 #endif
                         }
 
-                        if (tree.Count != 0)
+                        if (dary.Count != 0)
                             throw new DataMisalignedException ("Count should be zero");
-                        tree.Clear();
+                        dary.Clear();
                     }
                 }
 

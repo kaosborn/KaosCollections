@@ -4,7 +4,7 @@
 //
 // Usage notes:
 // - For valid results, run Release build outside Visual Studio.
-// - Adjust reps to change test duration.  Higher values show greater RankedDictionary improvements.
+// - Adjust reps to change test duration. Higher values show greater RankedDictionary improvements.
 //
 
 using System;
@@ -36,12 +36,10 @@ namespace BenchApp
             var time11 = watch1.ElapsedMilliseconds;
             Console.WriteLine (time11 + "ms");
 
-            ////
-
             for (int order=32; order <= 256; order+=16)
             {
-                var bt = new RankedDictionary<Guid,int>();
-                bt.Capacity = order;
+                var bt = new RankedDictionary<Guid,int>() { Capacity = order };
+
                 Console.Write ("\nLoading BtreeDictionary (order="+order+") with " + reps + " elements:\n\nLoad time = ");
 
                 Stopwatch watch2 = new Stopwatch();

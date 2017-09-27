@@ -15,21 +15,21 @@ namespace ChartApp
 {
     class RsChart04A
     {
-        static RankedSet<int> tree;
+        static RankedSet<int> set;
 
         static void WriteInfo (bool showStats=false)
         {
             Console.WriteLine();
 #if DEBUG
-            foreach (var lx in tree.GenerateTreeText())
+            foreach (var lx in set.GenerateTreeText())
                 Console.WriteLine (lx);
 
-            tree.SanityCheck();
+            set.SanityCheck();
             Console.WriteLine();
 
             if (showStats)
             {
-                Console.WriteLine (tree.GetTreeStatsText());
+                Console.WriteLine (set.GetTreeStatsText());
                 Console.WriteLine();
             }
 #endif
@@ -38,31 +38,30 @@ namespace ChartApp
 
         static void Main()
         {
-            tree = new RankedSet<int>();
-            tree.Capacity = 4;
+            set = new RankedSet<int>() { Capacity=4 };
 
             Console.WriteLine ("Empty tree is a single leaf:");
             WriteInfo (true);
 
             Console.WriteLine ("Create sequentially loaded tree of order 4:");
             for (int i = 2; i <= 24; i+=2)
-                tree.Add (i);
+                set.Add (i);
             WriteInfo (true);
 
             Console.WriteLine ("Cascade split by adding 17:");
-                tree.Add (17);
+                set.Add (17);
             WriteInfo();
 
             Console.WriteLine ("Split a leaf by adding 3:");
-                tree.Add (3);
+                set.Add (3);
             WriteInfo();
 
             Console.WriteLine ("Create non-rightmost branch with 2 children by adding 9:");
-                tree.Add (9);
+                set.Add (9);
             WriteInfo();
 
             Console.WriteLine ("Cascade coalesce by removing 2:");
-                tree.Remove (2);
+                set.Remove (2);
             WriteInfo();
         }
 
@@ -74,7 +73,7 @@ namespace ChartApp
 
         --- height = 1, leaf fill = 0%
 
-        Sequentially loaded tree of order 4:
+        Create sequentially loaded tree of order 4:
 
         B0: 8,14,20
         L1: 2,4,6|8,10,12|14,16,18|20,22,24

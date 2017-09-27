@@ -15,21 +15,21 @@ namespace ChartApp
 {
     class RsChart04C
     {
-        static RankedSet<int> tree;
+        static RankedSet<int> set;
 
         static void WriteInfo (bool showStats=false)
         {
             Console.WriteLine();
 #if DEBUG
-            foreach (var lx in tree.GenerateTreeText())
+            foreach (var lx in set.GenerateTreeText())
                 Console.WriteLine (lx);
 
-            tree.SanityCheck();
+            set.SanityCheck();
             Console.WriteLine();
 
             if (showStats)
             {
-                Console.WriteLine (tree.GetTreeStatsText());
+                Console.WriteLine (set.GetTreeStatsText());
                 Console.WriteLine();
             }
 #endif
@@ -37,36 +37,35 @@ namespace ChartApp
 
         static void Main()
         {
-            tree = new RankedSet<int>();
-            tree.Capacity = 4;
+            set = new RankedSet<int>() { Capacity=4 };
 
             Console.WriteLine ("Create tree of order 4:");
             for (int i = 2; i <= 50; i+=2)
-                tree.Add (i);
+                set.Add (i);
 
             for (int i = 3; i <= 50; i+=6)
-                tree.Add (i);
+                set.Add (i);
             WriteInfo();
 
             Console.WriteLine ("Add 29,35:");
-            tree.Add (29);
-            tree.Add (35);
+            set.Add (29);
+            set.Add (35);
             WriteInfo();
 
             Console.WriteLine ("Remove 27:");
-            tree.Remove (27);
+            set.Remove (27);
             WriteInfo();
 
             Console.WriteLine ("Remove 21:");
-            tree.Remove (21);
+            set.Remove (21);
             WriteInfo();
 
             Console.WriteLine ("Remove 22:");
-            tree.Remove (22);
+            set.Remove (22);
             WriteInfo();
 
             Console.WriteLine ("Remove 24:");
-            tree.Remove (24);
+            set.Remove (24);
             WriteInfo();
         }
 

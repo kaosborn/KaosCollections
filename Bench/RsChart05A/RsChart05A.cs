@@ -15,21 +15,21 @@ namespace ChartApp
 {
     class RsChart05A
     {
-        static RankedSet<int> tree;
+        static RankedSet<int> set;
 
         static void WriteInfo (bool showStats=false)
         {
             Console.WriteLine();
 #if DEBUG
-            foreach (var lx in tree.GenerateTreeText())
+            foreach (var lx in set.GenerateTreeText())
                 Console.WriteLine (lx);
 
-            tree.SanityCheck();
+            set.SanityCheck();
             Console.WriteLine();
 
             if (showStats)
             {
-                Console.WriteLine (tree.GetTreeStatsText());
+                Console.WriteLine (set.GetTreeStatsText());
                 Console.WriteLine();
             }
 #endif
@@ -38,21 +38,20 @@ namespace ChartApp
 
         static void Main()
         {
-            tree = new RankedSet<int>();
-            tree.Capacity = 5;
+            set = new RankedSet<int>() { Capacity=5 };
 
             Console.WriteLine ("Create sequentially loaded tree of order 5:");
             for (int i = 2; i <= 10; i += 2)
-                tree.Add (i);
+                set.Add (i);
             WriteInfo (true);
 
             Console.WriteLine ("Add 12-40:");
             for (int i = 12; i <= 40; i += 2)
-                tree.Add (i);
+                set.Add (i);
             WriteInfo (true);
 
             Console.WriteLine ("Add 42:");
-            tree.Add (42);
+            set.Add (42);
             WriteInfo (true);
         }
 

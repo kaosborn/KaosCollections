@@ -15,21 +15,21 @@ namespace ChartApp
 {
     class RsChart04B
     {
-        static RankedSet<int> tree;
+        static RankedSet<int> set;
 
         static void WriteInfo (bool showStats=false)
         {
             Console.WriteLine();
 #if DEBUG
-            foreach (var lx in tree.GenerateTreeText())
+            foreach (var lx in set.GenerateTreeText())
                 Console.WriteLine (lx);
 
-            tree.SanityCheck();
+            set.SanityCheck();
             Console.WriteLine();
 
             if (showStats)
             {
-                Console.WriteLine (tree.GetTreeStatsText());
+                Console.WriteLine (set.GetTreeStatsText());
                 Console.WriteLine();
             }
 #endif
@@ -37,62 +37,61 @@ namespace ChartApp
 
         static void Main()
         {
-            tree = new RankedSet<int>();
-            tree.Capacity = 4;
+            set = new RankedSet<int>() { Capacity=4 };
 
             Console.WriteLine ("Create sequentially loaded tree of order 4:");
             for (int i = 2; i <= 44; i+=2)
-                tree.Add (i);
+                set.Add (i);
             WriteInfo();
 
             Console.WriteLine ("Add 1,21:");
-            tree.Add (1);
-            tree.Add (21);
+            set.Add (1);
+            set.Add (21);
             WriteInfo();
 
             Console.WriteLine ("Add 9:");
-            tree.Add (9);
+            set.Add (9);
             WriteInfo();
 
             Console.WriteLine ("Add 27:");
-                tree.Add (27);
+                set.Add (27);
             WriteInfo();
 
             Console.WriteLine ("Remove 44:");
-            tree.Remove (44);
+            set.Remove (44);
             WriteInfo();
 
             Console.WriteLine ("Remove 40,42:");
-            tree.Remove (40);
-            tree.Remove (42);
+            set.Remove (40);
+            set.Remove (42);
             WriteInfo();
 
             Console.WriteLine ("Remove 38:");
-            tree.Remove (38);
+            set.Remove (38);
             WriteInfo();
 
             Console.WriteLine ("Remove 34,36:");
-            tree.Remove (34);
-            tree.Remove (36);
+            set.Remove (34);
+            set.Remove (36);
             WriteInfo();
 
             Console.WriteLine ("Remove 32:");
-            tree.Remove (32);
+            set.Remove (32);
             WriteInfo();
 
             Console.WriteLine ("Remove 28:");
-            tree.Remove (28);
+            set.Remove (28);
             WriteInfo();
 
             Console.WriteLine ("Seek 30:");
-            var isOk = tree.Contains (30);
+            var isOk = set.Contains (30);
 
             Console.WriteLine();
             Console.WriteLine ("Result = " + isOk);
             Console.WriteLine();
 
             Console.WriteLine ("Remove 30:");
-            tree.Remove (30);
+            set.Remove (30);
             WriteInfo();
         }
 
