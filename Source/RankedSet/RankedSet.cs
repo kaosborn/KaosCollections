@@ -658,8 +658,8 @@ namespace Kaos.Collections
             if (index < 0 || index >= Count)
                 throw new ArgumentOutOfRangeException (nameof (index), "Argument was out of the range of valid values.");
 
-            var leaf = (Leaf) Find (ref index);
-            return leaf.GetKey (index);
+            var leaf = (Leaf) Find (index, out int leafIndex);
+            return leaf.GetKey (leafIndex);
         }
 
 
@@ -672,8 +672,8 @@ namespace Kaos.Collections
             if (index < 0 || index >= Count)
                 return default (T);
 
-            var leaf = (Leaf) Find (ref index);
-            return leaf.GetKey (index);
+            var leaf = (Leaf) Find (index, out int leafIndex);
+            return leaf.GetKey (leafIndex);
         }
 
 
@@ -779,16 +779,15 @@ namespace Kaos.Collections
                 throw new ArgumentException ("Arguments were out of the range of valid values.");
 
             int stageFreeze = stage;
-            var leaf = (Leaf) Find (ref lowerIndex);
+            var leaf = (Leaf) Find (lowerIndex, out int index);
             do
             {
-                // Variable is reused here - it's actually a page index.
-                if (lowerIndex >= leaf.KeyCount)
-                { lowerIndex = 0; leaf = leaf.rightLeaf; }
+                if (index >= leaf.KeyCount)
+                { index = 0; leaf = leaf.rightLeaf; }
 
-                yield return leaf.GetKey (lowerIndex);
+                yield return leaf.GetKey (index);
                 StageCheck (stageFreeze);
-                ++lowerIndex;
+                ++index;
             }
             while (--toGo >= 0);
         }

@@ -690,8 +690,8 @@ namespace Kaos.Collections
             if (index < 0 || index >= Count)
                 throw new ArgumentOutOfRangeException (nameof (index), "Argument was out of the range of valid values.");
 
-            var leaf = (Leaf) Find (ref index);
-            return leaf.GetKey (index);
+            var leaf = (Leaf) Find (index, out int leafIndex);
+            return leaf.GetKey (leafIndex);
         }
 
 
@@ -704,8 +704,8 @@ namespace Kaos.Collections
             if (index < 0 || index >= Count)
                 return default (T);
 
-            var leaf = (Leaf) Find (ref index);
-            return leaf.GetKey (index);
+            var leaf = (Leaf) Find (index, out int leafIndex);
+            return leaf.GetKey (leafIndex);
         }
 
 

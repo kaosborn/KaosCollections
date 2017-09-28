@@ -147,24 +147,31 @@ namespace Kaos.Collections
         }
 
 
+        // <summary>Perform traverse to leaf at index.</summary>
+        // <param name="treeIndex">On entry, holds index of collection; on exit holds index of leaf.</param>
+        // <returns>Leaf holding item at index position.</returns>
+        //
+
         /// <summary>Perform traverse to leaf at index.</summary>
-        /// <param name="index">On entry, holds index of collection; on exit holds index of leaf.</param>
-        /// <returns>Leaf holding item at index position.</returns>
-        internal Node Find (ref int index)
+        /// <param name="treeIndex">Index of collection.</param>
+        /// <param name="leafIndex">Leaf index of result.</param>
+        /// <returns>Leaf holding item.</returns>
+        internal Node Find (int treeIndex, out int leafIndex)
         {
-            System.Diagnostics.Debug.Assert (index < Size);
+            System.Diagnostics.Debug.Assert (treeIndex < Size);
             Node node = root;
+            leafIndex = treeIndex;
             while (node is Branch branch)
                 for (int ix = 0; ; ++ix)
                 {
                     Node child = branch.GetChild (ix);
                     int cw = child.Weight;
-                    if (cw > index)
+                    if (cw > leafIndex)
                     {
                         node = child;
                         break;
                     }
-                    index -= cw;
+                    leafIndex -= cw;
                 }
 
             return node;
