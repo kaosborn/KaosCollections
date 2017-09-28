@@ -103,6 +103,12 @@ These classes closely emulate the API of the Microsoft's classes they are based 
   <ItemGroup>
     <Content Include="icons\Help.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="icons\KaosCollections-Help.png">
+      <ImageId>KaosCollections-Help</ImageId>
+      <AlternateText>Kaos Collections-Help</AlternateText>
+    </Content>
+  </ItemGroup>
   <!-- Import the SHFB build targets -->
   <Import Project="$(SHFBROOT)\SandcastleHelpFileBuilder.targets" />
   <!-- The pre-build and post-build event properties must appear *after* the targets file import in order to be
