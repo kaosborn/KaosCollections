@@ -880,6 +880,50 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>Returns an enumerator that iterates over a range with the supplied index bounds.</summary>
+        /// <param name="lowerIndex">Minimum index of the range.</param>
+        /// <param name="upperIndex">Maximum index of the range.</param>
+        /// <returns>An enumerator for the specified index range.</returns>
+        /// <remarks>
+        /// <para>
+        /// Index bounds are inclusive.
+        /// </para>
+        /// <para>
+        /// Retrieving the initial item is a O(log <em>n</em>) operation.
+        /// Retrieving each subsequent item is a O(1) operation.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>lowerIndex</em> is less than zero or not less than the number of items.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>upperIndex</em> is less than zero or not less than the number of items.</exception>
+        /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
+        /// <exception cref="ArgumentException">When <em>lowerIndex</em> and <em>upperIndex</em> do not denote a valid range of items in the set.</exception>
+        public IEnumerable<KeyValuePair<TKey,TValue>> ElementsInRange (int lowerIndex, int upperIndex)
+        {
+            if (lowerIndex < 0 || lowerIndex >= Count)
+                throw new ArgumentOutOfRangeException (nameof (lowerIndex), "Argument was out of the range of valid values.");
+
+            if (upperIndex < 0 || upperIndex >= Count)
+                throw new ArgumentOutOfRangeException (nameof (upperIndex), "Argument was out of the range of valid values.");
+
+            int toGo = upperIndex - lowerIndex;
+            if (toGo < 0)
+                throw new ArgumentException ("Arguments were out of the range of valid values.");
+
+            int stageFreeze = stage;
+            var leaf = (PairLeaf) Find (lowerIndex, out int index);
+            do
+            {
+                if (index >= leaf.KeyCount)
+                { index = 0; leaf = (PairLeaf) leaf.rightLeaf; }
+
+                yield return leaf.GetPair (index);
+                StageCheck (stageFreeze);
+                ++index;
+            }
+            while (--toGo >= 0);
+        }
+
+
         /// <summary>Gets the index of the element with the supplied key.</summary>
         /// <param name="key">The key of the element to seek.</param>
         /// <returns>The index of the element with the supplied key if found; otherwise the bitwise complement of the insert point.</returns>

@@ -1121,6 +1121,72 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRdx_ElementsInRangeA_ArgumentOutOfRange()
+        {
+            var dary = new RankedDictionary<int,int> { { 0,0 }, { 1,-1 } };
+            foreach (var pair in dary.ElementsInRange (-1, 0))
+            { }
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRdx_ElementsInRangeB_ArgumentOutOfRange()
+        {
+            var dary = new RankedDictionary<int,int> { { 0,0 }, { 1,-1 } };
+            foreach (var pair in dary.ElementsInRange (2, 0))
+            { }
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRdx_ElementsInRangeC_ArgumentOutOfRange()
+        {
+            var dary = new RankedDictionary<int,int> { { 0,0 }, { 1,-1 } };
+            foreach (var pair in dary.ElementsInRange (0, -1))
+            { }
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRdx_ElementsInRangeD_ArgumentOutOfRange()
+        {
+            var dary = new RankedDictionary<int,int> { { 0,0 }, { 1,-1 } };
+            foreach (var pair in dary.ElementsInRange (0, 2))
+            { }
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentException))]
+        public void CrashRdx_ElementsInRange_Argument()
+        {
+            var dary = new RankedDictionary<int,int> { { 0,0 }, { 1,-1 }, { 2,-2 } };
+            foreach (var pair in dary.ElementsInRange (2, 1))
+            { }
+        }
+
+        [TestMethod]
+        public void UnitRdx_ElementsInRange()
+        {
+            int n = 30;
+            var dary = new RankedDictionary<int,int> { Capacity=4 };
+            for (int ii = 0; ii < n; ++ii)
+                dary.Add (ii, -ii);
+
+            for (int p1 = 0; p1 < n; ++p1)
+                for (int p2 = p1; p2 < n; ++p2)
+                {
+                    int actual = 0;
+                    foreach (var pair in dary.ElementsInRange (p1, p2))
+                        actual += pair.Key;
+
+                    int expected = (p2 - p1 + 1) * (p1 + p2) / 2;
+                    Assert.AreEqual (expected, actual);
+                }
+        }
+
+
+        [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
         public void CrashRdx_IndexOf_ArgumentNull()
         {

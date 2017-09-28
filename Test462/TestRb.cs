@@ -952,6 +952,71 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRb_ElementsInRangeA_ArgumentOutOfRange()
+        {
+            var bag = new RankedBag<int> { 0, 1, 2 };
+            foreach (var val in bag.ElementsInRange (-1, 0))
+            { }
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRb_ElementsInRangeB_ArgumentOutOfRange()
+        {
+            var bag = new RankedBag<int> { 0, 1, 2 };
+            foreach (var val in bag.ElementsInRange (3, 0))
+            { }
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRb_ElementsInRangeC_ArgumentOutOfRange()
+        {
+            var bag = new RankedBag<int> { 0, 1, 2 };
+            foreach (var val in bag.ElementsInRange (0, -1))
+            { }
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRb_ElementsInRangeD_ArgumentOutOfRange()
+        {
+            var bag = new RankedBag<int> { 0, 1, 2 };
+            foreach (var val in bag.ElementsInRange (0, 3))
+            { }
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentException))]
+        public void CrashRb_ElementsInRange_Argument()
+        {
+            var bag = new RankedBag<int> { 0, 1, 2 };
+            foreach (var val in bag.ElementsInRange (2, 1))
+            { }
+        }
+
+        [TestMethod]
+        public void UnitRb_ElementsInRange()
+        {
+            int n = 33;
+            var bag = new RankedBag<int> { Capacity=4 };
+            for (int ii = 0; ii < n; ++ii)
+                bag.Add (ii);
+
+            for (int p1 = 0; p1 < n; ++p1)
+                for (int p2 = p1; p2 < n; ++p2)
+                {
+                    int actual = 0;
+                    foreach (var val in bag.ElementsInRange (p1, p2))
+                        actual += val;
+
+                    int expected = (p2 - p1 + 1) * (p1 + p2) / 2;
+                    Assert.AreEqual (expected, actual);
+                }
+        }
+
+        [TestMethod]
         public void UnitRb_Reverse()
         {
             int n = 800;
