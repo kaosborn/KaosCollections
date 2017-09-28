@@ -554,6 +554,9 @@ namespace Kaos.Collections
                 }
             }
 
+
+            /// <summary>Coalesce or rotate if underflow.</summary>
+            /// <param name="left">Branch to left of path branch.</param>
             public void BalanceBranch (Branch left)
             {
                 if (BalanceBranch2 (left))
@@ -612,6 +615,7 @@ namespace Kaos.Collections
             }
 
 
+            /// <summary>Balance leaf with leaf to right.</summary>
             public void Balance()
             {
                 BalanceLeaf();

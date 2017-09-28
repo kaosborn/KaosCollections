@@ -170,6 +170,7 @@ namespace Kaos.Collections
             return node;
         }
 
+
         internal int FindEdgeForIndex (T key, out Leaf leaf, out int leafIndex, bool leftEdge=false)
         {
             bool isFound = false;
@@ -229,6 +230,7 @@ namespace Kaos.Collections
                 }
             }
         }
+
 
         internal bool FindEdgeLeft (T key, out Leaf leaf, out int leafIndex)
         {
@@ -346,6 +348,7 @@ namespace Kaos.Collections
         }
 
 
+        // delete all elements between path1 & path2 inclusive.
         internal void Delete (NodeVector path1, NodeVector path2)
         {
             var leaf1 = (Leaf) path1.TopNode; int ix1 = path1.TopIndex, deltaW1 = 0;
@@ -356,6 +359,7 @@ namespace Kaos.Collections
             if (j1 == 0 && j2 == 0)
             { Initialize(); return; }
 
+            // Left-edge normalize path1, right-edge normalize path2.
             if (j1 != 0 && ix1 == 0)
             { leaf1 = leaf1.leftLeaf; ix1 = leaf1.KeyCount; path1.TraverseLeft(); }
             if (j2 != 0 && ix2 == leaf2.KeyCount)
@@ -381,7 +385,11 @@ namespace Kaos.Collections
                 leaf1.RemoveRange (ix1, leaf1.KeyCount - ix1);
             }
             else
-            {   deltaW2 = -ix2; if (j1!=0) leaf1.rightLeaf = leaf2; leaf2.RemoveRange (0, ix2);
+            {
+                deltaW2 = -ix2;
+                if (j1!=0)
+                    leaf1.rightLeaf = leaf2;
+                leaf2.RemoveRange (0, ix2);
                 if (j1 == 0)
                 { leaf2.leftLeaf = null; leftmostLeaf = leaf2; }
                 else
@@ -389,11 +397,11 @@ namespace Kaos.Collections
                     if (ix2 != 0)
                         path2.SetPivot (leaf2.Key0);
                     deltaW1 = ix1-leaf1.KeyCount;
-                    leaf2.leftLeaf = leaf1; leaf1.RemoveRange (ix1, leaf1.KeyCount-ix1);
+                    leaf2.leftLeaf = leaf1;
+                    leaf1.RemoveRange (ix1, leaf1.KeyCount-ix1);
                 }
             }
 
-            //int level = path2.Height - 2;
             for (int level = path2.Height-2; level >= 0; --level)
             {
                 var bh1 = (Branch) path1.GetNode (level); ix1 = path1.GetIndex (level);
