@@ -1,4 +1,4 @@
-![logo](Images/KaosCollections-256.png)
+![logo](Images/KaosCollections-218.png)
 # KaosCollections
 
 ### Overview

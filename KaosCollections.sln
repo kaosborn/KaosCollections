@@ -92,6 +92,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{81515E76-D81C-44F6-A6EC-7830CD05E949}"
 	ProjectSection(SolutionItems) = preProject
 		Images\KaosCollections-064.png = Images\KaosCollections-064.png
+		Images\KaosCollections-218.png = Images\KaosCollections-218.png
 		Images\KaosCollections-256.png = Images\KaosCollections-256.png
 		Images\KaosCollections.svg = Images\KaosCollections.svg
 	EndProjectSection
