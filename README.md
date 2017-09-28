@@ -1,5 +1,4 @@
 ![logo](Images/KaosCollections-256.png)
-
 # KaosCollections
 
 ### Overview
@@ -9,35 +8,35 @@ for storing elements that are both sorted and indexed.
 By using an advanced underlying data structure, these classes provide
 both superior performance and capability to their Microsoft Base Class Library equivalents.
 
-The Primary classes provided are:
+The primary classes provided are:
 
 * `RankedDictionary<TKey,TValue>` - for sorted dictionaries.
 * `RankedSet<T>` - for sorted sets.
-* `RankedBag<T>` - for multisets.
+* `RankedBag<T>` - for sorted multisets.
 
 Both `RankedDictionary` and `RankedSet` closely emulate the API of their BCL counterparts
-while `RankedBag` has no BCL counterpart.
+(`SortedDictionary` and `SortedSet`) while `RankedBag` has no BCL counterpart.
 
 This library is built as a .NET Standard project with multi-targeting to:
 
-* .NETStandard 1.0.
-* Full .NET Framework 4.5.
-* Full .NET Framework 4.0.
-* Full .NET Framework 3.5.
+* .NET Standard 1.0.
+* .NET Framework 4.5.
+* .NET Framework 4.0.
+* .NET Framework 3.5.
 
 Building this project requires Visual Studio 2017.
 
 ### Documentation
 
-For complete project documentation, see:
+For complete documentation, see:
 
-https://kaosborn.github.io/help/KaosCollections/index.html
+https://kaosborn.github.io/help/KaosCollections/
 
 An offline version of this documentation is also provided as a `.chm` file:
 
 https://github.com/kaosborn/KaosCollections/releases
 
-Benchmarks are available here:
+Benchmarks may be viewed here:
 
 https://github.com/kaosborn/KaosCollections/wiki/Benchmarks
 
