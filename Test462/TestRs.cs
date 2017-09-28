@@ -1201,6 +1201,72 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRsx_ElementsInRangeA_ArgumentOutOfRange()
+        {
+            var set = new RankedSet<int> { 0, 1, 2 };
+            foreach (var val in set.ElementsInRange (-1, 0))
+            { }
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRsx_ElementsInRangeB_ArgumentOutOfRange()
+        {
+            var set = new RankedSet<int> { 0, 1, 2 };
+            foreach (var val in set.ElementsInRange (3, 0))
+            { }
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRsx_ElementsInRangeC_ArgumentOutOfRange()
+        {
+            var set = new RankedSet<int> { 0, 1, 2 };
+            foreach (var val in set.ElementsInRange (0, -1))
+            { }
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRsx_ElementsInRangeD_ArgumentOutOfRange()
+        {
+            var set = new RankedSet<int> { 0, 1, 2 };
+            foreach (var val in set.ElementsInRange (0, 3))
+            { }
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentException))]
+        public void CrashRsx_ElementsInRange_Argument()
+        {
+            var set = new RankedSet<int> { 0, 1, 2 };
+            foreach (var val in set.ElementsInRange (2, 1))
+            { }
+        }
+
+        [TestMethod]
+        public void UnitRsx_ElementsInRange()
+        {
+            int n = 33;
+            var set = new RankedSet<int> { Capacity=4 };
+            for (int ii = 0; ii < n; ++ii)
+                set.Add (ii);
+
+            for (int p1 = 0; p1 < n; ++p1)
+                for (int p2 = p1; p2 < n; ++p2)
+                {
+                    int actual = 0;
+                    foreach (var val in set.ElementsInRange (p1, p2))
+                        actual += val;
+
+                    int expected = (p2 - p1 + 1) * (p1 + p2) / 2;
+                    Assert.AreEqual (expected, actual);
+                }
+        }
+
+
+        [TestMethod]
         public void UnitRsx_IndexOf()
         {
             Setup (4);
