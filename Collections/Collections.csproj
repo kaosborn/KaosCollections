@@ -16,9 +16,10 @@
     <RepositoryUrl>https://github.com/kaosborn/KaosCollections.git</RepositoryUrl>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <RepositoryType>Git</RepositoryType>
-    <PackageReleaseNotes>See GitHub page for full documentation information and issue tracking.</PackageReleaseNotes>
+    <PackageReleaseNotes>See GitHub page for documentation information and issue tracking.</PackageReleaseNotes>
     <PackageTags>Generics Collections SortedDictionary SortedSet SortedList BTree Order Statistic Bag Multiset</PackageTags>
     <PackageLicenseUrl>https://github.com/kaosborn/KaosCollections/blob/master/LICENSE.txt</PackageLicenseUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/kaosborn/KaosCollections/master/Images/KaosCollections-064.png</PackageIconUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard1.0|AnyCPU'">
