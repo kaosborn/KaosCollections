@@ -122,6 +122,11 @@
                   Adds <codeInline>ElementsFrom(lower)</codeInline> for elements beginning at the supplied value.
                 </para>
               </listItem>
+              <listItem>
+                <para>
+                  Adds <codeInline>ElementsBetweenIndexes(lowerIndex,upperIndex)</codeInline> for elements beginning and ending at the supplied index values.
+                </para>
+              </listItem>
             </list>
           </listItem>
 

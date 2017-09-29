@@ -47,13 +47,13 @@
         </listItem>
         <listItem>
           <para>
-            Full .NET Framework 4.0.
-            This target does not include <codeInline>IReadOnlyDictionary</codeInline> or <codeInline>IReadOnlyCollection</codeInline> implementation.
+            Full .NET Framework 4.5. This target contains the full API.
           </para>
         </listItem>
         <listItem>
           <para>
-            Full .NET Framework 4.5. This target contains the full API.
+            Full .NET Framework 4.0.
+            This target does not include <codeInline>IReadOnlyDictionary</codeInline> or <codeInline>IReadOnlyCollection</codeInline> implementation.
           </para>
         </listItem>
         <listItem>
