@@ -897,7 +897,7 @@ namespace Kaos.Collections
         /// <exception cref="ArgumentOutOfRangeException">When <em>upperIndex</em> is less than zero or not less than the number of items.</exception>
         /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
         /// <exception cref="ArgumentException">When <em>lowerIndex</em> and <em>upperIndex</em> do not denote a valid range of items in the set.</exception>
-        public IEnumerable<KeyValuePair<TKey,TValue>> ElementsInRange (int lowerIndex, int upperIndex)
+        public IEnumerable<KeyValuePair<TKey,TValue>> ElementsBetweenIndexes (int lowerIndex, int upperIndex)
         {
             if (lowerIndex < 0 || lowerIndex >= Count)
                 throw new ArgumentOutOfRangeException (nameof (lowerIndex), "Argument was out of the range of valid values.");

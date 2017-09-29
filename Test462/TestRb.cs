@@ -956,7 +956,7 @@ namespace Kaos.Test.Collections
         public void CrashRb_ElementsInRangeA_ArgumentOutOfRange()
         {
             var bag = new RankedBag<int> { 0, 1, 2 };
-            foreach (var val in bag.ElementsInRange (-1, 0))
+            foreach (var val in bag.ElementsBetweenIndexes (-1, 0))
             { }
         }
 
@@ -965,7 +965,7 @@ namespace Kaos.Test.Collections
         public void CrashRb_ElementsInRangeB_ArgumentOutOfRange()
         {
             var bag = new RankedBag<int> { 0, 1, 2 };
-            foreach (var val in bag.ElementsInRange (3, 0))
+            foreach (var val in bag.ElementsBetweenIndexes (3, 0))
             { }
         }
 
@@ -974,7 +974,7 @@ namespace Kaos.Test.Collections
         public void CrashRb_ElementsInRangeC_ArgumentOutOfRange()
         {
             var bag = new RankedBag<int> { 0, 1, 2 };
-            foreach (var val in bag.ElementsInRange (0, -1))
+            foreach (var val in bag.ElementsBetweenIndexes (0, -1))
             { }
         }
 
@@ -983,7 +983,7 @@ namespace Kaos.Test.Collections
         public void CrashRb_ElementsInRangeD_ArgumentOutOfRange()
         {
             var bag = new RankedBag<int> { 0, 1, 2 };
-            foreach (var val in bag.ElementsInRange (0, 3))
+            foreach (var val in bag.ElementsBetweenIndexes (0, 3))
             { }
         }
 
@@ -992,7 +992,7 @@ namespace Kaos.Test.Collections
         public void CrashRb_ElementsInRange_Argument()
         {
             var bag = new RankedBag<int> { 0, 1, 2 };
-            foreach (var val in bag.ElementsInRange (2, 1))
+            foreach (var val in bag.ElementsBetweenIndexes (2, 1))
             { }
         }
 
@@ -1008,7 +1008,7 @@ namespace Kaos.Test.Collections
                 for (int p2 = p1; p2 < n; ++p2)
                 {
                     int actual = 0;
-                    foreach (var val in bag.ElementsInRange (p1, p2))
+                    foreach (var val in bag.ElementsBetweenIndexes (p1, p2))
                         actual += val;
 
                     int expected = (p2 - p1 + 1) * (p1 + p2) / 2;

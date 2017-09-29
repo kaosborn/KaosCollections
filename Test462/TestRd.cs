@@ -1125,7 +1125,7 @@ namespace Kaos.Test.Collections
         public void CrashRdx_ElementsInRangeA_ArgumentOutOfRange()
         {
             var dary = new RankedDictionary<int,int> { { 0,0 }, { 1,-1 } };
-            foreach (var pair in dary.ElementsInRange (-1, 0))
+            foreach (var pair in dary.ElementsBetweenIndexes (-1, 0))
             { }
         }
 
@@ -1134,7 +1134,7 @@ namespace Kaos.Test.Collections
         public void CrashRdx_ElementsInRangeB_ArgumentOutOfRange()
         {
             var dary = new RankedDictionary<int,int> { { 0,0 }, { 1,-1 } };
-            foreach (var pair in dary.ElementsInRange (2, 0))
+            foreach (var pair in dary.ElementsBetweenIndexes (2, 0))
             { }
         }
 
@@ -1143,7 +1143,7 @@ namespace Kaos.Test.Collections
         public void CrashRdx_ElementsInRangeC_ArgumentOutOfRange()
         {
             var dary = new RankedDictionary<int,int> { { 0,0 }, { 1,-1 } };
-            foreach (var pair in dary.ElementsInRange (0, -1))
+            foreach (var pair in dary.ElementsBetweenIndexes (0, -1))
             { }
         }
 
@@ -1152,7 +1152,7 @@ namespace Kaos.Test.Collections
         public void CrashRdx_ElementsInRangeD_ArgumentOutOfRange()
         {
             var dary = new RankedDictionary<int,int> { { 0,0 }, { 1,-1 } };
-            foreach (var pair in dary.ElementsInRange (0, 2))
+            foreach (var pair in dary.ElementsBetweenIndexes (0, 2))
             { }
         }
 
@@ -1161,7 +1161,7 @@ namespace Kaos.Test.Collections
         public void CrashRdx_ElementsInRange_Argument()
         {
             var dary = new RankedDictionary<int,int> { { 0,0 }, { 1,-1 }, { 2,-2 } };
-            foreach (var pair in dary.ElementsInRange (2, 1))
+            foreach (var pair in dary.ElementsBetweenIndexes (2, 1))
             { }
         }
 
@@ -1177,7 +1177,7 @@ namespace Kaos.Test.Collections
                 for (int p2 = p1; p2 < n; ++p2)
                 {
                     int actual = 0;
-                    foreach (var pair in dary.ElementsInRange (p1, p2))
+                    foreach (var pair in dary.ElementsBetweenIndexes (p1, p2))
                         actual += pair.Key;
 
                     int expected = (p2 - p1 + 1) * (p1 + p2) / 2;

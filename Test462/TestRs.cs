@@ -1205,7 +1205,7 @@ namespace Kaos.Test.Collections
         public void CrashRsx_ElementsInRangeA_ArgumentOutOfRange()
         {
             var set = new RankedSet<int> { 0, 1, 2 };
-            foreach (var val in set.ElementsInRange (-1, 0))
+            foreach (var val in set.ElementsBetweenIndexes (-1, 0))
             { }
         }
 
@@ -1214,7 +1214,7 @@ namespace Kaos.Test.Collections
         public void CrashRsx_ElementsInRangeB_ArgumentOutOfRange()
         {
             var set = new RankedSet<int> { 0, 1, 2 };
-            foreach (var val in set.ElementsInRange (3, 0))
+            foreach (var val in set.ElementsBetweenIndexes (3, 0))
             { }
         }
 
@@ -1223,7 +1223,7 @@ namespace Kaos.Test.Collections
         public void CrashRsx_ElementsInRangeC_ArgumentOutOfRange()
         {
             var set = new RankedSet<int> { 0, 1, 2 };
-            foreach (var val in set.ElementsInRange (0, -1))
+            foreach (var val in set.ElementsBetweenIndexes (0, -1))
             { }
         }
 
@@ -1232,7 +1232,7 @@ namespace Kaos.Test.Collections
         public void CrashRsx_ElementsInRangeD_ArgumentOutOfRange()
         {
             var set = new RankedSet<int> { 0, 1, 2 };
-            foreach (var val in set.ElementsInRange (0, 3))
+            foreach (var val in set.ElementsBetweenIndexes (0, 3))
             { }
         }
 
@@ -1241,7 +1241,7 @@ namespace Kaos.Test.Collections
         public void CrashRsx_ElementsInRange_Argument()
         {
             var set = new RankedSet<int> { 0, 1, 2 };
-            foreach (var val in set.ElementsInRange (2, 1))
+            foreach (var val in set.ElementsBetweenIndexes (2, 1))
             { }
         }
 
@@ -1257,7 +1257,7 @@ namespace Kaos.Test.Collections
                 for (int p2 = p1; p2 < n; ++p2)
                 {
                     int actual = 0;
-                    foreach (var val in set.ElementsInRange (p1, p2))
+                    foreach (var val in set.ElementsBetweenIndexes (p1, p2))
                         actual += val;
 
                     int expected = (p2 - p1 + 1) * (p1 + p2) / 2;
