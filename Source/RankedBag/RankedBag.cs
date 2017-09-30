@@ -175,7 +175,7 @@ namespace Kaos.Collections
         /// </para>
         /// <para>
         /// This is a O(<em>m</em> log <em>n</em>) operation
-        /// where <em>m</em> is <em>count</em> and <em>n</em> is the total item count of the bag.
+        /// where <em>m</em> is <em>count</em> and <em>n</em> is <see cref="Count"/>.
         /// </para>
         /// </remarks>
         /// <exception cref="ArgumentException">When <em>count</em> is less than zero.</exception>
@@ -312,7 +312,7 @@ namespace Kaos.Collections
         /// <remarks>
         /// <para>
         /// This is a O(log <em>n</em>) operation
-        /// where <em>n</em> is the total item count.
+        /// where <em>n</em> is <see cref="Count"/>.
         /// </para>
         /// </remarks>
         public int GetCount (T item)
@@ -330,7 +330,7 @@ namespace Kaos.Collections
         /// <remarks>
         /// This is a O(<em>m</em> log <em>n</em>) operation
         /// where <em>m</em> is the distinct item count
-        /// and <em>n</em> is the total item count.
+        /// and <em>n</em> is <see cref="Count"/>.
         /// </remarks>
         public int GetDistinctCount()
         {
@@ -373,7 +373,7 @@ namespace Kaos.Collections
         /// <returns>The index of <em>item</em> if found; otherwise the bitwise complement of the insert point.</returns>
         /// <remarks>
         /// <para>
-        /// For duplicate items, the lowest index is returned.
+        /// Items with multiple occurrences will return the item with the lowest index.
         /// </para>
         /// <para>
         /// This is a O(log <em>n</em>) operation.
@@ -393,7 +393,7 @@ namespace Kaos.Collections
         /// To remove only one item, use <see cref="Remove(T, int)"/>.
         /// </para>
         /// <para>
-        /// This is a O(log <em>n</em>) operation where <em>n</em> is the total item count.
+        /// This is a O(log <em>n</em>) operation where <em>n</em> is <see cref="Count"/>.
         /// </para>
         /// </remarks>
         public bool Remove (T item)
@@ -436,13 +436,13 @@ namespace Kaos.Collections
         /// <summary>Removes a supplied number of items from the bag.</summary>
         /// <param name="item">The item to remove.</param>
         /// <param name="count">The number of items to remove.</param>
-        /// <returns>The number of items removed.</returns>
+        /// <returns>The number of items actually removed.</returns>
         /// <remarks>
         /// <para>
-        /// For duplicate items, lowest indexed items are removed first.
+        /// For items with multiple occurrences, lowest indexed items are removed first.
         /// </para>
         /// <para>
-        /// This is a O(log <em>n</em>) operation <em>n</em> is the total item count.
+        /// This is a O(log <em>n</em>) operation <em>n</em> is <see cref="Count"/>.
         /// </para>
         /// </remarks>
         /// <exception cref="ArgumentException">When <em>count</em> is less than zero.</exception>
@@ -730,7 +730,7 @@ namespace Kaos.Collections
         /// <remarks>
         /// This is a O(<em>m</em> log <em>n</em>) operation
         /// where <em>m</em> is the distinct item count
-        /// and <em>n</em> is the total item count.
+        /// and <em>n</em> is <see cref="Count"/>.
         /// </remarks>
         public IEnumerable<T> Distinct()
         {

@@ -48,6 +48,7 @@ namespace Kaos.Collections
     /// <list type="bullet">
     /// <item><see cref="ElementsBetween"/></item>
     /// <item><see cref="ElementsFrom"/></item>
+    /// <item><see cref="ElementsBetweenIndexes"/></item>
     /// </list>
     /// <para>Properties and a method have been shared with SortedSet:</para>
     /// <list type="bullet">
@@ -490,7 +491,7 @@ namespace Kaos.Collections
         /// <returns>The number of items removed from the dictionary.</returns>
         /// <remarks>
         /// This is a O(<em>n</em> log <em>m</em>) operation
-        /// where <em>m</em> is the count of items removed and <em>n</em> is the size of the dictionary.
+        /// where <em>m</em> is the number of items removed and <em>n</em> is <see cref="Count"/>.
         /// </remarks>
         /// <exception cref="ArgumentNullException">When <em>match</em> is <b>null</b>.</exception>
         public int RemoveWhere (Predicate<TKey> match)
