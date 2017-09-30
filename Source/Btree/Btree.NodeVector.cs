@@ -133,7 +133,7 @@ namespace Kaos.Collections
 
 
             // On exit: path is left-edge normalized.
-            public static NodeVector CreateForOffset (NodeVector path, int offset)
+            public static NodeVector CreateFromOffset (NodeVector path, int offset)
             {
                 Debug.Assert (offset >= 0);
 
@@ -177,7 +177,7 @@ namespace Kaos.Collections
             }
 
 
-            public static NodeVector CreateForIndex (Btree<T> tree, int index)
+            public static NodeVector CreateFromIndex (Btree<T> tree, int index)
             {
                 Debug.Assert (index <= tree.Size);
 
@@ -234,9 +234,9 @@ namespace Kaos.Collections
 
             #region Methods
 
-            internal Node GetNode (int index) => nodeStack[index];
+            internal Node GetNode (int level) => nodeStack[level];
 
-            internal int GetIndex (int index) => indexStack[index];
+            internal int GetIndex (int level) => indexStack[level];
 
             public T LeftKey => ((Leaf) TopNode).GetKey (TopIndex-1);
 
@@ -697,7 +697,7 @@ namespace Kaos.Collections
             }
 
             /// <summary>Returns <b>true</b> if no left sibling.</summary>
-            public bool Child0 => indexStack[Height - 2] == 0;
+            public bool IsLeftmostNode => indexStack[Height - 2] == 0;
 #endif
         }
     }

@@ -420,7 +420,7 @@ namespace Kaos.Collections
                 return 0;
 
             // Seek by offset is faster, so try that first.
-            var path2 = NodeVector.CreateForOffset (path1, count);
+            var path2 = NodeVector.CreateFromOffset (path1, count);
             if (path2 == null || Comparer.Compare (path2.LeftKey, item) != 0)
             {
                 path2 = new NodeVector (this, item, leftEdge:false);

@@ -338,7 +338,7 @@ namespace Kaos.Collections
 
         internal void RemoveAt2 (int index)
         {
-            Remove2 (NodeVector.CreateForIndex (this, index));
+            Remove2 (NodeVector.CreateFromIndex (this, index));
         }
 
 
@@ -347,8 +347,8 @@ namespace Kaos.Collections
             if (count == 0)
                 return;
 
-            var path1 = NodeVector.CreateForIndex (this, index);
-            var path2 = NodeVector.CreateForIndex (this, index + count);
+            var path1 = NodeVector.CreateFromIndex (this, index);
+            var path2 = NodeVector.CreateFromIndex (this, index + count);
 
             StageBump();
             Delete (path1, path2);
@@ -460,7 +460,7 @@ namespace Kaos.Collections
             if (j2 != 0)
             {
                 if (j1 == 0)
-                { path1 = NodeVector.CreateForIndex (this, 0); leaf1 = leftmostLeaf; }
+                { path1 = NodeVector.CreateFromIndex (this, 0); leaf1 = leftmostLeaf; }
 
                 if (leaf1.rightLeaf != null)
                 {
@@ -804,7 +804,7 @@ namespace Kaos.Collections
                 if (leaf == null)
                     break;
 
-                if (leafPath.Child0)
+                if (leafPath.IsLeftmostNode)
                     sb.Append (" | ");
                 else
                     sb.Append ('|');
