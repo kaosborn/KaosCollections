@@ -104,7 +104,6 @@ To verify correct emulation, these tests may be run against either this library
 or against the emulated BCL classes.
 To run the test suite against the Microsoft classes,
 add the `TEST_BCL` compilation symbol to the test project build properties.
-
 Testing against the full framework is preferred over Core due to:
 
   * Decreased build times
