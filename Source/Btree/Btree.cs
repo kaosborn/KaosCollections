@@ -662,10 +662,12 @@ namespace Kaos.Collections
         /// <returns>Number of levels in the tree.</returns>
         public int GetHeight()
         {
-            int level = 1;
-            for (Node node = root; node is Branch; node = ((Branch) node).Child0)
-                ++level;
-            return level;
+            Node node = root;
+            for (int level = 1; ; ++level)
+                if (node is Branch branch)
+                    node = branch.Child0;
+                else
+                    return level;
         }
 
 
