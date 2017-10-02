@@ -132,7 +132,7 @@
 
           <listItem>
             <para>
-              <codeInline>RankedSet</codeInline> add methods from <codeInline>SortedList</codeInline> for indexing support:
+              <codeInline>RankedSet</codeInline> is enhanced with methods borrowed from <codeInline>SortedList</codeInline>:
             </para>
             <list class="bullet">
               <listItem>

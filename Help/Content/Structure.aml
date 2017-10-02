@@ -20,7 +20,7 @@
           <para>Enumeration requires a tree traversal with a callback for each element.</para>
         </listItem>
         <listItem>
-          <para>Accessing the first and last elements require a tree traversal.</para>
+          <para>Accessing the first and last elements require traversing from root to leaf.</para>
         </listItem>
       </list>
       </introduction>

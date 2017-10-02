@@ -3,51 +3,56 @@
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
     <introduction>
       <para>
-        KaosCollections consists of three primary classes:
+        KaosCollections is a .NET library that provides generic collection classes
+        for storing elements that are both sorted and indexed.
+        By using an advanced underlying data structure, these classes provide
+        superior performance to their Microsoft Base Class Library (BCL) counterparts
+        while delivering greatly enhanced capability.
+      </para>
+      <para>
+        The primary classes provided are:
       </para>
       <list class="bullet">
         <listItem>
           <para>
             <codeEntityReference qualifyHint="false">T:Kaos.Collections.RankedDictionary`2</codeEntityReference>-
-            <codeEntityReference qualifyHint="false">T:System.Collections.Generic.SortedDictionary`2</codeEntityReference> merged with
-            <codeEntityReference qualifyHint="false">T:System.Collections.Generic.SortedList`2</codeEntityReference> plus enhancements and improved performance.
+            for collections of key/value pairs with distinct keys that can be accessed in sort order or by index.
           </para>
         </listItem>
         <listItem>
           <para>
-            <codeEntityReference qualifyHint="false">T:Kaos.Collections.RankedSet`1</codeEntityReference>- an enhanced version of
-            <codeEntityReference qualifyHint="false">T:System.Collections.Generic.SortedSet`1</codeEntityReference>.
+            <codeEntityReference qualifyHint="false">T:Kaos.Collections.RankedSet`1</codeEntityReference>-
+            for collections of distinct items that can be accessed in sort order or by index.
           </para>
         </listItem>
         <listItem>
           <para>
             <codeEntityReference qualifyHint="false">T:Kaos.Collections.RankedBag`1</codeEntityReference>-
-            a multiset collection data structure.
+            for collections of items that can be accessed in sort order or by index. Also known as multisets.
           </para>
         </listItem>
       </list>
       <para>
-        All provided classes closely emulate the API of the Microsoft's classes
-        while extending capability and improving performance in many common scenarios.
-        All classes add list functionality so that any element can be accessed by index
-        or the index of an element may be determined from the element's key.
+        Both <codeInline>RankedDictionary</codeInline> and <codeInline>RankedSet</codeInline> closely emulate the API of their BCL counterparts
+        (<codeEntityReference qualifyHint="false">T:System.Collections.Generic.SortedDictionary`2</codeEntityReference> and
+        <codeEntityReference qualifyHint="false">T:System.Collections.Generic.SortedSet`1</codeEntityReference>)
+        while <codeInline>RankedBag</codeInline> has no BCL counterpart.
+        All three classes include indexing capabilities such as determining the index of an element or getting elements by index.
       </para>
       <para>
-        This library is built as a .NET Standard project with multi-targeting.
-        All targeted binaries are available in the distributed NuGet package.
-        Current targets are:
+        This library is built as a .NET Standard project with multitargeting to:
       </para>
       <list class="bullet">
         <listItem>
           <para>
             .NETStandard 1.0.
-            Use this for any .NET Core application or any .NET Framework application at or above .NET 4.5.
+            Use this for any .NET Core application.
             This target does not include binary serialization support.
           </para>
         </listItem>
         <listItem>
           <para>
-            Full .NET Framework 4.5. This target contains the full API.
+            Full .NET Framework 4.5. This target implements the full API.
           </para>
         </listItem>
         <listItem>
@@ -64,21 +69,48 @@
           </para>
         </listItem>
       </list>
-      <para>
-        Off-line documentation is available as a MS-Help 1 (.chm) file.
-        Installing as a NuGet package will provide IntelliSense and object browser documentation.
-        On-line documentation is available at the link below.
-      </para>
     </introduction>
 
     <section>
-      <title>Distribution</title>
+      <title>Library download and installation</title>
       <content>
         <para>
-          Complete source code and documentation is hosted at GitHub.com.
-          Primary binary hosting is at NuGet.org
-          with GitHub.com also serving binary downloads.
-          Complete documentation is available for download at GitHub.com as a .chm file.
+          KaosCollections may be installed in Visual Studio via NuGet:
+        </para>
+        <list class="ordered">
+          <listItem>
+            <para>Click <legacyBold>Manage NuGet Packages</legacyBold>.</para>
+          </listItem>
+          <listItem>
+            <para>Select package source of <legacyBold>nuget.org</legacyBold>.</para>
+          </listItem>
+          <listItem>
+            <para>Click <legacyBold>Browse</legacyBold> and input <legacyBold>Kaos.Collections</legacyBold>.</para>
+          </listItem>
+          <listItem>
+            <para>
+              The package should appear. Click <legacyBold>Install</legacyBold>.
+              As a multitargeted package, the appropriate binary will be selected for your program.
+            </para>
+          </listItem>
+        </list>
+        <para>
+          Direct downloads are also available at NuGet.org and GitHub.com.
+          See the links at the bottom of this page.
+          As archives, individual binaries may be extracted from the <codeInline>.nuget</codeInline> package for specific platforms.
+          A project may then reference the extracted platform-specific <codeInline>.dll</codeInline> directly.
+        </para>
+      </content>
+    </section>
+
+    <section>
+      <title>Documentation</title>
+      <content>
+        <para>
+          Installing as a NuGet package will provide IntelliSense and object browser documentation from the <codeInline>.xml</codeInline> file.
+          Complete documentation is hosted at GitHub.io
+          with an offline <codeInline>.chm</codeInline> file version available for download at GitHub.com.
+          See the links below.
         </para>
       </content>
     </section>
@@ -87,9 +119,9 @@
       <title>Build environment</title>
       <content>
         <para>
-          Visual Studio 2017 Community Edition (or greater) is required to build the library.
-          There is an additional dependency on Sandcastle Help File Builder for building documentation.
-          Test is performed by MSTest.
+          Complete source code with embedded XML documentation is hosted at GitHub.com.
+          Building the solution requires Visual Studio 2017 Community Edition or greater.
+          Building documentation requires Sandcastle Help File Builder.
         </para>
       </content>
     </section>
@@ -97,14 +129,19 @@
     <relatedTopics>
       <link xlink:href="90402bce-1f31-45f8-b0ea-0a73408bd45a" />
       <externalLink>
-        <linkText>github.com/kaosborn/KaosCollections</linkText>
-        <linkAlternateText>repository</linkAlternateText>
-        <linkUri>https://github.com/kaosborn/KaosCollections</linkUri>
+        <linkText>nuget.org/packages/Kaos.Collections</linkText>
+        <linkAlternateText>download binary</linkAlternateText>
+        <linkUri>https://www.nuget.org/packages/Kaos.Collections/</linkUri>
       </externalLink>
       <externalLink>
-        <linkText>kaosborn.github.io/help/KaosCollections/index.html</linkText>
-        <linkAlternateText>on-line documentation</linkAlternateText>
-        <linkUri>https://kaosborn.github.io/help/KaosCollections/index.html</linkUri>
+        <linkText>github.com/kaosborn/KaosCollections</linkText>
+        <linkAlternateText>repository</linkAlternateText>
+        <linkUri>https://github.com/kaosborn/KaosCollections/</linkUri>
+      </externalLink>
+      <externalLink>
+        <linkText>kaosborn.github.io/help/KaosCollections</linkText>
+        <linkAlternateText>online documentation</linkAlternateText>
+        <linkUri>https://kaosborn.github.io/help/KaosCollections/</linkUri>
       </externalLink>
       <externalLink>
         <linkText>wikipedia.org/wiki/B+tree</linkText>
