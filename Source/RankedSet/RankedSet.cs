@@ -16,7 +16,9 @@ using System.Runtime.Serialization;
 
 namespace Kaos.Collections
 {
-    /// <summary>Represents a collection of sorted, unique items.</summary>
+    /// <summary>
+    /// Represents a collection of distinct items that can be accessed in sort order or by index.
+    /// </summary>
     /// <typeparam name="T">The type of the items in the set.</typeparam>
     /// <remarks>
     /// <para>
@@ -30,7 +32,7 @@ namespace Kaos.Collections
     /// <item><see cref="IndexOf"/></item>
     /// <item><see cref="RemoveAt"/></item>
     /// </list>
-    /// <para>Indexing also includes extension methods that has been directly implemented and optimized:</para>
+    /// <para>Indexing also includes extension methods that have been directly implemented and optimized:</para>
     /// <list type="bullet">
     /// <item><see cref="ElementAt"/></item>
     /// <item><see cref="ElementAtOrDefault"/></item>
@@ -70,11 +72,11 @@ namespace Kaos.Collections
     {
         #region Constructors
 
-        /// <summary>Initializes a new set that uses the default item comparer.</summary>
+        /// <summary>Initializes a new set instance that uses the default item comparer.</summary>
         public RankedSet() : base (Comparer<T>.Default, new Leaf())
         { }
 
-        /// <summary>Initializes a new set that uses the supplied comparer.</summary>
+        /// <summary>Initializes a new set instance that uses the supplied comparer.</summary>
         /// <param name="comparer">The comparer to use for sorting items.</param>
         /// <example>
         /// This program shows usage of a custom comparer combined with serialization.
@@ -85,7 +87,7 @@ namespace Kaos.Collections
         public RankedSet (IComparer<T> comparer) : base (comparer, new Leaf())
         { }
 
-        /// <summary>Initializes a new set that contains items copied from the supplied collection.</summary>
+        /// <summary>Initializes a new set instance that contains items copied from the supplied collection.</summary>
         /// <param name="collection">The enumerable collection to be copied.</param>
         /// <remarks>
         /// This constructor is a O(<em>n</em> log <em>n</em>) operation, where <em>n</em> is the number of items.
@@ -94,7 +96,7 @@ namespace Kaos.Collections
         public RankedSet (IEnumerable<T> collection) : this (collection, Comparer<T>.Default)
         { }
 
-        /// <summary>Initializes a new set that contains items copied from the supplied collection.</summary>
+        /// <summary>Initializes a new set instance that contains items copied from the supplied collection.</summary>
         /// <param name="collection">The enumerable collection to be copied. </param>
         /// <param name="comparer">The comparer to use for item sorting.</param>
         /// <remarks>
@@ -568,7 +570,7 @@ namespace Kaos.Collections
 
         private SerializationInfo serializationInfo;
 
-        /// <summary>Initializes a new instance of the set that contains serialized data.</summary>
+        /// <summary>Initializes a new set instance that contains serialized data.</summary>
         /// <param name="info">The object that contains the information required to serialize the set.</param>
         /// <param name="context">The structure that contains the source and destination of the serialized stream.</param>
         protected RankedSet (SerializationInfo info, StreamingContext context) : base (new Btree<T>.Leaf())

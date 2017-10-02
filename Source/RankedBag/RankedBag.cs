@@ -14,12 +14,14 @@ using System.Runtime.Serialization;
 
 namespace Kaos.Collections
 {
-    /// <summary>Represents a collection of sorted items.</summary>
+    /// <summary>
+    /// Represents a collection of items that can be accessed in sort order or by index.
+    /// </summary>
     /// <typeparam name="T">The type of the items in the bag.</typeparam>
     /// <remarks>
     /// <para>
-    /// This class is similar to a RankedSet but with duplicate items allowed.
-    /// Duplicate items are each stored individually rather than
+    /// This class is similar to <see cref="RankedSet{T}"/> but with multiple occurrences of an item allowed.
+    /// Items that repeat are each stored individually rather than
     /// once with a count of occurrences.
     /// This allows RankedBag to be used as a multimap as well as the more typical multiset.
     /// Multimap usage requires supplying a user-defined comparer to the constructor.
@@ -47,12 +49,12 @@ namespace Kaos.Collections
     {
         #region Constructors
 
-        /// <summary>Initializes a new bag of sorted items that uses the default comparer.</summary>
+        /// <summary>Initializes a new bag instance that uses the default comparer.</summary>
         /// <exception cref="InvalidOperationException">When <em>comparer</em> is <b>null</b> and no other comparer available.</exception>
         public RankedBag() : base (Comparer<T>.Default, new Leaf())
         { }
 
-        /// <summary>Initializes a new bag of sorted items that uses the supplied comparer.</summary>
+        /// <summary>Initializes a new bag instance that uses the supplied comparer.</summary>
         /// <param name="comparer">The comparer to use for sorting items.</param>
         /// <example>
         /// <para>
@@ -68,13 +70,13 @@ namespace Kaos.Collections
         public RankedBag (IComparer<T> comparer) : base (comparer, new Leaf())
         { }
 
-        /// <summary>Initializes a new bag that contains items copied from the supplied collection.</summary>
+        /// <summary>Initializes a new bag instance that contains items copied from the supplied collection.</summary>
         /// <param name="collection">The enumerable collection to be copied.</param>
         /// <remarks>
         /// This constructor is a O(<em>n</em> log <em>n</em>) operation, where <em>n</em> is the size of <em>collection</em>.
         /// </remarks>
         /// <example>
-        /// This program shows using this class for some basic statistical calcuations.
+        /// This program shows using this class for some basic statistical calculations.
         /// <code source="..\Bench\RbExample03\RbExample03.cs" lang="cs" />
         /// </example>
         /// <exception cref="InvalidOperationException">When <em>comparer</em> is <b>null</b> and no other comparer available.</exception>
@@ -82,7 +84,7 @@ namespace Kaos.Collections
         public RankedBag (IEnumerable<T> collection) : this (collection, Comparer<T>.Default)
         { }
 
-        /// <summary>Initializes a new bag that contains items copied from the supplied collection.</summary>
+        /// <summary>Initializes a new bag instance that contains items copied from the supplied collection.</summary>
         /// <param name="collection">The enumerable collection to be copied. </param>
         /// <param name="comparer">The comparer to use for item sorting.</param>
         /// <remarks>
@@ -146,11 +148,11 @@ namespace Kaos.Collections
 
         /// <summary>Adds an item to the bag.</summary>
         /// <param name="item">The item to add.</param>
-        /// <returns><b>true</b> if <em>item</em> was not already in the uniques; otherwise <b>false</b>.</returns>
+        /// <returns><b>true</b> if this is the first occurrence of this item; otherwise <b>false</b>.</returns>
         /// <remarks>
-        /// <para>This operation allows duplicate items.
-        /// If any items that match the supplied item already exist in the bag
-        /// then the newer item is added sequentially following the older items.
+        /// <para>
+        /// If the supplied item already occurs in the bag
+        /// then the new item is added sequentially following the old items.
         /// </para>
         /// <para>This is a O(log <em>n</em>) operation.</para>
         /// </remarks>
@@ -169,9 +171,8 @@ namespace Kaos.Collections
         /// <returns><b>true</b> if <em>item</em> was not already in the bag; otherwise <b>false</b>.</returns>
         /// <remarks>
         /// <para>
-        /// This operation allows duplicate items.
-        /// If any items that match the supplied item already exist in the bag
-        /// then the newer items are added sequentially following the older items.
+        /// If the supplied item already occurs in the bag
+        /// then the new item is added sequentially following the old items.
         /// </para>
         /// <para>
         /// This is a O(<em>m</em> log <em>n</em>) operation
@@ -600,7 +601,7 @@ namespace Kaos.Collections
 
         private SerializationInfo serializationInfo;
 
-        /// <summary>Initializes a new instance of the bag that contains serialized data.</summary>
+        /// <summary>Initializes a new bag instance that contains serialized data.</summary>
         /// <param name="info">The object that contains the information required to serialize the bag.</param>
         /// <param name="context">The structure that contains the source and destination of the serialized stream.</param>
         protected RankedBag (SerializationInfo info, StreamingContext context) : base (new Btree<T>.Leaf())
@@ -725,7 +726,7 @@ namespace Kaos.Collections
 
         #region Enumeration
 
-        /// <summary>Returns an IEnumerable that iterates thru the distinct items of the bag.</summary>
+        /// <summary>Returns an enumerator that iterates thru the distinct items of the bag.</summary>
         /// <returns>An enumerator that iterates thru distinct items.</returns>
         /// <remarks>
         /// This is a O(<em>m</em> log <em>n</em>) operation

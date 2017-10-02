@@ -17,7 +17,7 @@ using System.Runtime.Serialization;
 namespace Kaos.Collections
 {
     /// <summary>
-    /// Represents a collection of key/value pairs that are sorted on unique keys.
+    /// Represents a collection of key/value pairs with distinct keys that can be accessed in sort order or by index.
     /// </summary>
     /// <typeparam name="TKey">The type of the keys in the dictionary.</typeparam>
     /// <typeparam name="TValue">The type of the values in the dictionary.</typeparam>
@@ -61,7 +61,7 @@ namespace Kaos.Collections
     /// <para>
     /// Keys must be immutable as long as they are used as keys in the
     /// <see cref="RankedDictionary{TKey,TValue}"/>class.
-    /// Every key must be unique and cannot be null, but a value can be for a reference type.
+    /// Every key must be distinct and cannot be null, but a value can be for a reference type.
     /// </para>
     /// </remarks>
     /// <example>
@@ -95,17 +95,17 @@ namespace Kaos.Collections
 
         #region Constructors
 
-        /// <summary>Initializes a new dictionary of key/value pairs that are sorted on unique keys using the default key comparer.</summary>
+        /// <summary>Initializes a new dictionary instance using the default key comparer.</summary>
         public RankedDictionary() : base (Comparer<TKey>.Default, new PairLeaf())
         { }
 
 
-        /// <summary>Initializes a new dictionary of key/value pairs that are sorted on unique keys using the supplied key comparer.</summary>
+        /// <summary>Initializes a new dictionary instance using the supplied key comparer.</summary>
         /// <param name="comparer">Comparison operator for keys.</param>
         /// <remarks>
-        /// <para>Every key in a dictionary must be unique according to the comparer.</para>
+        /// <para>Every key in a dictionary must be distinct according to the comparer.</para>
         /// <para>
-        /// This class requires a IComparer implementation to perform key comparisons.
+        /// This class requires an <see cref="IComparer"/> implementation to perform key comparisons.
         /// If <em>comparer</em> is <b>null</b>, the default comparer for the type will be used.
         /// If the key type implements the IComparable&lt;T&gt; interface, the default comparer uses that implementation.
         /// If no comparison implementation is available, the Add method will fail on the second element.
@@ -122,13 +122,13 @@ namespace Kaos.Collections
         public RankedDictionary (IComparer<TKey> comparer) : base (comparer, new PairLeaf())
         { }
 
-        /// <summary>Initializes a new dictionary that contains key/value pairs copied from the supplied dictionary and sorted by the default comparer.</summary>
+        /// <summary>Initializes a new dictionary instance that contains key/value pairs copied from the supplied dictionary and sorted by the default comparer.</summary>
         /// <param name="dictionary">The dictionary to be copied.</param>
         /// <exception cref="ArgumentNullException">When <em>dictionary</em> is <b>null</b>.</exception>
         public RankedDictionary (IDictionary<TKey,TValue> dictionary) : this (dictionary, Comparer<TKey>.Default)
         { }
 
-        /// <summary>Initializes a new dictionary that contains key/value pairs copied from the supplied dictionary and sorted by the supplied comparer.</summary>
+        /// <summary>Initializes a new dictionary instance that contains key/value pairs copied from the supplied dictionary and sorted by the supplied comparer.</summary>
         /// <param name="dictionary">The dictionary to be copied.</param>
         /// <param name="comparer">Comparison operator for keys.</param>
         /// <exception cref="ArgumentNullException">When <em>dictionary</em> is <b>null</b>.</exception>
@@ -698,7 +698,7 @@ namespace Kaos.Collections
 
         private SerializationInfo serializationInfo;
 
-        /// <summary>Initializes a new instance of the dictionary that contains serialized data.</summary>
+        /// <summary>Initializes a new dictionary instance that contains serialized data.</summary>
         /// <param name="info">The object that contains the information required to serialize the dictionary.</param>
         /// <param name="context">The structure that contains the source and destination of the serialized stream.</param>
         protected RankedDictionary (SerializationInfo info, StreamingContext context) : base (new PairLeaf())
