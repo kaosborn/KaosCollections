@@ -58,7 +58,7 @@ Benchmarks and examples may be viewed here:
 
 https://github.com/kaosborn/KaosCollections/wiki/
 
-### Project status
+### Status
 
 This project is stable and code complete.
 
@@ -68,7 +68,7 @@ Complete source code with embedded XML documentation is hosted at GitHub.com.
 Building the solution requires Visual Studio 2017 Community Edition or greater.
 Building documentation requires Sandcastle Help File Builder.
 
-### Project layout
+### Repository layout
 
 This repository is a single Visual Studio solution with additional files in the root.
 
@@ -89,7 +89,7 @@ will produce a `.nuget` file for distribution.
 * The `Collections462` folder contains a .NET 4.62 build of the class library.
 This project is used for development and testing only.
 
-* The `Images` folder contains the logo `.svg` file and its conversions.
+* The `Images` folder contains the logo `.svg` file and its `.png` conversions.
 
 * The `Help` folder contains a [Sandcastle Help File Builder](https://github.com/EWSoftware/SHFB)
 project that produces documentation from embedded XML comments.
