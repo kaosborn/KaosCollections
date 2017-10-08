@@ -1,10 +1,4 @@
-﻿//
-// Program: RdExample04.cs
-// Purpose: Exercise BtreeDictionary with a supplied comparer.
-//
-
-using System;
-using System.Collections.Generic;
+﻿using System;
 using Kaos.Collections;
 
 namespace ExampleApp
@@ -13,26 +7,42 @@ namespace ExampleApp
     {
         static void Main()
         {
-            var tree1 = new RankedDictionary<string,int> (StringComparer.InvariantCultureIgnoreCase);
-            tree1.Add ("AAA", 0);
-            tree1.Add ("bbb", 1);
-            tree1.Add ("CCC", 2);
-            tree1.Add ("ddd", 3);
+            var dary1 = new RankedDictionary<string,int> (StringComparer.InvariantCultureIgnoreCase);
+            dary1.Add ("AAA", 0);
+            dary1.Add ("bbb", 1);
+            dary1.Add ("CCC", 2);
+            dary1.Add ("ddd", 3);
 
-            Console.WriteLine ("Case insensitive:");
-            foreach (KeyValuePair<string,int> pair in tree1)
+            Console.WriteLine ("Comparer is case insensitive:");
+            foreach (System.Collections.Generic.KeyValuePair<string,int> pair in dary1)
                 Console.WriteLine (pair.Key);
             Console.WriteLine();
 
-            var tree2 = new RankedDictionary<string,int> (StringComparer.Ordinal);
-            tree2.Add ("AAA", 0);
-            tree2.Add ("bbb", 2);
-            tree2.Add ("CCC", 1);
-            tree2.Add ("ddd", 3);
+            var dary2 = new RankedDictionary<string,int> (StringComparer.Ordinal);
+            dary2.Add ("AAA", 0);
+            dary2.Add ("bbb", 2);
+            dary2.Add ("CCC", 1);
+            dary2.Add ("ddd", 3);
 
-            Console.WriteLine ("Case sensitive:");
-            foreach (KeyValuePair<string,int> pair in tree2)
+            Console.WriteLine ("Comparer is case sensitive:");
+            foreach (System.Collections.Generic.KeyValuePair<string,int> pair in dary2)
                 Console.WriteLine (pair.Key);
         }
+
+        /* Output:
+
+        Comparer is case insensitive:
+        AAA
+        bbb
+        CCC
+        ddd
+
+        Comparer is case sensitive:
+        AAA
+        CCC
+        bbb
+        ddd
+
+        */
     }
 }
