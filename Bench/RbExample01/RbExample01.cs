@@ -7,9 +7,12 @@ namespace ExampleApps
     {
         static void Main()
         {
-            var crayons = new RankedBag<string>() { "red", "blue", "yellow", "black", "black" };
+            var crayons = new RankedBag<string> (StringComparer.InvariantCultureIgnoreCase)
+            { "red", "yellow", "black", "BLACK" };
 
-            Console.WriteLine ("There are " + crayons.Count + " total crayon colors:");
+            crayons.Add ("blue");
+
+            Console.WriteLine ("There are " + crayons.Count + " total crayons:");
             foreach (var crayon in crayons)
                 Console.WriteLine ("  " + crayon);
 
@@ -17,22 +20,21 @@ namespace ExampleApps
             foreach (var crayon in crayons.Distinct())
                 Console.WriteLine ("  " + crayon);
 
-            if (! crayons.Contains ("thistle"))
-                Console.WriteLine ("\nDoes not contain 'thistle'.");
+            Console.WriteLine ("\nGot 'gold' crayon? " + crayons.Contains ("gold"));
 
-            crayons.RetainAll (new string[] { "white", "grey", "black" });
-            crayons.Add ("silver");
+            // RetainAll respects cardinality so the oldest 'black' is removed:
+            crayons.RetainAll (new string[] { "white", "grey", "Black", "red" });
 
-            Console.WriteLine ("\nAfter RetainAll+Add: ");
+            Console.WriteLine ("\nAfter RetainAll: ");
             foreach (var crayon in crayons)
                 Console.WriteLine ("  " + crayon);
         }
 
         /* Output:
 
-        There are 5 total crayon colors:
+        There are 5 total crayons:
           black
-          black
+          BLACK
           blue
           red
           yellow
@@ -43,11 +45,11 @@ namespace ExampleApps
           red
           yellow
 
-        Does not contain 'thistle'.
+        Got 'gold' crayon? False
 
-        After RetainAll+Add:
-          black
-          silver
+        After RetainAll:
+          BLACK
+          red
 
         */
     }
