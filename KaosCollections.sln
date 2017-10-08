@@ -97,6 +97,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{81515E
 		Images\KaosCollections.svg = Images\KaosCollections.svg
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RsExample06", "Bench\RsExample06\RsExample06.csproj", "{95D44882-0087-4401-A631-A57ADCCBFDA5}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Source\RankedCollection\RankedCollection.projitems*{2de71c06-f684-4903-96ac-87215caaad5c}*SharedItemsImports = 13
@@ -257,6 +259,10 @@ Global
 		{9C399188-73F9-4A6D-ABAD-7241C2F1E197}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C399188-73F9-4A6D-ABAD-7241C2F1E197}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C399188-73F9-4A6D-ABAD-7241C2F1E197}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95D44882-0087-4401-A631-A57ADCCBFDA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95D44882-0087-4401-A631-A57ADCCBFDA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95D44882-0087-4401-A631-A57ADCCBFDA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95D44882-0087-4401-A631-A57ADCCBFDA5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -299,6 +305,7 @@ Global
 		{96762A0A-D54C-45FE-A20C-1521C35D0624} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{2083724C-9A9B-4F95-8AA2-C43A1246FAAD} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{9C399188-73F9-4A6D-ABAD-7241C2F1E197} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
+		{95D44882-0087-4401-A631-A57ADCCBFDA5} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {201DA9DF-651F-47A0-B578-167533C3D874}
