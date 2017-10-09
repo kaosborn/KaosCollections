@@ -33,16 +33,14 @@ namespace Kaos.Collections
     /// <item><see cref="IndexOfKey"/></item>
     /// <item><see cref="IndexOfValue"/></item>
     /// <item><see cref="RemoveAt"/></item>
+    /// <item><see cref="RemoveRange"/></item>
+    /// <item><see cref="TryGetValueAndIndex"/></item>
     /// </list>
     /// <para>Extension methods have been directly implemented and optimized:</para>
     /// <list type="bullet">
     /// <item><see cref="ElementAt"/></item>
     /// <item><see cref="ElementAtOrDefault"/></item>
     /// <item><see cref="Last"/></item>
-    /// </list>
-    /// <para>Indexing functionality also includes:</para>
-    /// <list type="bullet">
-    /// <item><see cref="TryGetValueAndIndex"/></item>
     /// </list>
     /// <para>These optimized range enumerators are included:</para>
     /// <list type="bullet">
@@ -432,7 +430,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Removes the element with the supplied key from the dictionary.</summary>
+        /// <summary>Removes an element with the supplied key from the dictionary.</summary>
         /// <param name="key">The key of the element to remove.</param>
         /// <returns><b>true</b> if the element was successfully found and removed; otherwise <b>false</b>.</returns>
         /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
@@ -468,7 +466,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Removes the element at the supplied index.</summary>
+        /// <summary>Removes an element at the supplied index from the dictionary.</summary>
         /// <param name="index">The zero-based position of the element to remove.</param>
         /// <para>
         /// After this operation, the position of all following items is reduced by one.
@@ -486,7 +484,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Removes all elements that match the condition defined by the supplied predicate.</summary>
+        /// <summary>Removes all elements that match the condition defined by the supplied predicate from the dictionary.</summary>
         /// <param name="match">The condition of the items to remove.</param>
         /// <returns>The number of items removed from the dictionary.</returns>
         /// <remarks>
@@ -927,8 +925,17 @@ namespace Kaos.Collections
 
         /// <summary>Gets the index of the element with the supplied key.</summary>
         /// <param name="key">The key of the element to seek.</param>
-        /// <returns>The index of the element with the supplied key if found; otherwise the bitwise complement of the insert point.</returns>
-        /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
+        /// <returns>The index of the element with the supplied key if found; otherwise a negative value holding the bitwise complement of the insert point.</returns>
+        /// <remarks>
+        /// <para>
+        /// If the item is not found, apply the bitwise complement operator
+        /// (<see href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/bitwise-complement-operator">~</see>)
+        /// to the result to get the index of the next higher element.
+        /// </para>
+        /// <para>
+        /// This is a O(log <em>n</em>) operation.
+        /// </para>
+        /// </remarks>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
         public int IndexOfKey (TKey key)
         {
@@ -958,7 +965,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Removes a range of elements from the dictionary.</summary>
+        /// <summary>Removes an index range of elements from the dictionary.</summary>
         /// <param name="index">The zero-based starting index of the range of items to remove.</param>
         /// <param name="count">The number of items to remove.</param>
         /// <remarks>This is a O(log <em>n</em>) operation where <em>n</em> is <see cref="Count"/>.</remarks>
@@ -981,10 +988,19 @@ namespace Kaos.Collections
 
         /// <summary>Gets the value and index associated with the supplied key.</summary>
         /// <param name="key">The key of the value and index to get.</param>
-        /// <param name="value">If the key is found, its value is placed here; otherwise it will be loaded with the default value.</param>
-        /// <param name="index">If the key is found, its index is placed here; otherwise it will be less than zero.</param>
+        /// <param name="value">If the key is found, its value is placed here; otherwise it will hold the default value.</param>
+        /// <param name="index">If the key is found, its index is placed here; otherwise it will hold a negative value.</param>
         /// <returns><b>true</b> if supplied key is found; otherwise <b>false</b>.</returns>
-        /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
+        /// <remarks>
+        /// <para>
+        /// If the item is not found, apply the bitwise complement operator
+        /// (<see href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/bitwise-complement-operator">~</see>)
+        /// to <em>index</em> to get the index of the next higher item.
+        /// </para>
+        /// <para>
+        /// This is a O(log <em>n</em>) operation.
+        /// </para>
+        /// </remarks>
         public bool TryGetValueAndIndex (TKey key, out TValue value, out int index)
         {
             index = FindEdgeForIndex (key, out Leaf leaf, out int leafIx, leftEdge:true);
