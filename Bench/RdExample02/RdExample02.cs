@@ -7,15 +7,15 @@ namespace ExampleApp
     {
         static void Main()
         {
-            var d2 = new RankedDictionary<int,int>()
+            var dary = new RankedDictionary<int,int>()
             { [36] = 360, [12] = 120 };
 
             Console.WriteLine ("Keys:");
-            foreach (var key in d2.Keys)
+            foreach (var key in dary.Keys)
                 Console.WriteLine (key);
 
-            Console.WriteLine ("Values:");
-            foreach (var val in d2.Values)
+            Console.WriteLine ("\nValues:");
+            foreach (var val in dary.Values)
                 Console.WriteLine (val);
         }
 
@@ -24,6 +24,7 @@ namespace ExampleApp
         Keys:
         12
         36
+
         Values:
         120
         360
