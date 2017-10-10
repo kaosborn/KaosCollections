@@ -31,6 +31,7 @@ namespace Kaos.Collections
     /// <list type="bullet">
     /// <item><see cref="IndexOf"/></item>
     /// <item><see cref="RemoveAt"/></item>
+    /// <item><see cref="RemoveRange"/></item>
     /// </list>
     /// <para>Indexing also includes extension methods that have been directly implemented and optimized:</para>
     /// <list type="bullet">
@@ -179,7 +180,7 @@ namespace Kaos.Collections
         public void Clear() => Initialize();
 
 
-        /// <summary>Determines whether the set contains a supplied item.</summary>
+        /// <summary>Determines whether the set contains the supplied item.</summary>
         /// <param name="item">The item to locate in the set.</param>
         /// <returns><b>true</b> if the set contains <em>item</em>; otherwise <b>false</b>.</returns>
         public bool Contains (T item)
@@ -225,7 +226,7 @@ namespace Kaos.Collections
         { CopyKeysTo2 (array, index); }
 
 
-        /// <summary>Removes an item from the set.</summary>
+        /// <summary>Removes the supplied item from the set.</summary>
         /// <param name="item">The item to remove.</param>
         /// <returns><b>true</b> if <em>item</em> was found and removed; otherwise <b>false</b>.</returns>
         /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
@@ -240,7 +241,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Removes a range of elements from the set.</summary>
+        /// <summary>Removes an index range of items from the set.</summary>
         /// <param name="index">The zero-based starting index of the range of items to remove.</param>
         /// <param name="count">The number of items to remove.</param>
         /// <remarks>This is a O(log <em>n</em>) operation where <em>n</em> is <see cref="Count"/>.</remarks>
@@ -261,7 +262,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Removes all items that match the condition defined by the supplied predicate.</summary>
+        /// <summary>Removes all items that match the condition defined by the supplied predicate from the set.</summary>
         /// <param name="match">The condition of the items to remove.</param>
         /// <returns>The number of items removed from the set.</returns>
         /// <remarks>
@@ -839,15 +840,24 @@ namespace Kaos.Collections
 
         /// <summary>Gets the index of the supplied item.</summary>
         /// <param name="item">The item of the index to get.</param>
-        /// <returns>The index of <em>item</em> if found; otherwise the bitwise complement of the insert point.</returns>
-        /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
+        /// <returns>The index of <em>item</em> if found; otherwise a negative value holding the bitwise complement of the insert point.</returns>
+        /// <remarks>
+        /// <para>
+        /// If the item is not found, apply the bitwise complement operator
+        /// (<see href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/bitwise-complement-operator">~</see>)
+        /// to the result to get the index of the next higher item.
+        /// </para>
+        /// <para>
+        /// This is a O(log <em>n</em>) operation.
+        /// </para>
+        /// </remarks>
         public int IndexOf (T item)
         {
             return FindEdgeForIndex (item, out Leaf leaf, out int leafIndex, leftEdge:true);
         }
 
 
-        /// <summary>Removes the item at the supplied index.</summary>
+        /// <summary>Removes the item at the supplied index from the set.</summary>
         /// <param name="index">The zero-based position of the item to remove.</param>
         /// <para>
         /// After this operation, the position of all following items is reduced by one.
