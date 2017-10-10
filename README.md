@@ -26,21 +26,32 @@ This library is built as a .NET Standard project with multitargeting to:
 * .NET Framework 4.0.
 * .NET Framework 3.5.
 
-### Library download and installation
+### Installation
 
+To install using Package Manager:
+
+`Install-Package Kaos.Collections -Version 3.0.0`
+
+To install using the .NET CLI:
+
+`dotnet add package Kaos.Collections --version 3.0.0`
+
+To install using the Visual Studio gallery:
 1. Click **Manage NuGet Packages**.
 2. Select package source of **nuget.org**.
 3. Click **Browse** and input **Kaos.Collections**.
 4. The package should appear. Click **Install**.
-As a multitargeted package, the appropriate binary will be selected for your program.
+As a multitargeted package, the appropriate binary will be installed for your program.
 
-Direct downloads are also available at NuGet.org and GitHub.com:
+To install using a direct reference to a `.dll` binary:
+
+1. Download the `.nuget` package from either:
 
 https://www.nuget.org/packages/Kaos.Collections/
-
+-or-
 https://github.com/kaosborn/KaosCollections/releases/
 
-As archives, individual binaries may be extracted from the `.nuget` package for specific platforms.
+2. As archives, individual binaries may be extracted from the `.nuget` package for specific platforms.
 A project may then reference the extracted platform-specific `.dll` directly.
 
 ### Documentation
