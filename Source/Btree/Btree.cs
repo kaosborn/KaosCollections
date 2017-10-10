@@ -147,11 +147,6 @@ namespace Kaos.Collections
         }
 
 
-        // <summary>Perform traverse to leaf at index.</summary>
-        // <param name="treeIndex">On entry, holds index of collection; on exit holds index of leaf.</param>
-        // <returns>Leaf holding item at index position.</returns>
-        //
-
         /// <summary>Perform traverse to leaf at index.</summary>
         /// <param name="treeIndex">Index of collection.</param>
         /// <param name="leafIndex">Leaf index of result.</param>
