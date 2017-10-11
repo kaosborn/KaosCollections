@@ -21,13 +21,26 @@ namespace Kaos.Collections
     /// <remarks>
     /// <para>
     /// This class is similar to <see cref="RankedSet{T}"/> but with multiple occurrences of an item allowed.
-    /// Items that repeat are each stored individually rather than
-    /// once with a count of occurrences.
-    /// This allows RankedBag to be used as a multimap as well as the more typical multiset.
+    /// Items with multiple occurrences have each occurrence stored individually.
+    /// This flattened implementation allows <see cref="RankedBag{T}"/> to be used
+    /// as a multimap as well as the more typical multiset.
     /// Multimap usage requires supplying a user-defined comparer to the constructor.
     /// </para>
     /// <example>
+    /// <para>The first program shows some basic operations of this class.</para>
     /// <code source="..\Bench\RbExample01\RbExample01.cs" lang="cs" />
+    /// <para>
+    /// The next program shows using this class as a multimap.
+    /// Positions of each character are stored and displayed for a given string.
+    /// </para>
+    /// <code source="..\Bench\RbExample02\RbExample02.cs" lang="cs" />
+    /// <para>
+    /// Last is an example showing binary serialization round tripped.
+    /// </para>
+    /// <para>
+    /// Note: Serialization is not supported in .NET Standard 1.0.
+    /// </para>
+    /// <code source="..\Bench\RbExample05\RbExample05.cs" lang="cs" />
     /// </example>
     /// </remarks>
     [DebuggerTypeProxy (typeof (ICollectionDebugView<>))]
@@ -58,13 +71,9 @@ namespace Kaos.Collections
         /// <param name="comparer">The comparer to use for sorting items.</param>
         /// <example>
         /// <para>
-        /// This program shows usage of a custom comparer combined with serialization.
-        /// Here, this class is used as a multiset.
+        /// This program shows using this class as a multiset of case insensitive strings.
         /// </para>
-        /// <para>
-        /// Note: Serialization is not supported in .NET Standard 1.0.
-        /// </para>
-        /// <code source="..\Bench\RbExample05\RbExample05.cs" lang="cs" />
+        /// <code source="..\Bench\RbExample01\RbExample01.cs" lang="cs" />
         /// </example>
         /// <exception cref="InvalidOperationException">When <em>comparer</em> is <b>null</b> and no other comparer available.</exception>
         public RankedBag (IComparer<T> comparer) : base (comparer, new Leaf())
@@ -92,7 +101,7 @@ namespace Kaos.Collections
         /// </remarks>
         /// <example>
         /// This program shows using this class as a multimap.
-        /// <code source="..\Bench\RbExample02\RbExample02.cs" lang="cs" />
+        /// <code source="..\Bench\RbExample05\RbExample05.cs" lang="cs" />
         /// </example>
         /// <exception cref="ArgumentNullException">When <em>collection</em> is <b>null</b>.</exception>
         /// <exception cref="InvalidOperationException">When <em>comparer</em> is <b>null</b> and no other comparer available.</exception>
@@ -130,7 +139,7 @@ namespace Kaos.Collections
         /// </remarks>
         public IComparer<T> Comparer => keyComparer;
 
-        /// <summary>Gets the number of items in the bag.</summary>
+        /// <summary>Gets the total number of occurrences of all items in the bag.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
         public int Count => root.Weight;
 
@@ -165,7 +174,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Adds the supplied number of copies of the supplied item to the bag.</summary>
+        /// <summary>Adds a supplied number of occurrences of the supplied item to the bag.</summary>
         /// <param name="item">The item to add.</param>
         /// <param name="count">The number of copies to add.</param>
         /// <returns><b>true</b> if <em>item</em> was not already in the bag; otherwise <b>false</b>.</returns>
@@ -235,6 +244,7 @@ namespace Kaos.Collections
         /// <summary>Determines whether the bag is a subset of the supplied collection.</summary>
         /// <param name="other">The collection to compare to this bag.</param>
         /// <returns><b>true</b> if the bag is a subset of <em>other</em>; otherwise <b>false</b>.</returns>
+        /// <remarks>This is a O(log<em>m</em> operation where <em>m</em> is the size of <em>other</em>.</remarks>
         /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         public bool ContainsAll (IEnumerable<T> other)
         {
@@ -369,12 +379,15 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Gets the index of the first occurrence of supplied item.</summary>
+        /// <summary>Gets the index of the first occurrence of the supplied item.</summary>
         /// <param name="item">The item of the index to get.</param>
-        /// <returns>The index of <em>item</em> if found; otherwise the bitwise complement of the insert point.</returns>
+        /// <returns>The index of <em>item</em> if found; otherwise a negative value holding the bitwise complement of the insert point.</returns>
         /// <remarks>
         /// <para>
-        /// Items with multiple occurrences will return the item with the lowest index.
+        /// Items with multiple occurrences will return the occurrence with the lowest index.
+        /// If the item is not found, apply the bitwise complement operator
+        /// (<see href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/bitwise-complement-operator">~</see>)
+        /// to the result to get the index of the next higher item.
         /// </para>
         /// <para>
         /// This is a O(log <em>n</em>) operation.
@@ -386,12 +399,12 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Removes all occurences an item from the bag.</summary>
+        /// <summary>Removes all occurrences of the supplied item from the bag.</summary>
         /// <param name="item">The item to remove.</param>
         /// <returns><b>true</b> if any items were removed; otherwise <b>false</b>.</returns>
         /// <remarks>
         /// <para>
-        /// To remove only one item, use <see cref="Remove(T, int)"/>.
+        /// To limit a remove to a single occurrences of an item, use <see cref="Remove(T, int)"/>.
         /// </para>
         /// <para>
         /// This is a O(log <em>n</em>) operation where <em>n</em> is <see cref="Count"/>.
@@ -434,10 +447,10 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Removes a supplied number of items from the bag.</summary>
+        /// <summary>Removes a supplied number of occurrences of the supplied item from the bag.</summary>
         /// <param name="item">The item to remove.</param>
-        /// <param name="count">The number of items to remove.</param>
-        /// <returns>The number of items actually removed.</returns>
+        /// <param name="count">The number of occurrences to remove.</param>
+        /// <returns>The number of occurrences actually removed.</returns>
         /// <remarks>
         /// <para>
         /// For items with multiple occurrences, lowest indexed items are removed first.
@@ -456,10 +469,18 @@ namespace Kaos.Collections
 
 
         /// <summary>
-        ///  Remove all items of the bag that are in the supplied collection.
+        /// Removes all elements that are in the supplied collection from the bag.
         /// </summary>
-        /// <param name="other">The items to remove.</param>
-        /// <returns>The number of items removed from the bag.</returns>
+        /// <param name="other">The elements to remove.</param>
+        /// <returns>The number of elements removed from the bag.</returns>
+        /// <remarks>
+        /// Cardinality is respected by this operation so that
+        /// the occurrences of each item removed is the number of occurrences of that item in <em>other</em>.
+        /// In precise terms,
+        /// this operation removes min(<em>m</em>,<em>n</em>) occurrences of item
+        /// where the bag contains <em>n</em> occurrences
+        /// and <em>other</em> contains <em>m</em> occurrences.
+        /// </remarks>
         /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
         public int RemoveAll (IEnumerable<T> other)
         {
@@ -483,11 +504,11 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Removes the item at the supplied index.</summary>
+        /// <summary>Removes the element at the supplied index from the bag.</summary>
         /// <param name="index">The zero-based position of the item to remove.</param>
         /// <remarks>
         /// <para>
-        /// After this operation, the position of all following items is reduced by one.
+        /// After this operation, the index of all following items is reduced by one.
         /// </para>
         /// <para>
         /// This is a O(log <em>n</em>) operation.
@@ -503,7 +524,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Removes a range of elements from the bag.</summary>
+        /// <summary>Removes an index range of elements from the bag.</summary>
         /// <param name="index">The zero-based starting index of the range of items to remove.</param>
         /// <param name="count">The number of items to remove.</param>
         /// <remarks>This is a O(log <em>n</em>) operation where <em>n</em> is <see cref="Count"/>.</remarks>
@@ -524,12 +545,12 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Removes all items that match the condition defined by the supplied predicate.</summary>
+        /// <summary>Removes all elements that match the condition defined by the supplied predicate from the bag.</summary>
         /// <param name="match">The condition of the items to remove.</param>
-        /// <returns>The number of items removed from the bag.</returns>
+        /// <returns>The number of elements removed from the bag.</returns>
         /// <remarks>
         /// This is a O(<em>n</em> log <em>m</em>) operation
-        /// where <em>m</em> is the count of items removed and <em>n</em> is the size of the bag.
+        /// where <em>m</em> is the count of items removed and <em>n</em> is <see cref="Count"/>.
         /// </remarks>
         /// <exception cref="ArgumentNullException">When <em>match</em> is <b>null</b>.</exception>
         /// <exception cref="InvalidOperationException">When the collection is updated from the supplied predicate.</exception>
@@ -539,13 +560,17 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Remove any items of the bag that are not in the supplied collection.</summary>
-        /// <param name="other">The items to retain.</param>
+        /// <summary>Removes any elements that are not in the supplied collection from the bag.</summary>
+        /// <param name="other">The elements to retain.</param>
+        /// <returns>The number of elements removed from the bag.</returns>
         /// <remarks>
-        /// Cardinality is respected by this operation so that
-        /// the occurrences of each item removed is the count of that item in <em>other</em>.
+        /// Cardinality is respected by this operation so that the occurrences
+        /// of each item retained is the number of occurrences of that item in <em>other</em>.
+        /// In precise terms,
+        /// this operation removes max(<em>n</em>-<em>m</em>,0) occurrences of a given item
+        /// where the bag contains <em>n</em> occurrences
+        /// and <em>other</em> contains <em>m</em> occurrences.
         /// </remarks>
-        /// <returns>The total number of items removed from the bag.</returns>
         /// <example>
         /// <code source="..\Bench\RbExample01\RbExample01.cs" lang="cs" />
         /// </example>
@@ -710,7 +735,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Gets the last item.</summary>
+        /// <summary>Gets the last occurrence of the last item.</summary>
         /// <returns>The item sorted to the end of the bag.</returns>
         /// <remarks>This is a O(1) operation.</remarks>
         /// <exception cref="InvalidOperationException">When the collection is empty.</exception>
@@ -729,9 +754,14 @@ namespace Kaos.Collections
         /// <summary>Returns an enumerator that iterates thru the distinct items of the bag.</summary>
         /// <returns>An enumerator that iterates thru distinct items.</returns>
         /// <remarks>
+        /// <para>
+        /// For items with multiple occurrences, the oldest occurrences are returned.
+        /// </para>
+        /// <para>
         /// This is a O(<em>m</em> log <em>n</em>) operation
         /// where <em>m</em> is the distinct item count
         /// and <em>n</em> is <see cref="Count"/>.
+        /// </para>
         /// </remarks>
         public IEnumerable<T> Distinct()
         {
@@ -768,7 +798,7 @@ namespace Kaos.Collections
         /// <summary>Returns an enumerator that iterates over a range with the supplied bounds.</summary>
         /// <param name="lower">Minimum item value of the range.</param>
         /// <param name="upper">Maximum item value of the range.</param>
-        /// <returns>An enumerator for the specified range.</returns>
+        /// <returns>An enumerator for the supplied range.</returns>
         /// <remarks>
         /// <para>
         /// If either <em>lower</em> or <em>upper</em> are present in the bag,
@@ -813,7 +843,7 @@ namespace Kaos.Collections
 
         /// <summary>Returns an enumerator that iterates over a range with the supplied lower bound.</summary>
         /// <param name="lower">Minimum of the range.</param>
-        /// <returns>An enumerator for the specified range.</returns>
+        /// <returns>An enumerator for the supplied range.</returns>
         /// <remarks>
         /// <para>
         /// If <em>item</em> is present in the bag, it will be included in the results.
@@ -851,7 +881,7 @@ namespace Kaos.Collections
         /// <summary>Returns an enumerator that iterates over a range with the supplied index bounds.</summary>
         /// <param name="lowerIndex">Minimum index of the range.</param>
         /// <param name="upperIndex">Maximum index of the range.</param>
-        /// <returns>An enumerator for the specified index range.</returns>
+        /// <returns>An enumerator for the supplied index range.</returns>
         /// <remarks>
         /// <para>
         /// Index bounds are inclusive.
