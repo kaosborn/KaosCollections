@@ -28,8 +28,8 @@ namespace Kaos.Collections
     /// </para>
     /// <example>
     /// <para>The first program shows some basic operations of this class.</para>
-    /// <code source="..\Bench\RbExample01\RbExample01.cs" lang="cs" />
     /// <para>
+    /// <code source="..\Bench\RbExample01\RbExample01.cs" lang="cs" />
     /// The next program shows using this class as a multimap.
     /// Positions of each character are stored and displayed for a given string.
     /// </para>
@@ -99,10 +99,6 @@ namespace Kaos.Collections
         /// <remarks>
         /// This constructor is a O(<em>n</em> log <em>n</em>) operation, where <em>n</em> is the size of <em>collection</em>.
         /// </remarks>
-        /// <example>
-        /// This program shows using this class as a multimap.
-        /// <code source="..\Bench\RbExample05\RbExample05.cs" lang="cs" />
-        /// </example>
         /// <exception cref="ArgumentNullException">When <em>collection</em> is <b>null</b>.</exception>
         /// <exception cref="InvalidOperationException">When <em>comparer</em> is <b>null</b> and no other comparer available.</exception>
         public RankedBag (IEnumerable<T> collection, IComparer<T> comparer) : this (comparer)

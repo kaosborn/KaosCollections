@@ -63,7 +63,11 @@ namespace Kaos.Collections
     /// </para>
     /// </remarks>
     /// <example>
+    /// <para>First is an example of some common operations of this class.</para>
     /// <code source="..\Bench\RdExample01\RdExample01.cs" lang="cs" />
+    /// <para>Next is an example showing binary serialization round tripped.</para>
+    /// <para>Note: Serialization is not supported in .NET Standard 1.0.</para>
+    /// <code source="..\Bench\RdExample05\RdExample05.cs" lang="cs" />
     /// </example>
     [DebuggerTypeProxy (typeof (IDictionaryDebugView<,>))]
     [DebuggerDisplay ("Count = {Count}")]

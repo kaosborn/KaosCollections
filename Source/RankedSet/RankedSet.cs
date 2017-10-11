@@ -49,7 +49,11 @@ namespace Kaos.Collections
     /// </para>
     /// </remarks>
     /// <example>
+    /// <para>This program shows some basic operations of this class.</para>
     /// <code source="..\Bench\RsExample01\RsExample01.cs" lang="cs" />
+    /// <para>Next is an example showing binary serialization round tripped.</para>
+    /// <para>Note: Serialization is not supported in .NET Standard 1.0.</para>
+    /// <code source="..\Bench\RsExample05\RsExample05.cs" lang="cs" />
     /// </example>
     [DebuggerTypeProxy (typeof (ICollectionDebugView<>))]
     [DebuggerDisplay ("Count = {Count}")]
@@ -80,9 +84,8 @@ namespace Kaos.Collections
         /// <summary>Initializes a new set instance that uses the supplied comparer.</summary>
         /// <param name="comparer">The comparer to use for sorting items.</param>
         /// <example>
-        /// This program shows usage of a custom comparer combined with serialization.
-        /// Note: Serialization is not supported in .NET Standard 1.0.
-        /// <code source="..\Bench\RsExample05\RsExample05.cs" lang="cs" />
+        /// This program shows usage of a custom comparer for case insensitivity.
+        /// <code source="..\Bench\RsExample01\RsExample01.cs" lang="cs" />
         /// </example>
         /// <exception cref="InvalidOperationException">When <em>comparer</em> is <b>null</b> and no other comparer available.</exception>
         public RankedSet (IComparer<T> comparer) : base (comparer, new Leaf())
@@ -880,6 +883,9 @@ namespace Kaos.Collections
 
         /// <summary>Returns an equality comparer that can be used to create a collection that contains sets.</summary>
         /// <returns>An equality comparer for creating a collection of sets.</returns>
+        /// <example>
+        /// <code source="..\Bench\RsExample06\RsExample06.cs" lang="cs" />
+        /// </example>
         public static IEqualityComparer<RankedSet<T>> CreateSetComparer()
         {
             return CreateSetComparer (null);
