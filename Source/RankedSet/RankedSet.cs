@@ -248,6 +248,10 @@ namespace Kaos.Collections
         /// <param name="index">The zero-based starting index of the range of items to remove.</param>
         /// <param name="count">The number of items to remove.</param>
         /// <remarks>This is a O(log <em>n</em>) operation where <em>n</em> is <see cref="Count"/>.</remarks>
+        /// <example>
+        /// <para>Here, this method is is used to truncate a set.</para>
+        /// <code source="..\Bench\RsExample01\RsExample01.cs" lang="cs"/>
+        /// </example>
         /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> or <em>count</em> is less than zero.</exception>
         /// <exception cref="ArgumentException">When <em>index</em> and <em>count</em> do not denote a valid range of items in the set.</exception>
         public void RemoveRange (int index, int count)
@@ -272,6 +276,10 @@ namespace Kaos.Collections
         /// This is a O(<em>n</em> log <em>m</em>) operation
         /// where <em>m</em> is the number of items removed and <em>n</em> is <see cref="Count"/>.
         /// </remarks>
+        /// <example>
+        /// <para>Here, this method is is used to remove strings containing a space.</para>
+        /// <code source="..\Bench\RsExample01\RsExample01.cs" lang="cs"/>
+        /// </example>
         /// <exception cref="ArgumentNullException">When <em>match</em> is <b>null</b>.</exception>
         public int RemoveWhere (Predicate<T> match)
         {
