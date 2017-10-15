@@ -1,40 +1,36 @@
 ![logo](Images/KaosCollections-218.png)
 # KaosCollections
 
-### Overview
-
 KaosCollections is a .NET library that provides generic collection classes
 for storing elements that are both sorted and indexed.
-By using an advanced underlying data structure, these classes provide
-superior performance to their Microsoft Base Class Library (BCL) counterparts
-while delivering greatly enhanced capability.
+Based on order statistic B+ trees,
+these classes fully emulate Microsoft's Base Class Library (BCL) counterparts (SortedDictionary and SortedSet)
+while delivering superior performance and greatly enhanced capability.
+Also includes a multiset class.
+All classes provide getting elements by index, getting the index of an element, range removal by index, range enumeration, and more.
 
-The primary classes provided are:
+Primary types provided are:
 
 * `RankedDictionary<TKey,TValue>` - for collections of key/value pairs with distinct keys that can be accessed in sort order or by index.
 * `RankedSet<T>` - for collections of distinct items that can be accessed in sort order or by index.
 * `RankedBag<T>` - for collections of items that can be accessed in sort order or by index. Also known as multisets.
 
-Both `RankedDictionary` and `RankedSet` closely emulate the API of their BCL counterparts
-(`SortedDictionary` and `SortedSet`) while `RankedBag` has no BCL counterpart.
-All three classes include indexing capabilities such determining the index of an element or getting elements by index.
-
 This library is built as a .NET Standard project with multitargeting to:
 
-* .NET Standard 1.0.
-* .NET Framework 4.5.
-* .NET Framework 4.0.
-* .NET Framework 3.5.
+* .NET Standard 1.0
+* .NET Framework 4.5
+* .NET Framework 4.0
+* .NET Framework 3.5
 
 ### Installation
 
 To install using Package Manager:
 
-`Install-Package Kaos.Collections -Version 3.0.0`
+* **`Install-Package Kaos.Collections -Version 3.0.0`**
 
 To install using the .NET CLI:
 
-`dotnet add package Kaos.Collections --version 3.0.0`
+* **`dotnet add package Kaos.Collections --version 3.0.0`**
 
 To install using the Visual Studio gallery:
 1. Click **Manage NuGet Packages**.
@@ -47,39 +43,43 @@ To install using a direct reference to a `.dll` binary:
 
 1. Download the `.nuget` package from either:
 
-https://www.nuget.org/packages/Kaos.Collections/
--or-
-https://github.com/kaosborn/KaosCollections/releases/
+   * https://www.nuget.org/packages/Kaos.Collections/
+   * https://github.com/kaosborn/KaosCollections/releases/
 
 2. As archives, individual binaries may be extracted from the `.nuget` package for specific platforms.
 A project may then reference the extracted platform-specific `.dll` directly.
 
 ### Documentation
 
-Installing as a NuGet package will provide IntelliSense and object browser documentation as a `.xml` file.
+Installing as a NuGet package will provide IntelliSense and object browser documentation from the `.xml` file.
 For complete documentation, see:
 
-https://kaosborn.github.io/help/KaosCollections/
+* https://kaosborn.github.io/help/KaosCollections/
 
-An offline version of this documentation is also provided as a `.chm` file:
+An offline version of this documentation is also provided as a `.chm` file.
+This file may need to be unblocked using the file properties dialog:
 
-https://github.com/kaosborn/KaosCollections/releases/
+* https://github.com/kaosborn/KaosCollections/releases/
 
-Benchmarks and examples may be viewed here:
+Examples, benchmarks, and roadmap may be viewed here:
 
-https://github.com/kaosborn/KaosCollections/wiki/
+* https://github.com/kaosborn/KaosCollections/wiki/
 
-### Status
+### Build
 
-This project is stable and code complete.
+Complete source code with embedded XML documentation is hosted at GitHub:
 
-### Build environment
+* https://github.com/kaosborn/KaosCollections/releases/
 
-Complete source code with embedded XML documentation is hosted at GitHub.com.
-Building the solution requires Visual Studio 2017 Community Edition or greater.
-Building documentation requires Sandcastle Help File Builder.
+Building the library requires Visual Studio 2017 Community Edition or greater:
 
-### Repository layout
+* https://www.visualstudio.com/downloads/
+
+Building documentation requires Sandcastle Help File Builder:
+
+* https://github.com/EWSoftware/SHFB/releases/
+
+### Layout
 
 This repository is a single Visual Studio solution with additional files in the root.
 
