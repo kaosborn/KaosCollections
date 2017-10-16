@@ -1,51 +1,47 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="90402bce-1f31-45f8-b0ea-0a73408bd45a" revisionNumber="1">
   <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+
     <section>
-      <title>KaosCollections release history</title>
+      <title>KwCollections version 2.1.0 (2012-03-06)</title>
       <content>
-        <para>Version 3.0.0 (2017-10-01)</para>
         <list class="bullet">
+          <listItem>Adds support for range queries.</listItem>
+          <listItem>Adds optimized implementation of <codeInline>Last()</codeInline>.</listItem>
+        </list>
+      </content>
+    </section>
+
+    <section>
+      <title>KwCollections version 2.1.1 (2012-03-28)</title>
+      <content>
+        <list class="bullet">
+          <listItem>Removes possible code coverage artifacts from <codeInline>.dll</codeInline> file.</listItem>
+          <listItem>Initial release of documentation.</listItem>
+        </list>
+      </content>
+    </section>
+
+    <section>
+      <title>KaosCollections version 3.0.0 (2017-10-01)</title>
+      <content>
+        <para>
+          This release updates tooling to 2017.
+          The new .NET Standard has been embraced for compatibility and future-proofing.
+          Development now requires Visual Studio 2017 with the repository changed to Git.
+          Binary now hosted at NuGet.org.
+        </para>
+        <list class="bullet">
+          <listItem>Renames root namespace from <codeInline>Kw</codeInline> to <codeInline>Kaos</codeInline>.</listItem>
+          <listItem>Changes binary to .NET Standard 1.0 multitargeted to .NET 4.5, 4.0, 3.5.</listItem>
           <listItem>
-            <para>Change root namespace from <codeInline>Kw</codeInline> to <codeInline>Kaos</codeInline>.</para>
-          </listItem>
-          <listItem>
-            <para>Change build to .NET Standard 1.0 multitargeted to .NET 4.5, 4.0, 3.5.</para>
-          </listItem>
-          <listItem>
-            <para>
-              Rename <codeInline>BtreeDictionary</codeInline> class to <codeInline>RankedDictionary</codeInline>
+              Renames <codeInline>BtreeDictionary</codeInline> class to <codeInline>RankedDictionary</codeInline>
               with improved <codeInline>SortedDictionary</codeInline> emulation
               and enhance with partial <codeInline>SortedList</codeInline> emulation.
-          </para>
           </listItem>
-          <listItem>
-            <para>Add <codeInline>RankedSet</codeInline> generic class which emulates <codeInline>SortedSet</codeInline> with indexing.</para>
-          </listItem>
-          <listItem>
-            <para>Add <codeInline>RankedBag</codeInline> generic class which provides a sorted and indexed multiset.</para>
-          </listItem>
-          <listItem>
-            <para>Optimize many operations for time and space.</para>
-          </listItem>
-        </list>
-        <para>Version 2.1.1 (2012-03-28)</para>
-        <list class="bullet">
-          <listItem>
-            <para>Remove possible code coverage artifacts from <codeInline>.dll</codeInline> file.</para>
-          </listItem>
-          <listItem>
-            <para>Initial release of documentation.</para>
-          </listItem>
-        </list>
-        <para>Version 2.1.0 (2012-03-06)</para>
-        <list class="bullet">
-          <listItem>
-            <para>Add support for range queries.</para>
-          </listItem>
-          <listItem>
-            <para>Add optimized implementation of <codeInline>Last()</codeInline>.</para>
-          </listItem>
+          <listItem>Add <codeInline>RankedSet</codeInline> generic class which emulates <codeInline>SortedSet</codeInline> with indexing.</listItem>
+          <listItem>Adds <codeInline>RankedBag</codeInline> generic class which provides a sorted and indexed multiset.</listItem>
+          <listItem>Optimizes many operations for time and space.</listItem>
         </list>
       </content>
     </section>
