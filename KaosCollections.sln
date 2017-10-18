@@ -67,8 +67,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RsChart04B", "Bench\RsChart
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RsChart04A", "Bench\RsChart04A\RsChart04A.csproj", "{7A3A42FF-EC4D-49A7-A70E-8666CDABF379}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test462", "Test462\Test462.csproj", "{60791116-D472-4225-9116-F5C7C847E68B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Collections462", "Collections462\Collections462.csproj", "{C385FAA0-382E-46E6-9557-3E1760EDAAB0}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "RankedBag", "Source\RankedBag\RankedBag.shproj", "{F7B692F7-C69C-4791-B3AF-6727BB08E016}"
@@ -99,6 +97,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{81515E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RsExample06", "Bench\RsExample06\RsExample06.csproj", "{95D44882-0087-4401-A631-A57ADCCBFDA5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test461", "Test461\Test461.csproj", "{00D9F125-A4DD-434C-8EE2-ABAB5AF1EFDD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Collections461", "Collections461\Collections461.csproj", "{FB547C0B-556F-4D84-BF48-9DA674832089}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Source\RankedCollection\RankedCollection.projitems*{2de71c06-f684-4903-96ac-87215caaad5c}*SharedItemsImports = 13
@@ -111,6 +113,11 @@ Global
 		Source\RankedDictionary\RankedDictionary.projitems*{d1e37c27-b068-4f2e-8603-f8f5495b3330}*SharedItemsImports = 13
 		Source\Btree\Btree.projitems*{f46832d9-2950-47b9-bb68-42ee79668f61}*SharedItemsImports = 13
 		Source\RankedBag\RankedBag.projitems*{f7b692f7-c69c-4791-b3af-6727bb08e016}*SharedItemsImports = 13
+		Source\Btree\Btree.projitems*{fb547c0b-556f-4d84-bf48-9da674832089}*SharedItemsImports = 4
+		Source\RankedBag\RankedBag.projitems*{fb547c0b-556f-4d84-bf48-9da674832089}*SharedItemsImports = 4
+		Source\RankedCollection\RankedCollection.projitems*{fb547c0b-556f-4d84-bf48-9da674832089}*SharedItemsImports = 4
+		Source\RankedDictionary\RankedDictionary.projitems*{fb547c0b-556f-4d84-bf48-9da674832089}*SharedItemsImports = 4
+		Source\RankedSet\RankedSet.projitems*{fb547c0b-556f-4d84-bf48-9da674832089}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -223,10 +230,6 @@ Global
 		{7A3A42FF-EC4D-49A7-A70E-8666CDABF379}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A3A42FF-EC4D-49A7-A70E-8666CDABF379}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A3A42FF-EC4D-49A7-A70E-8666CDABF379}.Release|Any CPU.Build.0 = Release|Any CPU
-		{60791116-D472-4225-9116-F5C7C847E68B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{60791116-D472-4225-9116-F5C7C847E68B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{60791116-D472-4225-9116-F5C7C847E68B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{60791116-D472-4225-9116-F5C7C847E68B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C385FAA0-382E-46E6-9557-3E1760EDAAB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C385FAA0-382E-46E6-9557-3E1760EDAAB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C385FAA0-382E-46E6-9557-3E1760EDAAB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -263,6 +266,14 @@ Global
 		{95D44882-0087-4401-A631-A57ADCCBFDA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95D44882-0087-4401-A631-A57ADCCBFDA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95D44882-0087-4401-A631-A57ADCCBFDA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00D9F125-A4DD-434C-8EE2-ABAB5AF1EFDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00D9F125-A4DD-434C-8EE2-ABAB5AF1EFDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00D9F125-A4DD-434C-8EE2-ABAB5AF1EFDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00D9F125-A4DD-434C-8EE2-ABAB5AF1EFDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB547C0B-556F-4D84-BF48-9DA674832089}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB547C0B-556F-4D84-BF48-9DA674832089}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB547C0B-556F-4D84-BF48-9DA674832089}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB547C0B-556F-4D84-BF48-9DA674832089}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
