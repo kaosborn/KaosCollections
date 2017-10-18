@@ -67,8 +67,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RsChart04B", "Bench\RsChart
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RsChart04A", "Bench\RsChart04A\RsChart04A.csproj", "{7A3A42FF-EC4D-49A7-A70E-8666CDABF379}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Collections462", "Collections462\Collections462.csproj", "{C385FAA0-382E-46E6-9557-3E1760EDAAB0}"
-EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "RankedBag", "Source\RankedBag\RankedBag.shproj", "{F7B692F7-C69C-4791-B3AF-6727BB08E016}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "RankedCollection", "Source\RankedCollection\RankedCollection.shproj", "{2DE71C06-F684-4903-96AC-87215CAAAD5C}"
@@ -104,11 +102,6 @@ EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Source\RankedCollection\RankedCollection.projitems*{2de71c06-f684-4903-96ac-87215caaad5c}*SharedItemsImports = 13
-		Source\Btree\Btree.projitems*{c385faa0-382e-46e6-9557-3e1760edaab0}*SharedItemsImports = 4
-		Source\RankedBag\RankedBag.projitems*{c385faa0-382e-46e6-9557-3e1760edaab0}*SharedItemsImports = 4
-		Source\RankedCollection\RankedCollection.projitems*{c385faa0-382e-46e6-9557-3e1760edaab0}*SharedItemsImports = 4
-		Source\RankedDictionary\RankedDictionary.projitems*{c385faa0-382e-46e6-9557-3e1760edaab0}*SharedItemsImports = 4
-		Source\RankedSet\RankedSet.projitems*{c385faa0-382e-46e6-9557-3e1760edaab0}*SharedItemsImports = 4
 		Source\RankedSet\RankedSet.projitems*{c39a213b-5aae-4c05-8ca8-946331511d0d}*SharedItemsImports = 13
 		Source\RankedDictionary\RankedDictionary.projitems*{d1e37c27-b068-4f2e-8603-f8f5495b3330}*SharedItemsImports = 13
 		Source\Btree\Btree.projitems*{f46832d9-2950-47b9-bb68-42ee79668f61}*SharedItemsImports = 13
@@ -230,10 +223,6 @@ Global
 		{7A3A42FF-EC4D-49A7-A70E-8666CDABF379}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A3A42FF-EC4D-49A7-A70E-8666CDABF379}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A3A42FF-EC4D-49A7-A70E-8666CDABF379}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C385FAA0-382E-46E6-9557-3E1760EDAAB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C385FAA0-382E-46E6-9557-3E1760EDAAB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C385FAA0-382E-46E6-9557-3E1760EDAAB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C385FAA0-382E-46E6-9557-3E1760EDAAB0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A170E1BC-F876-49B8-A946-2B5481A43B5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A170E1BC-F876-49B8-A946-2B5481A43B5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A170E1BC-F876-49B8-A946-2B5481A43B5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
