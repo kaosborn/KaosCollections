@@ -4,9 +4,9 @@
 KaosCollections is a .NET library that provides generic collection classes
 for storing elements that are both sorted and indexed.
 Based on order statistic B+ trees,
-these classes fully emulate Microsoft's Base Class Library (BCL) counterparts (SortedDictionary and SortedSet)
-while delivering superior performance and greatly enhanced capability.
-Also includes a multiset class.
+the classes that emulate Microsoft's SortedDictionary and SortedSet
+provide greater capability than their counterparts while outperforming them for large collection sizes.
+Also included is a multiset class.
 All classes provide getting elements by index, getting the index of an element, range removal by index, range enumeration, and more.
 
 Primary types provided are:
@@ -22,7 +22,7 @@ This library is built as a .NET Standard project with multitargeting to:
 * .NET Framework 4.0
 * .NET Framework 3.5
 
-### Installation
+### Library installation
 
 To install using Package Manager:
 
