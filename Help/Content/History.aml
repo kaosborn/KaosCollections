@@ -37,9 +37,9 @@
           <listItem>
               Renames <codeInline>BtreeDictionary</codeInline> class to <codeInline>RankedDictionary</codeInline>
               with improved <codeInline>SortedDictionary</codeInline> emulation
-              and enhance with partial <codeInline>SortedList</codeInline> emulation.
+              and enhanced with partial <codeInline>SortedList</codeInline> emulation.
           </listItem>
-          <listItem>Add <codeInline>RankedSet</codeInline> generic class which emulates <codeInline>SortedSet</codeInline> with indexing.</listItem>
+          <listItem>Adds <codeInline>RankedSet</codeInline> generic class which emulates <codeInline>SortedSet</codeInline> with indexing.</listItem>
           <listItem>Adds <codeInline>RankedBag</codeInline> generic class which provides a sorted and indexed multiset.</listItem>
           <listItem>Optimizes many operations for time and space.</listItem>
         </list>
