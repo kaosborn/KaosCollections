@@ -79,7 +79,7 @@ Building documentation requires Sandcastle Help File Builder:
 
 * https://github.com/EWSoftware/SHFB/releases/
 
-### Layout
+### Repository layout
 
 This repository is a single Visual Studio solution with additional files in the root.
 
