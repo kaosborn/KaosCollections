@@ -12,7 +12,7 @@
         All classes provide getting elements by index, getting the index of an element, range removal by index, range enumeration, and more.
       </para>
       <para>
-        The primary classes provided are:
+        The primary types provided are:
       </para>
       <list class="bullet">
         <listItem>
@@ -28,13 +28,6 @@
             for collections of items that can be accessed in sort order or by index. Also known as multisets.
         </listItem>
       </list>
-      <para>
-        Both <codeInline>RankedDictionary</codeInline> and <codeInline>RankedSet</codeInline> closely emulate the API of their BCL counterparts
-        (<codeEntityReference qualifyHint="false">T:System.Collections.Generic.SortedDictionary`2</codeEntityReference> and
-        <codeEntityReference qualifyHint="false">T:System.Collections.Generic.SortedSet`1</codeEntityReference>)
-        while <codeInline>RankedBag</codeInline> has no BCL counterpart.
-        All three classes include indexing capabilities such as determining the index of an element or getting elements by index.
-      </para>
       <para>
         This library is built as a .NET Standard project with multitargeting to:
       </para>
@@ -60,7 +53,7 @@
     </introduction>
 
     <section>
-      <title>Installation</title>
+      <title>Library installation</title>
       <content>
         <para>To install using Package Manager:</para>
         <list class="bullet">
@@ -148,7 +141,8 @@ A project may then reference the extracted platform-specific <codeInline>.dll</c
       <title>Build</title>
       <content>
         <para>
-          Complete source code with embedded XML documentation is hosted at GitHub:
+          Complete source code with embedded XML documentation is hosted at GitHub.
+          This repository is a single Visual Studio solution with additional files in the root:
           <list class="bullet">
             <listItem>
               <externalLink>
