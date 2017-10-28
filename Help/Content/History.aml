@@ -46,6 +46,20 @@
       </content>
     </section>
 
+    <section>
+      <title>KaosCollections version 3.0.0.2 (2017-10-31)</title>
+      <content>
+        <para>
+          This is a minor release that updates documentation only.
+        </para>
+        <list class="bullet">
+          <listItem>
+            Updates documentation.
+          </listItem>
+        </list>
+      </content>
+    </section>
+
     <relatedTopics>
       <link xlink:href="bd99e66d-09ef-4adc-89eb-db2aaf89e8ad" />
     </relatedTopics>
