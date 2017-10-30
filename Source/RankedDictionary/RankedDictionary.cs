@@ -69,7 +69,7 @@ namespace Kaos.Collections
     /// <para>Note: Serialization is not supported in .NET Standard 1.0.</para>
     /// <code source="..\Bench\RdExample05\RdExample05.cs" lang="cs" />
     /// </example>
-    [DebuggerTypeProxy (typeof (IDictionaryDebugView<,>))]
+    [DebuggerTypeProxy (typeof (ICollectionDebugView<,>))]
     [DebuggerDisplay ("Count = {Count}")]
 #if NET35 || NET40 || NET45 || SERIALIZE
     [Serializable]

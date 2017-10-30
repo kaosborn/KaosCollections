@@ -1,6 +1,6 @@
 ﻿//
 // Library: KaosCollections
-// File:    IDictionaryDebugView.cs
+// File:    ICollectionKvDebugView.cs
 //
 // Copyright © 2009-2017 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely
@@ -15,15 +15,15 @@ namespace Kaos.Collections
 #if ! NET35 && ! NETSTANDARD1_0
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
 #endif
-    internal class IDictionaryDebugView<K,V>
+    internal class ICollectionDebugView<K,V>
     {
-        private readonly IDictionary<K,V> target;
+        private readonly ICollection<KeyValuePair<K,V>> target;
 
-        public IDictionaryDebugView (IDictionary<K,V> dictionary)
+        public ICollectionDebugView (ICollection<KeyValuePair<K,V>> collection)
         {
-            if (dictionary == null)
-                throw new ArgumentNullException (nameof (dictionary));
-            this.target = dictionary;
+            if (collection == null)
+                throw new ArgumentNullException (nameof (collection));
+            this.target = collection;
         }
 
         [DebuggerBrowsable (DebuggerBrowsableState.RootHidden)]
