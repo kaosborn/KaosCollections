@@ -98,7 +98,7 @@ namespace Kaos.Collections
         #region Constructors
 
         /// <summary>Initializes a new dictionary instance using the default key comparer.</summary>
-        public RankedDictionary() : base (Comparer<TKey>.Default, new PairLeaf())
+        public RankedDictionary() : base (Comparer<TKey>.Default, new PairLeaf<TValue>())
         { }
 
 
@@ -121,7 +121,7 @@ namespace Kaos.Collections
         /// <code source="..\Bench\RdExample05\RdExample05.cs" lang="cs" />
         /// </example>
         /// <exception cref="InvalidOperationException">When <em>comparer</em> is <b>null</b> and no other comparer available.</exception>
-        public RankedDictionary (IComparer<TKey> comparer) : base (comparer, new PairLeaf())
+        public RankedDictionary (IComparer<TKey> comparer) : base (comparer, new PairLeaf<TValue>())
         { }
 
         /// <summary>Initializes a new dictionary instance that contains key/value pairs copied from the supplied dictionary and sorted by the default comparer.</summary>
@@ -167,7 +167,7 @@ namespace Kaos.Collections
                 if (key == null)
                     throw new ArgumentNullException (nameof (key));
 
-                var leaf = (PairLeaf) Find (key, out int index);
+                var leaf = (PairLeaf<TValue>) Find (key, out int index);
                 if (index < 0)
                     throw new KeyNotFoundException ("The given key was not present in the dictionary.");
                 return leaf.GetValue (index);
@@ -180,7 +180,7 @@ namespace Kaos.Collections
                 StageBump();
                 var path = new NodeVector (this, key);
                 if (path.IsFound)
-                    ((PairLeaf) path.TopNode).SetValue (path.TopIndex, value);
+                    ((PairLeaf<TValue>) path.TopNode).SetValue (path.TopIndex, value);
                 else
                     Add2 (path, key, value);
             }
@@ -294,7 +294,7 @@ namespace Kaos.Collections
         {
             StageBump();
 
-            var leaf = (PairLeaf) path.TopNode;
+            var leaf = (PairLeaf<TValue>) path.TopNode;
             int pathIndex = path.TopIndex;
 
             path.IncrementPathWeight();
@@ -305,7 +305,7 @@ namespace Kaos.Collections
             }
 
             // Leaf is full so right split a new leaf.
-            var newLeaf = new PairLeaf (leaf, maxKeyCount);
+            var newLeaf = new PairLeaf<TValue> (leaf, maxKeyCount);
 
             if (newLeaf.rightLeaf != null)
                 newLeaf.rightLeaf.leftLeaf = newLeaf;
@@ -370,7 +370,7 @@ namespace Kaos.Collections
             if (key == null)
                 throw new ArgumentNullException (nameof (key));
 
-            var leaf = (PairLeaf) Find (key, out int index);
+            var leaf = (PairLeaf<TValue>) Find (key, out int index);
             return index >= 0;
         }
 
@@ -384,13 +384,13 @@ namespace Kaos.Collections
             if (value != null)
             {
                 var comparer = EqualityComparer<TValue>.Default;
-                for (var leaf = (PairLeaf) leftmostLeaf; leaf != null; leaf = (PairLeaf) leaf.rightLeaf)
+                for (var leaf = (PairLeaf<TValue>) leftmostLeaf; leaf != null; leaf = (PairLeaf<TValue>) leaf.rightLeaf)
                     for (int vix = 0; vix < leaf.ValueCount; ++vix)
                         if (comparer.Equals (leaf.GetValue (vix), value))
                             return true;
             }
             else
-                for (var leaf = (PairLeaf) leftmostLeaf; leaf != null; leaf = (PairLeaf) leaf.rightLeaf)
+                for (var leaf = (PairLeaf<TValue>) leftmostLeaf; leaf != null; leaf = (PairLeaf<TValue>) leaf.rightLeaf)
                     for (int vix = 0; vix < leaf.ValueCount; ++vix)
                         if (leaf.GetValue (vix) == null)
                             return true;
@@ -404,7 +404,7 @@ namespace Kaos.Collections
         /// <returns><b>true</b> if the collection contains the supplied key/value pair; otherwise <b>false</b>.</returns>
         bool ICollection<KeyValuePair<TKey,TValue>>.Contains (KeyValuePair<TKey,TValue> keyValuePair)
         {
-            var leaf = (PairLeaf) Find (keyValuePair.Key, out int index);
+            var leaf = (PairLeaf<TValue>) Find (keyValuePair.Key, out int index);
             if (index < 0)
                 return false;
             return EqualityComparer<TValue>.Default.Equals (leaf.GetValue (index), keyValuePair.Value);
@@ -428,7 +428,7 @@ namespace Kaos.Collections
             if (Count > array.Length - index)
                 throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
 
-            for (var leaf = (PairLeaf) leftmostLeaf; leaf != null; leaf = (PairLeaf) leaf.rightLeaf)
+            for (var leaf = (PairLeaf<TValue>) leftmostLeaf; leaf != null; leaf = (PairLeaf<TValue>) leaf.rightLeaf)
                 for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
                     array[index++] = new KeyValuePair<TKey,TValue> (leaf.GetKey (leafIndex), leaf.GetValue (leafIndex));
         }
@@ -460,7 +460,7 @@ namespace Kaos.Collections
         {
             var path = new NodeVector (this, keyValuePair.Key);
             if (path.IsFound)
-                if (EqualityComparer<TValue>.Default.Equals (keyValuePair.Value, ((PairLeaf) path.TopNode).GetValue (path.TopIndex)))
+                if (EqualityComparer<TValue>.Default.Equals (keyValuePair.Value, ((PairLeaf<TValue>) path.TopNode).GetValue (path.TopIndex)))
                 {
                     Remove2 (path);
                     return true;
@@ -516,7 +516,7 @@ namespace Kaos.Collections
             if (key == null)
                 throw new ArgumentNullException (nameof (key));
 
-            var leaf = (PairLeaf) Find (key, out int index);
+            var leaf = (PairLeaf<TValue>) Find (key, out int index);
             if (index >= 0)
             {
                 value = leaf.GetValue (index);
@@ -544,7 +544,7 @@ namespace Kaos.Collections
 
                 if (key is TKey)
                 {
-                    var leaf = (PairLeaf) Find ((TKey) key, out int index);
+                    var leaf = (PairLeaf<TValue>) Find ((TKey) key, out int index);
                     if (index >= 0)
                         return leaf.GetValue (index);
                 }
@@ -567,7 +567,7 @@ namespace Kaos.Collections
                     StageBump();
                     var path = new NodeVector (this, (TKey) key);
                     if (path.IsFound)
-                        ((PairLeaf) path.TopNode).SetValue (path.TopIndex, (TValue) value);
+                        ((PairLeaf<TValue>) path.TopNode).SetValue (path.TopIndex, (TValue) value);
                     else
                         Add2 (path, (TKey) key, (TValue) value);
                 }
@@ -664,7 +664,7 @@ namespace Kaos.Collections
             if (! (array is KeyValuePair<TKey,TValue>[]) && array.GetType() != typeof (Object[]))
                 throw new ArgumentException ("Target array type is not compatible with the type of items in the collection.", nameof (array));
 
-            for (var leaf = (PairLeaf) leftmostLeaf; leaf != null; leaf = (PairLeaf) leaf.rightLeaf)
+            for (var leaf = (PairLeaf<TValue>) leftmostLeaf; leaf != null; leaf = (PairLeaf<TValue>) leaf.rightLeaf)
                 for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
                 {
                     array.SetValue (new KeyValuePair<TKey,TValue>(leaf.GetKey (leafIndex), leaf.GetValue (leafIndex)), index);
@@ -703,7 +703,7 @@ namespace Kaos.Collections
         /// <summary>Initializes a new dictionary instance that contains serialized data.</summary>
         /// <param name="info">The object that contains the information required to serialize the dictionary.</param>
         /// <param name="context">The structure that contains the source and destination of the serialized stream.</param>
-        protected RankedDictionary (SerializationInfo info, StreamingContext context) : base (new PairLeaf())
+        protected RankedDictionary (SerializationInfo info, StreamingContext context) : base (new PairLeaf<TValue>())
         {
             this.serializationInfo = info;
         }
@@ -811,7 +811,7 @@ namespace Kaos.Collections
         public IEnumerable<KeyValuePair<TKey,TValue>> ElementsBetween (TKey lower, TKey upper)
         {
             int stageFreeze = stage;
-            var leaf = (PairLeaf) Find (lower, out int index);
+            var leaf = (PairLeaf<TValue>) Find (lower, out int index);
 
             // When the supplied start key is not be found, start with the next highest key.
             if (index < 0)
@@ -830,7 +830,7 @@ namespace Kaos.Collections
                     continue;
                 }
 
-                leaf = (PairLeaf) leaf.rightLeaf;
+                leaf = (PairLeaf<TValue>) leaf.rightLeaf;
                 if (leaf == null)
                     yield break;
 
@@ -858,7 +858,7 @@ namespace Kaos.Collections
                 throw new ArgumentNullException (nameof (lower));
 
             int stageFreeze = stage;
-            var leaf = (PairLeaf) Find (lower, out int index);
+            var leaf = (PairLeaf<TValue>) Find (lower, out int index);
 
             // When the supplied start key is not be found, start with the next highest key.
             if (index < 0)
@@ -874,7 +874,7 @@ namespace Kaos.Collections
                     continue;
                 }
 
-                leaf = (PairLeaf) leaf.rightLeaf;
+                leaf = (PairLeaf<TValue>) leaf.rightLeaf;
                 if (leaf == null)
                     yield break;
 
@@ -913,11 +913,11 @@ namespace Kaos.Collections
                 throw new ArgumentException ("Arguments were out of the range of valid values.");
 
             int stageFreeze = stage;
-            var leaf = (PairLeaf) Find (lowerIndex, out int index);
+            var leaf = (PairLeaf<TValue>) Find (lowerIndex, out int index);
             do
             {
                 if (index >= leaf.KeyCount)
-                { index = 0; leaf = (PairLeaf) leaf.rightLeaf; }
+                { index = 0; leaf = (PairLeaf<TValue>) leaf.rightLeaf; }
 
                 yield return leaf.GetPair (index);
                 StageCheck (stageFreeze);
@@ -957,7 +957,7 @@ namespace Kaos.Collections
         public int IndexOfValue (TValue value)
         {
             int result = 0;
-            for (var leaf = (PairLeaf) leftmostLeaf; leaf != null; leaf = (PairLeaf) leaf.rightLeaf)
+            for (var leaf = (PairLeaf<TValue>) leftmostLeaf; leaf != null; leaf = (PairLeaf<TValue>) leaf.rightLeaf)
             {
                 var ix = leaf.IndexOfValue (value);
                 if (ix >= 0)
@@ -1020,7 +1020,7 @@ namespace Kaos.Collections
                 leafIx = 0;
             }
 
-            value = ((PairLeaf) leaf).GetValue (leafIx);
+            value = ((PairLeaf<TValue>) leaf).GetValue (leafIx);
             return true;
         }
 
@@ -1038,7 +1038,7 @@ namespace Kaos.Collections
             if (index < 0 || index >= Count)
                 throw new ArgumentOutOfRangeException (nameof (index), "Argument is out of the range of valid values.");
 
-            var leaf = (PairLeaf) Find (index, out int leafIndex);
+            var leaf = (PairLeaf<TValue>) Find (index, out int leafIndex);
             return new KeyValuePair<TKey,TValue> (leaf.GetKey (leafIndex), leaf.GetValue (leafIndex));
         }
 
@@ -1052,7 +1052,7 @@ namespace Kaos.Collections
             if (index < 0 || index >= Count)
                 return new KeyValuePair<TKey, TValue> (default (TKey), default (TValue));
 
-            var leaf = (PairLeaf) Find (index, out int leafIndex);
+            var leaf = (PairLeaf<TValue>) Find (index, out int leafIndex);
             return new KeyValuePair<TKey,TValue> (leaf.GetKey (leafIndex), leaf.GetValue (index));
         }
 
@@ -1067,7 +1067,7 @@ namespace Kaos.Collections
                 throw new InvalidOperationException ("Sequence contains no elements.");
 
             int ix = rightmostLeaf.KeyCount-1;
-            return new KeyValuePair<TKey,TValue> (rightmostLeaf.GetKey (ix), ((PairLeaf) rightmostLeaf).GetValue (ix));
+            return new KeyValuePair<TKey,TValue> (rightmostLeaf.GetKey (ix), ((PairLeaf<TValue>) rightmostLeaf).GetValue (ix));
         }
 
 
@@ -1109,7 +1109,7 @@ namespace Kaos.Collections
             private readonly RankedDictionary<TKey,TValue> tree;
             private readonly bool isReverse;
             private readonly bool nonGeneric;
-            private PairLeaf leaf;
+            private PairLeaf<TValue> leaf;
             private int index;
             private int stageFreeze;
             private int state;  // -1=rewound; 0=active; 1=consumed
@@ -1199,7 +1199,7 @@ namespace Kaos.Collections
                         return false;
                     else
                     {
-                        leaf = (PairLeaf) (isReverse ? tree.rightmostLeaf : tree.leftmostLeaf);
+                        leaf = (PairLeaf<TValue>) (isReverse ? tree.rightmostLeaf : tree.leftmostLeaf);
                         index = isReverse ? leaf.KeyCount : -1;
                         state = 0;
                     }
@@ -1209,7 +1209,7 @@ namespace Kaos.Collections
                     if (--index >= 0)
                         return true;
 
-                    leaf = (PairLeaf) leaf.leftLeaf;
+                    leaf = (PairLeaf<TValue>) leaf.leftLeaf;
                     if (leaf != null)
                     { index = leaf.KeyCount - 1; return true; }
                 }
@@ -1218,7 +1218,7 @@ namespace Kaos.Collections
                     if (++index < leaf.KeyCount)
                         return true;
 
-                    leaf = (PairLeaf) leaf.rightLeaf;
+                    leaf = (PairLeaf<TValue>) leaf.rightLeaf;
                     if (leaf != null)
                     { index = 0; return true; }
                 }

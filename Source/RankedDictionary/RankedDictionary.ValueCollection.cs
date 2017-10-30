@@ -100,7 +100,7 @@ namespace Kaos.Collections
                 if (Count > array.Length - index)
                     throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
 
-                for (var leaf = (PairLeaf) tree.leftmostLeaf; leaf != null; leaf = (PairLeaf) leaf.rightLeaf)
+                for (var leaf = (PairLeaf<TValue>) tree.leftmostLeaf; leaf != null; leaf = (PairLeaf<TValue>) leaf.rightLeaf)
                 {
                     leaf.CopyValuesTo (array, index, leaf.ValueCount);
                     index += leaf.ValueCount;
@@ -127,7 +127,7 @@ namespace Kaos.Collections
                 if (Count > array.Length - index)
                     throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.", nameof (array));
 
-                for (var leaf = (PairLeaf) tree.leftmostLeaf; leaf != null; leaf = (PairLeaf) leaf.rightLeaf)
+                for (var leaf = (PairLeaf<TValue>) tree.leftmostLeaf; leaf != null; leaf = (PairLeaf<TValue>) leaf.rightLeaf)
                     for (int ix = 0; ix < leaf.KeyCount; ++ix)
                     {
                         array.SetValue (leaf.GetValue (ix), index);
@@ -163,7 +163,7 @@ namespace Kaos.Collections
             public sealed class Enumerator : IEnumerator<TValue>
             {
                 private readonly RankedDictionary<TKey,TValue> tree;
-                private PairLeaf leaf;
+                private PairLeaf<TValue> leaf;
                 private int index;
                 private int stageFreeze;
 
@@ -208,7 +208,7 @@ namespace Kaos.Collections
                         if (++index < leaf.KeyCount)
                             return true;
 
-                        leaf = (PairLeaf) leaf.rightLeaf;
+                        leaf = (PairLeaf<TValue>) leaf.rightLeaf;
                         if (leaf != null)
                         { index = 0; return true; }
 
@@ -223,7 +223,7 @@ namespace Kaos.Collections
                 {
                     stageFreeze = tree.stage;
                     index = -1;
-                    leaf = (PairLeaf) tree.leftmostLeaf;
+                    leaf = (PairLeaf<TValue>) tree.leftmostLeaf;
                 }
 
                 /// <summary>Releases all resources used by the enumerator.</summary>

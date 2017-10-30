@@ -129,7 +129,7 @@ namespace Kaos.Collections
             public sealed class Enumerator : IEnumerator<TKey>
             {
                 private readonly RankedDictionary<TKey,TValue> tree;
-                private PairLeaf leaf;
+                private PairLeaf<TValue> leaf;
                 private int index;
                 private int stageFreeze;
 
@@ -174,7 +174,7 @@ namespace Kaos.Collections
                         if (++index < leaf.KeyCount)
                             return true;
 
-                        leaf = (PairLeaf) leaf.rightLeaf;
+                        leaf = (PairLeaf<TValue>) leaf.rightLeaf;
                         if (leaf != null)
                         { index = 0; return true; }
 
@@ -189,7 +189,7 @@ namespace Kaos.Collections
                 {
                     stageFreeze = tree.stage;
                     index = -1;
-                    leaf = (PairLeaf) tree.leftmostLeaf;
+                    leaf = (PairLeaf<TValue>) tree.leftmostLeaf;
                 }
 
                 /// <summary>Releases all resources used by the enumerator.</summary>
