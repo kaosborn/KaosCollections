@@ -17,7 +17,7 @@ namespace Kaos.Collections
     public partial class RankedDictionary<TKey,TValue>
     {
         /// <summary>
-        /// Represents a collection of values of a <see cref="RankedDictionary{TKey,TValue}"/>.
+        /// Represents the collection of values of a <see cref="RankedDictionary{TKey,TValue}"/>.
         /// </summary>
         [DebuggerTypeProxy (typeof (ICollectionValuesDebugView<,>))]
         [DebuggerDisplay ("Count = {Count}")]
@@ -33,7 +33,8 @@ namespace Kaos.Collections
             #region Constructors
 
             /// <summary>Initializes a new collection that reflects the values of a <see cref="RankedDictionary{TKey,TValue}"/>.</summary>
-            /// <param name="dictionary"><see cref="RankedDictionary{TKey,TValue}"/> containing these keys.</param>
+            /// <param name="dictionary">Dictionary containing these keys.</param>
+            /// <remarks>This is a O(1) operation.</remarks>
             /// <exception cref="ArgumentNullException">When <em>dictionary</em> is <b>null</b>.</exception>
             public ValueCollection (RankedDictionary<TKey,TValue> dictionary)
             {

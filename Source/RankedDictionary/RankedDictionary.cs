@@ -24,11 +24,10 @@ namespace Kaos.Collections
     /// <remarks>
     /// <para>
     /// This class emulates and extends
-    /// <see cref="System.Collections.Generic.SortedDictionary{TKey,TValue}"/>while
+    /// <see cref="SortedDictionary{TKey,TValue}"/>while
     /// improving performance of operations on large collections.
     /// While primarily emulating SortedDictionary, this class also borrows heavily from
-    /// <see href="https://msdn.microsoft.com/en-us/library/ms132319(v=vs.110).aspx">SortedList&lt;TKey,TValue&gt;</see>
-    /// for indexing functionality:
+    /// <see cref="SortedList{TKey,TValue}"/>for indexing functionality:
     /// <list type="bullet">
     /// <item><see cref="IndexOfKey"/></item>
     /// <item><see cref="IndexOfValue"/></item>
@@ -109,7 +108,7 @@ namespace Kaos.Collections
         /// <para>
         /// This class requires an <see cref="IComparer"/> implementation to perform key comparisons.
         /// If <em>comparer</em> is <b>null</b>, the default comparer for the type will be used.
-        /// If the key type implements the IComparable&lt;T&gt; interface, the default comparer uses that implementation.
+        /// If the key type implements the <see cref="IComparable"/> interface, the default comparer uses that implementation.
         /// If no comparison implementation is available, the Add method will fail on the second element.
         /// </para>
         /// </remarks>
@@ -970,11 +969,11 @@ namespace Kaos.Collections
 
 
         /// <summary>Removes an index range of elements from the dictionary.</summary>
-        /// <param name="index">The zero-based starting index of the range of items to remove.</param>
-        /// <param name="count">The number of items to remove.</param>
+        /// <param name="index">The zero-based starting index of the range of elements to remove.</param>
+        /// <param name="count">The number of elements to remove.</param>
         /// <remarks>This is a O(log <em>n</em>) operation where <em>n</em> is <see cref="Count"/>.</remarks>
         /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> or <em>count</em> is less than zero.</exception>
-        /// <exception cref="ArgumentException">When <em>index</em> and <em>count</em> do not denote a valid range of items in the dictionary.</exception>
+        /// <exception cref="ArgumentException">When <em>index</em> and <em>count</em> do not denote a valid range of elements in the dictionary.</exception>
         public void RemoveRange (int index, int count)
         {
             if (index < 0)

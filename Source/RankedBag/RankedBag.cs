@@ -376,7 +376,7 @@ namespace Kaos.Collections
 
 
         /// <summary>Gets the index of the first occurrence of the supplied item.</summary>
-        /// <param name="item">The item of the index to get.</param>
+        /// <param name="item">The item to seek.</param>
         /// <returns>The index of <em>item</em> if found; otherwise a negative value holding the bitwise complement of the insert point.</returns>
         /// <remarks>
         /// <para>
@@ -520,7 +520,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Removes an index range of elements from the bag.</summary>
+        /// <summary>Removes an index range of items from the bag.</summary>
         /// <param name="index">The zero-based starting index of the range of items to remove.</param>
         /// <param name="count">The number of items to remove.</param>
         /// <remarks>This is a O(log <em>n</em>) operation where <em>n</em> is <see cref="Count"/>.</remarks>

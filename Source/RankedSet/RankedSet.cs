@@ -850,7 +850,7 @@ namespace Kaos.Collections
 
 
         /// <summary>Gets the index of the supplied item.</summary>
-        /// <param name="item">The item of the index to get.</param>
+        /// <param name="item">The item to seek.</param>
         /// <returns>The index of <em>item</em> if found; otherwise a negative value holding the bitwise complement of the insert point.</returns>
         /// <remarks>
         /// <para>
