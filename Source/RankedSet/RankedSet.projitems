@@ -9,8 +9,8 @@
     <Import_RootNamespace>RankedSet</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Btree-Collection.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ICollectionDebugView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Btree-Item.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ICollectionTDebugView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RankedSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RankedSetEqualityComparer.cs" />
   </ItemGroup>
