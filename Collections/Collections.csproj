@@ -40,6 +40,4 @@ Kaos.Collections.RankedBag&lt;T&gt;</PackageReleaseNotes>
 
   <Import Project="..\Source\RankedBag\RankedBag.projitems" Label="Shared" />
 
-  <Import Project="..\Source\RankedCollection\RankedCollection.projitems" Label="Shared" />
-
 </Project>

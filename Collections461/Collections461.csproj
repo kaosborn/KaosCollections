@@ -45,7 +45,6 @@
   </ItemGroup>
   <Import Project="..\Source\Btree\Btree.projitems" Label="Shared" />
   <Import Project="..\Source\RankedBag\RankedBag.projitems" Label="Shared" />
-  <Import Project="..\Source\RankedCollection\RankedCollection.projitems" Label="Shared" />
   <Import Project="..\Source\RankedDictionary\RankedDictionary.projitems" Label="Shared" />
   <Import Project="..\Source\RankedSet\RankedSet.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

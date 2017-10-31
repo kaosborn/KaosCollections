@@ -289,58 +289,6 @@ namespace Kaos.Collections
             Add2 (path, key, value);
         }
 
-        private void Add2 (NodeVector path, TKey key, TValue value)
-        {
-            StageBump();
-
-            var leaf = (PairLeaf<TValue>) path.TopNode;
-            int pathIndex = path.TopIndex;
-
-            path.IncrementPathWeight();
-            if (leaf.KeyCount < maxKeyCount)
-            {
-                leaf.Insert (pathIndex, key, value);
-                return;
-            }
-
-            // Leaf is full so right split a new leaf.
-            var newLeaf = new PairLeaf<TValue> (leaf, maxKeyCount);
-
-            if (newLeaf.rightLeaf != null)
-                newLeaf.rightLeaf.leftLeaf = newLeaf;
-            else
-            {
-                rightmostLeaf = newLeaf;
-
-                if (pathIndex == leaf.KeyCount)
-                {
-                    newLeaf.Add (key, value);
-                    path.Promote (key, (Node) newLeaf, true);
-                    return;
-                }
-            }
-
-            int splitIndex = leaf.KeyCount / 2 + 1;
-            if (pathIndex < splitIndex)
-            {
-                // Left-side insert: Copy right side to the split leaf.
-                newLeaf.Add (leaf, splitIndex - 1, leaf.KeyCount);
-                leaf.Truncate (splitIndex - 1);
-                leaf.Insert (pathIndex, key, value);
-            }
-            else
-            {
-                // Right-side insert: Copy split leaf parts and new key.
-                newLeaf.Add (leaf, splitIndex, pathIndex);
-                newLeaf.Add (key, value);
-                newLeaf.Add (leaf, pathIndex, leaf.KeyCount);
-                leaf.Truncate (splitIndex);
-            }
-
-            // Promote anchor of split leaf.
-            path.Promote (newLeaf.Key0, (Node) newLeaf, newLeaf.rightLeaf == null);
-        }
-
 
         /// <summary>Adds an element with the supplied key/value pair.</summary>
         /// <param name="keyValuePair">Contains the key and value of the element to add.</param>
