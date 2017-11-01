@@ -41,7 +41,7 @@ namespace Kaos.Test.Collections
     }
 
 
-#if !TEST_BCL
+#if ! TEST_BCL
     public class ExamBag : RankedBag<Exam>
     {
         public ExamBag() : base (new ScoreComparer())

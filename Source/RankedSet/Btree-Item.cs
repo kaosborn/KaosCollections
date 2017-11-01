@@ -1,6 +1,6 @@
 ﻿//
 // Library: KaosCollections
-// File:    RankedCollection.cs
+// File:    Btree-Item.cs
 //
 // Copyright © 2009-2017 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely

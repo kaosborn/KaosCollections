@@ -997,7 +997,7 @@ namespace Kaos.Collections
         public KeyValuePair<TKey,TValue> ElementAtOrDefault (int index)
         {
             if (index < 0 || index >= Count)
-                return new KeyValuePair<TKey, TValue> (default (TKey), default (TValue));
+                return new KeyValuePair<TKey,TValue> (default (TKey), default (TValue));
 
             var leaf = (PairLeaf<TValue>) Find (index, out int leafIndex);
             return new KeyValuePair<TKey,TValue> (leaf.GetKey (leafIndex), leaf.GetValue (index));
