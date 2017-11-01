@@ -328,21 +328,7 @@ namespace Kaos.Collections
         /// <returns><b>true</b> if the collection contains the supplied value; otherwise <b>false</b>.</returns>
         public bool ContainsValue (TValue value)
         {
-            if (value != null)
-            {
-                var comparer = EqualityComparer<TValue>.Default;
-                for (var leaf = (PairLeaf<TValue>) leftmostLeaf; leaf != null; leaf = (PairLeaf<TValue>) leaf.rightLeaf)
-                    for (int vix = 0; vix < leaf.ValueCount; ++vix)
-                        if (comparer.Equals (leaf.GetValue (vix), value))
-                            return true;
-            }
-            else
-                for (var leaf = (PairLeaf<TValue>) leftmostLeaf; leaf != null; leaf = (PairLeaf<TValue>) leaf.rightLeaf)
-                    for (int vix = 0; vix < leaf.ValueCount; ++vix)
-                        if (leaf.GetValue (vix) == null)
-                            return true;
-
-            return false;
+            return ContainsValue2 (value);
         }
 
 

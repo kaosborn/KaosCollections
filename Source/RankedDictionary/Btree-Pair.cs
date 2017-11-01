@@ -62,5 +62,25 @@ namespace Kaos.Collections
             // Promote anchor of split leaf.
             path.Promote (newLeaf.Key0, (Node) newLeaf, newLeaf.rightLeaf==null);
         }
+
+
+        internal bool ContainsValue2<TValue> (TValue value)
+        {
+            if (value != null)
+            {
+                var comparer = System.Collections.Generic.EqualityComparer<TValue>.Default;
+                for (var leaf = (PairLeaf<TValue>) leftmostLeaf; leaf != null; leaf = (PairLeaf<TValue>) leaf.rightLeaf)
+                    for (int vix = 0; vix < leaf.ValueCount; ++vix)
+                        if (comparer.Equals (leaf.GetValue (vix), value))
+                            return true;
+            }
+            else
+                for (var leaf = (PairLeaf<TValue>) leftmostLeaf; leaf != null; leaf = (PairLeaf<TValue>) leaf.rightLeaf)
+                    for (int vix = 0; vix < leaf.ValueCount; ++vix)
+                        if (leaf.GetValue (vix) == null)
+                            return true;
+
+            return false;
+        }
     }
 }
