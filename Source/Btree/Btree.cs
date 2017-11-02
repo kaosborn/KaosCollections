@@ -554,6 +554,35 @@ namespace Kaos.Collections
         }
 
 
+        internal int RemoveWhere2<V> (Predicate<KeyValuePair<T,V>> match)
+        {
+            if (match == null)
+                throw new ArgumentNullException (nameof (match));
+
+            int result = 0;
+            int stageFreeze = stage;
+
+            for (var leaf = (PairLeaf<V>) rightmostLeaf; leaf != null; leaf = (PairLeaf<V>) leaf.leftLeaf)
+                for (int ix = leaf.KeyCount-1; ix >= 0; --ix)
+                {
+                    T key = leaf.GetKey (ix);
+                    if (match (new KeyValuePair<T,V> (key, leaf.GetValue (ix))))
+                    {
+                        StageCheck (stageFreeze);
+                        var path = new NodeVector (this, key);
+                        if (path.IsFound)
+                        {
+                            Remove2 (path);
+                            stageFreeze = stage;
+                            ++result;
+                        }
+                    }
+                }
+
+            return result;
+        }
+
+
         /// <exclude />
         protected void StageBump()
         { ++stage; }

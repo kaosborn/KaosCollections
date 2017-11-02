@@ -14,6 +14,8 @@ namespace Kaos.Test.Collections
 {
     public partial class TestBtree
     {
+        static bool IsEvenValue (KeyValuePair<int,int> kv) => kv.Value % 2 == 0;
+
         #region Test constructors
 
         [TestMethod]
@@ -1346,6 +1348,31 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (500, removed);
             foreach (int key in tree1.Keys)
                 Assert.IsTrue (key % 2 != 0);
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRdx_RemoveWherePair_ArgumentNull()
+        {
+            var rd = new RankedDictionary<int,int>();
+            rd.RemoveWherePair (null);
+        }
+
+        [TestMethod]
+        public void UnitRdx_RemoveWherePair()
+        {
+            var rd = new RankedDictionary<int,int>();
+
+            for (int ix = 0; ix < 1000; ++ix)
+                rd.Add (ix, -ix);
+
+            int c0 = rd.Count;
+            int removed = rd.RemoveWherePair (IsEvenValue);
+
+            Assert.AreEqual (500, removed);
+            foreach (int val in rd.Values)
+                Assert.IsTrue (val % 2 != 0);
         }
 
 
