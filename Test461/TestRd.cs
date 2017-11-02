@@ -75,14 +75,18 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
+#if TEST_BCL
         [ExpectedException (typeof (ArgumentException))]
+#else
+        [ExpectedException (typeof (InvalidOperationException))]
+#endif
         public void CrashRd_Ctor1NoComparer_InvalidOperation()
         {
             var comp0 = (System.Collections.Generic.Comparer<Person>) null;
 #if TEST_BCL
             var d1 = new SortedDictionary<Person,int> (comp0);
 #else
-            var d1 = new SortedDictionary<Person,int> (comp0);
+            var d1 = new RankedDictionary<Person,int> (comp0);
 #endif
             d1.Add (new Person ("Zed"), 1);
             d1.Add (new Person ("Macron"), 2);
@@ -122,8 +126,8 @@ namespace Kaos.Test.Collections
             var tree = new RankedDictionary<string,int> (StringComparer.Ordinal);
 #endif
             tree.Add ("AAA", 0);
-            tree.Add ("CCC", 1);
             tree.Add ("bbb", 2);
+            tree.Add ("CCC", 1);
             tree.Add ("ddd", 3);
 
             int actualPosition = 0;
@@ -373,7 +377,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRd_ContainsValueNullStruct()
+        public void UnitRd_ContainsValueNullable()
         {
             Setup();
 
@@ -408,7 +412,6 @@ namespace Kaos.Test.Collections
         public void CrashRd_CopyTo_ArgumentNull()
         {
             Setup();
-            var target = new KeyValuePair<int,int>[iVals1.Length];
             tree1.CopyTo (null, -1);
         }
 
@@ -1197,8 +1200,7 @@ namespace Kaos.Test.Collections
         [TestMethod]
         public void UnitRdx_IndexOfKey()
         {
-            var tree = new RankedDictionary<int,int>();
-            tree.Capacity = 5;
+            var tree = new RankedDictionary<int,int>() { Capacity=5 };
             for (int ii = 0; ii < 500; ii+=2)
                 tree.Add (ii, ii+1000);
 
