@@ -14,7 +14,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void CrashRdk_Ctor1_ArgumentNull()
+        public void CrashRdk_Ctor_ArgumentNull()
         {
             Setup();
 #if TEST_BCL
@@ -22,6 +22,19 @@ namespace Kaos.Test.Collections
 #else
             var keys = new RankedDictionary<int,int>.KeyCollection (null);
 #endif
+        }
+
+        [TestMethod]
+        public void UnitRdk_Ctor()
+        {
+            Setup();
+            tree1.Add (1, -1);
+#if TEST_BCL
+            var keys = new SortedDictionary<int,int>.KeyCollection (tree1);
+#else
+            var keys = new RankedDictionary<int,int>.KeyCollection (tree1);
+#endif
+            Assert.AreEqual (1, keys.Count);
         }
 
         #endregion
@@ -232,7 +245,7 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (1, k1);
         }
 
-#endif
+        #endif
         #endregion
 
         #region Test Keys enumeration
@@ -317,7 +330,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void CrashRdv_Ctor1_ArgumentNull()
+        public void CrashRdv_Ctor_ArgumentNull()
         {
             Setup();
 #if TEST_BCL
@@ -325,6 +338,19 @@ namespace Kaos.Test.Collections
 #else
             var vals = new RankedDictionary<int,int>.ValueCollection (null);
 #endif
+        }
+
+        [TestMethod]
+        public void UnitRdv_Ctor()
+        {
+            Setup();
+            tree1.Add (1, -1);
+#if TEST_BCL
+            var vals = new SortedDictionary<int,int>.ValueCollection (tree1);
+#else
+            var vals = new RankedDictionary<int,int>.ValueCollection (tree1);
+#endif
+            Assert.AreEqual (1, vals.Count);
         }
 
         #endregion
