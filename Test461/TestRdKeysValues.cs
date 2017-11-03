@@ -13,14 +13,14 @@ namespace Kaos.Test.Collections
         #region Test Keys constructor
 
         [TestMethod]
-        [ExpectedException (typeof (ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void CrashRdk_Ctor_ArgumentNull()
         {
             Setup();
 #if TEST_BCL
             var keys = new SortedDictionary<int,int>.KeyCollection (null);
 #else
-            var keys = new RankedDictionary<int,int>.KeyCollection (null);
+            var keys = new RankedDictionary<int, int>.KeyCollection(null);
 #endif
         }
 
@@ -28,13 +28,13 @@ namespace Kaos.Test.Collections
         public void UnitRdk_Ctor()
         {
             Setup();
-            tree1.Add (1, -1);
+            tree1.Add(1, -1);
 #if TEST_BCL
             var keys = new SortedDictionary<int,int>.KeyCollection (tree1);
 #else
-            var keys = new RankedDictionary<int,int>.KeyCollection (tree1);
+            var keys = new RankedDictionary<int, int>.KeyCollection(tree1);
 #endif
-            Assert.AreEqual (1, keys.Count);
+            Assert.AreEqual(1, keys.Count);
         }
 
         #endregion
@@ -46,9 +46,9 @@ namespace Kaos.Test.Collections
         {
             Setup();
             foreach (int key in iVals1)
-                tree1.Add (key, key + 1000);
+                tree1.Add(key, key + 1000);
 
-            Assert.AreEqual (iVals1.Length, tree1.Keys.Count);
+            Assert.AreEqual(iVals1.Length, tree1.Keys.Count);
         }
 
 
@@ -56,8 +56,8 @@ namespace Kaos.Test.Collections
         public void UnitRdk_gICollectionIsReadonly()
         {
             Setup();
-            var gc = (System.Collections.Generic.ICollection<int>) tree1.Keys;
-            Assert.IsTrue (gc.IsReadOnly);
+            var gc = (System.Collections.Generic.ICollection<int>)tree1.Keys;
+            Assert.IsTrue(gc.IsReadOnly);
         }
 
 
@@ -65,12 +65,12 @@ namespace Kaos.Test.Collections
         public void UnitRdk_oICollectionSyncRoot()
         {
             Setup();
-            tree1.Add (12, 34);
+            tree1.Add(12, 34);
 
-            var oc = (System.Collections.ICollection) tree1.Keys;
+            var oc = (System.Collections.ICollection)tree1.Keys;
             var sr = oc.SyncRoot;
 
-            Assert.IsTrue (sr is object);
+            Assert.IsTrue(sr is object);
         }
 
         #endregion
@@ -78,16 +78,16 @@ namespace Kaos.Test.Collections
         #region Test Keys methods
 
         [TestMethod]
-        [ExpectedException (typeof (NotSupportedException))]
+        [ExpectedException(typeof(NotSupportedException))]
         public void CrashRdk_gICollectionAdd_NotSupported()
         {
             Setup();
-            genKeys2.Add ("omega");
+            genKeys2.Add("omega");
         }
 
 
         [TestMethod]
-        [ExpectedException (typeof (NotSupportedException))]
+        [ExpectedException(typeof(NotSupportedException))]
         public void CrashRdk_gICollectionClear_NotSupported()
         {
             Setup();
@@ -99,42 +99,42 @@ namespace Kaos.Test.Collections
         public void UnitRdk_gICollectionContains()
         {
             Setup();
-            tree2.Add ("alpha", 10);
-            tree2.Add ("beta", 20);
+            tree2.Add("alpha", 10);
+            tree2.Add("beta", 20);
 
-            Assert.IsTrue (genKeys2.Contains ("beta"));
-            Assert.IsFalse (genKeys2.Contains ("zed"));
+            Assert.IsTrue(genKeys2.Contains("beta"));
+            Assert.IsFalse(genKeys2.Contains("zed"));
         }
 
 
         [TestMethod]
-        [ExpectedException (typeof (ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void CrashRdk_CopyTo_ArgumentNull()
         {
             Setup();
             var target = new int[10];
-            tree1.Keys.CopyTo (null, -1);
+            tree1.Keys.CopyTo(null, -1);
         }
 
         [TestMethod]
-        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void CrashRdk_CopyTo_ArgumentOutOfRange()
         {
             Setup();
             var target = new int[iVals1.Length];
-            tree1.Keys.CopyTo (target, -1);
+            tree1.Keys.CopyTo(target, -1);
         }
 
         [TestMethod]
-        [ExpectedException (typeof (ArgumentException))]
+        [ExpectedException(typeof(ArgumentException))]
         public void CrashRdk_CopyTo_Argument()
         {
             Setup();
             for (int key = 1; key < 10; ++key)
-                tree1.Add (key, key + 1000);
+                tree1.Add(key, key + 1000);
 
             var target = new int[4];
-            tree1.Keys.CopyTo (target, 2);
+            tree1.Keys.CopyTo(target, 2);
         }
 
         [TestMethod]
@@ -144,13 +144,13 @@ namespace Kaos.Test.Collections
             int offset = 5;
             Setup();
             for (int k = 0; k < n; ++k)
-                tree1.Add (k, k + 1000);
+                tree1.Add(k, k + 1000);
 
             int[] target = new int[n + offset];
-            tree1.Keys.CopyTo (target, offset);
+            tree1.Keys.CopyTo(target, offset);
 
             for (int k = 0; k < n; ++k)
-                Assert.AreEqual (k, target[k + offset]);
+                Assert.AreEqual(k, target[k + offset]);
         }
 
 
@@ -158,32 +158,44 @@ namespace Kaos.Test.Collections
         public void UnitRdk_gICollectionCopyTo()
         {
             Setup();
-            tree2.Add ("alpha", 1);
-            tree2.Add ("beta", 2);
-            tree2.Add ("gamma", 3);
+            tree2.Add("alpha", 1);
+            tree2.Add("beta", 2);
+            tree2.Add("gamma", 3);
 
             var target = new string[tree2.Count];
 
-            genKeys2.CopyTo (target, 0);
+            genKeys2.CopyTo(target, 0);
 
-            Assert.AreEqual ("alpha", target[0]);
-            Assert.AreEqual ("beta", target[1]);
-            Assert.AreEqual ("gamma", target[2]);
+            Assert.AreEqual("alpha", target[0]);
+            Assert.AreEqual("beta", target[1]);
+            Assert.AreEqual("gamma", target[2]);
         }
 
 
         [TestMethod]
-        [ExpectedException (typeof (NotSupportedException))]
+        [ExpectedException(typeof(NotSupportedException))]
         public void CrashRdk_gICollectionRemove_NotSupported()
         {
             Setup();
-            genKeys2.Remove ("omega");
+            genKeys2.Remove("omega");
         }
 
         #endregion
 
         #region Test Keys bonus methods
 #if ! TEST_BCL
+
+        [TestMethod]
+        public void UnitRdk_xIndexer()
+        {
+            var rd = new RankedDictionary<string,int>() { { "0zero", 0 }, { "1one", -1 }, { "2two", -2 } };
+            var k1 = rd.Keys[1];
+
+            Assert.AreEqual ("0zero", rd.Keys[0]);
+            Assert.AreEqual ("1one", rd.Keys[1]);
+            Assert.AreEqual ("2two", rd.Keys[2]);
+        }
+
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
