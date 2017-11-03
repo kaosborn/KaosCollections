@@ -42,7 +42,7 @@ namespace Kaos.Test.Collections
         #region Test Keys properties
 
         [TestMethod]
-        public void UnitRdk_KeysCount()
+        public void UnitRdk_Count()
         {
             Setup();
             foreach (int key in iVals1)
@@ -53,22 +53,23 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRdk_ICollectionKeysIsReadonly()
+        public void UnitRdk_gICollectionIsReadonly()
         {
             Setup();
-            var gicKeys = (System.Collections.Generic.ICollection<int>) tree1.Keys;
-            Assert.IsTrue (gicKeys.IsReadOnly);
+            var gc = (System.Collections.Generic.ICollection<int>) tree1.Keys;
+            Assert.IsTrue (gc.IsReadOnly);
         }
 
 
         [TestMethod]
-        public void UnitRdk_KeysSyncRoot()
+        public void UnitRdk_oICollectionSyncRoot()
         {
             Setup();
+            tree1.Add (12, 34);
 
-            var xt = (System.Collections.ICollection) tree2.Keys;
-            var sr = xt.SyncRoot;
-            
+            var oc = (System.Collections.ICollection) tree1.Keys;
+            var sr = oc.SyncRoot;
+
             Assert.IsTrue (sr is object);
         }
 
@@ -78,7 +79,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (NotSupportedException))]
-        public void CrashRdk_ICollectionKeysAdd_NotSupported()
+        public void CrashRdk_gICollectionAdd_NotSupported()
         {
             Setup();
             genKeys2.Add ("omega");
@@ -87,7 +88,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (NotSupportedException))]
-        public void CrashRdk_ICollectionKeysClear_NotSupported()
+        public void CrashRdk_gICollectionClear_NotSupported()
         {
             Setup();
             genKeys2.Clear();
@@ -95,7 +96,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRdk_ICollectionKeysContains()
+        public void UnitRdk_gICollectionContains()
         {
             Setup();
             tree2.Add ("alpha", 10);
@@ -108,7 +109,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void CrashRdk_KeysCopyTo_ArgumentNull()
+        public void CrashRdk_CopyTo_ArgumentNull()
         {
             Setup();
             var target = new int[10];
@@ -117,7 +118,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRdk_KeysCopyToOfValidValues_ArgumentOutOfRange()
+        public void CrashRdk_CopyTo_ArgumentOutOfRange()
         {
             Setup();
             var target = new int[iVals1.Length];
@@ -126,7 +127,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void CrashRdk_KeysCopyToNotLongEnough_Argument()
+        public void CrashRdk_CopyTo_Argument()
         {
             Setup();
             for (int key = 1; key < 10; ++key)
@@ -137,7 +138,7 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void UnitRdk_KeysCopyTo()
+        public void UnitRdk_CopyTo()
         {
             int n = 10;
             int offset = 5;
@@ -154,7 +155,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRdk_ICollectionKeysCopyTo()
+        public void UnitRdk_gICollectionCopyTo()
         {
             Setup();
             tree2.Add ("alpha", 1);
@@ -173,7 +174,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (NotSupportedException))]
-        public void CrashRdk_ICollectionKeysRemove_NotSupported()
+        public void CrashRdk_gICollectionRemove_NotSupported()
         {
             Setup();
             genKeys2.Remove ("omega");
@@ -245,20 +246,20 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (1, k1);
         }
 
-        #endif
+#endif
         #endregion
 
         #region Test Keys enumeration
 
         [TestMethod]
         [ExpectedException (typeof (InvalidOperationException))]
-        public void CrashRdk_Current_InvalidOperation()
+        public void CrashRdk_oICollectionCurrent_InvalidOperation()
         {
             Setup();
             tree2.Add ("CC", 3);
 
             System.Collections.ICollection oKeys = objCol2.Keys;
-            var etor = oKeys.GetEnumerator();
+            System.Collections.IEnumerator etor = oKeys.GetEnumerator();
 
             object cur = etor.Current;
         }
@@ -283,7 +284,7 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void UnitRdk_ExGetEnumerator()
+        public void UnitRdk_gICollectionGetEnumerator()
         {
             int n = 10;
             Setup();
@@ -358,7 +359,7 @@ namespace Kaos.Test.Collections
         #region Test Values properties
 
         [TestMethod]
-        public void UnitRdv_ValuesCount()
+        public void UnitRdv_Count()
         {
             Setup();
             foreach (int key in iVals1)
@@ -369,21 +370,21 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRdv_ICollectionValuesCollectionIsReadonly()
+        public void UnitRdv_gICollectionIsReadonly()
         {
             Setup();
-            var ic = (System.Collections.Generic.ICollection<int>) tree1.Values;
-            Assert.IsTrue (ic.IsReadOnly);
+            var gc = (System.Collections.Generic.ICollection<int>) tree1.Values;
+            Assert.IsTrue (gc.IsReadOnly);
         }
 
 
         [TestMethod]
-        public void UnitRdv_ValuesSyncRoot()
+        public void UnitRdv_OICollectionSyncRoot()
         {
             Setup();
 
-            var xt = (System.Collections.ICollection) tree2.Values;
-            var sr = xt.SyncRoot;
+            var oc = (System.Collections.ICollection) tree2.Values;
+            var sr = oc.SyncRoot;
 
             Assert.IsTrue (sr is object);
         }
@@ -394,7 +395,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (NotSupportedException))]
-        public void CrashRdv_ICollectionValuesAdd_NotSupported()
+        public void CrashRdv_gICollectionAdd_NotSupported()
         {
             Setup();
             genValues2.Add (9);
@@ -403,7 +404,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (NotSupportedException))]
-        public void CrashRdv_ICollectionValuesClear_NotSupported()
+        public void CrashRdv_gICollectionClear_NotSupported()
         {
             Setup();
             genValues2.Clear();
@@ -411,7 +412,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRdv_ICollectionValuesContains()
+        public void UnitRdv_gICollectionContains()
         {
             Setup();
             tree2.Add ("alpha", 10);
@@ -424,7 +425,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void CrashRdv_ValuesCopyTo_ArgumentNull()
+        public void CrashRdv_CopyTo_ArgumentNull()
         {
             Setup();
             var target = new int[iVals1.Length];
@@ -433,7 +434,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRdv_ValuesCopyToOfValidValues_ArgumentOutOfRange()
+        public void CrashRdv_CopyTo_ArgumentOutOfRange()
         {
             Setup();
             var target = new int[10];
@@ -442,7 +443,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void CrashRdv_ValuesCopyToNotLongEnough_Argument()
+        public void CrashRdv_CopyTo_Argument()
         {
             Setup();
 
@@ -454,7 +455,7 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void UnitRdv_ValuesCopyTo()
+        public void UnitRdv_CopyTo()
         {
             int n = 10;
             int offset = 5;
@@ -471,7 +472,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRdv_ICollectionValuesCopyTo()
+        public void UnitRdv_gICollectionCopyTo()
         {
             Setup();
             tree2.Add ("alpha", 1);
@@ -490,7 +491,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (NotSupportedException))]
-        public void CrashRdv_ICollectionValuesRemove_NotSupported()
+        public void CrashRdv_gICollectionRemove_NotSupported()
         {
             Setup();
             genValues2.Remove (9);
@@ -502,13 +503,13 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void CrashRdv_Current_InvalidOperation()
+        public void CrashRdv_OICollectionCurrent_InvalidOperation()
         {
             Setup();
             tree2.Add ("CC", 3);
 
             System.Collections.ICollection oVals = objCol2.Values;
-            var etor = oVals.GetEnumerator();
+            System.Collections.IEnumerator etor = oVals.GetEnumerator();
 
             object cur = etor.Current;
         }
@@ -533,7 +534,7 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void UnitRdv_ExGetEnumerator()
+        public void UnitRdv_gICollectionGetEnumerator()
         {
             int n = 10;
             Setup();
