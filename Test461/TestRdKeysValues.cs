@@ -10,7 +10,7 @@ namespace Kaos.Test.Collections
 {
     public partial class TestBtree
     {
-        #region Test keys constructor
+        #region Test Keys constructor
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
@@ -168,6 +168,73 @@ namespace Kaos.Test.Collections
 
         #endregion
 
+        #region Test Keys bonus methods
+#if ! TEST_BCL
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRdk_xElementAt_ArgumentOutOfRange1()
+        {
+            var rd = new RankedDictionary<int,int>();
+            var k1 = rd.Keys.ElementAt (-1);
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRdk_xElementAt_ArgumentOutOfRange2()
+        {
+            var rd = new RankedDictionary<int,int>();
+            var k1 = rd.Keys.ElementAt (0);
+        }
+
+        [TestMethod]
+        public void UnitRdk_xElementAt()
+        {
+            var rd = new RankedDictionary<string,int>();
+            rd.Add ("one", 1); rd.Add ("two", 2);
+            var k1 = rd.Keys.ElementAt (1);
+
+            Assert.AreEqual ("two", k1);
+        }
+
+
+        [TestMethod]
+        public void UnitRdk_xElementAtOrDefault()
+        {
+            var rd = new RankedDictionary<string,int>();
+            rd.Add ("one", 1); rd.Add ("two", 2);
+
+            var kn = rd.Keys.ElementAtOrDefault (-1);
+            var k1 = rd.Keys.ElementAtOrDefault (1);
+            var k2 = rd.Keys.ElementAtOrDefault (2);
+
+            Assert.AreEqual (default (String), kn);
+            Assert.AreEqual ("two", k1);
+            Assert.AreEqual (default (String), k2);
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRdk_xIndexOf_ArgumentNull()
+        {
+            var rd = new RankedDictionary<string,int>();
+            var k1 = rd.Keys.IndexOf (null);
+        }
+
+        [TestMethod]
+        public void UnitRdk_xIndexOf()
+        {
+            var rd = new RankedDictionary<string,int>();
+            rd.Add ("one", 1); rd.Add ("two", 2);
+            var k1 = rd.Keys.IndexOf ("two");
+
+            Assert.AreEqual (1, k1);
+        }
+
+#endif
+        #endregion
+
         #region Test Keys enumeration
 
         [TestMethod]
@@ -246,7 +313,7 @@ namespace Kaos.Test.Collections
         #endregion
 
 
-        #region Test values constructor
+        #region Test Values constructor
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]

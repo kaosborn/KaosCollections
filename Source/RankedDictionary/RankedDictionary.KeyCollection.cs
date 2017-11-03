@@ -111,6 +111,61 @@ namespace Kaos.Collections
 
             #endregion
 
+            #region Bonus methods
+
+            /// <summary>Gets the key at the supplied index.</summary>
+            /// <param name="index">The zero-based index of the key to get.</param>
+            /// <returns>The key at the supplied index.</returns>
+            /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
+            /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or greater than or equal to the number of keys.</exception>
+            public TKey ElementAt (int index)
+            {
+                if (index < 0 || index >= Count)
+                    throw new ArgumentOutOfRangeException (nameof (index), "Argument is out of the range of valid values.");
+
+                var leaf = tree.Find (index, out int leafIndex);
+                return leaf.GetKey (leafIndex);
+            }
+
+
+            /// <summary>Gets the key at the supplied index or the default if index is out of range.</summary>
+            /// <param name="index">The zero-based index of the key to get.</param>
+            /// <returns>The key at the supplied index.</returns>
+            /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
+            public TKey ElementAtOrDefault (int index)
+            {
+                if (index < 0 || index >= Count)
+                    return default (TKey);
+
+                var leaf = tree.Find (index, out int leafIndex);
+                return leaf.GetKey (leafIndex);
+            }
+
+
+            /// <summary>Gets the index of the supplied key.</summary>
+            /// <param name="key">The key to seek.</param>
+            /// <returns>The index of the supplied key if found; otherwise a negative value holding the bitwise complement of the insert point.</returns>
+            /// <remarks>
+            /// <para>
+            /// If the item is not found, apply the bitwise complement operator
+            /// (<see href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/bitwise-complement-operator">~</see>)
+            /// to the result to get the index of the next higher element.
+            /// </para>
+            /// <para>
+            /// This is a O(log <em>n</em>) operation.
+            /// </para>
+            /// </remarks>
+            /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
+            public int IndexOf (TKey key)
+            {
+                if (key == null)
+                    throw new ArgumentNullException (nameof (key));
+
+                return tree.FindEdgeForIndex (key, out Leaf leaf, out int leafIndex, leftEdge:true);
+            }
+
+            #endregion
+
             #region Enumeration
 
             /// <summary>Gets an enumerator that iterates thru the collection.</summary>
