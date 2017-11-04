@@ -121,10 +121,10 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRd_SyncRoot()
+        public void UnitRd_oSyncRoot()
         {
             Setup();
-            object sr = objCol2.SyncRoot;
+            Assert.IsFalse (objCol2.SyncRoot.GetType().IsValueType);
         }
 
         #endregion

@@ -112,11 +112,11 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void UnitRb_SyncRoot()
+        public void UnitRb_oSyncRoot()
         {
-            var bag = new RankedBag<int>();
-            var bagX = (System.Collections.ICollection) bag;
-            object sr = bagX.SyncRoot;
+            var rb = new RankedBag<int>();
+            var oc = (System.Collections.ICollection) rb;
+            Assert.IsFalse (oc.SyncRoot.GetType().IsValueType);
         }
 
         #endregion

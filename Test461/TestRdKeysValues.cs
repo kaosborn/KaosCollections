@@ -65,12 +65,8 @@ namespace Kaos.Test.Collections
         public void UnitRdk_oICollectionSyncRoot()
         {
             Setup();
-            tree1.Add (12, 34);
-
             var oc = (System.Collections.ICollection) tree1.Keys;
-            var sr = oc.SyncRoot;
-
-            Assert.IsTrue (sr is object);
+            Assert.IsFalse (oc.SyncRoot.GetType().IsValueType);
         }
 
         #endregion
@@ -391,14 +387,11 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRdv_OICollectionSyncRoot()
+        public void UnitRdv_oICollectionSyncRoot()
         {
             Setup();
-
             var oc = (System.Collections.ICollection) tree2.Values;
-            var sr = oc.SyncRoot;
-
-            Assert.IsTrue (sr is object);
+            Assert.IsFalse (oc.SyncRoot.GetType().IsValueType);
         }
 
         #endregion

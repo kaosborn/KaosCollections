@@ -268,11 +268,11 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRs_SyncRoot()
+        public void UnitRs_oSyncRoot()
         {
             Setup();
-            var xSet = (System.Collections.ICollection) setI;
-            object sr = xSet.SyncRoot;
+            var oc = (System.Collections.ICollection) setI;
+            Assert.IsFalse (oc.SyncRoot.GetType().IsValueType);
         }
 
         #endregion
@@ -660,7 +660,7 @@ namespace Kaos.Test.Collections
 
 
         static int rwCounter = 9;
-        static bool IsEven (int val) { return val % 2 == 0; }
+        static bool IsEven (int arg) { return arg % 2 == 0; }
         static bool IsAlways (int val) { return true; }
         static bool IsHotAlways (int val) { staticSetI.Add (++rwCounter); return true; }
 #if TEST_BCL
