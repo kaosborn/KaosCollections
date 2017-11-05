@@ -114,9 +114,9 @@ namespace Kaos.Collections
 
             #region Bonus methods
 
-            /// <summary>Gets the key of the element at the supplied index.</summary>
-            /// <param name="index">The zero-based index of the element to get.</param>
-            /// <returns>The key at the supplied index.</returns>
+            /// <summary>Gets the key at the supplied index.</summary>
+            /// <param name="index">The zero-based index of the key to get.</param>
+            /// <returns>The key at <em>index</em>.</returns>
             /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
             /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or not less than the number of items.</exception>
             public TKey this[int index]
@@ -125,7 +125,7 @@ namespace Kaos.Collections
 
             /// <summary>Gets the key at the supplied index.</summary>
             /// <param name="index">The zero-based index of the key to get.</param>
-            /// <returns>The key at the supplied index.</returns>
+            /// <returns>The key at <em>index</em>.</returns>
             /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
             /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or greater than or equal to the number of keys.</exception>
             public TKey ElementAt (int index)
@@ -138,9 +138,9 @@ namespace Kaos.Collections
             }
 
 
-            /// <summary>Gets the key at the supplied index or the default if index is out of range.</summary>
+            /// <summary>Gets the key at the supplied index or the default if the index is out of range.</summary>
             /// <param name="index">The zero-based index of the key to get.</param>
-            /// <returns>The key at the supplied index.</returns>
+            /// <returns>The key at <em>index</em>.</returns>
             /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
             public TKey ElementAtOrDefault (int index)
             {

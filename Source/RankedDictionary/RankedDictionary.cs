@@ -898,7 +898,7 @@ namespace Kaos.Collections
 
 
         /// <summary>Gets the index of the first element with the supplied value.</summary>
-        /// <param name="value">The value of the element to seek.</param>
+        /// <param name="value">The value of the element to find.</param>
         /// <returns>The index of the element if found; otherwise -1.</returns>
         /// <remarks>This is a O(<em>n</em>) operation.</remarks>
         public int IndexOfValue (TValue value)
