@@ -514,6 +514,74 @@ namespace Kaos.Test.Collections
 
         #endregion
 
+        #region Test Values bonus methods
+#if ! TEST_BCL
+
+        [TestMethod]
+        public void UnitRdv_xIndexer()
+        {
+            var rd = new RankedDictionary<string,int> { Capacity=4 };
+            foreach (var kv in greek) rd.Add (kv.Key, kv.Value);
+
+            Assert.AreEqual (11, rd.Values[7]);
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRdv_xElementAt_ArgumentOutOfRange1()
+        {
+            var rd = new RankedDictionary<int,int>();
+            var k1 = rd.Values.ElementAt (-1);
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRdv_xElementAt_ArgumentOutOfRange2()
+        {
+            var rd = new RankedDictionary<int,int>();
+            var k1 = rd.Values.ElementAt (0);
+        }
+
+        [TestMethod]
+        public void UnitRdv_xElementAt()
+        {
+            var rd = new RankedDictionary<string,int> { Capacity=4 };
+            foreach (var kv in greek) rd.Add (kv.Key, kv.Value);
+
+            Assert.AreEqual (9, rd.Values.ElementAt (6));
+        }
+
+
+        [TestMethod]
+        public void UnitRdv_xElementAtOrDefault()
+        {
+            var rd = new RankedDictionary<string,int?> { Capacity=4 };
+            foreach (var kv in greek) rd.Add (kv.Key, kv.Value);
+
+            Assert.IsNull (rd.Values.ElementAtOrDefault (-1));
+            Assert.AreEqual (22, rd.Values.ElementAtOrDefault (2));
+            Assert.IsNull (rd.Values.ElementAtOrDefault (rd.Count));
+        }
+
+
+        [TestMethod]
+        public void UnitRdv_xIndexOf()
+        {
+            var rd = new RankedDictionary<int,int> { Capacity=5 };
+            for (int ii = 0; ii < 900; ++ii)
+                rd.Add (ii, ii+1000);
+
+            var ix1 = rd.Values.IndexOf (1500);
+            Assert.AreEqual (500, ix1);
+
+            var ix2 = rd.Values.IndexOf (77777);
+            Assert.AreEqual (-1, ix2);
+        }
+
+#endif
+        #endregion
+
         #region Test Values enumeration
 
         [TestMethod]

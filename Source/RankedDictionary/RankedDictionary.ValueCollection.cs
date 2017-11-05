@@ -145,6 +145,68 @@ namespace Kaos.Collections
 
             #endregion
 
+            #region Bonus methods
+
+            /// <summary>Gets the value at the supplied index.</summary>
+            /// <param name="index">The zero-based index of the value to get.</param>
+            /// <returns>The value at <em>index</em>.</returns>
+            /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
+            /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or not less than the number of items.</exception>
+            public TValue this[int index]
+            { get { return ElementAt (index); } }
+
+
+            /// <summary>Gets the value at the supplied index.</summary>
+            /// <param name="index">The zero-based index of the value to get.</param>
+            /// <returns>The value at <em>index</em>.</returns>
+            /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
+            /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or greater than or equal to the number of keys.</exception>
+            public TValue ElementAt (int index)
+            {
+                if (index < 0 || index >= Count)
+                    throw new ArgumentOutOfRangeException (nameof (index), "Argument is out of the range of valid values.");
+
+                var leaf = (PairLeaf<TValue>) tree.Find (index, out int leafIndex);
+                return leaf.GetValue (leafIndex);
+            }
+
+
+            /// <summary>Gets the value at the supplied index or the default if the index is out of range.</summary>
+            /// <param name="index">The zero-based index of the value to get.</param>
+            /// <returns>The value at <em>index</em>.</returns>
+            /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
+            public TValue ElementAtOrDefault (int index)
+            {
+                if (index < 0 || index >= Count)
+                    return default (TValue);
+
+                var leaf = (PairLeaf<TValue>) tree.Find (index, out int leafIndex);
+                return leaf.GetValue (leafIndex);
+            }
+
+
+            /// <summary>Gets the index of the first element with the supplied value.</summary>
+            /// <param name="value">The value to find.</param>
+            /// <returns>The index of <em>value</em> if found; otherwise -1.</returns>
+            /// <remarks>
+            /// This is a O(<em>n</em>) operation.
+            /// </remarks>
+            public int IndexOf (TValue value)
+            {
+                int result = 0;
+                for (var leaf = (PairLeaf<TValue>) tree.leftmostLeaf; leaf != null; leaf = (PairLeaf<TValue>) leaf.rightLeaf)
+                {
+                    var ix = leaf.IndexOfValue (value);
+                    if (ix >= 0)
+                        return result + ix;
+                    result += leaf.KeyCount;
+                }
+
+                return -1;
+            }
+
+            #endregion
+
             #region Enumeration
 
             /// <summary>Gets an enumerator that iterates thru the collection.</summary>
