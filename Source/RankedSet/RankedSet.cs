@@ -184,8 +184,9 @@ namespace Kaos.Collections
 
 
         /// <summary>Determines whether the set contains the supplied item.</summary>
-        /// <param name="item">The item to locate in the set.</param>
-        /// <returns><b>true</b> if the set contains <em>item</em>; otherwise <b>false</b>.</returns>
+        /// <param name="item">The item to locate.</param>
+        /// <returns><b>true</b> if <em>item</em> is contained in the set; otherwise <b>false</b>.</returns>
+        /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
         public bool Contains (T item)
         {
             Leaf leaf = Find (item, out int index);
@@ -665,7 +666,7 @@ namespace Kaos.Collections
 
         /// <summary>Gets the item at the supplied index.</summary>
         /// <param name="index">The zero-based index of the item to get.</param>
-        /// <returns>The item at the supplied index.</returns>
+        /// <returns>The item at <em>index</em>.</returns>
         /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
         /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or not less than the number of items.</exception>
         public T ElementAt (int index)
@@ -678,9 +679,9 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Gets the item at the supplied index or the default if index is out of range.</summary>
+        /// <summary>Gets the item at the supplied index or the default if the index is out of range.</summary>
         /// <param name="index">The zero-based index of the item to get.</param>
-        /// <returns>The item at the supplied index.</returns>
+        /// <returns>The item at <em>index</em>.</returns>
         /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
         public T ElementAtOrDefault (int index)
         {
@@ -850,11 +851,11 @@ namespace Kaos.Collections
 
 
         /// <summary>Gets the index of the supplied item.</summary>
-        /// <param name="item">The item to seek.</param>
+        /// <param name="item">The item to find.</param>
         /// <returns>The index of <em>item</em> if found; otherwise a negative value holding the bitwise complement of the insert point.</returns>
         /// <remarks>
         /// <para>
-        /// If the item is not found, apply the bitwise complement operator
+        /// If <em>item</em> is not found, apply the bitwise complement operator
         /// (<see href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/bitwise-complement-operator">~</see>)
         /// to the result to get the index of the next higher item.
         /// </para>

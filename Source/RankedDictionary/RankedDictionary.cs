@@ -196,9 +196,10 @@ namespace Kaos.Collections
         /// <remarks>This is a O(1) operation.</remarks>
         public int Count => root.Weight;
 
-        /// <summary>Gets only the collection of keys from this dictionary.</summary>
-        /// <remarks>The keys given by this collection are sorted according to the
-        /// <see cref="Comparer"/> property.</remarks>
+        /// <summary>Gets a collection containing the keys of the dictionary.</summary>
+        /// <remarks>
+        /// The keys given by this collection are sorted according to the <see cref="Comparer"/> property.
+        /// </remarks>
         /// <example>
         /// This trivial example shows how to enumerate the keys of a dictionary.
         /// <code source="..\Bench\RdExample02\RdExample02.cs" lang="cs" />
@@ -226,9 +227,10 @@ namespace Kaos.Collections
         IEnumerable<TValue> IReadOnlyDictionary<TKey,TValue>.Values => Values;
 #endif
 
-        /// <summary>Gets only the collection of values from this dictionary.</summary>
-        /// <remarks>The values given by this collection are sorted in the same
-        /// order as their respective keys in the <see cref="Keys"/> collection.</remarks>
+        /// <summary>Gets a collection containing the values of the dictionary.</summary>
+        /// <remarks>
+        /// The values given by this collection are sorted in the same order as their respective keys.
+        /// </remarks>
         /// <example>
         /// This trivial example shows how to enumerate the values of a dictionary.
         /// <code source="..\Bench\RdExample02\RdExample02.cs" lang="cs" />
@@ -308,10 +310,11 @@ namespace Kaos.Collections
         public void Clear() => Initialize();
 
 
-        /// <summary>Determines if the dictionary contains the supplied key.</summary>
-        /// <param name="key">The key to locate in the dictionary.</param>
-        /// <returns><b>true</b> if the dictionary contains <em>key</em>; otherwise <b>false</b>.</returns>
-        /// <exception cref="ArgumentNullException">When the supplied key is <b>null</b>.</exception>
+        /// <summary>Determines whether the dictionary contains the supplied key.</summary>
+        /// <param name="key">The key to locate.</param>
+        /// <returns><b>true</b> if <em>key</em> is contained in the dictionary; otherwise <b>false</b>.</returns>
+        /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
+        /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
         public bool ContainsKey (TKey key)
         {
             if (key == null)
@@ -322,16 +325,16 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Determines if the dictionary contains the supplied value.</summary>
-        /// <param name="value">The value to find.</param>
-        /// <returns><b>true</b> if <em>value</em> is found in the dictionary; otherwise <b>false</b>.</returns>
+        /// <summary>Determines whether the dictionary contains the supplied value.</summary>
+        /// <param name="value">The value to locate.</param>
+        /// <returns><b>true</b> if <em>value</em> is contained in the dictionary; otherwise <b>false</b>.</returns>
         /// <remarks>This is a O(<em>n</em>) operation.</remarks>
         public bool ContainsValue (TValue value) => ContainsValue2 (value) >= 0;
 
 
         /// <summary>Determines if the collection contains the supplied key/value pair.</summary>
-        /// <param name="keyValuePair">Key/value pair to find.</param>
-        /// <returns><b>true</b> if the collection contains the supplied key/value pair; otherwise <b>false</b>.</returns>
+        /// <param name="keyValuePair">The key/value pair to locate.</param>
+        /// <returns><b>true</b> if <em>keyValuePair</em> is contained in the dictionary; otherwise <b>false</b>.</returns>
         bool ICollection<KeyValuePair<TKey,TValue>>.Contains (KeyValuePair<TKey,TValue> keyValuePair)
         {
             var leaf = (PairLeaf<TValue>) Find (keyValuePair.Key, out int index);
@@ -418,12 +421,12 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Removes all elements that match the condition defined by the supplied predicate from the dictionary.</summary>
-        /// <param name="match">The condition of the items to remove.</param>
-        /// <returns>The number of items removed from the dictionary.</returns>
+        /// <summary>Removes all elements from the dictionary that match the condition defined by the supplied key-parameterized predicate.</summary>
+        /// <param name="match">The condition of the elements to remove.</param>
+        /// <returns>The number of elements removed from the dictionary.</returns>
         /// <remarks>
         /// This is a O(<em>n</em> log <em>m</em>) operation
-        /// where <em>m</em> is the number of items removed and <em>n</em> is <see cref="Count"/>.
+        /// where <em>m</em> is the number of elements removed and <em>n</em> is <see cref="Count"/>.
         /// </remarks>
         /// <exception cref="ArgumentNullException">When <em>match</em> is <b>null</b>.</exception>
         public int RemoveWhere (Predicate<TKey> match)
@@ -432,12 +435,12 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Removes all elements that match the condition defined by the supplied key/value-parameterized predicate from the dictionary.</summary>
-        /// <param name="match">The condition of the items to remove.</param>
-        /// <returns>The number of items removed from the dictionary.</returns>
+        /// <summary>Removes all elements from the dictionary that match the condition defined by the supplied key/value-parameterized predicate.</summary>
+        /// <param name="match">The condition of the elements to remove.</param>
+        /// <returns>The number of elements removed from the dictionary.</returns>
         /// <remarks>
         /// This is a O(<em>n</em> log <em>m</em>) operation
-        /// where <em>m</em> is the number of items removed and <em>n</em> is <see cref="Count"/>.
+        /// where <em>m</em> is the number of elements removed and <em>n</em> is <see cref="Count"/>.
         /// </remarks>
         /// <exception cref="ArgumentNullException">When <em>match</em> is <b>null</b>.</exception>
         public int RemoveWherePair (Predicate<KeyValuePair<TKey,TValue>> match)
@@ -565,7 +568,7 @@ namespace Kaos.Collections
 
 
         /// <summary>Determines whether the dictionary contains a key/value pair with the supplied key.</summary>
-        /// <param name="key">The key to locate in the dictionary.</param>
+        /// <param name="key">The key to locate.</param>
         /// <returns><b>true</b> if the dictionary contains <em>key</em>; otherwise <b>false</b>.</returns>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
         bool IDictionary.Contains (object key)
@@ -872,11 +875,11 @@ namespace Kaos.Collections
 
 
         /// <summary>Gets the index of the element with the supplied key.</summary>
-        /// <param name="key">The key of the element to seek.</param>
-        /// <returns>The index of the element with the supplied key if found; otherwise a negative value holding the bitwise complement of the insert point.</returns>
+        /// <param name="key">The key of the element to find.</param>
+        /// <returns>The index of the element containing <em>key</em> if found; otherwise a negative value holding the bitwise complement of the insert point.</returns>
         /// <remarks>
         /// <para>
-        /// If the item is not found, apply the bitwise complement operator
+        /// If <em>key</em> is not found, apply the bitwise complement operator
         /// (<see href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/bitwise-complement-operator">~</see>)
         /// to the result to get the index of the next higher element.
         /// </para>
@@ -974,7 +977,7 @@ namespace Kaos.Collections
 
         /// <summary>Gets the key/value pair at the supplied index.</summary>
         /// <param name="index">The zero-based index of the element to get.</param>
-        /// <returns>The element at the supplied index.</returns>
+        /// <returns>The element at <em>index</em>.</returns>
         /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
         /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or greater than or equal to the number of keys.</exception>
         public KeyValuePair<TKey,TValue> ElementAt (int index)
@@ -987,9 +990,9 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Gets the key/value pair at the supplied index or the default if index is out of range.</summary>
-        /// <param name="index">The zero-based index of the item to get.</param>
-        /// <returns>The element at the supplied index.</returns>
+        /// <summary>Gets the key/value pair at the supplied index or the default if the index is out of range.</summary>
+        /// <param name="index">The zero-based index of the element to get.</param>
+        /// <returns>The element at <em>index</em>.</returns>
         /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
         public KeyValuePair<TKey,TValue> ElementAtOrDefault (int index)
         {

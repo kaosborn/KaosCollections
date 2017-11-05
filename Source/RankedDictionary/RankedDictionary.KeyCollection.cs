@@ -17,7 +17,7 @@ namespace Kaos.Collections
     public partial class RankedDictionary<TKey,TValue>
     {
         /// <summary>
-        /// Represents the collection of keys of a <see cref="RankedDictionary{TKey,TValue}"/>.
+        /// Represents a collection of keys of the <see cref="RankedDictionary{TKey,TValue}"/>.
         /// </summary>
         [DebuggerTypeProxy (typeof (ICollectionKeysDebugView<,>))]
         [DebuggerDisplay ("Count = {Count}")]
@@ -78,8 +78,9 @@ namespace Kaos.Collections
 
 
             /// <summary>Determines whether the collection contains the supplied key.</summary>
-            /// <param name="key">The key to locate in the collection.</param>
-            /// <returns><b>true</b> if <em>key</em> is found in the collection; otherwise <b>false</b>.</returns>
+            /// <param name="key">The key to locate.</param>
+            /// <returns><b>true</b> if <em>key</em> is contained in the collection; otherwise <b>false</b>.</returns>
+            /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
             bool ICollection<TKey>.Contains (TKey key)
             { return tree.ContainsKey (key); }
 
@@ -152,13 +153,13 @@ namespace Kaos.Collections
 
 
             /// <summary>Gets the index of the supplied key.</summary>
-            /// <param name="key">The key to seek.</param>
-            /// <returns>The index of the supplied key if found; otherwise a negative value holding the bitwise complement of the insert point.</returns>
+            /// <param name="key">The key to find.</param>
+            /// <returns>The index of <em>key</em> if found; otherwise a negative value holding the bitwise complement of the insert point.</returns>
             /// <remarks>
             /// <para>
-            /// If the item is not found, apply the bitwise complement operator
+            /// If <em>key</em> is not found, apply the bitwise complement operator
             /// (<see href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/bitwise-complement-operator">~</see>)
-            /// to the result to get the index of the next higher element.
+            /// to the result to get the index of the next higher key.
             /// </para>
             /// <para>
             /// This is a O(log <em>n</em>) operation.

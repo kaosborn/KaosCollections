@@ -17,7 +17,7 @@ namespace Kaos.Collections
     public partial class RankedDictionary<TKey,TValue>
     {
         /// <summary>
-        /// Represents the collection of values of a <see cref="RankedDictionary{TKey,TValue}"/>.
+        /// Represents a collection of values of the <see cref="RankedDictionary{TKey,TValue}"/>.
         /// </summary>
         [DebuggerTypeProxy (typeof (ICollectionValuesDebugView<,>))]
         [DebuggerDisplay ("Count = {Count}")]
@@ -78,8 +78,8 @@ namespace Kaos.Collections
 
 
             /// <summary>Determines whether the dictionary contains the supplied value.</summary>
-            /// <param name="value">The value to find.</param>
-            /// <returns><b>true</b> if <em>value</em> is found in the dictionary; otherwise <b>false</b>.</returns>
+            /// <param name="value">The value to locate.</param>
+            /// <returns><b>true</b> if <em>value</em> is contained in the dictionary; otherwise <b>false</b>.</returns>
             /// <remarks>This is a O(<em>n</em>) operation.</remarks>
             bool ICollection<TValue>.Contains (TValue value) => tree.ContainsValue2 (value) >= 0;
 
