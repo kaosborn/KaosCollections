@@ -47,7 +47,6 @@ namespace Kaos.Test.Collections
         { return x==null? (y==null? 0 : -1) : (y==null? 1 : String.Compare (x.Name, y.Name)); }
     }
 
-
     [TestClass]
     public partial class TestBtree
     {
@@ -76,6 +75,14 @@ namespace Kaos.Test.Collections
 
         System.Collections.IDictionary objCol1, objCol2, objCol3, objCol4;
 
+        KeyValuePair<string,int>[] greek = new KeyValuePair<string,int>[]
+        {
+            new KeyValuePair<string,int> ("alpha", 1),
+            new KeyValuePair<string,int> ("beta", 2),
+            new KeyValuePair<string,int> ("delta", 4),
+            new KeyValuePair<string,int> ("lambda", 11),
+            new KeyValuePair<string,int> ("omega", 24)
+        };
 
         // Must not contain value 50.
         static int[] iVals1 = new int[] { 12, 28, 15, 18, 14, 19, 25 };

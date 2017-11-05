@@ -92,6 +92,16 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRdk_gICollectionContains_ArgumentNull()
+        {
+            Setup();
+            tree2.Add ("alpha", 10);
+
+            var junk = genKeys2.Contains (null);
+        }
+
+        [TestMethod]
         public void UnitRdk_gICollectionContains()
         {
             Setup();
