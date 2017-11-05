@@ -64,23 +64,31 @@ namespace Kaos.Collections
         }
 
 
-        internal bool ContainsValue2<TValue> (TValue value)
+        internal int ContainsValue2<TValue> (TValue value)
         {
+            int result = 0;
+
             if (value != null)
             {
                 var comparer = System.Collections.Generic.EqualityComparer<TValue>.Default;
                 for (var leaf = (PairLeaf<TValue>) leftmostLeaf; leaf != null; leaf = (PairLeaf<TValue>) leaf.rightLeaf)
+                {
                     for (int vix = 0; vix < leaf.ValueCount; ++vix)
                         if (comparer.Equals (leaf.GetValue (vix), value))
-                            return true;
+                            return result + vix;
+                    result += leaf.KeyCount;
+                }
             }
             else
                 for (var leaf = (PairLeaf<TValue>) leftmostLeaf; leaf != null; leaf = (PairLeaf<TValue>) leaf.rightLeaf)
+                {
                     for (int vix = 0; vix < leaf.ValueCount; ++vix)
                         if (leaf.GetValue (vix) == null)
-                            return true;
+                            return result + vix;
+                    result += leaf.KeyCount;
+                }
 
-            return false;
+            return -1;
         }
     }
 }

@@ -323,13 +323,10 @@ namespace Kaos.Collections
 
 
         /// <summary>Determines if the dictionary contains the supplied value.</summary>
-        /// <remarks>This operation performs a sequential search.</remarks>
-        /// <param name="value">Value to find.</param>
-        /// <returns><b>true</b> if the collection contains the supplied value; otherwise <b>false</b>.</returns>
-        public bool ContainsValue (TValue value)
-        {
-            return ContainsValue2 (value);
-        }
+        /// <param name="value">The value to find.</param>
+        /// <returns><b>true</b> if <em>value</em> is found in the dictionary; otherwise <b>false</b>.</returns>
+        /// <remarks>This is a O(<em>n</em>) operation.</remarks>
+        public bool ContainsValue (TValue value) => ContainsValue2 (value) >= 0;
 
 
         /// <summary>Determines if the collection contains the supplied key/value pair.</summary>

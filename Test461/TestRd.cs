@@ -366,28 +366,31 @@ namespace Kaos.Test.Collections
         public void UnitRd_ContainsValue()
         {
             Setup();
+            int n = 2000;
 
-            int key1 = 26;
-            int key2 = 36;
-            int key3 = 46;
-            tree1.Add (key1, key1 + 1000);
-            tree1.Add (key3, key3 + 1000);
+            for (int ii = 0; ii < n; ii += 2)
+                tree1.Add (ii, -ii);
 
-            Assert.IsTrue (tree1.ContainsValue (key1 + 1000));
-            Assert.IsFalse (tree1.ContainsValue (key2 + 1000));
+            for (int ii = 0; ii < n; ii += 2)
+            {
+                Assert.IsTrue (tree1.ContainsValue (-ii));
+                Assert.IsFalse (tree1.ContainsValue (-ii-1));
+            }
         }
 
 
         [TestMethod]
         public void UnitRd_ContainsValueNullA()
         {
-            Setup();
+            Setup (4);
 
-            tree3.Add ("9", 9);
-            Assert.IsTrue (tree3.ContainsValue (9));
+            for (int ii = 0; ii < 500; ++ii)
+                tree3.Add (ii.ToString(), -ii);
+
+            Assert.IsTrue (tree3.ContainsValue (-9));
             Assert.IsFalse (tree3.ContainsValue (null));
 
-            tree3.Add ("unknown", null);
+            tree3.Add ("NaN", null);
             Assert.IsTrue (tree3.ContainsValue (null));
         }
 
