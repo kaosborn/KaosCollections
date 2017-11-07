@@ -165,14 +165,8 @@ namespace Kaos.Collections
             /// This is a O(log <em>n</em>) operation.
             /// </para>
             /// </remarks>
-            /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
             public int IndexOf (TKey key)
-            {
-                if (key == null)
-                    throw new ArgumentNullException (nameof (key));
-
-                return tree.FindEdgeForIndex (key, out Leaf leaf, out int leafIndex, leftEdge:true);
-            }
+                => tree.FindEdgeForIndex (key, out Leaf leaf, out int leafIndex, leftEdge:true);
 
             #endregion
 

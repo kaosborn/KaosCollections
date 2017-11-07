@@ -247,21 +247,15 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        [ExpectedException (typeof (ArgumentNullException))]
-        public void CrashRdk_xIndexOf_ArgumentNull()
-        {
-            var rd = new RankedDictionary<string,int>();
-            var k1 = rd.Keys.IndexOf (null);
-        }
-
-        [TestMethod]
         public void UnitRdk_xIndexOf()
         {
-            var rd = new RankedDictionary<string,int>();
-            rd.Add ("one", 1); rd.Add ("two", 2);
-            var k1 = rd.Keys.IndexOf ("two");
+            var rd = new RankedDictionary<string,int> { {"one",1}, {"two",2} };
+            var pc = (System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string,int>>) rd;
 
-            Assert.AreEqual (1, k1);
+            pc.Add (new System.Collections.Generic.KeyValuePair<string,int> (null, -1));
+
+            Assert.AreEqual (0, rd.Keys.IndexOf (null));
+            Assert.AreEqual (2, rd.Keys.IndexOf ("two"));
         }
 
 #endif
