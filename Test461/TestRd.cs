@@ -1337,7 +1337,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRd_xRemoveWhere()
+        public void UnitRd_xRemoveWhereA()
         {
             var rd = new RankedDictionary<int,int>();
 
@@ -1350,6 +1350,22 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (500, removed);
             foreach (int key in rd.Keys)
                 Assert.IsTrue (key % 2 != 0);
+        }
+
+
+        [TestMethod]
+        public void UnitRd_xRemoveWhereB()
+        {
+            int n = 2000;
+            var rd = new RankedDictionary<int,int> { Capacity=7 };
+
+            for (int ix = 0; ix < n; ++ix)
+                rd.Add (ix, -ix);
+
+            int removed = rd.RemoveWhere (IsAlways);
+
+            Assert.AreEqual (n, removed);
+            Assert.AreEqual (0, rd.Count);
         }
 
 
