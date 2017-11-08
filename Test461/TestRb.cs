@@ -112,7 +112,7 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void UnitRb_oSyncRoot()
+        public void UnitRb_ocSyncRoot()
         {
             var rb = new RankedBag<int>();
             var oc = (System.Collections.ICollection) rb;

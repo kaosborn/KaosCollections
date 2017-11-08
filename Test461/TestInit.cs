@@ -79,7 +79,11 @@ namespace Kaos.Test.Collections
         {
             new KeyValuePair<string,int> ("alpha", 1),
             new KeyValuePair<string,int> ("beta", 2),
+            new KeyValuePair<string,int> ("chi", 22),
             new KeyValuePair<string,int> ("delta", 4),
+            new KeyValuePair<string,int> ("epsilon", 5),
+            new KeyValuePair<string,int> ("eta", 7),
+            new KeyValuePair<string,int> ("iota", 9),
             new KeyValuePair<string,int> ("lambda", 11),
             new KeyValuePair<string,int> ("omega", 24)
         };

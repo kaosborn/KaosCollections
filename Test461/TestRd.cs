@@ -14,7 +14,7 @@ namespace Kaos.Test.Collections
 {
     public partial class TestBtree
     {
-        static bool IsEvenValue(KeyValuePair<int, int> kv) => kv.Value % 2 == 0;
+        static bool IsEvenValue (KeyValuePair<int,int> kv) => kv.Value % 2 == 0;
 
         #region Test constructors
 
@@ -23,38 +23,38 @@ namespace Kaos.Test.Collections
         {
             Setup();
 
-            Assert.IsTrue(tree2 is System.Collections.Generic.IDictionary<string, int>);
-            Assert.IsTrue(tree2 is System.Collections.Generic.ICollection<KeyValuePair<string, int>>);
-            Assert.IsTrue(tree2 is System.Collections.Generic.IEnumerable<KeyValuePair<string, int>>);
-            Assert.IsTrue(tree2 is System.Collections.IEnumerable);
-            Assert.IsTrue(tree2 is System.Collections.IDictionary);
-            Assert.IsTrue(tree2 is System.Collections.ICollection);
+            Assert.IsTrue (tree2 is System.Collections.Generic.IDictionary<string,int>);
+            Assert.IsTrue (tree2 is System.Collections.Generic.ICollection<KeyValuePair<string,int>>);
+            Assert.IsTrue (tree2 is System.Collections.Generic.IEnumerable<KeyValuePair<string,int>>);
+            Assert.IsTrue (tree2 is System.Collections.IEnumerable);
+            Assert.IsTrue (tree2 is System.Collections.IDictionary);
+            Assert.IsTrue (tree2 is System.Collections.ICollection);
 
-            Assert.IsTrue(tree2 is System.Collections.Generic.IReadOnlyDictionary<string, int>);
-            Assert.IsTrue(tree2 is System.Collections.Generic.IReadOnlyCollection<KeyValuePair<string, int>>);
+            Assert.IsTrue (tree2 is System.Collections.Generic.IReadOnlyDictionary<string,int>);
+            Assert.IsTrue (tree2 is System.Collections.Generic.IReadOnlyCollection<KeyValuePair<string,int>>);
 
-            Assert.IsTrue(tree2.Keys is System.Collections.Generic.ICollection<string>);
-            Assert.IsTrue(tree2.Keys is System.Collections.Generic.IEnumerable<string>);
-            Assert.IsTrue(tree2.Keys is System.Collections.IEnumerable);
-            Assert.IsTrue(tree2.Keys is System.Collections.ICollection);
-            Assert.IsTrue(tree2.Keys is System.Collections.Generic.IReadOnlyCollection<string>);
+            Assert.IsTrue (tree2.Keys is System.Collections.Generic.ICollection<string>);
+            Assert.IsTrue (tree2.Keys is System.Collections.Generic.IEnumerable<string>);
+            Assert.IsTrue (tree2.Keys is System.Collections.IEnumerable);
+            Assert.IsTrue (tree2.Keys is System.Collections.ICollection);
+            Assert.IsTrue (tree2.Keys is System.Collections.Generic.IReadOnlyCollection<string>);
 
-            Assert.IsTrue(tree2.Values is System.Collections.Generic.ICollection<int>);
-            Assert.IsTrue(tree2.Values is System.Collections.Generic.IEnumerable<int>);
-            Assert.IsTrue(tree2.Values is System.Collections.IEnumerable);
-            Assert.IsTrue(tree2.Values is System.Collections.ICollection);
-            Assert.IsTrue(tree2.Values is System.Collections.Generic.IReadOnlyCollection<int>);
+            Assert.IsTrue (tree2.Values is System.Collections.Generic.ICollection<int>);
+            Assert.IsTrue (tree2.Values is System.Collections.Generic.IEnumerable<int>);
+            Assert.IsTrue (tree2.Values is System.Collections.IEnumerable);
+            Assert.IsTrue (tree2.Values is System.Collections.ICollection);
+            Assert.IsTrue (tree2.Values is System.Collections.Generic.IReadOnlyCollection<int>);
 
             Setup();
             System.Collections.IEnumerable roKeys
-                = ((System.Collections.Generic.IReadOnlyDictionary<string, int>)tree2).Keys;
+                = ((System.Collections.Generic.IReadOnlyDictionary<string,int>) tree2).Keys;
             System.Collections.IEnumerable roVals
-                = ((System.Collections.Generic.IReadOnlyDictionary<string, int>)tree2).Values;
+                = ((System.Collections.Generic.IReadOnlyDictionary<string,int>) tree2).Values;
         }
 
 
 #if TEST_BCL
-        public class DerivedD : SortedDictionary<int, int> { }
+        public class DerivedD : SortedDictionary<int,int> { }
 #else
         public class DerivedD : RankedDictionary<int,int> { }
 #endif
@@ -63,8 +63,8 @@ namespace Kaos.Test.Collections
         public void UnitRd_CtorSubclass()
         {
             var sub = new DerivedD();
-            bool isRO = ((System.Collections.Generic.IDictionary<int, int>)sub).IsReadOnly;
-            Assert.IsFalse(isRO);
+            bool isRO = ((System.Collections.Generic.IDictionary<int,int>) sub).IsReadOnly;
+            Assert.IsFalse (isRO);
         }
 
 
@@ -72,50 +72,50 @@ namespace Kaos.Test.Collections
         public void UnitRd_Ctor0Empty()
         {
             Setup();
-            Assert.AreEqual(0, tree1.Count);
+            Assert.AreEqual (0, tree1.Count);
         }
 
 
         [TestMethod]
 #if TEST_BCL
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException (typeof (ArgumentException))]
 #else
         [ExpectedException (typeof (InvalidOperationException))]
 #endif
         public void CrashRd_Ctor1NoComparer_InvalidOperation()
         {
-            var comp0 = (System.Collections.Generic.Comparer<Person>)null;
+            var comp0 = (System.Collections.Generic.Comparer<Person>) null;
 #if TEST_BCL
-            var d1 = new SortedDictionary<Person, int>(comp0);
+            var d1 = new SortedDictionary<Person,int> (comp0);
 #else
             var d1 = new RankedDictionary<Person,int> (comp0);
 #endif
-            d1.Add(new Person("Zed"), 1);
-            d1.Add(new Person("Macron"), 2);
+            d1.Add (new Person ("Zed"), 1);
+            d1.Add (new Person ("Macron"), 2);
         }
 
         [TestMethod]
         public void UnitRd_Ctor1A1()
         {
 #if TEST_BCL
-            var tree = new SortedDictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+            var tree = new SortedDictionary<string,int> (StringComparer.OrdinalIgnoreCase);
 #else
             var tree = new RankedDictionary<string,int> (StringComparer.OrdinalIgnoreCase);
 #endif
 
-            tree.Add("AAA", 0);
-            tree.Add("bbb", 1);
-            tree.Add("CCC", 2);
-            tree.Add("ddd", 3);
+            tree.Add ("AAA", 0);
+            tree.Add ("bbb", 1);
+            tree.Add ("CCC", 2);
+            tree.Add ("ddd", 3);
 
             int actualPosition = 0;
-            foreach (KeyValuePair<string, int> pair in tree)
+            foreach (KeyValuePair<string,int> pair in tree)
             {
-                Assert.AreEqual(actualPosition, pair.Value);
+                Assert.AreEqual (actualPosition, pair.Value);
                 ++actualPosition;
             }
 
-            Assert.AreEqual(4, actualPosition);
+            Assert.AreEqual (4, actualPosition);
         }
 
 
@@ -123,33 +123,33 @@ namespace Kaos.Test.Collections
         public void UnitRd_Ctor1A2()
         {
 #if TEST_BCL
-            var tree = new SortedDictionary<string, int>(StringComparer.Ordinal);
+            var tree = new SortedDictionary<string,int> (StringComparer.Ordinal);
 #else
             var tree = new RankedDictionary<string,int> (StringComparer.Ordinal);
 #endif
-            tree.Add("AAA", 0);
-            tree.Add("bbb", 2);
-            tree.Add("CCC", 1);
-            tree.Add("ddd", 3);
+            tree.Add ("AAA", 0);
+            tree.Add ("bbb", 2);
+            tree.Add ("CCC", 1);
+            tree.Add ("ddd", 3);
 
             int actualPosition = 0;
-            foreach (KeyValuePair<string, int> pair in tree)
+            foreach (KeyValuePair<string,int> pair in tree)
             {
-                Assert.AreEqual(actualPosition, pair.Value);
+                Assert.AreEqual (actualPosition, pair.Value);
                 ++actualPosition;
             }
 
-            Assert.AreEqual(4, actualPosition);
+            Assert.AreEqual (4, actualPosition);
         }
 
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException (typeof (ArgumentNullException))]
         public void CrashRd_Ctor1B_ArgumentNull()
         {
-            IDictionary<int, int> listArg = null;
+            IDictionary<int,int> listArg = null;
 #if TEST_BCL
-            IDictionary<int, int> gcp = new SortedDictionary<int, int>(listArg);
+            IDictionary<int,int> gcp = new SortedDictionary<int,int> (listArg);
 #else
             IDictionary<int,int> gcp = new RankedDictionary<int,int> (listArg);
 #endif
@@ -161,34 +161,34 @@ namespace Kaos.Test.Collections
         {
             Setup();
 
-            IDictionary<string, int> sl = new SortedList<string, int>();
-            sl.Add("Gremlin", 1);
-            sl.Add("Pacer", 2);
+            IDictionary<string,int> sl = new SortedList<string,int>();
+            sl.Add ("Gremlin", 1);
+            sl.Add ("Pacer", 2);
 
 #if TEST_BCL
-            var dary = new SortedDictionary<string, int>(sl);
+            var dary = new SortedDictionary<string,int> (sl);
 #else
             var dary = new RankedDictionary<string,int> (sl);
 #endif
 
-            Assert.AreEqual(1, dary["Gremlin"]);
-            Assert.AreEqual(2, dary["Pacer"]);
+            Assert.AreEqual (1, dary["Gremlin"]);
+            Assert.AreEqual (2, dary["Pacer"]);
         }
 
         [TestMethod]
         public void UnitRd_Ctor2()
         {
-            IDictionary<Person, int> empDary = new SortedDictionary<Person, int>(new PersonComparer());
-            empDary.Add(new KeyValuePair<Person, int>(new Person("fay"), 1));
-            empDary.Add(new KeyValuePair<Person, int>(new Person("ann"), 2));
-            empDary.Add(new KeyValuePair<Person, int>(new Person("sam"), 3));
+            IDictionary<Person,int> empDary = new SortedDictionary<Person,int> (new PersonComparer());
+            empDary.Add(new KeyValuePair<Person,int>(new Person("fay"), 1));
+            empDary.Add(new KeyValuePair<Person,int>(new Person("ann"), 2));
+            empDary.Add(new KeyValuePair<Person,int>(new Person("sam"), 3));
 
 #if TEST_BCL
-            var people = new SortedDictionary<Person, int>(empDary, new PersonComparer());
+            var people = new SortedDictionary<Person,int> (empDary, new PersonComparer());
 #else
             var people = new RankedDictionary<Person,int> (empDary, new PersonComparer());
 #endif
-            Assert.AreEqual(3, people.Count);
+            Assert.AreEqual (3, people.Count);
         }
 
         #endregion
@@ -202,7 +202,7 @@ namespace Kaos.Test.Collections
 
             IComparer<string> result = tree2.Comparer;
 
-            Assert.AreEqual(Comparer<string>.Default, result);
+            Assert.AreEqual (Comparer<string>.Default, result);
         }
 
 
@@ -213,21 +213,21 @@ namespace Kaos.Test.Collections
 
             for (int i = 0; i < iVals1.Length; ++i)
             {
-                Assert.AreEqual(i, tree1.Count);
-                tree1.Add(iVals1[i], iVals1[i] * 10);
+                Assert.AreEqual (i, tree1.Count);
+                tree1.Add (iVals1[i], iVals1[i] * 10);
             }
-            Assert.AreEqual(iVals1.Length, tree1.Count);
+            Assert.AreEqual (iVals1.Length, tree1.Count);
 
             for (int i = 0; i < iVals1.Length; ++i)
             {
-                tree1.Remove(iVals1[i]);
-                Assert.AreEqual(iVals1.Length - i - 1, tree1.Count);
+                tree1.Remove (iVals1[i]);
+                Assert.AreEqual (iVals1.Length - i - 1, tree1.Count);
             }
         }
 
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException (typeof (ArgumentNullException))]
         public void CrashRd_Item_ArgumentNullA()
         {
             Setup();
@@ -236,33 +236,33 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException (typeof (ArgumentNullException))]
         public void CrashRd_Item_ArgumentNullB()
         {
             Setup();
-            int x = tree2[null];
+            int zz = tree2[null];
         }
 
 
         [TestMethod]
-        [ExpectedException(typeof(KeyNotFoundException))]
+        [ExpectedException (typeof (KeyNotFoundException))]
         public void CrashRd_Item_KeyNotFoundA()
         {
             Setup();
-            tree2.Add("pi", 9);
+            tree2.Add ("pi", 9);
 
-            int x = tree2["omicron"];
+            int zz = tree2["omicron"];
         }
 
 
         [TestMethod]
-        [ExpectedException(typeof(KeyNotFoundException))]
+        [ExpectedException (typeof (KeyNotFoundException))]
         public void CrashRd_Item_KeyNotFoundB()
         {
             Setup();
-            tree1.Add(23, 230);
+            tree1.Add (23, 230);
 
-            int val = tree1[9];
+            int zz = tree1[9];
         }
 
 
@@ -274,11 +274,11 @@ namespace Kaos.Test.Collections
             tree2["seven"] = 7;
             tree2["eleven"] = 111;
 
-            Assert.AreEqual(7, tree2["seven"]);
-            Assert.AreEqual(111, tree2["eleven"]);
+            Assert.AreEqual (7, tree2["seven"]);
+            Assert.AreEqual (111, tree2["eleven"]);
 
             tree2["eleven"] = 11;
-            Assert.AreEqual(11, tree2["eleven"]);
+            Assert.AreEqual (11, tree2["eleven"]);
         }
 
         #endregion
@@ -286,21 +286,21 @@ namespace Kaos.Test.Collections
         #region Test methods
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException (typeof (ArgumentNullException))]
         public void CrashRd_Add_ArgumentNull()
         {
             Setup();
-            tree2.Add(null, 0);
+            tree2.Add (null, 0);
         }
 
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException (typeof (ArgumentException))]
         public void CrashRd_Add_Argument()
         {
             Setup();
-            tree2.Add("foo", 1);
-            tree2.Add("foo", 2);
+            tree2.Add ("foo", 1);
+            tree2.Add ("foo", 2);
         }
 
 
@@ -309,10 +309,10 @@ namespace Kaos.Test.Collections
         {
             Setup();
 
-            tree1.Add(12, 120);
-            tree1.Add(18, 180);
+            tree1.Add (12, 120);
+            tree1.Add (18, 180);
 
-            Assert.AreEqual(2, tree1.Count);
+            Assert.AreEqual (2, tree1.Count);
         }
 
 
@@ -321,14 +321,14 @@ namespace Kaos.Test.Collections
         {
             Setup();
 
-            tree1.Add(41, 410);
-            Assert.AreEqual(1, tree1.Count);
+            tree1.Add (41, 410);
+            Assert.AreEqual (1, tree1.Count);
 
             tree1.Clear();
-            Assert.AreEqual(0, tree1.Count);
+            Assert.AreEqual (0, tree1.Count);
 
             int actualCount = 0;
-            foreach (KeyValuePair<int, int> pair in tree1)
+            foreach (KeyValuePair<int,int> pair in tree1)
                 ++actualCount;
 
             Assert.AreEqual(0, actualCount);
@@ -336,15 +336,15 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException (typeof (ArgumentNullException))]
         public void CrashRd_ContainsKey_ArgumentNull()
         {
             Setup();
 
-            tree2.Add("gamma", 3);
+            tree2.Add ("gamma", 3);
 
             // The nongeneric interface allows insert null key, but this is BCL behavior so...
-            bool result = tree2.ContainsKey(null);
+            bool zz = tree2.ContainsKey (null);
         }
 
 
@@ -355,10 +355,10 @@ namespace Kaos.Test.Collections
 
             int key1 = 26;
             int key2 = 36;
-            tree1.Add(key1, key1 * 10);
+            tree1.Add (key1, key1 * 10);
 
-            Assert.IsTrue(tree1.ContainsKey(key1));
-            Assert.IsFalse(tree1.ContainsKey(key2));
+            Assert.IsTrue (tree1.ContainsKey (key1));
+            Assert.IsFalse (tree1.ContainsKey (key2));
         }
 
 
@@ -369,12 +369,12 @@ namespace Kaos.Test.Collections
             int n = 2000;
 
             for (int ii = 0; ii < n; ii += 2)
-                tree1.Add(ii, -ii);
+                tree1.Add (ii, -ii);
 
             for (int ii = 0; ii < n; ii += 2)
             {
-                Assert.IsTrue(tree1.ContainsValue(-ii));
-                Assert.IsFalse(tree1.ContainsValue(-ii - 1));
+                Assert.IsTrue (tree1.ContainsValue (-ii));
+                Assert.IsFalse (tree1.ContainsValue (-ii - 1));
             }
         }
 
@@ -382,16 +382,16 @@ namespace Kaos.Test.Collections
         [TestMethod]
         public void UnitRd_ContainsValueNullA()
         {
-            Setup(4);
+            Setup (4);
 
             for (int ii = 0; ii < 500; ++ii)
-                tree3.Add(ii.ToString(), -ii);
+                tree3.Add (ii.ToString(), -ii);
 
-            Assert.IsTrue(tree3.ContainsValue(-9));
-            Assert.IsFalse(tree3.ContainsValue(null));
+            Assert.IsTrue (tree3.ContainsValue (-9));
+            Assert.IsFalse (tree3.ContainsValue (null));
 
-            tree3.Add("NaN", null);
-            Assert.IsTrue(tree3.ContainsValue(null));
+            tree3.Add ("NaN", null);
+            Assert.IsTrue (tree3.ContainsValue (null));
         }
 
 
@@ -400,61 +400,61 @@ namespace Kaos.Test.Collections
         {
             Setup();
 
-            tree4.Add(5, "ee");
-            tree4.Add(3, "cc");
-            tree4.Add(7, "gg");
-            Assert.IsFalse(tree4.ContainsValue(null));
+            tree4.Add (5, "ee");
+            tree4.Add (3, "cc");
+            tree4.Add (7, "gg");
+            Assert.IsFalse (tree4.ContainsValue (null));
 
-            tree4.Add(-1, null);
-            Assert.IsFalse(tree4.ContainsValue("dd"));
-            Assert.IsTrue(tree4.ContainsValue("cc"));
-            Assert.IsTrue(tree4.ContainsValue(null));
+            tree4.Add (-1, null);
+            Assert.IsFalse (tree4.ContainsValue ("dd"));
+            Assert.IsTrue (tree4.ContainsValue ("cc"));
+            Assert.IsTrue (tree4.ContainsValue (null));
         }
 
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException (typeof (ArgumentNullException))]
         public void CrashRd_CopyTo_ArgumentNull()
         {
             Setup();
-            tree1.CopyTo(null, -1);
+            tree1.CopyTo (null, -1);
         }
 
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
         public void CrashRd_CopyTo_ArgumentOutOfRange()
         {
             Setup();
-            var target = new KeyValuePair<int, int>[iVals1.Length];
-            tree1.CopyTo(target, -1);
+            var target = new KeyValuePair<int,int>[iVals1.Length];
+            tree1.CopyTo (target, -1);
         }
 
 
         // MS docs incorrectly state ArgumentOutOfRangeException for this case.
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException (typeof (ArgumentException))]
         public void CrashRd_CopyTo_ArgumentA()
         {
             Setup();
             for (int key = 1; key < 10; ++key)
-                tree1.Add(key, key + 1000);
+                tree1.Add (key, key + 1000);
 
-            var target = new KeyValuePair<int, int>[10];
-            tree1.CopyTo(target, 25);
+            var target = new KeyValuePair<int,int>[10];
+            tree1.CopyTo (target, 25);
         }
 
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException (typeof (ArgumentException))]
         public void CrashRd_CopyTo_ArgumentB()
         {
             Setup();
             for (int key = 1; key < 10; ++key)
-                tree1.Add(key, key + 1000);
+                tree1.Add (key, key + 1000);
 
-            var target = new System.Collections.Generic.KeyValuePair<int, int>[4];
-            tree1.CopyTo(target, 2);
+            var target = new System.Collections.Generic.KeyValuePair<int,int>[4];
+            tree1.CopyTo (target, 2);
         }
 
 
@@ -466,34 +466,34 @@ namespace Kaos.Test.Collections
             int size = 20;
 
             for (int i = 0; i < size; ++i)
-                tree1.Add(i + 1000, i + 10000);
+                tree1.Add (i + 1000, i + 10000);
 
-            var pairs = new KeyValuePair<int, int>[size + offset];
+            var pairs = new KeyValuePair<int,int>[size + offset];
 
-            tree1.CopyTo(pairs, offset);
+            tree1.CopyTo (pairs, offset);
 
             for (int i = 0; i < offset; ++i)
             {
-                Assert.AreEqual(0, pairs[i].Key);
-                Assert.AreEqual(0, pairs[i].Value);
+                Assert.AreEqual (0, pairs[i].Key);
+                Assert.AreEqual (0, pairs[i].Value);
             }
 
             for (int i = 0; i < size; ++i)
             {
-                Assert.AreEqual(i + 1000, pairs[i + offset].Key);
-                Assert.AreEqual(i + 10000, pairs[i + offset].Value);
+                Assert.AreEqual (i + 1000, pairs[i + offset].Key);
+                Assert.AreEqual (i + 10000, pairs[i + offset].Value);
             }
         }
 
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException (typeof (ArgumentNullException))]
         public void CrashRd_Remove_ArgumentNull()
         {
             Setup();
-            tree2.Add("delta", 4);
+            tree2.Add ("delta", 4);
 
-            bool isRemoved = tree2.Remove((String)null);
+            bool isRemoved = tree2.Remove ((String) null);
         }
 
 
@@ -503,46 +503,46 @@ namespace Kaos.Test.Collections
             Setup();
 
             foreach (int key in iVals1)
-                tree1.Add(key, key + 1000);
+                tree1.Add (key, key + 1000);
 
             int c0 = tree1.Count;
-            bool isRemoved1 = tree1.Remove(iVals1[3]);
-            bool isRemoved2 = tree1.Remove(iVals1[3]);
+            bool isRemoved1 = tree1.Remove (iVals1[3]);
+            bool isRemoved2 = tree1.Remove (iVals1[3]);
 
-            Assert.IsTrue(isRemoved1);
-            Assert.IsFalse(isRemoved2);
-            Assert.AreEqual(c0 - 1, tree1.Count);
+            Assert.IsTrue (isRemoved1);
+            Assert.IsFalse (isRemoved2);
+            Assert.AreEqual (c0 - 1, tree1.Count);
         }
 
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException (typeof (ArgumentNullException))]
         public void CrashRd_TryGetValue_ArgumentNull()
         {
             Setup();
 
             int resultValue;
-            tree2.TryGetValue(null, out resultValue);
+            tree2.TryGetValue (null, out resultValue);
         }
 
 
         [TestMethod]
         public void UnitRd_TryGetValueOrUnfoundKeyInt()
         {
-            Setup(5);
+            Setup (5);
             for (int i = 2; i <= 50; i += 2)
-                tree1.Add(i, i + 300);
+                tree1.Add (i, i + 300);
 
-            bool result1 = tree1.TryGetValue(5, out int val1);
-            bool result2 = tree1.TryGetValue(18, out int val2);
-            bool result3 = tree1.TryGetValue(26, out int val3);
+            bool result1 = tree1.TryGetValue (5, out int val1);
+            bool result2 = tree1.TryGetValue (18, out int val2);
+            bool result3 = tree1.TryGetValue (26, out int val3);
 
-            Assert.AreEqual(val2, 318);
-            Assert.AreEqual(val3, 326);
+            Assert.AreEqual (val2, 318);
+            Assert.AreEqual (val3, 326);
 
-            Assert.IsFalse(result1);
-            Assert.IsTrue(result2);
-            Assert.IsTrue(result3);
+            Assert.IsFalse (result1);
+            Assert.IsTrue (result2);
+            Assert.IsTrue (result3);
         }
 
 
@@ -550,24 +550,24 @@ namespace Kaos.Test.Collections
         public void UnitRd_TryGetValueForUnfoundKeyString()
         {
 #if TEST_BCL
-            var sd = new SortedDictionary<string, int>(StringComparer.Ordinal);
+            var sd = new SortedDictionary<string,int> (StringComparer.Ordinal);
 #else
-            var sd = new RankedDictionary<string,int> (StringComparer.Ordinal) { Capacity = 4 };
+            var sd = new RankedDictionary<string,int> (StringComparer.Ordinal) { Capacity=4 };
 #endif
 
             for (char c = 'A'; c <= 'Z'; ++c)
-                sd.Add(c.ToString(), (int)c);
+                sd.Add (c.ToString(), (int) c);
 
-            bool result1 = sd.TryGetValue("M", out int val1);
-            bool result2 = sd.TryGetValue("U", out int val2);
-            bool result3 = sd.TryGetValue("$", out int val3);
+            bool result1 = sd.TryGetValue ("M", out int val1);
+            bool result2 = sd.TryGetValue ("U", out int val2);
+            bool result3 = sd.TryGetValue ("$", out int val3);
 
-            Assert.AreEqual(val1, 'M');
-            Assert.AreEqual(val2, 'U');
+            Assert.AreEqual (val1, 'M');
+            Assert.AreEqual (val2, 'U');
 
-            Assert.IsTrue(result1);
-            Assert.IsTrue(result2);
-            Assert.IsFalse(result3);
+            Assert.IsTrue (result1);
+            Assert.IsTrue (result2);
+            Assert.IsFalse (result3);
         }
 
 
@@ -577,15 +577,15 @@ namespace Kaos.Test.Collections
             Setup();
 
             foreach (int key in iVals1)
-                tree1.Add(key, key + 1000);
+                tree1.Add (key, key + 1000);
 
             int resultValue;
-            tree1.TryGetValue(iVals1[0], out resultValue);
+            tree1.TryGetValue (iVals1[0], out resultValue);
 
-            Assert.AreEqual(iVals1[0] + 1000, resultValue);
+            Assert.AreEqual (iVals1[0] + 1000, resultValue);
 
-            tree1.TryGetValue(50, out resultValue);
-            Assert.AreEqual(default(int), resultValue);
+            tree1.TryGetValue (50, out resultValue);
+            Assert.AreEqual (default (int), resultValue);
         }
 
         #endregion
@@ -602,10 +602,10 @@ namespace Kaos.Test.Collections
             {
                 while (e1.MoveNext())
                     ++actual;
-                var junk = e1.Current;
+                var zz = e1.Current;
             }
 
-            Assert.AreEqual(0, actual);
+            Assert.AreEqual (0, actual);
         }
 
 
@@ -616,9 +616,9 @@ namespace Kaos.Test.Collections
             int actual1 = 0, total1 = 0;
 
             Setup();
-            tree2.Add("three", 3);
-            tree2.Add("one", 1);
-            tree2.Add("five", 5);
+            tree2.Add ("three", 3);
+            tree2.Add ("one", 1);
+            tree2.Add ("five", 5);
 
             using (var e1 = tree2.GetEnumerator())
             {
@@ -631,9 +631,9 @@ namespace Kaos.Test.Collections
                 isMoved = e1.MoveNext();
             }
 
-            Assert.AreEqual(3, actual1);
-            Assert.AreEqual(9, total1);
-            Assert.IsFalse(isMoved);
+            Assert.AreEqual (3, actual1);
+            Assert.AreEqual (9, total1);
+            Assert.IsFalse (isMoved);
         }
 
 
@@ -643,82 +643,82 @@ namespace Kaos.Test.Collections
             Setup();
 
             for (int i = 0; i < iVals1.Length; ++i)
-                tree1.Add(iVals1[i], iVals1[i] + 1000);
+                tree1.Add (iVals1[i], iVals1[i] + 1000);
 
             int actualCount = 0;
 
-            foreach (KeyValuePair<int, int> pair in tree1)
+            foreach (KeyValuePair<int,int> pair in tree1)
             {
                 ++actualCount;
-                Assert.AreEqual(pair.Key + 1000, pair.Value);
+                Assert.AreEqual (pair.Key + 1000, pair.Value);
             }
 
-            Assert.AreEqual(iVals1.Length, actualCount);
+            Assert.AreEqual (iVals1.Length, actualCount);
         }
 
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
-        public void CrashRd_oCurrent_InvalidOperationA()
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRd_oeCurrent_InvalidOperationA()
         {
             Setup();
-            tree2.Add("cc", 3);
-            IEnumerator<KeyValuePair<string, int>> kvEtor = tree2.GetEnumerator();
+            tree2.Add ("cc", 3);
+            IEnumerator<KeyValuePair<string,int>> kvEtor = tree2.GetEnumerator();
 
-            object jp = ((System.Collections.IEnumerator)kvEtor).Current;
+            object zz = ((System.Collections.IEnumerator) kvEtor).Current;
         }
 
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
-        public void CrashRd_oCurrent_InvalidOperationB()
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRd_oeCurrent_InvalidOperationB()
         {
             Setup();
-            tree2.Add("cc", 3);
-            IEnumerator<KeyValuePair<string, int>> kvEtor = tree2.GetEnumerator();
+            tree2.Add ("cc", 3);
+            IEnumerator<KeyValuePair<string,int>> kvEtor = tree2.GetEnumerator();
             kvEtor.MoveNext();
             kvEtor.MoveNext();
 
-            object jp = ((System.Collections.IEnumerator)kvEtor).Current;
+            object zz = ((System.Collections.IEnumerator) kvEtor).Current;
         }
 
         [TestMethod]
         public void UnitRd_EtorPair()
         {
             Setup();
-            tree2.Add("nine", 9);
-            IEnumerator<KeyValuePair<string, int>> kvEnum = tree2.GetEnumerator();
+            tree2.Add ("nine", 9);
+            IEnumerator<KeyValuePair<string,int>> kvEnum = tree2.GetEnumerator();
 
-            KeyValuePair<string, int> pair0 = kvEnum.Current;
-            Assert.AreEqual(default(int), pair0.Value);
-            Assert.AreEqual(default(string), pair0.Key);
+            KeyValuePair<string,int> pair0 = kvEnum.Current;
+            Assert.AreEqual (default (int), pair0.Value);
+            Assert.AreEqual (default (string), pair0.Key);
 
             kvEnum.MoveNext();
-            KeyValuePair<string, int> pair = kvEnum.Current;
-            Assert.AreEqual(9, pair.Value);
-            Assert.AreEqual("nine", pair.Key);
+            KeyValuePair<string,int> pair = kvEnum.Current;
+            Assert.AreEqual (9, pair.Value);
+            Assert.AreEqual ("nine", pair.Key);
 
             kvEnum.MoveNext();
             pair = kvEnum.Current;
-            Assert.AreEqual(default(string), pair.Key);
-            Assert.AreEqual(default(int), pair.Value);
+            Assert.AreEqual (default (string), pair.Key);
+            Assert.AreEqual (default (int), pair.Value);
         }
 
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [ExpectedException (typeof (InvalidOperationException))]
         public void CrashRd_EtorHotUpdate()
         {
-            Setup(4);
-            tree2.Add("vv", 1);
-            tree2.Add("mm", 2);
-            tree2.Add("qq", 3);
+            Setup (4);
+            tree2.Add ("vv", 1);
+            tree2.Add ("mm", 2);
+            tree2.Add ("qq", 3);
 
             int n = 0;
             foreach (var kv in tree2)
             {
                 if (++n == 2)
-                    tree2.Add("breaks enum", 4);
+                    tree2.Add ("breaks enum", 4);
             }
         }
 
@@ -726,104 +726,108 @@ namespace Kaos.Test.Collections
         public void UnitRd_oGetEnumerator()
         {
             Setup();
-            var aa = (System.Collections.IEnumerable)tree1;
+            var aa = (System.Collections.IEnumerable) tree1;
             var bb = aa.GetEnumerator();
         }
 
         #endregion
 
-        #region Test nongeneric ICollection, IDictionary implementation
+        #region Test explicit implementation
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void CrashRd_gICollectionAddPair_Argument()
+        [ExpectedException (typeof (ArgumentException))]
+        public void CrashRd_pcAdd_Argument()
         {
             Setup();
-            var p1 = new KeyValuePair<string, int>("beta", 1);
-            var p2 = new KeyValuePair<string, int>(null, 98);
-            var p3 = new KeyValuePair<string, int>(null, 99);
+            var pc = (ICollection<KeyValuePair<string,int>>) tree2;
 
-            genCol2.Add(p1);
+            var p1 = new KeyValuePair<string,int> ("beta", 1);
+            var p2 = new KeyValuePair<string,int> (null, 98);
+            var p3 = new KeyValuePair<string,int> (null, 99);
+
+            pc.Add (p1);
 
             // Adding a null key is allowed here!
-            genCol2.Add(p2);
+            pc.Add (p2);
 
             int result2 = tree2.Count;
-            Assert.AreEqual(2, result2);
+            Assert.AreEqual (2, result2);
 
             // Should bomb on the second null key.
-            genCol2.Add(p3);
+            pc.Add (p3);
         }
 
 
         [TestMethod]
-        public void UnitRd_gICollectionAddPair()
+        public void UnitRd_pcAdd()
         {
             Setup();
-            var gpc = (ICollection<KeyValuePair<int, int>>)tree1;
+            var pc = (ICollection<KeyValuePair<int,int>>) tree1;
 
-            var p1 = new KeyValuePair<int, int>(17, 170);
-            gpc.Add(p1);
+            var p1 = new KeyValuePair<int,int> (17, 170);
+            pc.Add (p1);
 
-            Assert.AreEqual(1, tree1.Count);
-            Assert.IsTrue(tree1.ContainsKey(17));
+            Assert.AreEqual (1, tree1.Count);
+            Assert.IsTrue (tree1.ContainsKey (17));
         }
 
 
         [TestMethod]
-        public void UnitRd_gICollectionContainsPair()
+        public void UnitRd_pcContains()
         {
             Setup (4);
+            var pc = (ICollection<KeyValuePair<string,int>>) tree2;
+
             var nullKv = new KeyValuePair<string,int> (null, 0);
             var zedKv = new KeyValuePair<string,int> ("z", 0);
 
             foreach (var kv in greek)
-                genCol2.Add (kv);
+                pc.Add (kv);
 
             foreach (var kv in greek)
-                Assert.IsTrue (genCol2.Contains (kv));
+                Assert.IsTrue (pc.Contains (kv));
 
-            Assert.IsFalse (genCol2.Contains (zedKv));
-            Assert.IsFalse (genCol2.Contains (nullKv));
+            Assert.IsFalse (pc.Contains (zedKv));
+            Assert.IsFalse (pc.Contains (nullKv));
 
             // key of null allowed with generic collection explicit interface:
-            genCol2.Add (nullKv);
-            Assert.IsTrue (genCol2.Contains (nullKv));
+            pc.Add (nullKv);
+            Assert.IsTrue (pc.Contains (nullKv));
         }
 
 
         [TestMethod]
-        public void UnitRd_gICollectionComparePairNullRef()
+        public void UnitRd_pcComparePairNullRef()
         {
             Setup();
+            var pc = (ICollection<KeyValuePair<int,string>>) tree4;
+
             tree4.Add (3, "cc");
             tree4.Add (1, "aa");
 
             var pair0 = new KeyValuePair<int,string> (0, null);
             var pair1 = new KeyValuePair<int,string> (3, "cc");
 
-            var gcol = (ICollection<KeyValuePair<int,string>>) tree4;
 
-            Assert.IsFalse (gcol.Contains (pair0));
-            Assert.IsTrue (gcol.Contains (pair1));
+            Assert.IsFalse (pc.Contains (pair0));
+            Assert.IsTrue (pc.Contains (pair1));
 
             tree4.Add (0, null);
-            Assert.IsTrue (gcol.Contains (pair0));
+            Assert.IsTrue (pc.Contains (pair0));
         }
 
 
         [TestMethod]
-        public void UnitRd_gICollectionGetEnumerator()
+        public void UnitRd_pcEtor()
         {
             Setup();
-            var gpc = (ICollection<KeyValuePair<int,int>>) tree1;
-
+            var pc = (ICollection<KeyValuePair<int,int>>) tree1;
 
             foreach (int k in iVals1)
                 tree1.Add (k, k + 100);
 
             int actualCount = 0;
-            foreach (KeyValuePair<int,int> pair in gpc)
+            foreach (KeyValuePair<int,int> pair in pc)
             {
                 Assert.AreEqual (pair.Key + 100, pair.Value);
                 ++actualCount;
@@ -834,16 +838,16 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRd_gIEnumerablePairGetEnumerator()
+        public void UnitRd_peEtor()
         {
             Setup();
+            var pe = (IEnumerable<KeyValuePair<int,int>>) tree1;
+
             foreach (int val in iVals1)
                 tree1.Add (val, val + 100);
 
-            var gpe = (IEnumerable<KeyValuePair<int,int>>) tree1;
-
             int actualCount = 0;
-            foreach (KeyValuePair<int,int> pair in gpe)
+            foreach (KeyValuePair<int,int> pair in pe)
             {
                 Assert.AreEqual (pair.Key + 100, pair.Value);
                 ++actualCount;
@@ -854,13 +858,15 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRd_oIEnumerableGetEnumerator()
+        public void UnitRd_oeGetEtor()
         {
             Setup();
-            tree4.Add (3, "cc");
-            int rowCount = 0;
+            var oe = (System.Collections.IEnumerable) tree4;
 
-            foreach (object row in (System.Collections.IEnumerable) tree4)
+            tree4.Add (3, "cc");
+
+            int rowCount = 0;
+            foreach (object row in oe)
             {
                 var kv = (KeyValuePair<int,string>) row;
                 Assert.AreEqual (3, kv.Key);
@@ -873,17 +879,17 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRd_gICollectionIsReadonly()
+        public void UnitRd_pcIsReadonly()
         {
             Setup();
-            var gpc = (ICollection<KeyValuePair<int,int>>) tree1;
+            var pc = (ICollection<KeyValuePair<int,int>>) tree1;
 
-            Assert.IsFalse (gpc.IsReadOnly);
+            Assert.IsFalse (pc.IsReadOnly);
         }
 
 
         [TestMethod]
-        public void UnitRd_gIDictionaryKeys()
+        public void UnitRd_gdKeys()
         {
             Setup();
             tree2.Add ("alpha", 1);
@@ -895,38 +901,40 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRd_gICollectionRemovePair()
+        public void UnitRd_pcRemovePair()
         {
             Setup();
+            var pc = (ICollection<KeyValuePair<string,int>>) tree2;
+
             var pair0 = new KeyValuePair<string,int> (null, 0);
             var pair1 = new KeyValuePair<string,int> ("ten", 10);
             var pair2 = new KeyValuePair<string,int> ("ten", 100);
             var pair3 = new KeyValuePair<string,int> ("twenty", 20);
 
-            genCol2.Add (pair0);
-            genCol2.Add (pair1);
-            genCol2.Add (pair3);
+            pc.Add (pair0);
+            pc.Add (pair1);
+            pc.Add (pair3);
             Assert.AreEqual (3, tree2.Count);
 
-            bool isRemoved = genCol2.Remove (pair0);
+            bool isRemoved = pc.Remove (pair0);
             Assert.IsTrue (isRemoved);
             Assert.AreEqual (2, tree2.Count);
 
-            isRemoved = genCol2.Remove (pair0);
+            isRemoved = pc.Remove (pair0);
             Assert.IsFalse (isRemoved);
             Assert.AreEqual (2, tree2.Count);
 
-            isRemoved = genCol2.Remove (pair2);
+            isRemoved = pc.Remove (pair2);
             Assert.AreEqual (2, tree2.Count);
 
-            isRemoved = genCol2.Remove (pair1);
+            isRemoved = pc.Remove (pair1);
             Assert.IsTrue (isRemoved);
             Assert.AreEqual (1, tree2.Count);
         }
 
 
         [TestMethod]
-        public void UnitRd_gICollectionRemovePairNull()
+        public void UnitRd_pcRemovePairNull()
         {
             Setup();
             tree4.Add (3, "cc");
@@ -946,7 +954,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRd_gIDictionaryValues()
+        public void UnitRd_gdValues()
         {
             Setup();
             tree2.Add ("alpha", 1);
@@ -964,7 +972,7 @@ namespace Kaos.Test.Collections
         [TestMethod]
         public void UnitRd_xMinMax()
         {
-            var rd = new RankedDictionary<int,int>() { Capacity = 4 };
+            var rd = new RankedDictionary<int,int> { Capacity=4 };
 
             int min0 = rd.MinKey;
             int max0 = rd.MaxKey;
@@ -1204,7 +1212,7 @@ namespace Kaos.Test.Collections
         [TestMethod]
         public void UnitRd_xIndexOfKey()
         {
-            var rd = new RankedDictionary<int,int>() { Capacity=5 };
+            var rd = new RankedDictionary<int,int> { Capacity=5 };
             for (int ii = 0; ii < 500; ii+=2)
                 rd.Add (ii, ii+1000);
 
@@ -1300,7 +1308,7 @@ namespace Kaos.Test.Collections
         [TestMethod]
         public void UnitRd_xRemoveRange()
         {
-            var rd = new RankedDictionary<int,int>() { Capacity=7 };
+            var rd = new RankedDictionary<int,int> { Capacity=7 };
             for (int ii=0; ii<20; ++ii) rd.Add (ii, -ii);
 
             rd.RemoveRange (20, 0);
@@ -1409,7 +1417,7 @@ namespace Kaos.Test.Collections
         [TestMethod]
         public void UnitRd_xReverse()
         {
-            var rd = new RankedDictionary<int,int>() { Capacity=5 };
+            var rd = new RankedDictionary<int,int> { Capacity=5 };
             int expected = 500;
 
             for (int ii=1; ii <= expected; ++ii)
