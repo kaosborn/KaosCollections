@@ -74,6 +74,7 @@ namespace Kaos.Collections
                 var right = (PairLeaf<TValue>) rightLeaf;
                 for (int ix = 0; ix < shiftCount; ++ix)
                     values.Add (right.values[ix]);
+                right.values.RemoveRange (0, shiftCount);
                 base.Shift (shiftCount);
             }
 

@@ -38,6 +38,8 @@ namespace Kaos.Test.Collections
                 {
                     tree1.Remove (i);
 
+                    foreach (var kv in tree1)
+                        Assert.AreEqual (kv.Key+200, kv.Value);
 #if (! TEST_BCL && DEBUG)
                     tree1.SanityCheck();
 #endif
@@ -62,6 +64,9 @@ namespace Kaos.Test.Collections
 
                         for (int i = a; i <= b; ++i)
                             tree1.Remove (i);
+
+                        foreach (var kv in tree1)
+                            Assert.AreEqual (kv.Key+100, kv.Value);
 
 #if (! TEST_BCL && DEBUG)
                         tree1.SanityCheck();
