@@ -1345,6 +1345,14 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRd_RemoveWhere_ArgumentNull()
+        {
+            var rd = new RankedDictionary<int,int>();
+            rd.RemoveWhere (null);
+        }
+
+        [TestMethod]
         public void UnitRd_xRemoveWhereA()
         {
             var rd = new RankedDictionary<int,int>();
