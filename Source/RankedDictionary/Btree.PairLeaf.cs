@@ -97,6 +97,14 @@ namespace Kaos.Collections
                 base.RemoveRange (index, count);
                 values.RemoveRange (index, count);
             }
+
+#if DEBUG
+            public override void SanityCheck()
+            {
+                if (keys.Count != values.Count)
+                    throw new InvalidOperationException ("Mismatched keys/values count");
+            }
+#endif
         }
     }
 }

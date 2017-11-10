@@ -663,6 +663,8 @@ namespace Kaos.Collections
             else
                 lastLeaf = CheckLeaf ((Leaf) root, true, default (T), null);
 
+            root.SanityCheck();
+
             if (lastLeaf.rightLeaf != null)
                 throw new InvalidOperationException ("Last leaf has invalid RightLeaf");
 
@@ -727,6 +729,7 @@ namespace Kaos.Collections
                 else
                     visited = CheckLeaf ((Leaf) branch.GetChild (i), isRightmost0, anchor0, visited);
 
+                branch.GetChild (i).SanityCheck();
                 actualWeight += branch.GetChild (i).Weight;
             }
             if (branch.Weight != actualWeight)

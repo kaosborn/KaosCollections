@@ -7,7 +7,9 @@
 // MIT License - Use and redistribute freely
 //
 
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace Kaos.Collections
@@ -42,7 +44,7 @@ namespace Kaos.Collections
 
             public void InsertKey (int index, T key, int count)
             {
-                System.Diagnostics.Debug.Assert (count > 0);
+                Debug.Assert (count > 0);
 
                 int startCount = keys.Count;
                 int add0 = count + index - startCount;
@@ -80,6 +82,9 @@ namespace Kaos.Collections
                 }
                 return sb;
             }
+
+            public virtual void SanityCheck()
+            { }
 #endif
         }
 
@@ -167,6 +172,14 @@ namespace Kaos.Collections
                 RemoveKeys (index, count);
                 childNodes.RemoveRange (index, count);
             }
+
+#if DEBUG
+            public override void SanityCheck()
+            {
+                if (keys.Count != this.childNodes.Count - 1)
+                    throw new InvalidOperationException ("Mismatched keys/child count");
+            }
+#endif
         }
 
 
