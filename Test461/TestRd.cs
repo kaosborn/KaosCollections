@@ -1387,14 +1387,14 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void CrashRd_xRemoveWherePair_ArgumentNull()
+        public void CrashRd_xRemoveWhereElement_ArgumentNull()
         {
             var rd = new RankedDictionary<int,int>();
-            rd.RemoveWherePair (null);
+            rd.RemoveWhereElement (null);
         }
 
         [TestMethod]
-        public void UnitRd_xRemoveWherePair()
+        public void UnitRd_xRemoveWhereElement()
         {
             var rd = new RankedDictionary<int,int>();
 
@@ -1402,7 +1402,7 @@ namespace Kaos.Test.Collections
                 rd.Add (ix, -ix);
 
             int c0 = rd.Count;
-            int removed = rd.RemoveWherePair (IsEvenValue);
+            int removed = rd.RemoveWhereElement (IsEvenValue);
 
             Assert.AreEqual (500, removed);
             foreach (int val in rd.Values)

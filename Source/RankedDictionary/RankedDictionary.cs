@@ -443,7 +443,7 @@ namespace Kaos.Collections
         /// where <em>m</em> is the number of elements removed and <em>n</em> is <see cref="Count"/>.
         /// </remarks>
         /// <exception cref="ArgumentNullException">When <em>match</em> is <b>null</b>.</exception>
-        public int RemoveWherePair (Predicate<KeyValuePair<TKey,TValue>> match)
+        public int RemoveWhereElement (Predicate<KeyValuePair<TKey,TValue>> match)
         {
             return RemoveWhere2<TValue> (match);
         }
@@ -760,7 +760,7 @@ namespace Kaos.Collections
             int stageFreeze = stage;
             var leaf = (PairLeaf<TValue>) Find (lower, out int index);
 
-            // When the supplied start key is not be found, start with the next highest key.
+            // When the supplied start key is not found, start with the next highest key.
             if (index < 0)
                 index = ~index;
 
@@ -807,7 +807,6 @@ namespace Kaos.Collections
             int stageFreeze = stage;
             var leaf = (PairLeaf<TValue>) Find (lower, out int index);
 
-            // When the supplied start key is not be found, start with the next highest key.
             if (index < 0)
                 index = ~index;
 
