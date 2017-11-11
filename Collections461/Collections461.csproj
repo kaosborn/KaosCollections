@@ -7,8 +7,8 @@
     <ProjectGuid>{FB547C0B-556F-4D84-BF48-9DA674832089}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Collections461</RootNamespace>
-    <AssemblyName>Collections461</AssemblyName>
+    <RootNamespace>Kaos.Collections</RootNamespace>
+    <AssemblyName>KaosCollections</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -28,7 +28,7 @@
     <DefineConstants>TRACE;SERIALIZE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Collections461.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\KaosCollections.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
