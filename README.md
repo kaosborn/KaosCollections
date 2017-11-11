@@ -26,11 +26,11 @@ This library is built as a .NET Standard project with multitargeting to:
 
 To install using Package Manager:
 
-* **`Install-Package Kaos.Collections -Version 3.0.0`**
+* **`Install-Package Kaos.Collections -Version 3.1.0`**
 
 To install using the .NET CLI:
 
-* **`dotnet add package Kaos.Collections --version 3.0.0`**
+* **`dotnet add package Kaos.Collections --version 3.1.0`**
 
 To install using the Visual Studio gallery:
 1. Click **Manage NuGet Packages**.

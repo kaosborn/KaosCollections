@@ -22,7 +22,7 @@
     </summary>
 
     <section>
-      <title>Differences from System.Collections.Generic</title>
+      <title>Differences from <codeInline>System.Collections.Generic</codeInline></title>
       <content>
         <para>
           The APIs of <codeInline>RankedDictionary</codeInline> and <codeInline>RankedSet</codeInline> closely adhere to Microsoft's related generic classes with a few exceptions:
@@ -86,6 +86,34 @@
 
           <listItem>
             <para>
+              <codeInline>RankedDictionary.KeyCollection</codeInline> and <codeInline>RankedDictionary.ValueCollection</codeInline> are enhanced with:
+            </para>
+            <list class="bullet">
+              <listItem>
+                <para>
+                  Adds indexer property that returns the element at the supplied position.
+                </para>
+              </listItem>
+              <listItem>
+                <para>
+                  Adds <codeInline>IndexOf(item)</codeInline> that returns the position of the element with the supplied item.
+                </para>
+              </listItem>
+              <listItem>
+                <para>
+                  Directly implements <codeInline>ElementAt(index)</codeInline> that returns the element at the supplied position.
+                </para>
+              </listItem>
+              <listItem>
+                <para>
+                  Directly implements <codeInline>ElementAtOrDefault(index)</codeInline> that returns the element at the supplied position or the default if out of bounds.
+                </para>
+              </listItem>
+            </list>
+          </listItem>
+
+          <listItem>
+            <para>
               <codeInline>RankedDictionary</codeInline> and <codeInline>RankedSet</codeInline> directly implement <codeInline>IEnumerable&lt;T&gt;</codeInline> methods to improve performance:
             </para>
             <list class="bullet">
@@ -96,7 +124,7 @@
               </listItem>
               <listItem>
                 <para>
-                  Implements <codeInline>ElementAtOrDefault(index)</codeInline> that returns the element at the supplied position or the default if past the end of the collection.
+                  Implements <codeInline>ElementAtOrDefault(index)</codeInline> that returns the element at the supplied position or the default if out of bounds.
                 </para>
               </listItem>
               <listItem>

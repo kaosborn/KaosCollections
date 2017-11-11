@@ -57,11 +57,11 @@
       <content>
         <para>To install using Package Manager:</para>
         <list class="bullet">
-          <listItem><legacyBold><codeInline>Install-Package Kaos.Collections -Version 3.0.0</codeInline></legacyBold></listItem>
+          <listItem><legacyBold><codeInline>Install-Package Kaos.Collections -Version 3.1.0</codeInline></legacyBold></listItem>
         </list>
         <para>To install using the .NET CLI:</para>
         <list class="bullet">
-          <listItem><legacyBold><codeInline>dotnet add package Kaos.Collections --version 3.0.0</codeInline></legacyBold></listItem>
+          <listItem><legacyBold><codeInline>dotnet add package Kaos.Collections --version 3.1.0</codeInline></legacyBold></listItem>
         </list>
         <para>To install using the Visual Studio gallery:</para>
         <list class="ordered">

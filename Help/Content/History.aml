@@ -49,13 +49,32 @@
     <section>
       <title>KaosCollections version 3.0.0.2 (2017-10-31)</title>
       <content>
+        <para>This release updates documentation only.</para>
+      </content>
+    </section>
+
+    <section>
+      <title>KaosCollections version 3.1.0 (2017-11-11)</title>
+      <content>
         <para>
-          This is a minor release that updates documentation only.
+          This release fixes a data corruption bug in <codeInline>RankedDictionary</codeInline> and enhances it and its subcollections.
         </para>
         <list class="bullet">
+          <listItem>Fixes potential <codeInline>RankedDictionary</codeInline> mismatched key/value after remove operation.</listItem>
           <listItem>
-            Updates documentation.
+            Enhances <codeInline>RankedDictionary</codeInline>:
+            <list class="bullet">
+              <listItem>
+                Adds <codeInline>RemoveWhereElement</codeInline> method.
+              </listItem>
+            </list>
           </listItem>
+          <listItem>Enhances <codeInline>RankedDictionary.KeyCollection</codeInline>, <codeInline>RankedDictionary.ValueCollection</codeInline>:</listItem>
+            <list class="bullet">
+              <listItem>Adds indexer property for array semantics.</listItem>
+              <listItem>Adds <codeInline>ElementAt</codeInline>, <codeInline>ElementAtOrDefault</codeInline>, <codeInline>IndexOf</codeInline> methods.</listItem>
+            </list>
+          <listItem>Updates documentation.</listItem>
         </list>
       </content>
     </section>
