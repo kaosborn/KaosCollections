@@ -1027,9 +1027,27 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRd_xElementsBetween()
+        public void UnitRd_xElementsBetweenA()
         {
-            var rd = new RankedDictionary<int,int>();
+            var rd = new RankedDictionary<string,int>();
+            var pc = (ICollection<KeyValuePair<string,int>>) rd;
+
+            rd.Add ("Alpha", 1);
+            rd.Add ("Beta", 2);
+            rd.Add ("Omega", 24);
+            pc.Add (new KeyValuePair<string,int> (null, 0));
+
+            int actual = 0;
+            foreach (var kv in rd.ElementsBetween (null, "C"))
+                ++actual;
+
+            Assert.AreEqual (3, actual);
+        }
+
+        [TestMethod]
+        public void UnitRd_xElementsBetweenB()
+        {
+            var rd = new RankedDictionary<int,int> { Capacity=4 };
 
             for (int i = 90; i >= 0; i -= 10)
                 rd.Add (i, -100 - i);
