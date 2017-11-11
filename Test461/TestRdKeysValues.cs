@@ -203,8 +203,7 @@ namespace Kaos.Test.Collections
         [TestMethod]
         public void UnitRdk_xIndexer()
         {
-            var rd = new RankedDictionary<string,int>() { { "0zero", 0 }, { "1one", -1 }, { "2two", -2 } };
-            var k1 = rd.Keys[1];
+            var rd = new RankedDictionary<string,int> { {"0zero",0}, {"1one",-1}, {"2two",-2} };
 
             Assert.AreEqual ("0zero",rd.Keys[0]);
             Assert.AreEqual ("1one", rd.Keys[1]);
@@ -217,7 +216,7 @@ namespace Kaos.Test.Collections
         public void CrashRdk_xElementAt_ArgumentOutOfRange1()
         {
             var rd = new RankedDictionary<int,int>();
-            var k1 = rd.Keys.ElementAt (-1);
+            var zz = rd.Keys.ElementAt (-1);
         }
 
         [TestMethod]
@@ -225,15 +224,14 @@ namespace Kaos.Test.Collections
         public void CrashRdk_xElementAt_ArgumentOutOfRange2()
         {
             var rd = new RankedDictionary<int,int>();
-            var k1 = rd.Keys.ElementAt (0);
+            var zz = rd.Keys.ElementAt (0);
         }
 
         [TestMethod]
         public void UnitRdk_xElementAt()
         {
-            var rd = new RankedDictionary<string,int>();
-            rd.Add ("one", 1); rd.Add ("two", 2);
-            var k1 = rd.Keys.ElementAt (1);
+            var rd = new RankedDictionary<string,int> { {"one",1 }, {"two",2} };
+            string k1 = rd.Keys.ElementAt (1);
 
             Assert.AreEqual ("two", k1);
         }
@@ -242,16 +240,15 @@ namespace Kaos.Test.Collections
         [TestMethod]
         public void UnitRdk_xElementAtOrDefault()
         {
-            var rd = new RankedDictionary<string,int>();
-            rd.Add ("one", 1); rd.Add ("two", 2);
+            var rd = new RankedDictionary<string,int> { {"one",1}, {"two", 2} };
 
-            var kn = rd.Keys.ElementAtOrDefault (-1);
-            var k1 = rd.Keys.ElementAtOrDefault (1);
-            var k2 = rd.Keys.ElementAtOrDefault (2);
+            string kn = rd.Keys.ElementAtOrDefault (-1);
+            string k1 = rd.Keys.ElementAtOrDefault (1);
+            string k2 = rd.Keys.ElementAtOrDefault (2);
 
-            Assert.AreEqual (default (String), kn);
+            Assert.AreEqual (default (string), kn);
             Assert.AreEqual ("two", k1);
-            Assert.AreEqual (default (String), k2);
+            Assert.AreEqual (default (string), k2);
         }
 
 
@@ -288,8 +285,8 @@ namespace Kaos.Test.Collections
         [TestMethod]
         public void UnitRdk_GetEnumerator()
         {
-            int n = 100;
             Setup (4);
+            int n = 100;
 
             for (int k = 0; k < n; ++k)
                 tree1.Add (k, k + 1000);
@@ -542,7 +539,7 @@ namespace Kaos.Test.Collections
         public void CrashRdv_xElementAt_ArgumentOutOfRange1()
         {
             var rd = new RankedDictionary<int,int>();
-            var k1 = rd.Values.ElementAt (-1);
+            var zz = rd.Values.ElementAt (-1);
         }
 
         [TestMethod]
@@ -550,7 +547,7 @@ namespace Kaos.Test.Collections
         public void CrashRdv_xElementAt_ArgumentOutOfRange2()
         {
             var rd = new RankedDictionary<int,int>();
-            var k1 = rd.Values.ElementAt (0);
+            var zz = rd.Values.ElementAt (0);
         }
 
         [TestMethod]
