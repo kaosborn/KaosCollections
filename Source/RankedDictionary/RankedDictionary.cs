@@ -52,6 +52,7 @@ namespace Kaos.Collections
     /// <item><see cref="MinKey"/></item>
     /// <item><see cref="MaxKey"/></item>
     /// <item><see cref="RemoveWhere"/></item>
+    /// <item><see cref="RemoveWhereElement"/></item>
     /// <item><see cref="Reverse"/></item>
     /// </list>
     /// </para>

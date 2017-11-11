@@ -19,6 +19,19 @@ namespace Kaos.Collections
         /// <summary>
         /// Represents a collection of values of the <see cref="RankedDictionary{TKey,TValue}"/>.
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This class emulates and extends
+        /// <see cref="SortedDictionary{TKey,TValue}.ValueCollection"/>
+        /// while improving performance of operations on large collections.
+        /// Enhancements include indexer property for array semantics and these methods:
+        /// </para>
+        /// <list type="bullet">
+        /// <item><see cref="ElementAt"/></item>
+        /// <item><see cref="ElementAtOrDefault"/></item>
+        /// <item><see cref="IndexOf"/></item>
+        /// </list>
+        /// </remarks>
         [DebuggerTypeProxy (typeof (ICollectionValuesDebugView<,>))]
         [DebuggerDisplay ("Count = {Count}")]
         public sealed class ValueCollection :
