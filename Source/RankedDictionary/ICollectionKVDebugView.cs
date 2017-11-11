@@ -49,7 +49,9 @@ namespace Kaos.Collections
         public ICollectionKeysDebugView (ICollection<K> collection)
         {
             if (collection == null)
+#pragma warning disable IDE0016
                 throw new ArgumentNullException (nameof (collection));
+#pragma warning restore IDE0016
             this.target = collection;
         }
 
@@ -76,7 +78,9 @@ namespace Kaos.Collections
         public ICollectionValuesDebugView (ICollection<V> collection)
         {
             if (collection == null)
+#pragma warning disable IDE0016
                 throw new ArgumentNullException (nameof (collection));
+#pragma warning restore IDE0016
             this.target = collection;
         }
 
