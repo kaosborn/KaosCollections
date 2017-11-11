@@ -1086,16 +1086,27 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        [ExpectedException (typeof (ArgumentNullException))]
-        public void CrashRd_xElementsFrom_ArgumentNull()
+        public void UnitRd_xElementsFromA()
         {
-            var rd = new RankedDictionary<string,int>();
+            var rd = new RankedDictionary<string,int>() { { "A",-1 }, { "B",-2 } };
+            var pc = (ICollection<KeyValuePair<string,int>>) rd;
+
+            int actual1 = 0;
             foreach (var pair in rd.ElementsFrom (null))
-            { }
+                ++actual1;
+
+            pc.Add (new KeyValuePair<string,int> (null, 0));
+
+            int actual2 = 0;
+            foreach (var pair in rd.ElementsFrom (null))
+                ++actual2;
+
+            Assert.AreEqual (2, actual1);
+            Assert.AreEqual (3, actual2);
         }
 
         [TestMethod]
-        public void UnitRd_xElementsFrom()
+        public void UnitRd_xElementsFromB()
         {
             var rd = new RankedDictionary<int,int>();
 

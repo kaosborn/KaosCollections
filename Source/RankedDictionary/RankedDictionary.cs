@@ -801,12 +801,8 @@ namespace Kaos.Collections
         /// </para>
         /// </remarks>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
-        /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
         public IEnumerable<KeyValuePair<TKey,TValue>> ElementsFrom (TKey lower)
         {
-            if (lower == null)
-                throw new ArgumentNullException (nameof (lower));
-
             int stageFreeze = stage;
             var leaf = (PairLeaf<TValue>) Find (lower, out int index);
 
