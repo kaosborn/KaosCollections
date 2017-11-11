@@ -755,6 +755,8 @@ namespace Kaos.Collections
         /// <example>
         /// <code source="..\Bench\RdExample03\RdExample03.cs" lang="cs" />
         /// </example>
+        /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
+        /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
         public IEnumerable<KeyValuePair<TKey,TValue>> ElementsBetween (TKey lower, TKey upper)
         {
             int stageFreeze = stage;
@@ -799,6 +801,7 @@ namespace Kaos.Collections
         /// </para>
         /// </remarks>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
+        /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
         public IEnumerable<KeyValuePair<TKey,TValue>> ElementsFrom (TKey lower)
         {
             if (lower == null)
@@ -842,10 +845,10 @@ namespace Kaos.Collections
         /// Retrieving each subsequent item is a O(1) operation.
         /// </para>
         /// </remarks>
-        /// <exception cref="ArgumentOutOfRangeException">When <em>lowerIndex</em> is less than zero or not less than the number of items.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">When <em>upperIndex</em> is less than zero or not less than the number of items.</exception>
-        /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
-        /// <exception cref="ArgumentException">When <em>lowerIndex</em> and <em>upperIndex</em> do not denote a valid range of items in the set.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>lowerIndex</em> is less than zero or not less than <see cref="Count"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>upperIndex</em> is less than zero or not less than <see cref="Count"/>.</exception>
+        /// <exception cref="ArgumentException">When <em>lowerIndex</em> and <em>upperIndex</em> do not denote a valid range of indexes.</exception>
+        /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
         public IEnumerable<KeyValuePair<TKey,TValue>> ElementsBetweenIndexes (int lowerIndex, int upperIndex)
         {
             if (lowerIndex < 0 || lowerIndex >= Count)
@@ -1019,6 +1022,7 @@ namespace Kaos.Collections
 
         /// <summary>Returns an enumerator that iterates thru the dictionary in reverse order.</summary>
         /// <returns>An enumerator that reverse iterates thru the dictionary.</returns>
+        /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
         public IEnumerable<KeyValuePair<TKey,TValue>> Reverse()
         {
             Enumerator etor = new Enumerator (this, isReverse:true);

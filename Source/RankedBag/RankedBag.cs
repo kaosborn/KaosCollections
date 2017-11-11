@@ -838,11 +838,11 @@ namespace Kaos.Collections
 
 
         /// <summary>Returns an enumerator that iterates over a range with the supplied lower bound.</summary>
-        /// <param name="lower">Minimum of the range.</param>
+        /// <param name="lower">Minimum item of the range.</param>
         /// <returns>An enumerator for the supplied range.</returns>
         /// <remarks>
         /// <para>
-        /// If <em>item</em> is present in the bag, it will be included in the results.
+        /// If <em>lower</em> is present in the bag, it will be included in the results.
         /// </para>
         /// <para>
         /// Retrieving the initial item is a O(log <em>n</em>) operation.
@@ -887,10 +887,10 @@ namespace Kaos.Collections
         /// Retrieving each subsequent item is a O(1) operation.
         /// </para>
         /// </remarks>
-        /// <exception cref="ArgumentOutOfRangeException">When <em>lowerIndex</em> is less than zero or not less than the number of items.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">When <em>upperIndex</em> is less than zero or not less than the number of items.</exception>
-        /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
-        /// <exception cref="ArgumentException">When <em>lowerIndex</em> and <em>upperIndex</em> do not denote a valid range of items in the set.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>lowerIndex</em> is less than zero or not less than <see cref="Count"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">When <em>upperIndex</em> is less than zero or not less than <see cref="Count"/>.</exception>
+        /// <exception cref="ArgumentException">When <em>lowerIndex</em> and <em>upperIndex</em> do not denote a valid range of indexes.</exception>
+        /// <exception cref="InvalidOperationException">When the bag was modified after the enumerator was created.</exception>
         public IEnumerable<T> ElementsBetweenIndexes (int lowerIndex, int upperIndex)
         {
             if (lowerIndex < 0 || lowerIndex >= Count)
@@ -920,6 +920,7 @@ namespace Kaos.Collections
 
         /// <summary>Returns an IEnumerable that iterates thru the bag in reverse order.</summary>
         /// <returns>An enumerator that reverse iterates thru the bag.</returns>
+        /// <exception cref="InvalidOperationException">When the bag was modified after the enumerator was created.</exception>
         public IEnumerable<T> Reverse()
         {
             Enumerator enor = new Enumerator (this, isReverse:true);
