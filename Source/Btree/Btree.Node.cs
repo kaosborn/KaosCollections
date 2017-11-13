@@ -225,6 +225,11 @@ namespace Kaos.Collections
                     keys.Add (rightLeaf.keys[ix]);
             }
 
+            public void CopyLeafLeft (int index, int offset)
+            {
+                keys[index-offset] = keys[index];
+            }
+
             public virtual void RemoveRange (int index, int count)
             {
                 keys.RemoveRange (index, count);

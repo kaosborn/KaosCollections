@@ -46,6 +46,12 @@ namespace Kaos.Collections
             public void SetValue (int index, TValue value)
             { values[index] = value; }
 
+            public void CopyPairLeft (int index, int offset)
+            {
+                values[index-offset] = values[index];
+                keys[index-offset] = keys[index];
+            }
+
             public void Add (T key, TValue value)
             {
                 AddKey (key);

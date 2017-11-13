@@ -46,7 +46,7 @@ namespace Kaos.Collections
 
         internal int Size => root.Weight;
 
-        private bool IsUnderflow (int count) => count < ((maxKeyCount + 1) >> 1);
+        internal bool IsUnderflow (int count) => count < ((maxKeyCount + 1) >> 1);
 
         internal void CopyKeysTo1 (T[] array, int index, int count)
         {
@@ -584,7 +584,7 @@ namespace Kaos.Collections
         }
 
 
-        private void TrimRoot()
+        internal void TrimRoot()
         {
             while (root is Branch && root.KeyCount == 0)
                 root = ((Branch) root).Child0;

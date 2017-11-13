@@ -39,7 +39,7 @@ namespace Kaos.Collections
             /// <summary>Make an copy with indexes of zero.</summary>
             /// <param name="path">Target of copy.</param>
             /// <param name="count">Depth of copy.</param>
-            private NodeVector (NodeVector path, int count) : this (path.tree)
+            internal NodeVector (NodeVector path, int count) : this (path.tree)
             {
                 for (int ix = 0; ix < count; ++ix)
                 {
@@ -636,9 +636,16 @@ namespace Kaos.Collections
                         SetPivot (leaf1.Key0);
                     else
                     {
-                        Debug.Assert (leaf1.rightLeaf==null, "only rightmost leaf should ever be empty");
-
-                        if (leaf1.leftLeaf != null)
+                        if (leaf1.rightLeaf != null)
+                        {
+                            leaf1.rightLeaf.leftLeaf = leaf1.leftLeaf;
+                            if (leaf1.leftLeaf != null)
+                                leaf1.leftLeaf.rightLeaf = leaf1.rightLeaf;
+                            else
+                                tree.leftmostLeaf = leaf1.rightLeaf;
+                            Demote();
+                        }
+                        else if (leaf1.leftLeaf != null)
                         {
                             leaf1.leftLeaf.rightLeaf = leaf1.rightLeaf;
                             tree.rightmostLeaf = leaf1.leftLeaf;
