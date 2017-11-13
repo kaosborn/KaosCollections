@@ -1,7 +1,7 @@
 ﻿//
 // Library: KaosCollections
 // File:    Btree.cs
-// Purpose: Define base functionality for RankedDictionary, RankedSet, RankedBag.
+// Purpose: Define base functionality for Ranked classes.
 //
 // Copyright © 2009-2017 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely
@@ -301,6 +301,50 @@ namespace Kaos.Collections
         }
 
 
+        internal int GetCount2 (T key)
+        {
+            int treeIx1 = FindEdgeForIndex (key, out Leaf leaf1, out int leafIx1, leftEdge:true);
+            if (treeIx1 < 0)
+                return 0;
+            else
+                return FindEdgeForIndex (key, out Leaf leaf2, out int leafIx2, leftEdge:false) - treeIx1;
+        }
+
+
+        internal int GetDistinctCount2()
+        {
+            int result = 0;
+            if (root.Weight > 0)
+            {
+                Leaf leaf = leftmostLeaf;
+                int leafIndex = 0;
+
+                for (T currentKey = leaf.Key0;;)
+                {
+                    ++result;
+                    if (leafIndex < leaf.KeyCount - 1)
+                    {
+                        ++leafIndex;
+                        T nextKey = leaf.GetKey (leafIndex);
+                        if (keyComparer.Compare (currentKey, nextKey) != 0)
+                        { currentKey = nextKey; continue; }
+                    }
+
+                    FindEdgeRight (currentKey, out leaf, out leafIndex);
+                    if (leafIndex >= leaf.KeyCount)
+                    {
+                        leaf = leaf.rightLeaf;
+                        if (leaf == null)
+                            break;
+                        leafIndex = 0;
+                    }
+                    currentKey = leaf.GetKey (leafIndex);
+                }
+            }
+            return result;
+        }
+
+
 #if NET35 || NET40 || NET45 || SERIALIZE
         [NonSerialized]
 #endif
@@ -328,6 +372,28 @@ namespace Kaos.Collections
             ((Leaf) path.TopNode).RemoveRange (path.TopIndex, 1);
             path.DecrementPathWeight();
             path.Balance();
+        }
+
+        internal int Remove2 (T item, int count)
+        {
+            if (count <= 0)
+                return 0;
+
+            var path1 = new NodeVector (this, item, leftEdge:true);
+            if (! path1.IsFound)
+                return 0;
+
+            // Seek by offset is faster, so try that first.
+            var path2 = NodeVector.CreateFromOffset (path1, count);
+            if (path2 == null || keyComparer.Compare (path2.LeftKey, item) != 0)
+            {
+                path2 = new NodeVector (this, item, leftEdge:false);
+                count = path2.GetTreeIndex() - path1.GetTreeIndex();
+            }
+
+            StageBump();
+            Delete (path1, path2);
+            return count;
         }
 
 

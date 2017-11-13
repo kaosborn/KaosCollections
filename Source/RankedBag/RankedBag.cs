@@ -322,14 +322,7 @@ namespace Kaos.Collections
         /// where <em>n</em> is <see cref="Count"/>.
         /// </para>
         /// </remarks>
-        public int GetCount (T item)
-        {
-            int treeIx1 = FindEdgeForIndex (item, out Leaf leaf1, out int leafIx1, leftEdge:true);
-            if (treeIx1 < 0)
-                return 0;
-            else
-                return FindEdgeForIndex (item, out Leaf leaf2, out int leafIx2, leftEdge:false) - treeIx1;
-        }
+        public int GetCount (T item) => GetCount2 (item);
 
 
         /// <summary>Returns the number of distinct items in the bag.</summary>
@@ -339,40 +332,7 @@ namespace Kaos.Collections
         /// where <em>m</em> is the distinct item count
         /// and <em>n</em> is <see cref="Count"/>.
         /// </remarks>
-        public int GetDistinctCount()
-        {
-            int result = 0;
-
-            if (Count > 0)
-            {
-                Leaf leaf = leftmostLeaf;
-                int leafIndex = 0;
-
-                for (T currentKey = leaf.Key0;;)
-                {
-                    ++result;
-                    if (leafIndex < leaf.KeyCount - 1)
-                    {
-                        ++leafIndex;
-                        T nextKey = leaf.GetKey (leafIndex);
-                        if (Comparer.Compare (currentKey, nextKey) != 0)
-                        { currentKey = nextKey; continue; }
-                    }
-
-                    FindEdgeRight (currentKey, out leaf, out leafIndex);
-                    if (leafIndex >= leaf.KeyCount)
-                    {
-                        leaf = leaf.rightLeaf;
-                        if (leaf == null)
-                            break;
-                        leafIndex = 0;
-                    }
-                    currentKey = leaf.GetKey (leafIndex);
-                }
-            }
-
-            return result;
-        }
+        public int GetDistinctCount() => GetDistinctCount2();
 
 
         /// <summary>Gets the index of the first occurrence of the supplied item.</summary>
@@ -417,29 +377,6 @@ namespace Kaos.Collections
             StageBump();
             Delete (path1, path2);
             return true;
-        }
-
-
-        private int Remove2 (T item, int count)
-        {
-            if (count <= 0)
-                return 0;
-
-            var path1 = new NodeVector (this, item, leftEdge:true);
-            if (! path1.IsFound)
-                return 0;
-
-            // Seek by offset is faster, so try that first.
-            var path2 = NodeVector.CreateFromOffset (path1, count);
-            if (path2 == null || Comparer.Compare (path2.LeftKey, item) != 0)
-            {
-                path2 = new NodeVector (this, item, leftEdge:false);
-                count = path2.GetTreeIndex() - path1.GetTreeIndex();
-            }
-
-            StageBump();
-            Delete (path1, path2);
-            return count;
         }
 
 
