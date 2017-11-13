@@ -25,7 +25,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -59,6 +59,9 @@
     <Compile Include="TestRdObject.cs" />
     <Compile Include="TestRdSerialization.cs" />
     <Compile Include="TestRdStress.cs" />
+    <Compile Include="TestRm.cs" />
+    <Compile Include="TestRmKeysValues.cs" />
+    <Compile Include="TestRmSerialization.cs" />
     <Compile Include="TestRs.cs" />
     <Compile Include="TestRsDeLinq.cs" />
     <Compile Include="TestRsSerialization.cs" />
