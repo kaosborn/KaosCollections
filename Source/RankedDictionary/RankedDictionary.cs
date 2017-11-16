@@ -430,10 +430,7 @@ namespace Kaos.Collections
         /// where <em>m</em> is the number of elements removed and <em>n</em> is <see cref="Count"/>.
         /// </remarks>
         /// <exception cref="ArgumentNullException">When <em>match</em> is <b>null</b>.</exception>
-        public int RemoveWhere (Predicate<TKey> match)
-        {
-            return RemoveWhere2 (match);
-        }
+        public int RemoveWhere (Predicate<TKey> match) => RemoveWhere2 (match);
 
 
         /// <summary>Removes all elements from the dictionary that match the condition defined by the supplied key/value-parameterized predicate.</summary>
@@ -444,10 +441,7 @@ namespace Kaos.Collections
         /// where <em>m</em> is the number of elements removed and <em>n</em> is <see cref="Count"/>.
         /// </remarks>
         /// <exception cref="ArgumentNullException">When <em>match</em> is <b>null</b>.</exception>
-        public int RemoveWhereElement (Predicate<KeyValuePair<TKey,TValue>> match)
-        {
-            return RemoveWhere2<TValue> (match);
-        }
+        public int RemoveWhereElement (Predicate<KeyValuePair<TKey,TValue>> match) => RemoveWhere2<TValue> (match);
 
 
         /// <summary>Gets the value associated with the supplied key.</summary>

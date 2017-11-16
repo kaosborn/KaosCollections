@@ -6,6 +6,9 @@
 // MIT License - Use and redistribute freely
 //
 
+using System;
+using System.Collections.Generic;
+
 namespace Kaos.Collections
 {
     public abstract partial class Btree<T>
@@ -89,6 +92,85 @@ namespace Kaos.Collections
                 }
 
             return -1;
+        }
+
+
+        internal int RemoveWhere2<V> (Predicate<KeyValuePair<T,V>> match)
+        {
+            if (match == null)
+                throw new ArgumentNullException (nameof (match));
+
+            int stageFreeze = stage;
+            int leafLoss = 0, treeLoss = 0;
+            var path = NodeVector.CreateFromIndex (this, 0);
+            var leaf = (PairLeaf<V>) path.TopNode;
+            int ix = 0;
+
+            for (;; ++ix)
+            {
+                if (ix >= leaf.KeyCount)
+                {
+                    endOfLeaf();
+                    if (leaf == null)
+                        break;
+                }
+
+                bool isMatch = match (new KeyValuePair<T,V> (leaf.GetKey (ix), leaf.GetValue (ix)));
+                StageCheck (stageFreeze);
+                if (isMatch)
+                {
+                    ++leafLoss;
+                    StageBump(); stageFreeze = stage;
+                }
+                else if (leafLoss != 0)
+                {
+                    leaf.CopyPairLeft (ix, leafLoss);
+                    if (ix == leafLoss)
+                        path.SetPivot (leaf.Key0);
+                }
+            }
+
+            if (treeLoss != 0)
+                TrimRoot();
+            return treeLoss;
+
+            void endOfLeaf()
+            {
+                if (leafLoss == 0)
+                { ix = 0; leaf = (PairLeaf<V>) path.TraverseRight(); }
+                else
+                {
+                    leaf.Truncate (ix-leafLoss);
+                    treeLoss += leafLoss; path.ChangePathWeight (-leafLoss); leafLoss = 0;
+
+                    if (leaf.rightLeaf == null)
+                    {
+                        if (leaf.KeyCount == 0)
+                            path.Balance();
+                        leaf = null;
+                    }
+                    else if (! IsUnderflow (leaf.KeyCount))
+                    { ix = 0; leaf = (PairLeaf<V>) path.TraverseRight(); }
+                    else
+                    {
+                        var path2 = new NodeVector (path, path.Height);
+                        if (leaf.KeyCount > 0)
+                        { ix = leaf.KeyCount; path2.Balance(); }
+                        else
+                        {
+                            ix = 0; leaf = (PairLeaf<V>) path.TraverseLeft();
+                            path2.Balance();
+                            if (leaf != null)
+                                leaf = (PairLeaf<V>) path.TraverseRight();
+                            else
+                            {
+                                path = NodeVector.CreateFromIndex (this, 0);
+                                leaf = (PairLeaf<V>) path.TopNode;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

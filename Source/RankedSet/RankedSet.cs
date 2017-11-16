@@ -282,10 +282,7 @@ namespace Kaos.Collections
         /// <code source="..\Bench\RsExample01\RsExample01.cs" lang="cs"/>
         /// </example>
         /// <exception cref="ArgumentNullException">When <em>match</em> is <b>null</b>.</exception>
-        public int RemoveWhere (Predicate<T> match)
-        {
-            return RemoveWhere2 (match);
-        }
+        public int RemoveWhere (Predicate<T> match) => RemoveWhere2 (match);
 
         #endregion
 

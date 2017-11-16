@@ -590,56 +590,77 @@ namespace Kaos.Collections
             if (match == null)
                 throw new ArgumentNullException (nameof (match));
 
-            int result = 0;
             int stageFreeze = stage;
+            int leafLoss = 0, treeLoss = 0;
+            var path = NodeVector.CreateFromIndex (this, 0);
+            var leaf = (Leaf) path.TopNode;
+            int ix = 0;
 
-            for (Leaf leaf = rightmostLeaf; leaf != null; leaf = leaf.leftLeaf)
-                for (int ix = leaf.KeyCount-1; ix >= 0; --ix)
+            for (;; ++ix)
+            {
+                if (ix >= leaf.KeyCount)
                 {
-                    T key = leaf.GetKey (ix);
-                    if (match (key))
+                    endOfLeaf();
+                    if (leaf == null)
+                        break;
+                }
+
+                bool isMatch = match (leaf.GetKey (ix));
+                StageCheck (stageFreeze);
+                if (isMatch)
+                {
+                    ++leafLoss;
+                    StageBump(); stageFreeze = stage;
+                }
+                else if (leafLoss != 0)
+                {
+                    leaf.CopyLeafLeft (ix, leafLoss);
+                    if (ix == leafLoss)
+                        path.SetPivot (leaf.Key0);
+                }
+            }
+
+            if (treeLoss != 0)
+                TrimRoot();
+            return treeLoss;
+
+            void endOfLeaf()
+            {
+                if (leafLoss == 0)
+                { ix = 0; leaf = (Leaf) path.TraverseRight(); }
+                else
+                {
+                    leaf.Truncate (ix-leafLoss);
+                    treeLoss += leafLoss; path.ChangePathWeight (-leafLoss); leafLoss = 0;
+
+                    if (leaf.rightLeaf == null)
                     {
-                        StageCheck (stageFreeze);
-                        var path = new NodeVector (this, key);
-                        if (path.IsFound)
+                        if (leaf.KeyCount == 0)
+                            path.Balance();
+                        leaf = null;
+                    }
+                    else if (! IsUnderflow (leaf.KeyCount))
+                    { ix = 0; leaf = (Leaf) path.TraverseRight(); }
+                    else
+                    {
+                        var path2 = new NodeVector (path, path.Height);
+                        if (leaf.KeyCount > 0)
+                        { ix = leaf.KeyCount; path2.Balance(); }
+                        else
                         {
-                            Remove2 (path);
-                            stageFreeze = stage;
-                            ++result;
+                            ix = 0; leaf = (Leaf) path.TraverseLeft();
+                            path2.Balance();
+                            if (leaf != null)
+                                leaf = (Leaf) path.TraverseRight();
+                            else
+                            {
+                                path = NodeVector.CreateFromIndex (this, 0);
+                                leaf = (Leaf) path.TopNode;
+                            }
                         }
                     }
                 }
-
-            return result;
-        }
-
-
-        internal int RemoveWhere2<V> (Predicate<KeyValuePair<T,V>> match)
-        {
-            if (match == null)
-                throw new ArgumentNullException (nameof (match));
-
-            int result = 0;
-            int stageFreeze = stage;
-
-            for (var leaf = (PairLeaf<V>) rightmostLeaf; leaf != null; leaf = (PairLeaf<V>) leaf.leftLeaf)
-                for (int ix = leaf.KeyCount-1; ix >= 0; --ix)
-                {
-                    T key = leaf.GetKey (ix);
-                    if (match (new KeyValuePair<T,V> (key, leaf.GetValue (ix))))
-                    {
-                        StageCheck (stageFreeze);
-                        var path = new NodeVector (this, key);
-                        if (path.IsFound)
-                        {
-                            Remove2 (path);
-                            stageFreeze = stage;
-                            ++result;
-                        }
-                    }
-                }
-
-            return result;
+            }
         }
 
 

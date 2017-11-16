@@ -489,9 +489,11 @@ namespace Kaos.Collections
                 }
             };
 
-            StageBump();
             if (treeLoss != 0)
+            {
                 TrimRoot();
+                StageBump();
+            }
             return treeLoss != 0;
 
             void endOfLeaf()
@@ -604,10 +606,8 @@ namespace Kaos.Collections
         /// where <em>m</em> is the number of elements removed and <em>n</em> is <see cref="Count"/>.
         /// </remarks>
         /// <exception cref="ArgumentNullException">When <em>match</em> is <b>null</b>.</exception>
-        public int RemoveWhere (Predicate<TKey> match)
-        {
-            return RemoveWhere2 (match);
-        }
+        public int RemoveWhere (Predicate<TKey> match) => RemoveWhere2 (match);
+
 
         /// <summary>Removes all elements from the map that match the condition defined by the supplied key/value-parameterized predicate.</summary>
         /// <param name="match">The condition of the elements to remove.</param>
@@ -617,10 +617,7 @@ namespace Kaos.Collections
         /// where <em>m</em> is the number of elements removed and <em>n</em> is <see cref="Count"/>.
         /// </remarks>
         /// <exception cref="ArgumentNullException">When <em>match</em> is <b>null</b>.</exception>
-        public int RemoveWherePair (Predicate<KeyValuePair<TKey,TValue>> match)
-        {
-            return RemoveWhere2<TValue> (match);
-        }
+        public int RemoveWherePair (Predicate<KeyValuePair<TKey,TValue>> match) => RemoveWhere2<TValue> (match);
 
         #endregion
 

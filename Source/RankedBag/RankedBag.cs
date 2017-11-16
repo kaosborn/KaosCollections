@@ -474,10 +474,7 @@ namespace Kaos.Collections
         /// </remarks>
         /// <exception cref="ArgumentNullException">When <em>match</em> is <b>null</b>.</exception>
         /// <exception cref="InvalidOperationException">When the collection is updated from the supplied predicate.</exception>
-        public int RemoveWhere (Predicate<T> match)
-        {
-            return RemoveWhere2 (match);
-        }
+        public int RemoveWhere (Predicate<T> match) => RemoveWhere2 (match);
 
 
         /// <summary>Removes any elements that are not in the supplied collection from the bag.</summary>
