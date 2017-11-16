@@ -62,5 +62,24 @@ namespace Kaos.Collections
             path.Promote (newLeaf.Key0, (Node) newLeaf, newLeaf.rightLeaf == null);
             return true;
         }
+
+
+        internal int RemoveAll2 (System.Collections.Generic.IEnumerable<T> other)
+        {
+            int removed = 0;
+            if (root.Weight > 0)
+            {
+                StageBump();
+                var oBag = other as RankedBag<T> ?? new RankedBag<T> (other, keyComparer);
+                if (oBag.Count > 0)
+                    foreach (var oKey in oBag.Distinct())
+                    {
+                        var oCount = oBag.GetCount (oKey);
+                        Remove2 (oKey, oCount);
+                        removed += oCount;
+                    }
+            }
+            return removed;
+        }
     }
 }

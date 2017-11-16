@@ -420,20 +420,7 @@ namespace Kaos.Collections
             if (other == null)
                 throw new ArgumentNullException (nameof (other));
 
-            int removed = 0;
-            if (Count > 0)
-            {
-                StageBump();
-                var oBag = other as RankedBag<T> ?? new RankedBag<T> (other, Comparer);
-                if (oBag.Count > 0)
-                    foreach (var oKey in oBag.Distinct())
-                    {
-                        var oCount = oBag.GetCount (oKey);
-                        Remove (oKey, oCount);
-                        removed += oCount;
-                    }
-            }
-            return removed;
+            return RemoveAll2 (other);
         }
 
 

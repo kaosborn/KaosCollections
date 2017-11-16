@@ -534,6 +534,29 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>
+        /// Removes all elements from the map with keys that are in the supplied collection.
+        /// </summary>
+        /// <param name="other">The keys elements to remove.</param>
+        /// <returns>The number of elements removed from the map.</returns>
+        /// <remarks>
+        /// Cardinality is respected by this operation so that
+        /// the occurrences of each item removed is the number of occurrences of that item in <em>other</em>.
+        /// In precise terms,
+        /// this operation removes min(<em>m</em>,<em>n</em>) occurrences of an element
+        /// where the map contains <em>n</em> occurrences
+        /// and <em>other</em> contains <em>m</em> occurrences.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
+        public int RemoveAll (IEnumerable<TKey> other)
+        {
+            if (other == null)
+                throw new ArgumentNullException (nameof (other));
+
+            return RemoveAll2 (other);
+        }
+
+
         /// <summary>Removes an element at the supplied index from the map.</summary>
         /// <param name="index">The zero-based position of the element to remove.</param>
         /// <para>

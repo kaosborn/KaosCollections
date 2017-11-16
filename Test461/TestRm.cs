@@ -813,6 +813,36 @@ namespace Kaos.Test.Collections
             }
         }
 
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRm_RemoveAll_ArgumentNull()
+        {
+            var rm = new RankedBag<int>();
+            rm.RemoveAll (null);
+        }
+
+        [TestMethod]
+        public void UnitRm_RemoveAll()
+        {
+            var rm0 = new RankedBag<int>();
+            var rm = new RankedBag<int> { Capacity=4 };
+
+            foreach (var ii in new int[] { 3, 3, 5, 5, 7, 7 })
+                rm.Add (ii);
+
+            int rem0 = rm0.RemoveAll (new int[] { 2 });
+            Assert.AreEqual (0, rem0);
+
+            int rem2 = rm.RemoveAll (new int[] { 2 });
+            Assert.AreEqual (0, rem0);
+
+            int rem57 = rm.RemoveAll (new int[] { 3, 7 });
+            Assert.AreEqual (2, rem57);
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (new int[] { 3, 5, 5, 7 }, rm));
+        }
+
+
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
         public void CrashRm_RemoveAtA_ArgumentOutOfRange()
