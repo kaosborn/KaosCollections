@@ -75,13 +75,20 @@ namespace Kaos.Collections
                 base.Coalesce();
             }
 
-            public override void Shift (int shiftCount)
+            public void Insert (int index, T key, TValue value)
+            {
+                Debug.Assert (index >= 0 && index <= ValueCount);
+                InsertKey (index, key);
+                values.Insert (index, value);
+            }
+
+            public override void MoveLeft (int count)
             {
                 var right = (PairLeaf<TValue>) rightLeaf;
-                for (int ix = 0; ix < shiftCount; ++ix)
+                for (int ix = 0; ix < count; ++ix)
                     values.Add (right.values[ix]);
-                right.values.RemoveRange (0, shiftCount);
-                base.Shift (shiftCount);
+                right.values.RemoveRange (0, count);
+                base.MoveLeft (count);
             }
 
             public override void Truncate (int index)
@@ -89,13 +96,6 @@ namespace Kaos.Collections
                 Debug.Assert (index >= 0 && (values.Count == 0 || index < values.Count));
                 values.RemoveRange (index, values.Count - index);
                 base.Truncate (index);
-            }
-
-            public void Insert (int index, T key, TValue value)
-            {
-                Debug.Assert (index >= 0 && index <= ValueCount);
-                InsertKey (index, key);
-                values.Insert (index, value);
             }
 
             public override void RemoveRange (int index, int count)

@@ -468,7 +468,7 @@ namespace Kaos.Collections
 
                 if (++ix >= leaf.KeyCount)
                 {
-                    EndOfNode();
+                    endOfLeaf();
                     if (leaf == null)
                         break;
                 }
@@ -494,7 +494,7 @@ namespace Kaos.Collections
                 TrimRoot();
             return treeLoss != 0;
 
-            void EndOfNode()
+            void endOfLeaf()
             {
                 if (leafLoss == 0)
                 { ix = 0; leaf = (PairLeaf<TValue>) path.TraverseRight(); }
@@ -520,19 +520,18 @@ namespace Kaos.Collections
                         {
                             ix = 0; leaf = (PairLeaf<TValue>) path.TraverseLeft();
                             path2.Balance();
-                            if (leaf == null)
+                            if (leaf != null)
+                                leaf = (PairLeaf<TValue>) path.TraverseRight();
+                            else
                             {
                                 path = NodeVector.CreateFromIndex (this, 0);
                                 leaf = (PairLeaf<TValue>) path.TopNode;
                             }
-                            else
-                                leaf = (PairLeaf<TValue>) path.TraverseRight();
                         }
                     }
                 }
             }
         }
-
 
 
         /// <summary>Removes an element at the supplied index from the map.</summary>

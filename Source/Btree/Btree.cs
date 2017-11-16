@@ -374,6 +374,7 @@ namespace Kaos.Collections
             path.Balance();
         }
 
+
         internal int Remove2 (T item, int count)
         {
             if (count <= 0)
@@ -584,13 +585,6 @@ namespace Kaos.Collections
         }
 
 
-        internal void TrimRoot()
-        {
-            while (root is Branch && root.KeyCount == 0)
-                root = ((Branch) root).Child0;
-        }
-
-
         internal int RemoveWhere2 (Predicate<T> match)
         {
             if (match == null)
@@ -649,6 +643,13 @@ namespace Kaos.Collections
         }
 
 
+        internal void TrimRoot()
+        {
+            while (root is Branch && root.KeyCount == 0)
+                root = ((Branch) root).Child0;
+        }
+
+
         /// <exclude />
         protected void StageBump()
         { ++stage; }
@@ -662,7 +663,7 @@ namespace Kaos.Collections
 
         #endregion
 
-        #region Properties and methods
+        #region Public properties and methods
 
         /// <summary>Gets or sets the <em>order</em> of the underlying B+ tree structure.</summary>
         /// <remarks>

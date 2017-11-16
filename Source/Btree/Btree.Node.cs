@@ -1,7 +1,7 @@
 ﻿//
 // Library: KaosCollections
 // File:    Btree.Node.cs
-// Purpose: Define nested classes Node, Branch, Leaf.
+// Purpose: Define classes Node, Branch, Leaf.
 //
 // Copyright © 2009-2017 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely
@@ -89,7 +89,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Internal node containing subdivions.</summary>
+        /// <summary>Internal node containing subdivisions.</summary>
         /// <remarks>
         /// Contains copies of the first key ('anchor') of every leaf except the leftmost.
         /// </remarks>
@@ -210,8 +210,8 @@ namespace Kaos.Collections
 
 
             /// <summary>Number of key/value pairs in the subtree.</summary>
-            public override int Weight
-            { get { return keys.Count; } }
+            public override int Weight => keys.Count;
+
 
             public void Add (Leaf source, int sourceStart, int sourceStop)
             {
@@ -230,16 +230,16 @@ namespace Kaos.Collections
                 keys[index-offset] = keys[index];
             }
 
+            public virtual void MoveLeft (int count)
+            {
+                for (int ix = 0; ix < count; ++ix)
+                    keys.Add (rightLeaf.keys[ix]);
+                rightLeaf.keys.RemoveRange (0, count);
+            }
+
             public virtual void RemoveRange (int index, int count)
             {
                 keys.RemoveRange (index, count);
-            }
-
-            public virtual void Shift (int shiftCount)
-            {
-                for (int ix = 0; ix < shiftCount; ++ix)
-                    keys.Add (rightLeaf.keys[ix]);
-                rightLeaf.keys.RemoveRange (0, shiftCount);
             }
 
             public virtual void Truncate (int index)
