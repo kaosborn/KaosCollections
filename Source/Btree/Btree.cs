@@ -610,7 +610,7 @@ namespace Kaos.Collections
                 if (isMatch)
                 {
                     ++leafLoss;
-                    StageBump(); stageFreeze = stage;
+                    stageFreeze = StageBump();
                 }
                 else if (leafLoss != 0)
                 {
@@ -672,8 +672,7 @@ namespace Kaos.Collections
 
 
         /// <exclude />
-        protected void StageBump()
-        { ++stage; }
+        protected int StageBump() => ++stage;
 
         /// <exclude />
         protected void StageCheck (int expected)

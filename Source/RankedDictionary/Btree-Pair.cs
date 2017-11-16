@@ -120,7 +120,7 @@ namespace Kaos.Collections
                 if (isMatch)
                 {
                     ++leafLoss;
-                    StageBump(); stageFreeze = stage;
+                    stageFreeze = StageBump();
                 }
                 else if (leafLoss != 0)
                 {
