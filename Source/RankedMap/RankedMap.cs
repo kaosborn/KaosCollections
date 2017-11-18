@@ -17,10 +17,14 @@ using System.Runtime.Serialization;
 namespace Kaos.Collections
 {
     /// <summary>
-    /// Represents a collection of key/value pairs that can be accessed in sort order or by index.
+    /// Represents a collection of key/value pairs with distinct keys that can be accessed in sort order or by index.
     /// </summary>
     /// <typeparam name="TKey">The type of the keys in the map.</typeparam>
     /// <typeparam name="TValue">The type of the values in the map.</typeparam>
+    /// <example>
+    /// <para>First is an example of some common operations of this class.</para>
+    /// <code source="..\Bench\RmExample01\RmExample01.cs" lang="cs" removeRegionMarkers="true" />
+    /// </example>
     [DebuggerTypeProxy (typeof (ICollectionDebugView<,>))]
     [DebuggerDisplay("Count = {Count}")]
 #if NET35 || NET40 || NET45 || SERIALIZE
@@ -63,6 +67,12 @@ namespace Kaos.Collections
         /// If no comparison implementation is available, the Add method will fail on the second element.
         /// </para>
         /// </remarks>
+        /// <example>
+        /// The below snippet is part of a larger example of the
+        /// <see cref="RankedMap{TKey,TValue}"/>class.
+        /// This example creates a map with case insensitive sorting of keys.
+        /// <code source="..\Bench\RmExample01\RmExample01.cs" lang="cs" region="Ctor1" />
+        /// </example>
         /// <exception cref="InvalidOperationException">When <em>comparer</em> is <b>null</b> and no other comparer available.</exception>
         public RankedMap (IComparer<TKey> comparer) : base (comparer, new PairLeaf<TValue>())
         { }
@@ -114,6 +124,11 @@ namespace Kaos.Collections
         /// <remarks>
         /// The keys given by this collection are sorted according to the <see cref="Comparer"/> property.
         /// </remarks>
+        /// <example>
+        /// The below snippet is part of a larger example of the
+        /// <see cref="RankedMap{TKey,TValue}"/>class.
+        /// <code source="..\Bench\RmExample01\RmExample01.cs" lang="cs" region="Keys" />
+        /// </example>
         public KeyCollection Keys
         {
             get
@@ -133,6 +148,11 @@ namespace Kaos.Collections
         /// <remarks>
         /// The values given by this collection are sorted in the same order as their respective keys.
         /// </remarks>
+        /// <example>
+        /// The below snippet is part of a larger example of the
+        /// <see cref="RankedMap{TKey,TValue}"/>class.
+        /// <code source="..\Bench\RmExample01\RmExample01.cs" lang="cs" region="Values" />
+        /// </example>
         public ValueCollection Values
         {
             get
@@ -168,6 +188,11 @@ namespace Kaos.Collections
         /// <remarks>
         /// <para>This is a O(log <em>n</em>) operation.</para>
         /// </remarks>
+        /// <example>
+        /// The below snippet is part of a larger example of the
+        /// <see cref="RankedMap{TKey,TValue}"/>class.
+        /// <code source="..\Bench\RmExample01\RmExample01.cs" lang="cs" region="Add" />
+        /// </example>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
         /// <exception cref="ArgumentException">When no comparer is available.</exception>
         public bool Add (TKey key, TValue value)
@@ -199,6 +224,11 @@ namespace Kaos.Collections
         /// <summary>Determines whether the map contains the supplied key.</summary>
         /// <param name="key">The key to locate.</param>
         /// <returns><b>true</b> if <em>key</em> is contained in the map; otherwise <b>false</b>.</returns>
+        /// <example>
+        /// The below snippet is part of a larger example of the
+        /// <see cref="RankedMap{TKey,TValue}"/>class.
+        /// <code source="..\Bench\RmExample01\RmExample01.cs" lang="cs" region="ContainsKey" />
+        /// </example>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
         public bool ContainsKey (TKey key)
         {
@@ -348,6 +378,11 @@ namespace Kaos.Collections
         /// where <em>n</em> is <see cref="Count"/>.
         /// </para>
         /// </remarks>
+        /// <example>
+        /// The below snippet is part of a larger example of the
+        /// <see cref="RankedMap{TKey,TValue}"/>class.
+        /// <code source="..\Bench\RmExample01\RmExample01.cs" lang="cs" region="GetCount" />
+        /// </example>
         public int GetCount (TKey key) => GetCount2 (key);
 
 
@@ -358,6 +393,11 @@ namespace Kaos.Collections
         /// where <em>m</em> is the distinct key count
         /// and <em>n</em> is <see cref="Count"/>.
         /// </remarks>
+        /// <example>
+        /// The below snippet is part of a larger example of the
+        /// <see cref="RankedMap{TKey,TValue}"/>class.
+        /// <code source="..\Bench\RmExample01\RmExample01.cs" lang="cs" region="GetDistinctCount" />
+        /// </example>
         public int GetDistinctCount() => GetDistinctCount2();
 
 
@@ -408,6 +448,11 @@ namespace Kaos.Collections
         /// <param name="key">The key of the elements to remove.</param>
         /// <returns><b>true</b> if any elements were removed; otherwise <b>false</b>.</returns>
         /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
+        /// <example>
+        /// The below snippet is part of a larger example of the
+        /// <see cref="RankedMap{TKey,TValue}"/>class.
+        /// <code source="..\Bench\RmExample01\RmExample01.cs" lang="cs" region="Remove1" />
+        /// </example>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
         public bool Remove (TKey key)
         {
@@ -429,6 +474,11 @@ namespace Kaos.Collections
         /// <param name="key">The key of the elements to remove.</param>
         /// <param name="count">The number of elements to remove.</param>
         /// <returns>The number of elements actually removed.</returns>
+        /// <example>
+        /// The below snippet is part of a larger example of the
+        /// <see cref="RankedMap{TKey,TValue}"/>class.
+        /// <code source="..\Bench\RmExample01\RmExample01.cs" lang="cs" region="Remove2" />
+        /// </example>
         /// <exception cref="ArgumentException">When <em>count</em> is less than zero.</exception>
         public int Remove (TKey key, int count)
         {

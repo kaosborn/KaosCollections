@@ -99,6 +99,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Collections461", "Collectio
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "RankedMap", "Source\RankedMap\RankedMap.shproj", "{C40F0ADC-F1F0-41BE-9D08-ADFE38F8D8B5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RmExample01", "Bench\RmExample01\RmExample01.csproj", "{1833A35B-7F4D-4B8C-AEC5-0F6FB8946325}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Source\RankedSet\RankedSet.projitems*{c39a213b-5aae-4c05-8ca8-946331511d0d}*SharedItemsImports = 13
@@ -263,6 +265,10 @@ Global
 		{FB547C0B-556F-4D84-BF48-9DA674832089}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB547C0B-556F-4D84-BF48-9DA674832089}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB547C0B-556F-4D84-BF48-9DA674832089}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1833A35B-7F4D-4B8C-AEC5-0F6FB8946325}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1833A35B-7F4D-4B8C-AEC5-0F6FB8946325}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1833A35B-7F4D-4B8C-AEC5-0F6FB8946325}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1833A35B-7F4D-4B8C-AEC5-0F6FB8946325}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -306,6 +312,7 @@ Global
 		{9C399188-73F9-4A6D-ABAD-7241C2F1E197} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{95D44882-0087-4401-A631-A57ADCCBFDA5} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{C40F0ADC-F1F0-41BE-9D08-ADFE38F8D8B5} = {FE32F6EA-9179-43FB-82C5-2D010EC41842}
+		{1833A35B-7F4D-4B8C-AEC5-0F6FB8946325} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {201DA9DF-651F-47A0-B578-167533C3D874}
