@@ -182,8 +182,19 @@ namespace Kaos.Collections
                 Debug.Assert (index <= tree.root.Weight);
 
                 var path = new NodeVector (tree);
-                if (index >= tree.root.Weight)
-                    for (Node n0 = tree.root; n0 != null;)
+                if (index == 0)
+                    for (Node n0 = tree.root;;)
+                    {
+                        path.indexStack.Add (0);
+                        path.nodeStack.Add (n0);
+
+                        if (n0 is Branch bh)
+                            n0 = bh.GetChild (0);
+                        else
+                            return path;
+                    }
+                else if (index >= tree.root.Weight)
+                    for (Node n0 = tree.root;;)
                     {
                         path.indexStack.Add (n0.KeyCount);
                         path.nodeStack.Add (n0);
