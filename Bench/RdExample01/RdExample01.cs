@@ -31,9 +31,11 @@ namespace ExampleApp
             // so you can omit its name when accessing elements.
             Console.WriteLine ("For key = 'CH', value = {0}.", cc["CH"]);
 
+            #region Add
             // The indexer can be used to change the value associated with a key.
             cc["RU"] = "Russian Federation";
             Console.WriteLine ("For key = 'RU', value = {0}.", cc["RU"]);
+            #endregion
 
             // If a key does not exist, setting the indexer for that key
             // adds a new key/value pair.

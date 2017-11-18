@@ -64,7 +64,7 @@ namespace Kaos.Collections
     /// </remarks>
     /// <example>
     /// <para>First is an example of some common operations of this class.</para>
-    /// <code source="..\Bench\RdExample01\RdExample01.cs" lang="cs" />
+    /// <code source="..\Bench\RdExample01\RdExample01.cs" lang="cs" removeRegionMarkers="true" />
     /// <para>Next is an example showing binary serialization round tripped.</para>
     /// <para>Note: Serialization is not supported in .NET Standard 1.0.</para>
     /// <code source="..\Bench\RdExample05\RdExample05.cs" lang="cs" />
@@ -275,6 +275,11 @@ namespace Kaos.Collections
         /// </para>
         /// <para>This is a O(log <em>n</em>) operation.</para>
         /// </remarks>
+        /// <example>
+        /// The below snippet is part of a larger example of the
+        /// <see cref="RankedDictionary{TKey,TValue}"/>class.
+        /// <code source="..\Bench\RdExample01\RdExample01.cs" lang="cs" region="Add" />
+        /// </example>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
         /// <exception cref="ArgumentException">
         ///   When a key/value pair already exists with the supplied key;
