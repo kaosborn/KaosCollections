@@ -712,7 +712,7 @@ namespace Kaos.Test.Collections
             var rem53 = rm2.Remove (5, 3);
             Assert.AreEqual (3, rem53);
 
-            var rem33 = rm2.Remove (3, 3);
+            var rem33 = rm2.Remove (3, Int32.MaxValue);
             Assert.AreEqual (3, rem33);
 
             var rem99 = rm2.Remove (9, 9);

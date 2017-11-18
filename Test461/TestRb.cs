@@ -705,7 +705,7 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (36, bag3.Count);
             Assert.IsFalse (bag3.Contains (3));
 
-            var rem65 = bag3.Remove (6, 99);
+            var rem65 = bag3.Remove (6, Int32.MaxValue);
             Assert.AreEqual (5, rem65);
             Assert.AreEqual (31, bag3.Count);
             Assert.IsFalse (bag3.Contains (6));
