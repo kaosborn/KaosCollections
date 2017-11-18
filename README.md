@@ -13,7 +13,7 @@ Primary types provided are:
 
 * `RankedDictionary<TKey,TValue>` - for collections of key/value pairs with distinct keys that can be accessed in sort order or by index.
 * `RankedSet<T>` - for collections of distinct items that can be accessed in sort order or by index.
-* `RankedBag<T>` - for collections of items that can be accessed in sort order or by index. Also known as multisets.
+* `RankedBag<T>` - for collections of nondistinct items that can be accessed in sort order or by index. Also known as multisets.
 
 This library is built as a .NET Standard project with multitargeting to:
 
@@ -83,7 +83,7 @@ Building documentation requires Sandcastle Help File Builder:
 
 This repository is a single Visual Studio solution with additional files in the root.
 
-* The `Bench` folder contains console program projects that mostly target the .NET 4.62 library build.
+* The `Bench` folder contains console program projects that mostly target the .NET 4.61 library build.
 These programs exist to:
 
   * Provide examples for documentation
@@ -97,19 +97,19 @@ These programs exist to:
 Building the Release configuration of the project contained in this folder
 will produce a `.nuget` file for distribution.
 
-* The `Collections462` folder contains a .NET 4.62 build of the class library.
+* The `Collections461` folder contains a .NET 4.61 build of the class library.
 This project is used for development and testing only.
 
 * The `Images` folder contains the logo `.svg` file and its `.png` conversions.
 
 * The `Help` folder contains a [Sandcastle Help File Builder](https://github.com/EWSoftware/SHFB)
 project that produces documentation from embedded XML comments.
-To build this project, first build `Collections462` and build in Release configuration.
+To build this project, first build `Collections461` and build in Release configuration.
 
 * The `Source` folder contains all source code for KaosCollections.
 All source is organized using shared projects which are referenced by the build projects.
 
-* The `Test462` folder contains unit tests and some short running stress tests.
+* The `Test461` folder contains unit tests and some short running stress tests.
 Code coverage is 99%.
 To verify correct emulation, these tests may be run against either this library
 or against the emulated BCL classes.
