@@ -44,8 +44,6 @@ namespace Kaos.Collections
 
         #region Nonpublic methods
 
-        internal int Size => root.Weight;
-
         internal bool IsUnderflow (int count) => count < ((maxKeyCount + 1) >> 1);
 
         internal void CopyKeysTo1 (T[] array, int index, int count)
@@ -62,8 +60,8 @@ namespace Kaos.Collections
             if (count > array.Length - index)
                 throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
 
-            if (count > Size)
-                count = Size;
+            if (count > root.Weight)
+                count = root.Weight;
             int stopIx = index + count;
 
             for (Leaf leaf = leftmostLeaf; ; leaf = leaf.rightLeaf)
@@ -93,14 +91,14 @@ namespace Kaos.Collections
 
             if (array is T[] genericArray)
             {
-                CopyKeysTo1 (genericArray, index, Size);
+                CopyKeysTo1 (genericArray, index, root.Weight);
                 return;
             }
 
             if (index < 0)
                 throw new ArgumentOutOfRangeException (nameof (index), "Non-negative number required.");
 
-            if (Size > array.Length - index)
+            if (root.Weight > array.Length - index)
                 throw new ArgumentException ("Destination array is not long enough to copy all the items in the collection. Check array index and length.");
 
             if (array is object[] obArray)
@@ -153,7 +151,7 @@ namespace Kaos.Collections
         /// <returns>Leaf holding item.</returns>
         internal Node Find (int treeIndex, out int leafIndex)
         {
-            System.Diagnostics.Debug.Assert (treeIndex < Size);
+            System.Diagnostics.Debug.Assert (treeIndex < root.Weight);
             Node node = root;
             leafIndex = treeIndex;
             while (node is Branch branch)
@@ -711,7 +709,7 @@ namespace Kaos.Collections
                 if (value < 0)
                     throw new ArgumentOutOfRangeException ("Must be between " + MinimumOrder + " and " + MaximumOrder + ".");
 
-                if (Size == 0 && value >= MinimumOrder && value <= MaximumOrder)
+                if (root.Weight == 0 && value >= MinimumOrder && value <= MaximumOrder)
                     maxKeyCount = value - 1;
             }
         }

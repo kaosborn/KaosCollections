@@ -179,10 +179,10 @@ namespace Kaos.Collections
 
             public static NodeVector CreateFromIndex (Btree<T> tree, int index)
             {
-                Debug.Assert (index <= tree.Size);
+                Debug.Assert (index <= tree.root.Weight);
 
                 var path = new NodeVector (tree);
-                if (index >= tree.Size)
+                if (index >= tree.root.Weight)
                     for (Node n0 = tree.root; n0 != null;)
                     {
                         path.indexStack.Add (n0.KeyCount);
@@ -663,7 +663,7 @@ namespace Kaos.Collections
                         {
                             // Balance leaves by shifting pairs from right leaf.
                             int shifts = (leaf1.KeyCount + leaf2.KeyCount + 1) / 2 - leaf1.KeyCount;
-                            leaf1.Shift (shifts);
+                            leaf1.MoveLeft (shifts);
                             TraverseRight();
                             SetPivot (leaf2.Key0);
                             TiltLeft (shifts);

@@ -458,7 +458,7 @@ namespace Kaos.Collections
             if (count < 0)
                 throw new ArgumentOutOfRangeException ("Argument was out of the range of valid values.", nameof (count));
 
-            if (count > Size - index)
+            if (count > root.Weight - index)
                 throw new ArgumentException ("Argument was out of the range of valid values.");
 
             RemoveRange2 (index, count);
