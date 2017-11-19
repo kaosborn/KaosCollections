@@ -66,39 +66,6 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        [ExpectedException (typeof (InvalidOperationException))]
-        public void CrashRmkq_Max()
-        {
-            var rm = new RankedMap<int,int>();
-            var keys = rm.Keys;
-            int zz = keys.Max();
-        }
-
-        [TestMethod]
-        [ExpectedException (typeof (InvalidOperationException))]
-        public void CrashRmkq_Min()
-        {
-            var rm = new RankedMap<int,int>();
-            var keys = rm.Keys;
-            int zz = keys.Min();
-        }
-
-        [TestMethod]
-        public void UnitRmkq_MinMax()
-        {
-            var rm = new RankedMap<int,int> { Capacity=4 };
-            var keys = rm.Keys;
-            int n = 500;
-
-            for (int ii = 1; ii <= n; ++ii)
-                rm.Add (ii, -ii);
-
-            Assert.AreEqual (1, keys.Min());
-            Assert.AreEqual (n, keys.Max());
-        }
-
-
-        [TestMethod]
         public void UnitRmk_ocSyncRoot()
         {
             var rm = new RankedMap<int,int>();
@@ -230,46 +197,6 @@ namespace Kaos.Test.Collections
             Assert.AreEqual ('a', target[1]);
             Assert.AreEqual ('b', target[2]);
             Assert.AreEqual ('z', target[3]);
-        }
-
-
-        [TestMethod]
-        [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRmk_ElementAt_ArgumentOutOfRange1()
-        {
-            var rm = new RankedMap<int,int>();
-            var zz = rm.Keys.ElementAt (-1);
-        }
-
-        [TestMethod]
-        [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRmk_ElementAt_ArgumentOutOfRange2()
-        {
-            var rm = new RankedMap<int,int>();
-            var zz = rm.Keys.ElementAt (0);
-        }
-
-        [TestMethod]
-        public void UnitRdk_ElementAt()
-        {
-            var rm = new RankedMap<string,int> { {"0zero",0}, {"1one",-1}, {"1one",-2} };
-
-            Assert.AreEqual ("0zero",rm.Keys.ElementAt (0));
-            Assert.AreEqual ("1one", rm.Keys.ElementAt (1));
-            Assert.AreEqual ("1one", rm.Keys.ElementAt (2));
-        }
-
-
-        [TestMethod]
-        public void UnitRmk_ElementAtOrDefault()
-        {
-            var rm = new RankedMap<string,int> { {"0zero",0}, {"1one",-1}, {"1one",-2} };
-
-            Assert.AreEqual ("0zero",rm.Keys.ElementAtOrDefault (0));
-            Assert.AreEqual ("1one", rm.Keys.ElementAtOrDefault (1));
-            Assert.AreEqual ("1one", rm.Keys.ElementAtOrDefault (2));
-            Assert.AreEqual (default (string), rm.Keys.ElementAtOrDefault (-1));
-            Assert.AreEqual (default (string), rm.Keys.ElementAtOrDefault (3));
         }
 
 
