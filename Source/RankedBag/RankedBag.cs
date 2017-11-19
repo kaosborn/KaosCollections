@@ -685,11 +685,13 @@ namespace Kaos.Collections
             if (Count == 0)
                 yield break;
 
+            int stageFreeze = stage;
             int ix = 0;
             Leaf leaf = leftmostLeaf;
             for (T key = leaf.Key0;;)
             {
                 yield return key;
+                StageCheck (stageFreeze);
 
                 if (ix < leaf.KeyCount - 1)
                 {

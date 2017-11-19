@@ -875,7 +875,20 @@ namespace Kaos.Test.Collections
         #region Test enumeration
 
         [TestMethod]
-        public void UnitRb_Distinct()
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRbq_DistinctHotUpdate()
+        {
+            var bag = new RankedBag<int> { 3,5,7,9 };
+            int n = 0;
+
+            //TODO for BCL foreach (var key in Enumerable.Distinct (bag))
+            foreach (var kv in bag.Distinct())
+                if (++n == 2)
+                    bag.Remove (3);
+        }
+
+        [TestMethod]
+        public void UnitRbq_Distinct()
         {
             var bag0 = new RankedBag<int>();
             var bag1 = new RankedBag<int> { Capacity = 4 };
