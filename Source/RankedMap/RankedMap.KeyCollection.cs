@@ -203,6 +203,47 @@ namespace Kaos.Collections
 
             #region Enumeration
 
+            /// <summary>Returns an enumerator that iterates thru the distinct keys of the map.</summary>
+            /// <returns>An enumerator that iterates thru distinct keys.</returns>
+            /// <remarks>
+            /// <para>
+            /// Retrieving each key is a O(log <em>n</em>) operation
+            /// where <em>n</em> is <see cref="Count"/>.
+            /// </para>
+            /// </remarks>
+            public IEnumerable<TKey> Distinct()
+            {
+                if (Count == 0)
+                    yield break;
+
+                int stageFreeze = tree.stage;
+                int ix = 0;
+                Leaf leaf = tree.leftmostLeaf;
+                for (TKey key = leaf.Key0;;)
+                {
+                    yield return key;
+                    tree.StageCheck (stageFreeze);
+
+                    if (++ix < leaf.KeyCount)
+                    {
+                        TKey nextKey = leaf.GetKey (ix);
+                        if (tree.Comparer.Compare (key, nextKey) != 0)
+                        { key = nextKey; continue; }
+                    }
+
+                    tree.FindEdgeRight (key, out leaf, out ix);
+                    if (ix >= leaf.KeyCount)
+                    {
+                        leaf = leaf.rightLeaf;
+                        if (leaf == null)
+                            yield break;
+                        ix = 0;
+                    }
+                    key = leaf.GetKey (ix);
+                }
+            }
+
+
             /// <summary>Gets an enumerator that iterates thru the collection.</summary>
             /// <returns>An enumerator for the collection.</returns>
             public Enumerator GetEnumerator() => new Enumerator (tree);

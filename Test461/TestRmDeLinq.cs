@@ -126,5 +126,47 @@ namespace Kaos.Test.Collections
         }
 
         #endregion
+
+        #region Test Keys enumeration (LINQ emulation)
+
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRmkq_DistinctHotUpdate()
+        {
+            var rm = new RankedMap<string,int> { {"aa",1}, {"bb",2}, {"cc",3} };
+            int n = 0;
+
+#if TEST_BCL
+            foreach (var key in Enumerable.Distinct (rm.Keys))
+#else
+            foreach (var kv in rm.Keys.Distinct())
+#endif
+                if (++n == 2)
+                    rm.Remove ("aa");
+        }
+
+        [TestMethod]
+        public void UnitRmkq_Distincts()
+        {
+            var rm = new RankedMap<int,int> { Capacity=4 };
+            int n = 100;
+
+            for (int i1 = 1; i1 < n; ++i1)
+                for (int i2 = 0; i2 < i1; ++i2)
+                    rm.Add (i1, i2 * n + i2);
+
+            int expected = 1;
+#if TEST_BCL
+            foreach (var x in Enumerable.Distinct (rm.Keys))
+#else
+            foreach (var x in rm.Keys.Distinct())
+#endif
+            {
+                Assert.AreEqual (expected, x);
+                ++expected;
+            }
+        }
+
+        #endregion
     }
 }
