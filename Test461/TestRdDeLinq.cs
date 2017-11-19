@@ -14,6 +14,42 @@ namespace Kaos.Test.Collections
 {
     public partial class TestBtree
     {
+        #region Test bonus Keys LINQ instance implementations
+
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRdkq_Max()
+        {
+            Setup (4);
+            var keys = tree1.Keys;
+            int zz = keys.Max();
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRdkq_Min()
+        {
+            Setup (4);
+            var keys = tree1.Keys;
+            int zz = keys.Min();
+        }
+
+        [TestMethod]
+        public void UnitRdkq_MinMax()
+        {
+            Setup (4);
+            var keys = tree1.Keys;
+            int n = 400;
+
+            for (int ii = 1; ii <= n; ++ii)
+                tree1.Add (ii, -ii);
+
+            Assert.AreEqual (1, keys.Min());
+            Assert.AreEqual (n, keys.Max());
+        }
+
+        #endregion
+
         #region Test bonus LINQ instance implementations
 
         [TestMethod]

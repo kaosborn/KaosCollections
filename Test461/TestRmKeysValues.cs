@@ -66,6 +66,39 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRmkq_Max()
+        {
+            var rm = new RankedMap<int,int>();
+            var keys = rm.Keys;
+            int zz = keys.Max();
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRmkq_Min()
+        {
+            var rm = new RankedMap<int,int>();
+            var keys = rm.Keys;
+            int zz = keys.Min();
+        }
+
+        [TestMethod]
+        public void UnitRmkq_MinMax()
+        {
+            var rm = new RankedMap<int,int> { Capacity=4 };
+            var keys = rm.Keys;
+            int n = 500;
+
+            for (int ii = 1; ii <= n; ++ii)
+                rm.Add (ii, -ii);
+
+            Assert.AreEqual (1, keys.Min());
+            Assert.AreEqual (n, keys.Max());
+        }
+
+
+        [TestMethod]
         public void UnitRmk_ocSyncRoot()
         {
             var rm = new RankedMap<int,int>();

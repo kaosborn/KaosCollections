@@ -172,6 +172,28 @@ namespace Kaos.Collections
             public int IndexOf (TKey key) => tree.FindEdgeForIndex (key, out Leaf leaf, out int leafIndex, leftEdge:true);
 
 
+            /// <summary>Gets the maximum key per the comparer.</summary>
+            /// <remarks>This is a O(1) operation.</remarks>
+            public TKey Max()
+            {
+                if (Count == 0)
+                    throw new InvalidOperationException ("Sequence contains no elements");
+
+                return tree.rightmostLeaf.GetKey (tree.rightmostLeaf.KeyCount - 1);
+            }
+
+
+            /// <summary>Gets the minimum key per the comparer.</summary>
+            /// <remarks>This is a O(1) operation.</remarks>
+            public TKey Min()
+            {
+                if (Count == 0)
+                    throw new InvalidOperationException ("Sequence contains no elements");
+
+                return tree.leftmostLeaf.Key0;
+            }
+
+
             /// <summary>This implementation always throws a <see cref="NotSupportedException" />.</summary>
             /// <param name="key">The key to remove.</param>
             /// <returns><b>true</b> if the object was removed; otherwise <b>false</b>.</returns>
