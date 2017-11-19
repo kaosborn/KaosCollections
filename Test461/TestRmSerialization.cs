@@ -3,11 +3,11 @@
 // File:    TestRmSerializaton.cs
 //
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Runtime.Serialization;
 using System.IO;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Kaos.Collections;
 
 namespace Kaos.Test.Collections
