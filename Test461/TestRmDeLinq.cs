@@ -115,7 +115,7 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void UnitRdk_ElementAt()
+        public void UnitRmk_ElementAt()
         {
             var rm = new RankedMap<string,int> { {"0zero",0}, {"1one",-1}, {"1one",-2} };
 
@@ -191,6 +191,59 @@ namespace Kaos.Test.Collections
                 Assert.AreEqual (expected, x);
                 ++expected;
             }
+        }
+
+        #endregion
+
+
+        #region Test Values methods (LINQ emulation)
+
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRmvq_First()
+        {
+            var rm = new RankedMap<int,int>();
+#if TEST_BCL
+            var zz = Enumerable.First (rm.Values);
+#else
+            var zz = rm.Values.First();
+#endif
+        }
+
+        [TestMethod]
+        public void UnitRmvq_First()
+        {
+            var rm = new RankedMap<int,int> { Capacity=4 };
+            for (int ii = 9; ii >= 1; --ii) rm.Add (ii, -ii);
+#if TEST_BCL
+            Assert.AreEqual (-1, Enumerable.First (rm.Values));
+#else
+            Assert.AreEqual (-1, rm.Values.First());
+#endif
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRmvq_Last()
+        {
+            var rm = new RankedMap<int,int>();
+#if TEST_BCL
+            var zz = Enumerable.Last (rm.Values);
+#else
+            var zz = rm.Values.Last();
+#endif
+        }
+
+        [TestMethod]
+        public void UnitRmvq_Last()
+        {
+            var rm = new RankedMap<int,int> { Capacity=4 };
+            for (int ii = 9; ii >= 1; --ii) rm.Add (ii, -ii);
+#if TEST_BCL
+            Assert.AreEqual (-9, Enumerable.Last (rm.Values));
+#else
+            Assert.AreEqual (-9, rm.Values.Last());
+#endif
         }
 
         #endregion
