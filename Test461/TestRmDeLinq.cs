@@ -65,6 +65,32 @@ namespace Kaos.Test.Collections
         #region Test Keys methods (LINQ emulation)
 
         [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRmkq_Contains_ArgumentNull()
+        {
+            var rm = new RankedMap<string,int> { {"beta",2} };
+#if TEST_BCL
+            var zz = Enumerable.Contains (rm.Keys, null);
+#else
+            var zz = rm.Keys.Contains (null);
+#endif
+        }
+
+        [TestMethod]
+        public void UnitRmkq_Contains()
+        {
+            var rm = new RankedMap<int,int>() { {22,222 } };
+#if TEST_BCL
+            Assert.IsTrue (Enumerable.Contains (rm.Keys, 22));
+            Assert.IsFalse (Enumerable.Contains (rm.Keys, 33));
+#else
+            Assert.IsTrue (rm.Keys.Contains (22));
+            Assert.IsFalse (rm.Keys.Contains (33));
+#endif
+        }
+
+
+        [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
         public void CrashRmk_ElementAt_ArgumentOutOfRange1()
         {

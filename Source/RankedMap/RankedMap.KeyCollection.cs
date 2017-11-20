@@ -83,6 +83,19 @@ namespace Kaos.Collections
             void ICollection<TKey>.Clear() => throw new NotSupportedException();
 
 
+            /// <summary>Determines whether the key collection contains the supplied key.</summary>
+            /// <param name="key">The key to locate.</param>
+            /// <returns><b>true</b> if <em>key</em> is contained in the map; otherwise <b>false</b>.</returns>
+            /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
+            public bool Contains (TKey key)
+            {
+                if (key == null)
+                    throw new ArgumentNullException (nameof (key));
+
+                var leaf = (PairLeaf<TValue>) tree.Find (key, out int index);
+                return index >= 0;
+            }
+
             /// <summary>Determines whether the collection contains the supplied key.</summary>
             /// <param name="key">The key to locate.</param>
             /// <returns><b>true</b> if <em>key</em> is contained in the collection; otherwise <b>false</b>.</returns>
