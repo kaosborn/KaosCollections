@@ -18,25 +18,25 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRdq_ElementAt1_ArgumentOutOfRange()
+        public void CrashRdq_ElementAtA_ArgumentOutOfRange()
         {
             Setup();
 #if TEST_BCL
             var zz = Enumerable.ElementAt (tree1, -1);
 #else
-            KeyValuePair<int,int> pair = tree1.ElementAt (-1);
+            var zz = tree1.ElementAt (-1);
 #endif
         }
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRdq_ElementAt2_ArgumentOutOfRange()
+        public void CrashRdq_ElementAtB_ArgumentOutOfRange()
         {
             Setup();
 #if TEST_BCL
             var zz = Enumerable.ElementAt (tree1, 0);
 #else
-            KeyValuePair<int,int> pair = tree1.ElementAt (0);
+            var zz = tree1.ElementAt (0);
 #endif
         }
 
