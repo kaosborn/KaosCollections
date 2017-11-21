@@ -116,6 +116,24 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
+#if ! TEST_BCL
+        [ExpectedException (typeof (InvalidOperationException))]
+#endif
+        public void CrashRmq_ReverseHotUpdate()
+        {
+            var rm = new RankedMap<string,int> { {"aa",1}, {"bb",2}, {"cc",3}, {"dd",4} };
+            int n = 0;
+
+#if TEST_BCL
+            foreach (var key in Enumerable.Reverse (rm))
+#else
+            foreach (var kv in rm.Reverse())
+#endif
+                if (++n == 2)
+                    rm.Clear();
+        }
+
+        [TestMethod]
         public void UnitRmq_Reverse()
         {
             var rm = new RankedMap<int,int> { Capacity=5 };
