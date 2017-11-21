@@ -525,60 +525,6 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRb_ElementAt1_ArgumentOutOfRange()
-        {
-            var bag = new RankedBag<int>();
-            int key = bag.ElementAt (-1);
-        }
-
-        [TestMethod]
-        [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRb_ElementAt2_ArgumentOutOfRange()
-        {
-            var bag = new RankedBag<int>();
-            int key = bag.ElementAt (0);
-        }
-
-        [TestMethod]
-        public void UnitRb_ElementAt()
-        {
-            int n = 800;
-            var bag = new RankedBag<int>() { Capacity = 5 };
-
-            for (int ii = 0; ii <= n; ++ii)
-                bag.Add (ii/2);
-
-            for (int ii = 0; ii <= n; ++ii)
-            {
-                int key = bag.ElementAt (ii);
-                Assert.AreEqual (ii/2, key);
-            }
-        }
-
-
-        [TestMethod]
-        public void UnitRb_ElementAtOrDefault()
-        {
-            var bag = new RankedBag<int>();
-
-            int keyM1 = bag.ElementAtOrDefault (-1);
-            Assert.AreEqual (default (int), keyM1);
-
-            int key0 = bag.ElementAtOrDefault (0);
-            Assert.AreEqual (default (int), key0);
-
-            bag.Add (9);
-
-            int key00 = bag.ElementAtOrDefault (0);
-            Assert.AreEqual (9, key00);
-
-            int key1 = bag.ElementAtOrDefault (1);
-            Assert.AreEqual (default (int), key1);
-        }
-
-
-        [TestMethod]
         public void UnitRb_IndexOf()
         {
             var bag0 = new RankedBag<int>();
@@ -595,25 +541,6 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (~3, bag.IndexOf (6));
             Assert.AreEqual (3, bag.IndexOf (7));
             Assert.AreEqual (~5, bag.IndexOf (8));
-        }
-
-
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
-        public void CrashRb_Last_InvalidOperation()
-        {
-            var bag = new RankedBag<int>();
-            int key = bag.Last();
-        }
-
-        [TestMethod]
-        public void UnitRb_Last()
-        {
-            var bag = new RankedBag<int>() { Capacity = 4 };
-            for (int ii = 99; ii >= 0; --ii) bag.Add (ii);
-
-            int key = bag.Last();
-            Assert.AreEqual (99, key);
         }
 
 
@@ -875,39 +802,6 @@ namespace Kaos.Test.Collections
         #region Test enumeration
 
         [TestMethod]
-        [ExpectedException (typeof (InvalidOperationException))]
-        public void CrashRbq_DistinctHotUpdate()
-        {
-            var bag = new RankedBag<int> { 3,5,7,9 };
-            int n = 0;
-
-            //TODO for BCL foreach (var key in Enumerable.Distinct (bag))
-            foreach (var kv in bag.Distinct())
-                if (++n == 2)
-                    bag.Remove (3);
-        }
-
-        [TestMethod]
-        public void UnitRbq_Distinct()
-        {
-            var bag0 = new RankedBag<int>();
-            var bag1 = new RankedBag<int> { Capacity = 4 };
-
-            int a0 = 0, a1 = 0;
-            foreach (var ii in new int[] { 3, 5, 5, 7, 7 })
-                bag1.Add (ii);
-
-            foreach (var k0 in bag0.Distinct())
-                ++a0;
-
-            foreach (var k1 in bag1.Distinct())
-                ++a1;
-
-            Assert.AreEqual (0, a0);
-            Assert.AreEqual (3, a1);
-        }
-
-        [TestMethod]
         public void UnitRb_ElementsBetween()
         {
             var bag0 = new RankedBag<int>();
@@ -1027,24 +921,6 @@ namespace Kaos.Test.Collections
                     int expected = (p2 - p1 + 1) * (p1 + p2) / 2;
                     Assert.AreEqual (expected, actual);
                 }
-        }
-
-        [TestMethod]
-        public void UnitRb_Reverse()
-        {
-            int n = 800;
-            var bag = new RankedBag<int> { Capacity = 4 };
-
-            for (int i1 = 0; i1 < n; ++i1)
-                bag.Add (i1/2);
-
-            int i2 = n-1;
-            foreach (var ii in bag.Reverse())
-            {
-                Assert.AreEqual (i2 / 2, ii);
-                --i2;
-            }
-            Assert.AreEqual (i2, -1);
         }
 
 

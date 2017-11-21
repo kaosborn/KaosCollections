@@ -51,6 +51,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestInit.cs" />
     <Compile Include="TestRb.cs" />
+    <Compile Include="TestRbDeLinq.cs" />
     <Compile Include="TestRmDeLinq.cs" />
     <Compile Include="TestRbSerialization.cs" />
     <Compile Include="TestRd.cs" />
