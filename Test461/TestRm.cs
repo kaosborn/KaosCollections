@@ -498,64 +498,6 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRm_ElementAt1_ArgumentOutOfRange()
-        {
-            var rm = new RankedMap<int,int>();
-            KeyValuePair<int,int> pair = rm.ElementAt (-1);
-        }
-
-        [TestMethod]
-        [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRm_ElementAt2_ArgumentOutOfRange()
-        {
-            var rm = new RankedMap<int,int>();
-            KeyValuePair<int,int> pair = rm.ElementAt (0);
-        }
-
-        [TestMethod]
-        public void UnitRm_ElementAt()
-        {
-            var rm = new RankedMap<int,int>();
-
-            for (int ii = 0; ii <= 800; ii+=2)
-                rm.Add (ii, ii+100);
-
-            for (int ii = 0; ii <= 400; ii+=2)
-            {
-                KeyValuePair<int,int> pair = rm.ElementAt (ii);
-                Assert.AreEqual (ii*2, pair.Key);
-                Assert.AreEqual (ii*2+100, pair.Value);
-            }
-        }
-
-
-        [TestMethod]
-        public void UnitRm_ElementAtOrDefault()
-        {
-            var rm = new RankedMap<int,int>();
-
-            KeyValuePair<int,int> pairM1 = rm.ElementAtOrDefault (-1);
-            Assert.AreEqual (default (int), pairM1.Key);
-            Assert.AreEqual (default (int), pairM1.Value);
-
-            KeyValuePair<int,int> pair0 = rm.ElementAtOrDefault (0);
-            Assert.AreEqual (default (int), pair0.Key);
-            Assert.AreEqual (default (int), pair0.Value);
-
-            rm.Add (9, -9);
-
-            KeyValuePair<int,int> pair00 = rm.ElementAtOrDefault (0);
-            Assert.AreEqual (9, pair00.Key);
-            Assert.AreEqual (-9, pair00.Value);
-
-            KeyValuePair<int,int> pair1 = rm.ElementAtOrDefault (1);
-            Assert.AreEqual (default (int), pair1.Key);
-            Assert.AreEqual (default (int), pair1.Value);
-        }
-
-
-        [TestMethod]
         public void UnitRm_GetCount()
         {
             var map0 = new RankedMap<int,int>();
@@ -1203,37 +1145,6 @@ namespace Kaos.Test.Collections
                     int expected = (p2 - p1 + 1) * (p1 + p2) / 2;
                     Assert.AreEqual (expected, actual);
                 }
-        }
-
-
-        [TestMethod]
-        public void UnitRm_ReverseEmpty()
-        {
-            var rm = new RankedMap<int,int>();
-            int actual = 0;
-
-            foreach (var countdown in rm.Reverse())
-               ++actual;
-
-            Assert.AreEqual (0, actual);
-        }
-
-        [TestMethod]
-        public void UnitRm_Reverse()
-        {
-            var rm = new RankedMap<int,int> { Capacity=5 };
-            int n = 500, n1 = n;
-
-            for (int ii=1; ii <= n; ++ii)
-                rm.Add (ii, -ii);
-
-            foreach (var actual in rm.Reverse())
-            {
-                Assert.AreEqual (n1, actual.Key);
-                Assert.AreEqual (-n1, actual.Value);
-                --n1;
-            }
-            Assert.AreEqual (0, n1);
         }
 
 

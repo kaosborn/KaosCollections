@@ -575,46 +575,6 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRmv_ElementAt_ArgumentOutOfRange1()
-        {
-            var rm = new RankedMap<int,int>();
-            var zz = rm.Values.ElementAt (-1);
-        }
-
-        [TestMethod]
-        [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRmv_ElementAt_ArgumentOutOfRange2()
-        {
-            var rm = new RankedMap<int,int>();
-            var zz = rm.Values.ElementAt (0);
-        }
-
-        [TestMethod]
-        public void UnitRdv_ElementAt()
-        {
-            var rm = new RankedMap<string,int> { {"0zero",0}, {"1one",-1}, {"1one",-2} };
-
-            Assert.AreEqual ( 0,rm.Values.ElementAt (0));
-            Assert.AreEqual (-1, rm.Values.ElementAt (1));
-            Assert.AreEqual (-2, rm.Values.ElementAt (2));
-        }
-
-
-        [TestMethod]
-        public void UnitRmv_ElementAtOrDefault()
-        {
-            var rm = new RankedMap<string,int?> { {"0zero",0}, {"1one",-1}, {"1one",-2} };
-
-            Assert.AreEqual ( 0, rm.Values.ElementAtOrDefault (0));
-            Assert.AreEqual (-1, rm.Values.ElementAtOrDefault (1));
-            Assert.AreEqual (-2, rm.Values.ElementAtOrDefault (2));
-            Assert.AreEqual (default (int?), rm.Values.ElementAtOrDefault (-1));
-            Assert.AreEqual (default (int?), rm.Values.ElementAtOrDefault (3));
-        }
-
-
-        [TestMethod]
         public void UnitRmv_IndexOf()
         {
             var rm = new RankedMap<string,int?> { {"1one",1}, {"2two",2}, {"2two",2}, {"3tree",3}, {"9nine",null} };
