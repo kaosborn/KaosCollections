@@ -183,6 +183,7 @@ namespace Kaos.Collections
 
 
             /// <summary>Gets the maximum key per the comparer.</summary>
+            /// <returns>The maximum key per the comparer.</returns>
             /// <remarks>This is a O(1) operation.</remarks>
             public TKey Max()
             {
@@ -194,6 +195,7 @@ namespace Kaos.Collections
 
 
             /// <summary>Gets the minimum key per the comparer.</summary>
+            /// <returns>The minimum key per the comparer.</returns>
             /// <remarks>This is a O(1) operation.</remarks>
             public TKey Min()
             {

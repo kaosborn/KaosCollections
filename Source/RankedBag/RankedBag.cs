@@ -402,15 +402,15 @@ namespace Kaos.Collections
 
 
         /// <summary>
-        /// Removes all elements that are in the supplied collection from the bag.
+        /// Removes all items that are in the supplied collection from the bag.
         /// </summary>
-        /// <param name="other">The elements to remove.</param>
-        /// <returns>The number of elements removed from the bag.</returns>
+        /// <param name="other">The items to remove.</param>
+        /// <returns>The number of items removed from the bag.</returns>
         /// <remarks>
         /// Cardinality is respected by this operation so that
         /// the occurrences of each item removed is the number of occurrences of that item in <em>other</em>.
         /// In precise terms,
-        /// this operation removes min(<em>m</em>,<em>n</em>) occurrences of item
+        /// this operation removes min(<em>m</em>,<em>n</em>) occurrences of each item
         /// where the bag contains <em>n</em> occurrences
         /// and <em>other</em> contains <em>m</em> occurrences.
         /// </remarks>

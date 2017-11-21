@@ -85,7 +85,7 @@ namespace Kaos.Collections
             { throw new NotSupportedException(); }
 
 
-            /// <summary>Determines whether the map contains the supplied value.</summary>
+            /// <summary>Determines whether the map contains an element with the supplied value.</summary>
             /// <param name="value">The value to find.</param>
             /// <returns><b>true</b> if <em>value</em> is found in the map; otherwise <b>false</b>.</returns>
             /// <remarks>This is a O(<em>n</em>) operation.</remarks>
@@ -198,7 +198,7 @@ namespace Kaos.Collections
             }
 
 
-            /// <summary>Gets the index of the first occurrence the supplied value.</summary>
+            /// <summary>Gets the index of the first occurrence with the supplied value.</summary>
             /// <param name="value">The value to find.</param>
             /// <returns>The index of the first occurrence of <em>value</em> if found; otherwise -1.</returns>
             /// <remarks>This is a O(<em>n</em>) operation.</remarks>

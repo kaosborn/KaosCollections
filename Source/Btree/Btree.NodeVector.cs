@@ -36,7 +36,7 @@ namespace Kaos.Collections
             }
 
 
-            /// <summary>Make an copy with indexes of zero.</summary>
+            /// <summary>Make a copy with indexes of zero.</summary>
             /// <param name="path">Target of copy.</param>
             /// <param name="count">Depth of copy.</param>
             internal NodeVector (NodeVector path, int count) : this (path.tree)
@@ -49,7 +49,7 @@ namespace Kaos.Collections
             }
 
 
-            /// <summary>Perform search and store each level of path on the stack.</summary>
+            /// <summary>Perform search and store the result.</summary>
             /// <param name="tree">Tree to search.</param>
             /// <param name="key">Value to find.</param>
             public NodeVector (Btree<T> tree, T key) : this (tree)
