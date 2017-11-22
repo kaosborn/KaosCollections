@@ -334,6 +334,42 @@ namespace Kaos.Test.Collections
             }
         }
 
+
+        [TestMethod]
+        public void UnitRmkq_ReverseEmpty()
+        {
+            var rm = new RankedMap<int,int> { Capacity=4 };
+#if TEST_BCL
+            foreach (var x in Enumerable.Reverse (rm.Keys))
+#else
+            foreach (var x in rm.Keys.Reverse())
+#endif
+            {
+                Assert.Fail ("Unreachable");
+            }
+        }
+
+        [TestMethod]
+        public void UnitRmkq_Reverse()
+        {
+            var rm = new RankedMap<int,int> { Capacity=4 };
+            int n = 100;
+
+            for (int i1 = 1; i1 <= n; ++i1)
+                rm.Add (i1, -i1);
+
+            int expected = n;
+#if TEST_BCL
+            foreach (var x in Enumerable.Reverse (rm.Keys))
+#else
+            foreach (var x in rm.Keys.Reverse())
+#endif
+            {
+                Assert.AreEqual (expected, x);
+                --expected;
+            }
+        }
+
         #endregion
 
 
@@ -447,6 +483,45 @@ namespace Kaos.Test.Collections
 #else
             Assert.AreEqual (-9, rm.Values.Last());
 #endif
+        }
+
+        #endregion
+
+        #region Test Values enumeration (LINQ emulation)
+
+        [TestMethod]
+        public void UnitRmvq_ReverseEmpty()
+        {
+            var rm = new RankedMap<int,int> { Capacity=4 };
+#if TEST_BCL
+            foreach (var x in Enumerable.Reverse (rm.Values))
+#else
+            foreach (var x in rm.Values.Reverse())
+#endif
+            {
+                Assert.Fail ("Unreachable");
+            }
+        }
+
+        [TestMethod]
+        public void UnitRmvq_Reverse()
+        {
+            var rm = new RankedMap<int,int> { Capacity=4 };
+            int n = 100;
+
+            for (int i1 = 1; i1 <= n; ++i1)
+                rm.Add (i1, -i1);
+
+            int expected = -n;
+#if TEST_BCL
+            foreach (var x in Enumerable.Reverse (rm.Values))
+#else
+            foreach (var x in rm.Values.Reverse())
+#endif
+            {
+                Assert.AreEqual (expected, x);
+                ++expected;
+            }
         }
 
         #endregion

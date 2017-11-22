@@ -259,6 +259,16 @@ namespace Kaos.Collections
             }
 
 
+            /// <summary>Returns an enumerator that iterates thru the map keys in reverse order.</summary>
+            /// <returns>An enumerator that reverse iterates thru the map keys.</returns>
+            public IEnumerable<TKey> Reverse()
+            {
+                var etor = new RankedMap<TKey,TValue>.Enumerator (tree, isReverse:true);
+                while (etor.MoveNext())
+                    yield return etor.Current.Key;
+            }
+
+
             /// <summary>Gets an enumerator that iterates thru the collection.</summary>
             /// <returns>An enumerator for the collection.</returns>
             public Enumerator GetEnumerator() => new Enumerator (tree);
