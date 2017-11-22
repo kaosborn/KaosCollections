@@ -14,7 +14,9 @@ namespace Kaos.Test.Collections
 {
     public partial class TestBtree
     {
-        static bool IsEvenValue (KeyValuePair<int,int> kv) => kv.Value % 2 == 0;
+        static bool IsPairAlways (KeyValuePair<int,int> kv) => true;
+        static bool IsPairEven (KeyValuePair<int,int> kv) => kv.Value % 2 == 0;
+        static bool IsPairLeN1000 (KeyValuePair<int,int> kv) => kv.Value <= -1000;
 
         #region Test constructors
 
@@ -1431,7 +1433,7 @@ namespace Kaos.Test.Collections
                 rd.Add (ix, -ix);
 
             int c0 = rd.Count;
-            int removed = rd.RemoveWhereElement (IsEvenValue);
+            int removed = rd.RemoveWhereElement (IsPairEven);
 
             Assert.AreEqual (500, removed);
             foreach (int val in rd.Values)

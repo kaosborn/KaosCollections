@@ -669,9 +669,10 @@ namespace Kaos.Test.Collections
 
 
         static int rwCounter = 9;
+        static bool IsAlways (int arg) { return true; }
         static bool IsEven (int arg) { return arg % 2 == 0; }
-        static bool IsAlways (int val) { return true; }
-        static bool IsHotAlways (int val) { staticSetI.Add (++rwCounter); return true; }
+        static bool IsGe1000 (int arg) { return arg >= 1000; }
+        static bool IsHotAlways (int arg) { staticSetI.Add (++rwCounter); return true; }
 #if TEST_BCL
         static SortedSet<int> staticSetI = new SortedSet<int>();
 #else
@@ -695,7 +696,7 @@ namespace Kaos.Test.Collections
         [ExpectedException (typeof (InvalidOperationException))]
         public void CrashRs_RemoveWhereHotEtor_InvalidOperation()
         {
-            Setup (4);
+            Setup();
             setI.Add (3); setI.Add (4);
 
             foreach (var key in setI)
@@ -705,7 +706,7 @@ namespace Kaos.Test.Collections
         [TestMethod]
         public void UnitRs_RemoveWhereHotNonUpdate()
         {
-            Setup (4);
+            Setup();
             setI.Add (3); setI.Add (5);
 
             foreach (var key in setI)
@@ -723,21 +724,25 @@ namespace Kaos.Test.Collections
         [TestMethod]
         public void UnitRs_RemoveWhere()
         {
-            Setup (4);
+            Setup (5);
 
-            foreach (int x1 in iVals1)
-                setI.Add (x1);
+            for (int ix = 0; ix < 1200; ++ix)
+                setI.Add (ix);
 
-            int removeCount = setI.RemoveWhere (IsEven);
-            Assert.AreEqual (4, removeCount);
-            Assert.AreEqual (3, setI.Count);
+            int r1 = setI.RemoveWhere (IsGe1000);
+            Assert.AreEqual (200, r1);
+            Assert.AreEqual (1000, setI.Count);
 
-            removeCount = setI.RemoveWhere (IsAlways);
-            Assert.AreEqual (3, removeCount);
+            int c0 = setI.Count;
+            int r2 = setI.RemoveWhere (IsEven);
+
+            Assert.AreEqual (500, r2);
+            foreach (int k2 in setI)
+                Assert.IsTrue (k2 % 2 != 0);
+
+            int r3 = setI.RemoveWhere (IsAlways);
+            Assert.AreEqual (500, r3);
             Assert.AreEqual (0, setI.Count);
-
-            removeCount = setI.RemoveWhere (IsAlways);
-            Assert.AreEqual (0, removeCount);
         }
 
 

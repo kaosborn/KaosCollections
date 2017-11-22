@@ -760,18 +760,18 @@ namespace Kaos.Test.Collections
         [ExpectedException (typeof (ArgumentNullException))]
         public void CrashRm_RemoveAll_ArgumentNull()
         {
-            var rm = new RankedBag<int>();
+            var rm = new RankedMap<int,int>();
             rm.RemoveAll (null);
         }
 
         [TestMethod]
         public void UnitRm_RemoveAll()
         {
-            var rm0 = new RankedBag<int>();
-            var rm = new RankedBag<int> { Capacity=4 };
+            var rm0 = new RankedMap<int,int>();
+            var rm = new RankedMap<int,int> { Capacity=4 };
 
             foreach (var ii in new int[] { 3, 3, 5, 5, 7, 7 })
-                rm.Add (ii);
+                rm.Add (ii, -ii);
 
             int rem0 = rm0.RemoveAll (new int[] { 2 });
             Assert.AreEqual (0, rem0);
@@ -781,7 +781,7 @@ namespace Kaos.Test.Collections
 
             int rem57 = rm.RemoveAll (new int[] { 3, 7 });
             Assert.AreEqual (2, rem57);
-            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (new int[] { 3, 5, 5, 7 }, rm));
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (new int[] { 3, 5, 5, 7 }, rm.Keys));
         }
 
 
@@ -906,6 +906,7 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (0, rm.Count);
         }
 
+
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
         public void CrashRm_RemoveWherePair_ArgumentNull()
@@ -917,17 +918,25 @@ namespace Kaos.Test.Collections
         [TestMethod]
         public void UnitRm_RemoveWherePair()
         {
-            var rm = new RankedMap<int,int>();
+            var rm = new RankedMap<int,int> { Capacity=6 };
 
-            for (int ix = 0; ix < 1000; ++ix)
+            for (int ix = 0; ix < 1100; ++ix)
                 rm.Add (ix, -ix);
 
-            int c0 = rm.Count;
-            int removed = rm.RemoveWherePair (IsEvenValue);
+            int r1 = rm.RemoveWherePair (IsPairLeN1000);
+            Assert.AreEqual (100, r1);
+            Assert.AreEqual (1000, rm.Count);
 
-            Assert.AreEqual (500, removed);
-            foreach (int val in rm.Values)
-                Assert.IsTrue (val % 2 != 0);
+            int c0 = rm.Count;
+            int r2 = rm.RemoveWherePair (IsPairEven);
+
+            Assert.AreEqual (500, r2);
+            foreach (int v2 in rm.Values)
+                Assert.IsTrue (v2 % 2 != 0);
+
+            int r3 = rm.RemoveWherePair (IsPairAlways);
+            Assert.AreEqual (500, r3);
+            Assert.AreEqual (0, rm.Count);
         }
 
         #endregion
