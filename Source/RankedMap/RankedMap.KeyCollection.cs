@@ -228,34 +228,8 @@ namespace Kaos.Collections
             /// </remarks>
             public IEnumerable<TKey> Distinct()
             {
-                if (Count == 0)
-                    yield break;
-
-                int stageFreeze = tree.stage;
-                int ix = 0;
-                Leaf leaf = tree.leftmostLeaf;
-                for (TKey key = leaf.Key0;;)
-                {
+                foreach (var key in tree.Distinct2())
                     yield return key;
-                    tree.StageCheck (stageFreeze);
-
-                    if (++ix < leaf.KeyCount)
-                    {
-                        TKey nextKey = leaf.GetKey (ix);
-                        if (tree.Comparer.Compare (key, nextKey) != 0)
-                        { key = nextKey; continue; }
-                    }
-
-                    tree.FindEdgeRight (key, out leaf, out ix);
-                    if (ix >= leaf.KeyCount)
-                    {
-                        leaf = leaf.rightLeaf;
-                        if (leaf == null)
-                            yield break;
-                        ix = 0;
-                    }
-                    key = leaf.GetKey (ix);
-                }
             }
 
 

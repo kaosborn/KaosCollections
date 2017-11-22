@@ -106,9 +106,9 @@ namespace Kaos.Test.Collections
             int actual = 0;
 
 #if TEST_BCL
-            foreach (var countdown in Enumerable.Reverse (rm))
+            foreach (var kv in Enumerable.Reverse (rm))
 #else
-            foreach (var countdown in rm.Reverse())
+            foreach (var kv in rm.Reverse())
 #endif
                ++actual;
 
@@ -313,25 +313,25 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void UnitRmkq_Distincts()
+        public void UnitRmkq_Distinct()
         {
-            var rm = new RankedMap<int,int> { Capacity=4 };
+            var rm0 = new RankedMap<int,int>();
+            var rm1 = new RankedMap<int,int> { Capacity=9 };
             int n = 100;
 
-            for (int i1 = 1; i1 < n; ++i1)
-                for (int i2 = 0; i2 < i1; ++i2)
-                    rm.Add (i1, i2 * n + i2);
+            for (int ii = 0; ii < n; ++ii)
+                rm1.Add (ii/2, -ii);
 
-            int expected = 1;
+            int a0 = 0, a1 = 0;
 #if TEST_BCL
-            foreach (var x in Enumerable.Distinct (rm.Keys))
+            foreach (var x in Enumerable.Distinct (rm0.Keys)) ++a0;
+            foreach (var x in Enumerable.Distinct (rm1.Keys)) ++a1;
 #else
-            foreach (var x in rm.Keys.Distinct())
+            foreach (var x in rm0.Keys.Distinct()) ++a0;
+            foreach (var x in rm1.Keys.Distinct()) ++a1;
 #endif
-            {
-                Assert.AreEqual (expected, x);
-                ++expected;
-            }
+            Assert.AreEqual (0, a0);
+            Assert.AreEqual (n/2, a1);
         }
 
 
@@ -400,7 +400,7 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void UnitRdv_ElementAt()
+        public void UnitRmvq_ElementAt()
         {
             var rm = new RankedMap<string,int> { {"aa",0}, {"bb",-1}, {"bb",-2} };
 
