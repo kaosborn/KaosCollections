@@ -896,6 +896,20 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>Gets the last key/value pair.</summary>
+        /// <returns>The key/value pair with maximum key in map.</returns>
+        /// <remarks>This is a O(1) operation.</remarks>
+        /// <exception cref="InvalidOperationException">When the collection is empty.</exception>
+        public KeyValuePair<TKey,TValue> Last()
+        {
+            if (Count == 0)
+                throw new InvalidOperationException ("Sequence contains no elements.");
+
+            int ix = rightmostLeaf.KeyCount-1;
+            return new KeyValuePair<TKey,TValue> (rightmostLeaf.GetKey (ix), ((PairLeaf<TValue>) rightmostLeaf).GetValue (ix));
+        }
+
+
         /// <summary>Returns an enumerator that iterates thru the map in reverse order.</summary>
         /// <returns>An enumerator that reverse iterates thru the map.</returns>
         public IEnumerable<KeyValuePair<TKey,TValue>> Reverse()

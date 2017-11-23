@@ -95,6 +95,33 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (default (int?), kv1.Value);
         }
 
+
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRmq_Last_InvalidOperation()
+        {
+            var rm = new RankedMap<int,int>();
+#if TEST_BCL
+            var zz = Enumerable.Last (rm);
+#else
+            var zz = rm.Last();
+#endif
+        }
+
+        [TestMethod]
+        public void UnitRmq_Last()
+        {
+            var rm = new RankedMap<int,int>() { Capacity=5 };
+            for (int ii = 9; ii >= 0; --ii) rm.Add (ii, -ii);
+#if TEST_BCL
+            var kv = Enumerable.Last (rm);
+#else
+            var kv = rm.Last();
+#endif
+            Assert.AreEqual (9, kv.Key, "wrong last key");
+            Assert.AreEqual (-9, kv.Value, "wrong last value");
+        }
+
         #endregion
 
         #region Test enumeration (LINQ emulation)
@@ -245,6 +272,32 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (default (string), rm.Keys.ElementAtOrDefault (-1));
             Assert.AreEqual (default (string), rm.Keys.ElementAtOrDefault (3));
 #endif
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRmkq_Last_InvalidOperation()
+        {
+            var rm = new RankedMap<int,int>();
+#if TEST_BCL
+            var zz = Enumerable.Last (rm.Keys);
+#else
+            var zz = rm.Keys.Last();
+#endif
+        }
+
+        [TestMethod]
+        public void UnitRmkq_Last()
+        {
+            var rm = new RankedMap<int,int> { Capacity=5 };
+            for (int ii = 0; ii <= 9; ++ii) rm.Add (ii,-ii);
+#if TEST_BCL
+            var key = Enumerable.Last (rm.Keys);
+#else
+            var key = rm.Keys.Last();
+#endif
+            Assert.AreEqual (9, key);
         }
 
 

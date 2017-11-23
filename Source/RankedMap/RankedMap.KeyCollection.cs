@@ -188,6 +188,18 @@ namespace Kaos.Collections
             /// <summary>Gets the maximum key per the comparer.</summary>
             /// <returns>The maximum key per the comparer.</returns>
             /// <remarks>This is a O(1) operation.</remarks>
+            public TKey Last()
+            {
+                if (Count == 0)
+                    throw new InvalidOperationException ("Sequence contains no elements");
+
+                return tree.rightmostLeaf.GetKey (tree.rightmostLeaf.KeyCount-1);
+            }
+
+
+            /// <summary>Gets the maximum key per the comparer.</summary>
+            /// <returns>The maximum key per the comparer.</returns>
+            /// <remarks>This is a O(1) operation.</remarks>
             public TKey Max()
             {
                 if (Count == 0)
