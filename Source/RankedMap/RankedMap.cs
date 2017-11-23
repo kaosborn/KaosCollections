@@ -22,9 +22,11 @@ namespace Kaos.Collections
     /// <typeparam name="TKey">The type of the keys in the map.</typeparam>
     /// <typeparam name="TValue">The type of the values in the map.</typeparam>
     /// <example>
-    /// <para>First is an example of some common operations of this class.</para>
+    /// <para>First is a basic example of this class.</para>
+    /// <code source="..\Bench\RmExample02\RmExample02.cs" lang="cs" removeRegionMarkers="true" />
+    /// <para>Next is a larger example showing some common operations of this class.</para>
     /// <code source="..\Bench\RmExample01\RmExample01.cs" lang="cs" removeRegionMarkers="true" />
-    /// <para>Next is an example showing binary serialization round tripped.</para>
+    /// <para>Last is an example showing binary serialization round tripped.</para>
     /// <para>Note: Serialization is not supported in .NET Standard 1.0.</para>
     /// <code source="..\Bench\RmExample05\RmExample05.cs" lang="cs" />
     /// </example>

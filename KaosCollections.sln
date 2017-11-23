@@ -105,6 +105,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RmExample05", "Bench\RmExam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RsBench01", "Bench\RsBench01\RsBench01.csproj", "{40823D4F-4AB8-4BF7-A9A2-4CCE6F8CB46E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RmExample02", "Bench\RmExample02\RmExample02.csproj", "{333AFE6C-CF9B-45F0-B4C3-74AF2C0E65B2}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Source\RankedSet\RankedSet.projitems*{c39a213b-5aae-4c05-8ca8-946331511d0d}*SharedItemsImports = 13
@@ -281,6 +283,10 @@ Global
 		{40823D4F-4AB8-4BF7-A9A2-4CCE6F8CB46E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40823D4F-4AB8-4BF7-A9A2-4CCE6F8CB46E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40823D4F-4AB8-4BF7-A9A2-4CCE6F8CB46E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{333AFE6C-CF9B-45F0-B4C3-74AF2C0E65B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{333AFE6C-CF9B-45F0-B4C3-74AF2C0E65B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{333AFE6C-CF9B-45F0-B4C3-74AF2C0E65B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{333AFE6C-CF9B-45F0-B4C3-74AF2C0E65B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -327,6 +333,7 @@ Global
 		{1833A35B-7F4D-4B8C-AEC5-0F6FB8946325} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{A1C7A6DB-93F8-4C7D-BAAB-6D1965971B32} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{40823D4F-4AB8-4BF7-A9A2-4CCE6F8CB46E} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
+		{333AFE6C-CF9B-45F0-B4C3-74AF2C0E65B2} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {201DA9DF-651F-47A0-B578-167533C3D874}
