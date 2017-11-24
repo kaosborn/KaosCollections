@@ -17,7 +17,7 @@ namespace Kaos.Collections
     public partial class RankedMap<TKey,TValue>
     {
         /// <summary>
-        /// Represents a collection of values of the <see cref="RankedMap{TKey,TValue}"/>.
+        /// Represents a collection of values of a <see cref="RankedMap{TKey,TValue}"/>.
         /// </summary>
         [DebuggerTypeProxy (typeof (ICollectionValuesDebugView<,>))]
         [DebuggerDisplay ("Count = {Count}")]
@@ -221,7 +221,7 @@ namespace Kaos.Collections
 
             #region Enumeration
 
-            /// <summary>Returns an enumerator that iterates thru the map values in reverse order.</summary>
+            /// <summary>Returns an enumerator that iterates thru the map values in reverse key order.</summary>
             /// <returns>An enumerator that reverse iterates thru the map values.</returns>
             public IEnumerable<TValue> Reverse()
             {
@@ -244,7 +244,7 @@ namespace Kaos.Collections
             IEnumerator IEnumerable.GetEnumerator() => new Enumerator (tree);
 
 
-            /// <summary>Enumerates the items of a <see cref="RankedMap{TKey,TValue}.ValueCollection"/>.</summary>
+            /// <summary>Enumerates the items of a <see cref="RankedMap{TKey,TValue}.ValueCollection"/> in key sort order.</summary>
             public sealed class Enumerator : IEnumerator<TValue>
             {
                 private readonly RankedMap<TKey,TValue> tree;

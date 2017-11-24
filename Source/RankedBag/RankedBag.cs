@@ -15,7 +15,7 @@ using System.Runtime.Serialization;
 namespace Kaos.Collections
 {
     /// <summary>
-    /// Represents a collection of items that can be accessed in sort order or by index.
+    /// Represents a collection of nondistinct items that can be accessed in sort order or by index.
     /// </summary>
     /// <typeparam name="T">The type of the items in the bag.</typeparam>
     /// <remarks>
@@ -668,7 +668,7 @@ namespace Kaos.Collections
 
         #region Enumeration
 
-        /// <summary>Returns an enumerator that iterates thru the distinct items of the bag.</summary>
+        /// <summary>Returns an enumerator that iterates thru the distinct items of the bag in sort order.</summary>
         /// <returns>An enumerator that iterates thru distinct items.</returns>
         /// <remarks>
         /// <para>
@@ -814,7 +814,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Returns an IEnumerable that iterates thru the bag in reverse order.</summary>
+        /// <summary>Returns an IEnumerable that iterates thru the bag in reverse sort order.</summary>
         /// <returns>An enumerator that reverse iterates thru the bag.</returns>
         /// <exception cref="InvalidOperationException">When the bag was modified after the enumerator was created.</exception>
         public IEnumerable<T> Reverse()
@@ -838,7 +838,7 @@ namespace Kaos.Collections
         IEnumerator IEnumerable.GetEnumerator() => new Enumerator (this);
 
 
-        /// <summary>Enumerates the sorted items of a <see cref="RankedBag{T}"/>.</summary>
+        /// <summary>Enumerates the items of a <see cref="RankedBag{T}"/> in sort order.</summary>
         public sealed class Enumerator : IEnumerator<T>
         {
             private readonly RankedBag<T> tree;

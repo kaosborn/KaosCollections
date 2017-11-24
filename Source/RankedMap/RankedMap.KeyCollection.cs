@@ -17,7 +17,7 @@ namespace Kaos.Collections
     public partial class RankedMap<TKey,TValue>
     {
         /// <summary>
-        /// Represents a collection of keys of the <see cref="RankedMap{TKey,TValue}"/>.
+        /// Represents a collection of keys of a <see cref="RankedMap{TKey,TValue}"/>.
         /// </summary>
         [DebuggerTypeProxy (typeof (ICollectionKeysDebugView<,>))]
         [DebuggerDisplay("Count = {Count}")]
@@ -83,7 +83,7 @@ namespace Kaos.Collections
             void ICollection<TKey>.Clear() => throw new NotSupportedException();
 
 
-            /// <summary>Determines whether the key collection contains the supplied key.</summary>
+            /// <summary>Determines whether the collection contains the supplied key.</summary>
             /// <param name="key">The key to locate.</param>
             /// <returns><b>true</b> if <em>key</em> is contained in the map; otherwise <b>false</b>.</returns>
             /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
@@ -230,7 +230,7 @@ namespace Kaos.Collections
 
             #region Enumeration
 
-            /// <summary>Returns an enumerator that iterates thru the distinct keys of the map.</summary>
+            /// <summary>Returns an enumerator that iterates thru the distinct map keys in sort order.</summary>
             /// <returns>An enumerator that iterates thru distinct keys.</returns>
             /// <remarks>
             /// <para>
@@ -268,7 +268,7 @@ namespace Kaos.Collections
             IEnumerator IEnumerable.GetEnumerator() => new Enumerator (tree);
 
 
-            /// <summary>Enumerates the sorted keys of a <see cref="RankedMap{TKey,TValue}.KeyCollection"/>.</summary>
+            /// <summary>Enumerates the items of a <see cref="RankedMap{TKey,TValue}.KeyCollection"/> in sort order.</summary>
             public sealed class Enumerator : IEnumerator<TKey>
             {
                 private readonly RankedMap<TKey,TValue> tree;

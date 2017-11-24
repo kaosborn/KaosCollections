@@ -17,7 +17,7 @@ using System.Runtime.Serialization;
 namespace Kaos.Collections
 {
     /// <summary>
-    /// Represents a collection of key/value pairs with distinct keys that can be accessed in sort order or by index.
+    /// Represents a collection of key/value pairs with nondistinct keys that can be accessed in sort order or by index.
     /// </summary>
     /// <typeparam name="TKey">The type of the keys in the map.</typeparam>
     /// <typeparam name="TValue">The type of the values in the map.</typeparam>
@@ -594,7 +594,7 @@ namespace Kaos.Collections
         /// <summary>
         /// Removes all elements from the map with keys that are in the supplied collection.
         /// </summary>
-        /// <param name="other">The keys elements to remove.</param>
+        /// <param name="other">The keys of the elements to remove.</param>
         /// <returns>The number of elements removed from the map.</returns>
         /// <remarks>
         /// Cardinality is respected by this operation so that

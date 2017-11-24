@@ -960,7 +960,7 @@ namespace Kaos.Collections
         IEnumerator IEnumerable.GetEnumerator() => new Enumerator (this);
 
 
-        /// <summary>Enumerates the sorted items of a <see cref="RankedSet{T}"/>.</summary>
+        /// <summary>Enumerates the items of a <see cref="RankedSet{T}"/> in sort order.</summary>
         public sealed class Enumerator : IEnumerator<T>
         {
             private readonly RankedSet<T> tree;

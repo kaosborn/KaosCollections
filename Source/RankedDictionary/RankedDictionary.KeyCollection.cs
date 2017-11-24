@@ -17,7 +17,7 @@ namespace Kaos.Collections
     public partial class RankedDictionary<TKey,TValue>
     {
         /// <summary>
-        /// Represents a collection of keys of the <see cref="RankedDictionary{TKey,TValue}"/>.
+        /// Represents a collection of keys of a <see cref="RankedDictionary{TKey,TValue}"/>.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -222,7 +222,7 @@ namespace Kaos.Collections
             IEnumerator IEnumerable.GetEnumerator() => new Enumerator (tree);
 
 
-            /// <summary>Enumerates the sorted keys of a <see cref="RankedDictionary{TKey,TValue}.KeyCollection"/>.</summary>
+            /// <summary>Enumerates the items of a <see cref="RankedDictionary{TKey,TValue}.KeyCollection"/> in sort order.</summary>
             public sealed class Enumerator : IEnumerator<TKey>
             {
                 private readonly RankedDictionary<TKey,TValue> tree;
