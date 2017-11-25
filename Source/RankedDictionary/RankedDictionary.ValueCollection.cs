@@ -218,6 +218,24 @@ namespace Kaos.Collections
                 return -1;
             }
 
+            /// <summary>Returns an enumerator that iterates thru the dictionary values in reverse key order.</summary>
+            /// <returns>An enumerator that reverse iterates thru the dictionary values.</returns>
+            public IEnumerable<TValue> Reverse()
+            {
+                var stageFreeze = tree.stage;
+                for (var leaf = (PairLeaf<TValue>) tree.rightmostLeaf;;)
+                {
+                    for (int ix = leaf.KeyCount; --ix >= 0;)
+                    {
+                        yield return leaf.GetValue (ix);
+                        tree.StageCheck (stageFreeze);
+                    }
+                    leaf = (PairLeaf<TValue>) leaf.leftLeaf;
+                    if (leaf == null)
+                        yield break;
+                }
+            }
+
             #endregion
 
             #region Enumeration

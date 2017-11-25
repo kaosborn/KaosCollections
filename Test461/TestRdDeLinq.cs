@@ -175,7 +175,6 @@ namespace Kaos.Test.Collections
 
         #endregion
 
-
         #region Test Keys methods (LINQ emulation)
 
         [TestMethod]
@@ -245,6 +244,97 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (default (string), keys.ElementAtOrDefault (-1));
             Assert.AreEqual (default (string), keys.ElementAtOrDefault (3));
 #endif
+        }
+
+        #endregion
+
+        #region Test Keys enumeration (LINQ emulation)
+
+        [TestMethod]
+#if ! TEST_BCL
+        [ExpectedException (typeof (InvalidOperationException))]
+#endif
+        public void CrashRdkq_ReverseHotUpdate()
+        {
+            Setup (5);
+            for (int ii = 9; ii > 0; --ii) tree1.Add (ii, -ii);
+
+#if TEST_BCL
+            foreach (int k1 in Enumerable.Reverse (tree1.Keys))
+#else
+            foreach (int k1 in tree1.Keys.Reverse())
+#endif
+                if (k1 == 4)
+                    tree1.Clear();
+        }
+
+        [TestMethod]
+        public void UnitRdkq_Reverse()
+        {
+            Setup (5);
+            int n = 100;
+
+            for (int i1 = 1; i1 <= n; ++i1)
+                tree1.Add (i1, -i1);
+
+            int a0 = 0, an = 0;
+#if TEST_BCL
+            foreach (var k0 in Enumerable.Reverse (tree2.Keys)) ++a0;
+            foreach (var kn in Enumerable.Reverse (tree1.Keys)) ++an;
+#else
+            foreach (var k0 in tree2.Keys.Reverse()) ++a0;
+            foreach (var kn in tree1.Keys.Reverse()) ++an;
+#endif
+            Assert.AreEqual (0, a0);
+            Assert.AreEqual (n, an);
+        }
+
+        #endregion
+
+
+        #region Test Values enumeration (LINQ emulation)
+
+        [TestMethod]
+#if ! TEST_BCL
+        [ExpectedException (typeof (InvalidOperationException))]
+#endif
+        public void CrashRdvq_ReverseHotUpdate()
+        {
+            Setup (4);
+            for (int ii = 9; ii > 0; --ii) tree1.Add (ii, -ii);
+#if TEST_BCL
+            foreach (int v1 in Enumerable.Reverse (tree1.Values))
+#else
+            foreach (int v1 in tree1.Values.Reverse())
+#endif
+                if (v1 == -4)
+                    tree1.Clear();
+        }
+
+        [TestMethod]
+        public void UnitRdvq_Reverse()
+        {
+            Setup (5);
+            int n = 100;
+
+            for (int i1 = 1; i1 <= n; ++i1)
+                tree1.Add (i1, -i1);
+
+            int a0 = 0, an = 0;
+#if TEST_BCL
+            foreach (var v0 in Enumerable.Reverse (tree2.Values)) ++a0;
+            foreach (var vn in Enumerable.Reverse (tree1.Values))
+#else
+            foreach (var v0 in tree2.Values.Reverse()) ++a0;
+            foreach (var vn in tree1.Values.Reverse())
+#endif
+            {
+                Assert.AreEqual (an-n, vn);
+                ++an;
+            }
+
+            Assert.AreEqual (0, a0);
+            Assert.AreEqual (n, an);
         }
 
         #endregion

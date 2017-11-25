@@ -205,6 +205,25 @@ namespace Kaos.Collections
                 return tree.leftmostLeaf.Key0;
             }
 
+
+            /// <summary>Returns an enumerator that iterates thru the dictionary keys in reverse order.</summary>
+            /// <returns>An enumerator that reverse iterates thru the dictionary keys.</returns>
+            public IEnumerable<TKey> Reverse()
+            {
+                var stageFreeze = tree.stage;
+                for (var leaf = tree.rightmostLeaf;;)
+                {
+                    for (int ix = leaf.KeyCount; --ix >= 0; )
+                    {
+                        yield return leaf.GetKey (ix);
+                        tree.StageCheck (stageFreeze);
+                    }
+                    leaf = leaf.leftLeaf;
+                    if (leaf == null)
+                        yield break;
+                }
+            }
+
             #endregion
 
             #region Enumeration
