@@ -249,9 +249,18 @@ namespace Kaos.Collections
             /// <returns>An enumerator that reverse iterates thru the map keys.</returns>
             public IEnumerable<TKey> Reverse()
             {
-                var etor = new RankedMap<TKey,TValue>.Enumerator (tree, isReverse:true);
-                while (etor.MoveNext())
-                    yield return etor.Current.Key;
+                var stageFreeze = tree.stage;
+                for (var leaf = tree.rightmostLeaf;;)
+                {
+                    for (int ix = leaf.KeyCount; --ix >= 0; )
+                    {
+                        yield return leaf.GetKey (ix);
+                        tree.StageCheck (stageFreeze);
+                    }
+                    leaf = leaf.leftLeaf;
+                    if (leaf == null)
+                        yield break;
+                }
             }
 
 

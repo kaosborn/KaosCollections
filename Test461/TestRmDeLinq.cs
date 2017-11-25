@@ -389,38 +389,48 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRmkq_ReverseEmpty()
-        {
-            var rm = new RankedMap<int,int> { Capacity=4 };
-#if TEST_BCL
-            foreach (var x in Enumerable.Reverse (rm.Keys))
-#else
-            foreach (var x in rm.Keys.Reverse())
+#if ! TEST_BCL
+        [ExpectedException (typeof (InvalidOperationException))]
 #endif
-            {
-                Assert.Fail ("Unreachable");
-            }
+        public void CrashRmkq_ReverseHotUpdate()
+        {
+            var rm = new RankedMap<int,int> { Capacity=6 };
+            for (int ii = 9; ii > 0; --ii) rm.Add (ii, -ii);
+
+#if TEST_BCL
+            foreach (int k1 in Enumerable.Reverse (rm.Keys))
+#else
+            foreach (int k1 in rm.Keys.Reverse())
+#endif
+                if (k1 == 4)
+                    rm.Clear();
         }
 
         [TestMethod]
         public void UnitRmkq_Reverse()
         {
-            var rm = new RankedMap<int,int> { Capacity=4 };
+            var rm0 = new RankedMap<int,int>();
+            var rm1 = new RankedMap<int,int> { Capacity=4 };
             int n = 100;
 
             for (int i1 = 1; i1 <= n; ++i1)
-                rm.Add (i1, -i1);
+                rm1.Add (i1/2, -i1);
 
-            int expected = n;
+            int a0 = 0, a1 = 0;
 #if TEST_BCL
-            foreach (var x in Enumerable.Reverse (rm.Keys))
+            foreach (var k0 in Enumerable.Reverse (rm0.Keys)) ++a0;
+            foreach (var k1 in Enumerable.Reverse (rm1.Keys))
 #else
-            foreach (var x in rm.Keys.Reverse())
+            foreach (var k0 in rm0.Keys.Reverse()) ++a0;
+            foreach (var k1 in rm1.Keys.Reverse())
 #endif
             {
-                Assert.AreEqual (expected, x);
-                --expected;
+                Assert.AreEqual ((n-a1)/2, k1);
+                ++a1;
             }
+
+            Assert.AreEqual (0, a0);
+            Assert.AreEqual (n, a1);
         }
 
         #endregion
@@ -543,38 +553,48 @@ namespace Kaos.Test.Collections
         #region Test Values enumeration (LINQ emulation)
 
         [TestMethod]
-        public void UnitRmvq_ReverseEmpty()
-        {
-            var rm = new RankedMap<int,int> { Capacity=4 };
-#if TEST_BCL
-            foreach (var x in Enumerable.Reverse (rm.Values))
-#else
-            foreach (var x in rm.Values.Reverse())
+#if ! TEST_BCL
+        [ExpectedException (typeof (InvalidOperationException))]
 #endif
-            {
-                Assert.Fail ("Unreachable");
-            }
+        public void CrashRmvq_ReverseHotUpdate()
+        {
+            var rm = new RankedMap<int,int> { Capacity=7 };
+            for (int ii = 9; ii > 0; --ii) rm.Add (ii, -ii);
+
+#if TEST_BCL
+            foreach (int v1 in Enumerable.Reverse (rm.Values))
+#else
+            foreach (int v1 in rm.Values.Reverse())
+#endif
+                if (v1 == -4)
+                    rm.Clear();
         }
 
         [TestMethod]
         public void UnitRmvq_Reverse()
         {
-            var rm = new RankedMap<int,int> { Capacity=4 };
-            int n = 100;
+            var rm0 = new RankedMap<int,int>();
+            var rm1 = new RankedMap<int,int> { Capacity=4 };
+            int n = 120;
 
             for (int i1 = 1; i1 <= n; ++i1)
-                rm.Add (i1, -i1);
+                rm1.Add (i1, -i1);
 
-            int expected = -n;
+            int a0 = 0, a1 = 0;
 #if TEST_BCL
-            foreach (var x in Enumerable.Reverse (rm.Values))
+            foreach (var v0 in Enumerable.Reverse (rm0.Values)) ++a0;
+            foreach (var v1 in Enumerable.Reverse (rm1.Values))
 #else
-            foreach (var x in rm.Values.Reverse())
+            foreach (var v0 in rm0.Values.Reverse()) ++a0;
+            foreach (var v1 in rm1.Values.Reverse())
 #endif
             {
-                Assert.AreEqual (expected, x);
-                ++expected;
+                Assert.AreEqual (-(n-a1), v1);
+                ++a1;
             }
+
+            Assert.AreEqual (0, a0);
+            Assert.AreEqual (n, a1);
         }
 
         #endregion
