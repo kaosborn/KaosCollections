@@ -197,7 +197,7 @@ namespace Kaos.Collections
         /// <remarks>This is a O(1) operation.</remarks>
         public int Count => root.Weight;
 
-        /// <summary>Gets a collection containing the keys of the dictionary.</summary>
+        /// <summary>Gets a <see cref="RankedDictionary{TKey,TValue}.KeyCollection"/> containing the keys of the dictionary.</summary>
         /// <remarks>
         /// The keys given by this collection are sorted according to the <see cref="Comparer"/> property.
         /// </remarks>
@@ -221,14 +221,14 @@ namespace Kaos.Collections
         ICollection<TKey> IDictionary<TKey,TValue>.Keys => (ICollection<TKey>) Keys;
 
 #if ! NET35 && ! NET40
-        /// <summary>Gets a collection containing the keys in the dictionary.</summary>
+        /// <summary>Gets a <see cref="RankedDictionary{TKey,TValue}.KeyCollection"/> containing the keys in the dictionary.</summary>
         IEnumerable<TKey> IReadOnlyDictionary<TKey,TValue>.Keys => Keys;
 
-        /// <summary>Gets a collection containing the values in the dictionary.</summary>
+        /// <summary>Gets a <see cref="RankedDictionary{TKey,TValue}.ValueCollection"/> containing the values in the dictionary.</summary>
         IEnumerable<TValue> IReadOnlyDictionary<TKey,TValue>.Values => Values;
 #endif
 
-        /// <summary>Gets a collection containing the values of the dictionary.</summary>
+        /// <summary>Gets a <see cref="RankedDictionary{TKey,TValue}.ValueCollection"/> containing the values of the dictionary.</summary>
         /// <remarks>
         /// The values given by this collection are sorted in the same order as their respective keys.
         /// </remarks>
@@ -1002,16 +1002,16 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Gets the last key/value pair.</summary>
-        /// <returns>The key/value pair with maximum key in dictionary.</returns>
+        /// <summary>Gets the element with the maximum key in the dictionary per the comparer.</summary>
+        /// <returns>The element with the maximum key in the dictionary.</returns>
         /// <remarks>This is a O(1) operation.</remarks>
-        /// <exception cref="InvalidOperationException">When the collection is empty.</exception>
+        /// <exception cref="InvalidOperationException">When <see cref="Count"/> is zero.</exception>
         public KeyValuePair<TKey,TValue> Last()
         {
             if (Count == 0)
                 throw new InvalidOperationException ("Sequence contains no elements.");
 
-            int ix = rightmostLeaf.KeyCount-1;
+            int ix = rightmostLeaf.KeyCount - 1;
             return new KeyValuePair<TKey,TValue> (rightmostLeaf.GetKey (ix), ((PairLeaf<TValue>) rightmostLeaf).GetValue (ix));
         }
 

@@ -205,16 +205,16 @@ namespace Kaos.Collections
             public int IndexOf (TValue value) => tree.ContainsValue2<TValue> (value);
 
 
-            /// <summary>Gets the value associated with the highest sorted key.</summary>
-            /// <returns>The value associated with the highest sorted key.</returns>
+            /// <summary>Gets the value of the element with the maximum key in the map per the comparer.</summary>
+            /// <returns>The value of the element with the maximum key in the map.</returns>
             /// <remarks>This is a O(1) operation.</remarks>
-            /// <exception cref="InvalidOperationException">When the collection is empty.</exception>
+            /// <exception cref="InvalidOperationException">When <see cref="Count"/> is zero.</exception>
             public TValue Last()
             {
                 if (Count == 0)
                     throw new InvalidOperationException ("Sequence contains no elements.");
 
-                return ((PairLeaf<TValue>) tree.rightmostLeaf).GetValue (tree.rightmostLeaf.KeyCount-1);
+                return ((PairLeaf<TValue>) tree.rightmostLeaf).GetValue (tree.rightmostLeaf.KeyCount - 1);
             }
 
             #endregion

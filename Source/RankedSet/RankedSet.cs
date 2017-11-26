@@ -692,16 +692,16 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Gets the last item.</summary>
-        /// <returns>The item sorted to the end of the set.</returns>
+        /// <summary>Gets the maximum item in the set per the comparer.</summary>
+        /// <returns>The maximum item in the set.</returns>
         /// <remarks>This is a O(1) operation.</remarks>
-        /// <exception cref="InvalidOperationException">When the collection is empty.</exception>
+        /// <exception cref="InvalidOperationException">When <see cref="Count"/> is zero.</exception>
         public T Last()
         {
             if (Count == 0)
                 throw new InvalidOperationException ("Sequence contains no elements.");
 
-            return rightmostLeaf.GetKey (rightmostLeaf.KeyCount-1);
+            return rightmostLeaf.GetKey (rightmostLeaf.KeyCount - 1);
         }
 
 

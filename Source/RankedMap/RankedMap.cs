@@ -125,7 +125,7 @@ namespace Kaos.Collections
         bool ICollection.IsSynchronized => false;
 
 
-        /// <summary>Gets a collection containing the keys of the map.</summary>
+        /// <summary>Gets a <see cref="RankedMap{TKey,TValue}.KeyCollection"/> containing the keys of the map.</summary>
         /// <remarks>
         /// The keys given by this collection are sorted according to the <see cref="Comparer"/> property.
         /// </remarks>
@@ -149,7 +149,7 @@ namespace Kaos.Collections
         object ICollection.SyncRoot => GetSyncRoot();
 
 
-        /// <summary>Gets a collection containing the values of the map.</summary>
+        /// <summary>Gets a <see cref="RankedMap{TKey,TValue}.ValueCollection"/> containing the values of the map.</summary>
         /// <remarks>
         /// The values given by this collection are sorted in the same order as their respective keys.
         /// </remarks>
@@ -898,16 +898,16 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Gets the last key/value pair.</summary>
-        /// <returns>The key/value pair with maximum key in map.</returns>
+        /// <summary>Gets the element with the maximum key in the map per the comparer.</summary>
+        /// <returns>The element with maximum key in the map.</returns>
         /// <remarks>This is a O(1) operation.</remarks>
-        /// <exception cref="InvalidOperationException">When the collection is empty.</exception>
+        /// <exception cref="InvalidOperationException">When <see cref="Count"/> is zero.</exception>
         public KeyValuePair<TKey,TValue> Last()
         {
             if (Count == 0)
                 throw new InvalidOperationException ("Sequence contains no elements.");
 
-            int ix = rightmostLeaf.KeyCount-1;
+            int ix = rightmostLeaf.KeyCount - 1;
             return new KeyValuePair<TKey,TValue> (rightmostLeaf.GetKey (ix), ((PairLeaf<TValue>) rightmostLeaf).GetValue (ix));
         }
 

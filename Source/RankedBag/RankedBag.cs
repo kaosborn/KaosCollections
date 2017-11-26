@@ -654,10 +654,10 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Gets the last occurrence of the last item.</summary>
-        /// <returns>The item sorted to the end of the bag.</returns>
+        /// <summary>Gets the maximum item in the bag per the comparer.</summary>
+        /// <returns>The maximum item in the bag.</returns>
         /// <remarks>This is a O(1) operation.</remarks>
-        /// <exception cref="InvalidOperationException">When the collection is empty.</exception>
+        /// <exception cref="InvalidOperationException">When <see cref="Count"/> is zero.</exception>
         public T Last()
         {
             if (Count == 0)
