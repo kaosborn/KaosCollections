@@ -121,9 +121,9 @@ namespace Kaos.Test.Collections
         [ExpectedException (typeof (InvalidOperationException))]
         public void CrashRbq_DistinctHotUpdate()
         {
-            var rb = new RankedBag<int> { 3,5,7,9 };
+            var rb = new RankedBag<int> { Capacity=4 };
+            foreach (int ii in new int[] { 1,1,3,5,7,9 }) rb.Add (ii);
             int n = 0;
-
 #if TEST_BCL
             foreach (var x in Enumerable.Distinct (rb))
 #else
@@ -142,7 +142,6 @@ namespace Kaos.Test.Collections
             int a0 = 0, a1 = 0;
             foreach (var ii in new int[] { 3, 5, 5, 7, 7 })
                 rb1.Add (ii);
-
 #if TEST_BCL
             foreach (var k0 in Enumerable.Distinct (rb0)) ++a0;
             foreach (var k1 in Enumerable.Distinct (rb1)) ++a1;
@@ -157,25 +156,46 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRbq_Reverse()
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRbq_ReverseHotUpdate()
         {
             var rb = new RankedBag<int> { Capacity=4 };
-            int n = 800;
+            for (int ii = 9; ii >= 0; --ii) rb.Add (ii);
+
+            int a = 0;
+#if TEST_BCL
+            foreach (var key in Enumerable.Reverse (rb))
+#else
+            foreach (var x in rb.Reverse())
+#endif
+                if (++a == 2)
+                    rb.Clear();
+        }
+
+        [TestMethod]
+        public void UnitRbq_Reverse()
+        {
+            var rb0 = new RankedBag<int>();
+            var rb1 = new RankedBag<int> { Capacity=4 };
+            int n = 400;
 
             for (int i1 = 0; i1 < n; ++i1)
-                rb.Add (i1/2);
+                rb1.Add (i1/2);
 
-            int i2 = n-1;
+            int a0 = 0, a1 = 0;
 #if TEST_BCL
-            foreach (var ii in Enumerable.Reverse (rb))
+            foreach (var k0 in Enumerable.Reverse (rb0)) ++a0;
+            foreach (var k1 in Enumerable.Reverse (rb1))
 #else
-            foreach (var ii in rb.Reverse())
+            foreach (var k0 in rb0.Reverse()) ++a0;
+            foreach (var k1 in rb1.Reverse())
 #endif
             {
-                Assert.AreEqual (i2 / 2, ii);
-                --i2;
+                ++a1;
+                Assert.AreEqual ((n-a1)/2, k1);
             }
-            Assert.AreEqual (i2, -1);
+            Assert.AreEqual (0, a0);
+            Assert.AreEqual (n, a1);
         }
 
         #endregion

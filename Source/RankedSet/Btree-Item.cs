@@ -75,7 +75,7 @@ namespace Kaos.Collections
             for (T key = leaf.Key0;;)
             {
                 yield return key;
-                StageCheck (stageFreeze); // TODO test in map
+                StageCheck (stageFreeze);
 
                 if (++ix < leaf.KeyCount)
                 {
