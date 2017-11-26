@@ -52,7 +52,7 @@ A project may then reference the extracted platform-specific `.dll` directly.
 
 ### Project status
 
-For the latest stable release, install [version 3.1.0](#Library installation).
+For the latest stable release, install [version 3.1.0](#library-installation).
 The main branch is under construction for the upcoming version 4.0:
 
 * The new RankedMap<K,V> class is code complete and stable.
@@ -116,7 +116,7 @@ This project is used for development and testing only.
 
 * The `Help` folder contains a [Sandcastle Help File Builder](https://github.com/EWSoftware/SHFB)
 project that produces documentation from embedded XML comments.
-To build this project, first build `Collections461` and build in Release configuration.
+To build this project, first build `Collections461` in Release configuration.
 
 * The `Source` folder contains all source code for KaosCollections.
 All source is organized using shared projects which are referenced by the build projects.
