@@ -122,10 +122,12 @@ namespace Kaos.Collections
 
         /// <summary>Gets the maximum item in the bag per the comparer.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
+        [Obsolete ("use Max() method")]
         public T Max => Count==0 ? default (T) : rightmostLeaf.GetKey (rightmostLeaf.KeyCount-1);
 
         /// <summary>Gets the minimum item in the bag per the comparer.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
+        [Obsolete ("use Min() method")]
         public T Min => Count==0 ? default (T) : leftmostLeaf.Key0;
 
         /// <summary>Returns a wrapper of the method used to order items in the bag.</summary>
