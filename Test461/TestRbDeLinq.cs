@@ -156,7 +156,9 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
+#if ! TEST_BCL
         [ExpectedException (typeof (InvalidOperationException))]
+#endif
         public void CrashRbq_ReverseHotUpdate()
         {
             var rb = new RankedBag<int> { Capacity=4 };
