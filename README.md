@@ -6,13 +6,14 @@ for storing elements that are both sorted and indexed.
 Based on order statistic B+ trees,
 the classes that emulate Microsoft's SortedDictionary and SortedSet
 provide greater capability than their counterparts while outperforming them for large collection sizes.
-Also included is a multiset class.
+Two classes without Microsoft BCL equivalents are included - a sorted bag class and a sorted map class.
 All classes provide getting elements by index, getting the index of an element, range removal by index, range enumeration, and more.
 
 Primary types provided are:
 
 * `RankedDictionary<TKey,TValue>` - for collections of key/value pairs with distinct keys that can be accessed in sort order or by index.
 * `RankedSet<T>` - for collections of distinct items that can be accessed in sort order or by index.
+* `RankedMap<TKey,TValue>` - for collections of key/value pairs with nondistinct keys that can be accessed in sort order or by index. [New to v4.0.0]
 * `RankedBag<T>` - for collections of nondistinct items that can be accessed in sort order or by index. Also known as multisets.
 
 This library is built as a .NET Standard project with multitargeting to:
@@ -48,6 +49,17 @@ To install using a direct reference to a `.dll` binary:
 
 2. As archives, individual binaries may be extracted from the `.nuget` package for specific platforms.
 A project may then reference the extracted platform-specific `.dll` directly.
+
+### Project status
+
+For the latest stable release, install [version 3.1.0](#Library installation).
+The main branch is under construction for the upcoming version 4.0:
+
+* The new RankedMap<K,V> class is code complete and stable.
+* Optimization of RemoveWhere is implemented.
+* Most v4 API changes are implemented but this area is a work in progress.
+
+Documentation for the main branch is available by building the Help project for the `.chm` output.
 
 ### Documentation
 
