@@ -185,10 +185,10 @@ namespace Kaos.Collections
             }
 
 
-            /// <summary>Gets the value associated with the lowest sorted key.</summary>
-            /// <returns>The value associated with the lowest sorted key.</returns>
+            /// <summary>Gets the value of the element with the lowest sorted key in the map.</summary>
+            /// <returns>The value of the element with the lowest sorted key.</returns>
             /// <remarks>This is a O(1) operation.</remarks>
-            /// <exception cref="InvalidOperationException">When the collection is empty.</exception>
+            /// <exception cref="InvalidOperationException">When <see cref="Count"/> is zero.</exception>
             public TValue First()
             {
                 if (Count == 0)
@@ -198,15 +198,15 @@ namespace Kaos.Collections
             }
 
 
-            /// <summary>Gets the index of the first occurrence with the supplied value.</summary>
+            /// <summary>Gets the index of the first element with the supplied value.</summary>
             /// <param name="value">The value to find.</param>
             /// <returns>The index of the first occurrence of <em>value</em> if found; otherwise -1.</returns>
             /// <remarks>This is a O(<em>n</em>) operation.</remarks>
             public int IndexOf (TValue value) => tree.ContainsValue2<TValue> (value);
 
 
-            /// <summary>Gets the value of the element with the maximum key in the map per the comparer.</summary>
-            /// <returns>The value of the element with the maximum key in the map.</returns>
+            /// <summary>Gets the value of the element with the highest sorted key in the map.</summary>
+            /// <returns>The value of the element with the highest sorted key.</returns>
             /// <remarks>This is a O(1) operation.</remarks>
             /// <exception cref="InvalidOperationException">When <see cref="Count"/> is zero.</exception>
             public TValue Last()

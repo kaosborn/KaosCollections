@@ -898,8 +898,8 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Gets the element with the maximum key in the map per the comparer.</summary>
-        /// <returns>The element with maximum key in the map.</returns>
+        /// <summary>Gets the element with the highest sorted key in the map.</summary>
+        /// <returns>The element with highest sorted key in the map.</returns>
         /// <remarks>This is a O(1) operation.</remarks>
         /// <exception cref="InvalidOperationException">When <see cref="Count"/> is zero.</exception>
         public KeyValuePair<TKey,TValue> Last()
