@@ -348,6 +348,55 @@ namespace Kaos.Test.Collections
 #endif
         }
 
+
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRdvq_First()
+        {
+            Setup();
+#if TEST_BCL
+            var zz = Enumerable.First (tree1.Values);
+#else
+            var zz = tree1.Values.First();
+#endif
+        }
+
+        [TestMethod]
+        public void UnitRdvq_First()
+        {
+            Setup();
+            for (int ii = 9; ii >= 1; --ii) tree1.Add (ii, -ii);
+#if TEST_BCL
+            Assert.AreEqual (-1, Enumerable.First (tree1.Values));
+#else
+            Assert.AreEqual (-1, tree1.Values.First());
+#endif
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRdvq_Last()
+        {
+            Setup();
+#if TEST_BCL
+            var zz = Enumerable.Last (tree1.Values);
+#else
+            var zz = tree1.Values.Last();
+#endif
+        }
+
+        [TestMethod]
+        public void UnitRdvq_Last()
+        {
+            Setup (4);
+            for (int ii = 9; ii >= 1; --ii) tree1.Add (ii, -ii);
+#if TEST_BCL
+            Assert.AreEqual (-9, Enumerable.Last (tree1.Values));
+#else
+            Assert.AreEqual (-9, tree1.Values.Last());
+#endif
+        }
+
         #endregion
 
         #region Test Values enumeration (LINQ emulation)

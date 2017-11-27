@@ -198,6 +198,19 @@ namespace Kaos.Collections
             }
 
 
+            /// <summary>Gets the value of the element with the minimum key in the dictionary per the comparer.</summary>
+            /// <returns>The value of the element with the minimum key.</returns>
+            /// <remarks>This is a O(1) operation.</remarks>
+            /// <exception cref="InvalidOperationException">When <see cref="Count"/> is zero.</exception>
+            public TValue First()
+            {
+                if (Count == 0)
+                    throw new InvalidOperationException ("Sequence contains no elements.");
+
+                return ((PairLeaf<TValue>) tree.leftmostLeaf).GetValue (0);
+            }
+
+
             /// <summary>Gets the index of the first element with the supplied value.</summary>
             /// <param name="value">The value to find.</param>
             /// <returns>The index of <em>value</em> if found; otherwise -1.</returns>
@@ -217,6 +230,20 @@ namespace Kaos.Collections
 
                 return -1;
             }
+
+
+            /// <summary>Gets the value of the element with the maximum key in the dictionary per the comparer.</summary>
+            /// <returns>The value of the element with the maximum key.</returns>
+            /// <remarks>This is a O(1) operation.</remarks>
+            /// <exception cref="InvalidOperationException">When <see cref="Count"/> is zero.</exception>
+            public TValue Last()
+            {
+                if (Count == 0)
+                    throw new InvalidOperationException ("Sequence contains no elements.");
+
+                return ((PairLeaf<TValue>) tree.rightmostLeaf).GetValue (tree.rightmostLeaf.KeyCount - 1);
+            }
+
 
             /// <summary>Returns an enumerator that iterates thru the dictionary values in reverse key order.</summary>
             /// <returns>An enumerator that reverse iterates thru the dictionary values.</returns>
