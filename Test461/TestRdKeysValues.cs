@@ -18,9 +18,9 @@ namespace Kaos.Test.Collections
         {
             Setup();
 #if TEST_BCL
-            var keys = new SortedDictionary<int,int>.KeyCollection (null);
+            var zz = new SortedDictionary<int,int>.KeyCollection (null);
 #else
-            var keys = new RankedDictionary<int,int>.KeyCollection (null);
+            var zz = new RankedDictionary<int,int>.KeyCollection (null);
 #endif
         }
 
@@ -525,7 +525,7 @@ namespace Kaos.Test.Collections
 #if ! TEST_BCL
 
         [TestMethod]
-        public void UnitRdv_xIndexer()
+        public void UnitRdvx_Indexer()
         {
             var rd = new RankedDictionary<string,int> { Capacity=4 };
             foreach (var kv in greek) rd.Add (kv.Key, kv.Value);
@@ -535,45 +535,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRdv_xElementAt_ArgumentOutOfRange1()
-        {
-            var rd = new RankedDictionary<int,int>();
-            var zz = rd.Values.ElementAt (-1);
-        }
-
-        [TestMethod]
-        [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRdv_xElementAt_ArgumentOutOfRange2()
-        {
-            var rd = new RankedDictionary<int,int>();
-            var zz = rd.Values.ElementAt (0);
-        }
-
-        [TestMethod]
-        public void UnitRdv_xElementAt()
-        {
-            var rd = new RankedDictionary<string,int> { Capacity=4 };
-            foreach (var kv in greek) rd.Add (kv.Key, kv.Value);
-
-            Assert.AreEqual (9, rd.Values.ElementAt (6));
-        }
-
-
-        [TestMethod]
-        public void UnitRdv_xElementAtOrDefault()
-        {
-            var rd = new RankedDictionary<string,int?> { Capacity=4 };
-            foreach (var kv in greek) rd.Add (kv.Key, kv.Value);
-
-            Assert.IsNull (rd.Values.ElementAtOrDefault (-1));
-            Assert.AreEqual (22, rd.Values.ElementAtOrDefault (2));
-            Assert.IsNull (rd.Values.ElementAtOrDefault (rd.Count));
-        }
-
-
-        [TestMethod]
-        public void UnitRdv_xIndexOf()
+        public void UnitRdvx_IndexOf()
         {
             var rd = new RankedDictionary<int,int> { Capacity=5 };
             for (int ii = 0; ii < 900; ++ii)

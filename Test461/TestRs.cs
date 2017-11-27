@@ -346,46 +346,6 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRs_ContainsNull()
-        {
-            Setup();
-
-            // SortedSet allows null arg (but SortedDictionary does not).
-            setS.Contains (null);
-        }
-
-
-        [TestMethod]
-        public void UnitRs_Contains()
-        {
-            Setup();
-
-            setS.Add ("aa");
-            setS.Add ("xx");
-            setS.Add ("mm");
-
-            Assert.IsTrue (setS.Contains ("mm"));
-            Assert.IsFalse (setS.Contains ("bb"));
-        }
-
-        [TestMethod]
-        public void StressRs_Contains()
-        {
-            Setup (4);
-
-            for (int ii = 1; ii <= 9999; ii+=2)
-                setI.Add (ii);
-
-            Assert.IsTrue (setI.Contains (1));
-            Assert.IsFalse (setI.Contains (0));
-            Assert.IsTrue (setI.Contains (499));
-            Assert.IsFalse (setI.Contains (500));
-            Assert.IsTrue (setI.Contains (9999));
-            Assert.IsFalse (setI.Contains (10000));
-        }
-
-
-        [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
         public void CrashRs_CopyTo1_ArgumentNull()
         {
@@ -745,37 +705,7 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (0, setI.Count);
         }
 
-
-        [TestMethod]
-        public void UnitRs_ReverseEmpty()
-        {
-            Setup (5);
-            int total = 0;
-
-            foreach (var countdown in setI.Reverse())
-               ++total;
-
-            Assert.AreEqual (0, total);
-        }
-
-
-        [TestMethod]
-        public void UnitRs_Reverse()
-        {
-            int expected = 500;
-            Setup (5);
-            for (int ii=1; ii <= expected; ++ii)
-                setI.Add (ii);
-
-            foreach (var actual in setI.Reverse())
-            {
-                Assert.AreEqual (expected, actual);
-                --expected;
-            }
-            Assert.AreEqual (0, expected);
-        }
-
-#endregion
+        #endregion
 
         #region Test ISet methods
 

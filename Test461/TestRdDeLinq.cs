@@ -127,6 +127,7 @@ namespace Kaos.Test.Collections
 
         #endregion
 
+
         #region Test Keys properties (LINQ emulation)
 
         [TestMethod]
@@ -179,7 +180,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRdk_ElementAt_ArgumentOutOfRange1()
+        public void CrashRdkq_ElementAt_ArgumentOutOfRange1()
         {
             Setup();
 #if TEST_BCL
@@ -191,7 +192,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRdk_ElementAt_ArgumentOutOfRange2()
+        public void CrashRdkq_ElementAt_ArgumentOutOfRange2()
         {
             Setup();
 #if TEST_BCL
@@ -202,7 +203,7 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void UnitRdk_ElementAt()
+        public void UnitRdkq_ElementAt()
         {
             Setup();
             var keys = tree2.Keys;
@@ -223,7 +224,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRdk_ElementAtOrDefault()
+        public void UnitRdkq_ElementAtOrDefault()
         {
             Setup();
             var keys = tree2.Keys;
@@ -291,6 +292,63 @@ namespace Kaos.Test.Collections
 
         #endregion
 
+
+        #region Test Values methods (LINQ emulation)
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRdvq_ElementAt_ArgumentOutOfRange1()
+        {
+            Setup();
+#if TEST_BCL
+            var zz = Enumerable.ElementAt (tree1.Values, -1);
+#else
+            var zz = tree1.Values.ElementAt (-1);
+#endif
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentOutOfRangeException))]
+        public void CrashRdvq_ElementAt_ArgumentOutOfRange2()
+        {
+            Setup();
+#if TEST_BCL
+            var zz = Enumerable.ElementAt (tree1.Values, 0);
+#else
+            var zz = tree1.Values.ElementAt (0);
+#endif
+        }
+
+        [TestMethod]
+        public void UnitRdvq_ElementAt()
+        {
+            Setup (4);
+            foreach (var kv in greek) tree2.Add (kv.Key, kv.Value);
+#if TEST_BCL
+            var tree1 = Enumerable.ElementAt (tree2.Values, 6);
+#else
+            Assert.AreEqual (9, tree2.Values.ElementAt (6));
+#endif
+        }
+
+
+        [TestMethod]
+        public void UnitRdvq_ElementAtOrDefault()
+        {
+            Setup (4);
+            foreach (var kv in greek) tree3.Add (kv.Key, kv.Value);
+#if TEST_BCL
+            Assert.IsNull (Enumerable.ElementAtOrDefault (tree3.Values, -1));
+            Assert.AreEqual (22, Enumerable.ElementAtOrDefault (tree3.Values, 2));
+            Assert.IsNull (Enumerable.ElementAtOrDefault (tree3.Values, tree3.Count));
+#else
+            Assert.IsNull (tree3.Values.ElementAtOrDefault (-1));
+            Assert.AreEqual (22, tree3.Values.ElementAtOrDefault (2));
+            Assert.IsNull (tree3.Values.ElementAtOrDefault (tree3.Count));
+#endif
+        }
+
+        #endregion
 
         #region Test Values enumeration (LINQ emulation)
 
