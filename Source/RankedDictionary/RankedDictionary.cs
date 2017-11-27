@@ -900,18 +900,7 @@ namespace Kaos.Collections
         /// <returns>The index of the element if found; otherwise -1.</returns>
         /// <remarks>This is a O(<em>n</em>) operation.</remarks>
         public int IndexOfValue (TValue value)
-        {
-            int result = 0;
-            for (var leaf = (PairLeaf<TValue>) leftmostLeaf; leaf != null; leaf = (PairLeaf<TValue>) leaf.rightLeaf)
-            {
-                var ix = leaf.IndexOfValue (value);
-                if (ix >= 0)
-                    return result + ix;
-                result += leaf.KeyCount;
-            }
-
-            return -1;
-        }
+            => ContainsValue2<TValue> (value);
 
 
         /// <summary>Removes an index range of elements from the dictionary.</summary>

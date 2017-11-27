@@ -202,7 +202,8 @@ namespace Kaos.Collections
             /// <param name="value">The value to find.</param>
             /// <returns>The index of the first occurrence of <em>value</em> if found; otherwise -1.</returns>
             /// <remarks>This is a O(<em>n</em>) operation.</remarks>
-            public int IndexOf (TValue value) => tree.ContainsValue2<TValue> (value);
+            public int IndexOf (TValue value)
+                => tree.ContainsValue2<TValue> (value);
 
 
             /// <summary>Gets the value of the element with the highest sorted key in the map.</summary>

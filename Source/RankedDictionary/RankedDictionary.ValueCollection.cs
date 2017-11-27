@@ -218,18 +218,7 @@ namespace Kaos.Collections
             /// This is a O(<em>n</em>) operation.
             /// </remarks>
             public int IndexOf (TValue value)
-            {
-                int result = 0;
-                for (var leaf = (PairLeaf<TValue>) tree.leftmostLeaf; leaf != null; leaf = (PairLeaf<TValue>) leaf.rightLeaf)
-                {
-                    var ix = leaf.IndexOfValue (value);
-                    if (ix >= 0)
-                        return result + ix;
-                    result += leaf.KeyCount;
-                }
-
-                return -1;
-            }
+                => tree.ContainsValue2<TValue> (value);
 
 
             /// <summary>Gets the value of the element with the maximum key in the dictionary per the comparer.</summary>
