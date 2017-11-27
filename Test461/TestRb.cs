@@ -94,20 +94,6 @@ namespace Kaos.Test.Collections
             Assert.IsFalse (isSync);
         }
 
-        [TestMethod]
-        public void UnitRb_MinMax()
-        {
-            var rb = new RankedBag<int>();
-            var min0 = rb.Min;
-            var max0 = rb.Max;
-
-            rb.Add (3); rb.Add (5); rb.Add (7);
-            var min1 = rb.Min;
-            var max1 = rb.Max;
-
-            Assert.AreEqual (3, min1);
-            Assert.AreEqual (7, max1);
-        }
 
         [TestMethod]
         public void UnitRb_ocSyncRoot()
