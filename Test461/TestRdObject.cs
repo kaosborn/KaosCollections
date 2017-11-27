@@ -13,7 +13,7 @@ namespace Kaos.Test.Collections
         public void UnitRd_odIsFixedSize()
         {
             Setup();
-            var od = (IDictionary) tree1;
+            var od = (IDictionary) dary1;
             Assert.IsFalse (od.IsFixedSize);
         }
 
@@ -22,7 +22,7 @@ namespace Kaos.Test.Collections
         public void UnitRd_odIsReadonly()
         {
             Setup();
-            var od = (IDictionary) tree1;
+            var od = (IDictionary) dary1;
             Assert.IsFalse (od.IsReadOnly);
         }
 
@@ -31,7 +31,7 @@ namespace Kaos.Test.Collections
         public void UnitRd_odIsSynchronized()
         {
             Setup();
-            var od = (IDictionary) tree1;
+            var od = (IDictionary) dary1;
             Assert.IsFalse (od.IsSynchronized);
         }
 
@@ -40,7 +40,7 @@ namespace Kaos.Test.Collections
         public void CrashRd_odItemGet_ArgumentNull()
         {
             Setup();
-            var od = (IDictionary) tree2;
+            var od = (IDictionary) dary2;
             od.Add ("foo", 10);
             object zz = od[null];
         }
@@ -50,7 +50,7 @@ namespace Kaos.Test.Collections
         public void UnitRd_odItemGetBadKey()
         {
             Setup();
-            var od = (IDictionary) tree2;
+            var od = (IDictionary) dary2;
             od.Add ("foo", 10);
             object zz = od[45];
             Assert.IsNull (zz);
@@ -62,7 +62,7 @@ namespace Kaos.Test.Collections
         public void CrashRd_odItemSetKey_ArgumentNull()
         {
             Setup();
-            var od = (IDictionary) tree2;
+            var od = (IDictionary) dary2;
             od.Add ("foo", 10);
             od[null] = "bar";
         }
@@ -73,7 +73,7 @@ namespace Kaos.Test.Collections
         public void CrashRd_odItemSetValue_ArgumentNull()
         {
             Setup();
-            var od = (IDictionary) tree2;
+            var od = (IDictionary) dary2;
             od.Add ("foo", 10);
             od["foo"] = null;
         }
@@ -84,7 +84,7 @@ namespace Kaos.Test.Collections
         public void CrashRd_odItemSetBadKey_Argument()
         {
             Setup();
-            var od = (IDictionary) tree2;
+            var od = (IDictionary) dary2;
             od.Add ("foo", 10);
             od[23] = 45;
         }
@@ -95,7 +95,7 @@ namespace Kaos.Test.Collections
         public void CrashRd_odItemSetBadValue_Argument()
         {
             Setup();
-            var od = (IDictionary) tree2;
+            var od = (IDictionary) dary2;
             od.Add ("foo", 10);
             od["red"] = "blue";
         }
@@ -105,8 +105,8 @@ namespace Kaos.Test.Collections
         public void UnitRd_odItem()
         {
             Setup();
-            var od2 = (IDictionary) tree2;
-            var od4 = (IDictionary) tree4;
+            var od2 = (IDictionary) dary2;
+            var od4 = (IDictionary) dary4;
 
             object j1 = od2["foo"];
             Assert.IsNull (j1);
@@ -135,7 +135,7 @@ namespace Kaos.Test.Collections
         public void UnitRd_odSyncRoot()
         {
             Setup();
-            var od = (IDictionary) tree2;
+            var od = (IDictionary) dary2;
             Assert.IsFalse (od.SyncRoot.GetType().IsValueType);
         }
 
@@ -148,7 +148,7 @@ namespace Kaos.Test.Collections
         public void CrashRd_odAddNullKey_Argument()
         {
             Setup();
-            var od = (IDictionary) tree2;
+            var od = (IDictionary) dary2;
             od.Add ((String) null, 1);
         }
 
@@ -158,7 +158,7 @@ namespace Kaos.Test.Collections
         public void CrashRd_odAddBadKey_Argument()
         {
             Setup();
-            var od = (IDictionary) tree2;
+            var od = (IDictionary) dary2;
             od.Add (23, 45);
         }
 
@@ -168,7 +168,7 @@ namespace Kaos.Test.Collections
         public void CrashRd_odAddBadValue_Argument()
         {
             Setup();
-            var od = (IDictionary) tree2;
+            var od = (IDictionary) dary2;
             od.Add ("razz", "matazz");
         }
 
@@ -178,7 +178,7 @@ namespace Kaos.Test.Collections
         public void CrashRd_odAddDupl_Argument()
         {
             Setup();
-            var od = (IDictionary) tree2;
+            var od = (IDictionary) dary2;
             od.Add ("nn", 1);
             od.Add ("nn", 2);
         }
@@ -188,7 +188,7 @@ namespace Kaos.Test.Collections
         public void UnitRd_odContainsKey()
         {
             Setup();
-            var od = (IDictionary) tree1;
+            var od = (IDictionary) dary1;
 
             foreach (int key in iVals1)
                 od.Add (key, key + 1000);
@@ -204,7 +204,7 @@ namespace Kaos.Test.Collections
         public void CrashRd_odContainsKey_ArgumentNull()
         {
             Setup();
-            var od = (IDictionary) tree2;
+            var od = (IDictionary) dary2;
             bool isOK = objCol2.Contains (null);
         }
 
@@ -214,7 +214,7 @@ namespace Kaos.Test.Collections
         public void CrashRd_odCopyTo_ArgumentNull()
         {
             Setup();
-            var od = (IDictionary) tree1;
+            var od = (IDictionary) dary1;
             var target = new KeyValuePair<int,int>[iVals1.Length];
             od.CopyTo (null, -1);
         }
@@ -225,7 +225,7 @@ namespace Kaos.Test.Collections
         public void CrashRd_odCopyTo_ArgumentOutOfRange()
         {
             Setup();
-            var od = (IDictionary) tree1;
+            var od = (IDictionary) dary1;
             var target = new KeyValuePair<int,int>[iVals1.Length];
             od.CopyTo (target, -1);
         }
@@ -236,7 +236,7 @@ namespace Kaos.Test.Collections
         public void CrashRd_odCopyTo1_Argument()
         {
             Setup();
-            var od = (IDictionary) tree1;
+            var od = (IDictionary) dary1;
             var target = new KeyValuePair<int,int>[iVals1.Length,2];
             od.CopyTo (target, 0);
         }
@@ -247,10 +247,10 @@ namespace Kaos.Test.Collections
         public void CrashRd_odCopyTo2_Argument()
         {
             Setup();
-            var od = (IDictionary) tree1;
+            var od = (IDictionary) dary1;
 
             for (int key = 1; key < 10; ++key)
-                tree1.Add (key, key + 1000);
+                dary1.Add (key, key + 1000);
 
             var target = new KeyValuePair<int,int>[1];
             od.CopyTo (target, 0);
@@ -262,8 +262,8 @@ namespace Kaos.Test.Collections
         public void CrashRd_odCopyToBadType_Argument()
         {
             Setup();
-            var od = (IDictionary) tree1;
-            tree1.Add (42, 420);
+            var od = (IDictionary) dary1;
+            dary1.Add (42, 420);
 
             var target = new string[5];
             od.CopyTo (target, 0);
@@ -274,9 +274,9 @@ namespace Kaos.Test.Collections
         public void UnitRd_odCopyTo()
         {
             Setup();
-            var od = (IDictionary) tree1;
+            var od = (IDictionary) dary1;
             foreach (int key in iVals1)
-                tree1.Add (key, key + 1000);
+                dary1.Add (key, key + 1000);
 
             var target = new KeyValuePair<int,int>[iVals1.Length];
 
@@ -291,9 +291,9 @@ namespace Kaos.Test.Collections
         public void UnitRd_odCopyToDowncast()
         {
             Setup();
-            var od = (IDictionary) tree2;
-            tree2.Add ("aardvark", 1);
-            tree2.Add ("bonobo", 2);
+            var od = (IDictionary) dary2;
+            dary2.Add ("aardvark", 1);
+            dary2.Add ("bonobo", 2);
 
             var obj = new object[4];
             od.CopyTo (obj, 2);
@@ -309,7 +309,7 @@ namespace Kaos.Test.Collections
         public void CrashRd_odRemove_ArgumentNull()
         {
             Setup();
-            var od = (IDictionary) tree1;
+            var od = (IDictionary) dary1;
             od.Remove (null);
         }
 
@@ -318,7 +318,7 @@ namespace Kaos.Test.Collections
         public void UnitRd_odRemove()
         {
             Setup();
-            var od = (IDictionary) tree1;
+            var od = (IDictionary) dary1;
 
             Assert.AreEqual (0, od.Count);
             od.Add (17, 170);
@@ -340,8 +340,8 @@ namespace Kaos.Test.Collections
         public void CrashRd_odEtorKey_InvalidOperation()
         {
             Setup();
-            var od = (IDictionary) tree2;
-            tree2.Add ("cc", 3);
+            var od = (IDictionary) dary2;
+            dary2.Add ("cc", 3);
 
             IDictionaryEnumerator oEtor = od.GetEnumerator();
             var key = oEtor.Key;
@@ -352,8 +352,8 @@ namespace Kaos.Test.Collections
         public void CrashRd_odEtorValue_InvalidOperation()
         {
             Setup();
-            var od = (IDictionary) tree2;
-            tree2.Add ("cc", 3);
+            var od = (IDictionary) dary2;
+            dary2.Add ("cc", 3);
 
             IDictionaryEnumerator etor = od.GetEnumerator();
             var val = etor.Value;
@@ -364,8 +364,8 @@ namespace Kaos.Test.Collections
         public void CrashRd_odEtorEntry_InvalidOperation()
         {
             Setup();
-            var od = (IDictionary) tree2;
-            tree2.Add ("cc", 3);
+            var od = (IDictionary) dary2;
+            dary2.Add ("cc", 3);
 
             IDictionaryEnumerator oEtor = od.GetEnumerator();
             DictionaryEntry entry = oEtor.Entry;
@@ -376,8 +376,8 @@ namespace Kaos.Test.Collections
         public void CrashRd_odEtorCurrent_InvalidOperation()
         {
             Setup();
-            var od = (IDictionary) tree2;
-            tree2.Add ("cc", 3);
+            var od = (IDictionary) dary2;
+            dary2.Add ("cc", 3);
 
             IDictionaryEnumerator oEtor = od.GetEnumerator();
             var val = oEtor.Current;
@@ -387,9 +387,9 @@ namespace Kaos.Test.Collections
         public void UnitRd_odEtor()
         {
             Setup();
-            var od = (IDictionary) tree1;
-            tree1.Add (3, 33);
-            tree1.Add (5, 55);
+            var od = (IDictionary) dary1;
+            dary1.Add (3, 33);
+            dary1.Add (5, 55);
 
             IDictionaryEnumerator etor = od.GetEnumerator();
             etor.MoveNext();
@@ -406,10 +406,10 @@ namespace Kaos.Test.Collections
         public void UnitRd_odEtorEntry()
         {
             Setup();
-            var od = (IDictionary) tree1;
+            var od = (IDictionary) dary1;
 
             foreach (int k in iVals1)
-                tree1.Add (k, k + 1000);
+                dary1.Add (k, k + 1000);
 
             int actualCount = 0;
             foreach (DictionaryEntry de in od)
@@ -429,13 +429,13 @@ namespace Kaos.Test.Collections
         public void UnitRdk_ocCount()
         {
             Setup();
-            var oc = (ICollection) tree1.Keys;
+            var oc = (ICollection) dary1.Keys;
             int n = 10;
 
             Assert.AreEqual (0, oc.Count);
 
             for (int i = 0; i < n; ++i)
-                tree1.Add (i + 100, i + 1000);
+                dary1.Add (i + 100, i + 1000);
 
             Assert.AreEqual (n, oc.Count);
         }
@@ -445,7 +445,7 @@ namespace Kaos.Test.Collections
         public void UnitRdk_ocIsSynchronized()
         {
             Setup();
-            var oc = (ICollection) tree1.Keys;
+            var oc = (ICollection) dary1.Keys;
             Assert.IsFalse (oc.IsSynchronized);
         }
 
@@ -455,7 +455,7 @@ namespace Kaos.Test.Collections
         public void CrashRdk_ocCopyTo_ArgumentNull()
         {
             Setup();
-            var oc = (ICollection) tree1.Keys;
+            var oc = (ICollection) dary1.Keys;
             oc.CopyTo (null, -1);
         }
 
@@ -465,8 +465,8 @@ namespace Kaos.Test.Collections
         public void CrashRdk_ocCopyToMultiDimensional_Argument()
         {
             Setup();
-            var oc = (ICollection) tree1.Keys;
-            tree1.Add (42, 420);
+            var oc = (ICollection) dary1.Keys;
+            dary1.Add (42, 420);
 
             object[,] target = new object[2, 3];
             oc.CopyTo (target, -1);
@@ -478,8 +478,8 @@ namespace Kaos.Test.Collections
         public void CrashRdk_ocCopyTo_ArgumentOutOfRange()
         {
             Setup();
-            var oc = (ICollection) tree1.Keys;
-            tree1.Add (42, 420);
+            var oc = (ICollection) dary1.Keys;
+            dary1.Add (42, 420);
 
             object[] target = new object[1];
             oc.CopyTo (target, -1);
@@ -491,10 +491,10 @@ namespace Kaos.Test.Collections
         public void CrashRdk_ocCopyToNotLongEnough_Argument()
         {
             Setup();
-            var oc = (ICollection) tree1.Keys;
+            var oc = (ICollection) dary1.Keys;
 
             for (int i = 0; i < 10; ++i)
-                tree1.Add (i + 100, i + 1000);
+                dary1.Add (i + 100, i + 1000);
 
 
             object[] target = new object[10];
@@ -506,11 +506,11 @@ namespace Kaos.Test.Collections
         public void UnitRdk_ocCopyTo()
         {
             Setup();
-            var oc = (ICollection) tree1.Keys;
+            var oc = (ICollection) dary1.Keys;
             int n = 10;
 
             for (int i = 0; i < n; ++i)
-                tree1.Add (i + 100, i + 1000);
+                dary1.Add (i + 100, i + 1000);
 
             object[] target = new object[n];
 
@@ -525,11 +525,11 @@ namespace Kaos.Test.Collections
         public void UnitRdk_odEtor()
         {
             Setup();
-            var od = (IDictionary) tree1;
+            var od = (IDictionary) dary1;
             int n = 10;
 
             for (int k = 0; k < n; ++k)
-                tree1.Add (k, k + 1000);
+                dary1.Add (k, k + 1000);
 
             int expected = 0;
             foreach (object j in od.Keys)
@@ -547,13 +547,13 @@ namespace Kaos.Test.Collections
         public void UnitRdv_ocValuesCount()
         {
             Setup();
-            var oc = (ICollection) tree1.Values;
+            var oc = (ICollection) dary1.Values;
             int n = 10;
 
             Assert.AreEqual (0, oc.Count);
 
             for (int i = 0; i < n; ++i)
-                tree1.Add (i + 100, i + 1000);
+                dary1.Add (i + 100, i + 1000);
 
             Assert.AreEqual (n, oc.Count);
         }
@@ -563,7 +563,7 @@ namespace Kaos.Test.Collections
         public void UnitRdv_ocIsSynchronized()
         {
             Setup();
-            var oc = (ICollection) tree1.Values;
+            var oc = (ICollection) dary1.Values;
             Assert.IsFalse (oc.IsSynchronized);
         }
 
@@ -573,7 +573,7 @@ namespace Kaos.Test.Collections
         public void CrashRdv_ocCopyTo_ArgumentNull()
         {
             Setup();
-            var oc = (ICollection) tree1.Values;
+            var oc = (ICollection) dary1.Values;
             oc.CopyTo (null, -1);
         }
 
@@ -583,9 +583,9 @@ namespace Kaos.Test.Collections
         public void CrashRdv_ocCopyToMultiDimensional_Argument()
         {
             Setup();
-            var oc = (ICollection) tree1.Values;
+            var oc = (ICollection) dary1.Values;
 
-            tree1.Add (42, 420);
+            dary1.Add (42, 420);
             object[,] target = new object[2, 3];
 
             oc.CopyTo (target, -1);
@@ -597,9 +597,9 @@ namespace Kaos.Test.Collections
         public void CrashRdv_ocCopyTo_ArgumentOutOfRange()
         {
             Setup();
-            var oc = (ICollection) tree1.Values;
+            var oc = (ICollection) dary1.Values;
 
-            tree1.Add (42, 420);
+            dary1.Add (42, 420);
             object[] target = new object[1];
 
             oc.CopyTo (target, -1);
@@ -611,10 +611,10 @@ namespace Kaos.Test.Collections
         public void CrashRdv_ocCopyToNotLongEnough_Argument()
         {
             Setup();
-            var oc = (ICollection) tree1.Values;
+            var oc = (ICollection) dary1.Values;
 
             for (int i = 0; i < 10; ++i)
-                tree1.Add (i + 100, i + 1000);
+                dary1.Add (i + 100, i + 1000);
             var target = new object[10];
 
             oc.CopyTo (target, 5);
@@ -625,11 +625,11 @@ namespace Kaos.Test.Collections
         public void UnitRdv_ocCopyTo()
         {
             Setup();
-            var oc = (ICollection) tree1.Values;
+            var oc = (ICollection) dary1.Values;
             int n = 10;
 
             for (int i = 0; i < n; ++i)
-                tree1.Add (i + 100, i + 1000);
+                dary1.Add (i + 100, i + 1000);
             object[] target = new object[n];
 
             oc.CopyTo (target, 0);
@@ -643,11 +643,11 @@ namespace Kaos.Test.Collections
         public void UnitRdv_ocGetEnumerator()
         {
             Setup();
-            var od = (IDictionary) tree1;
+            var od = (IDictionary) dary1;
             int n = 10;
 
             for (int k = 0; k < n; ++k)
-                tree1.Add (k, k + 1000);
+                dary1.Add (k, k + 1000);
 
             int expected = 1000;
             foreach (object j in od.Values)

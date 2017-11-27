@@ -25,33 +25,33 @@ namespace Kaos.Test.Collections
         {
             Setup();
 
-            Assert.IsTrue (tree2 is System.Collections.Generic.IDictionary<string,int>);
-            Assert.IsTrue (tree2 is System.Collections.Generic.ICollection<KeyValuePair<string,int>>);
-            Assert.IsTrue (tree2 is System.Collections.Generic.IEnumerable<KeyValuePair<string,int>>);
-            Assert.IsTrue (tree2 is System.Collections.IEnumerable);
-            Assert.IsTrue (tree2 is System.Collections.IDictionary);
-            Assert.IsTrue (tree2 is System.Collections.ICollection);
+            Assert.IsTrue (dary2 is System.Collections.Generic.IDictionary<string,int>);
+            Assert.IsTrue (dary2 is System.Collections.Generic.ICollection<KeyValuePair<string,int>>);
+            Assert.IsTrue (dary2 is System.Collections.Generic.IEnumerable<KeyValuePair<string,int>>);
+            Assert.IsTrue (dary2 is System.Collections.IEnumerable);
+            Assert.IsTrue (dary2 is System.Collections.IDictionary);
+            Assert.IsTrue (dary2 is System.Collections.ICollection);
 
-            Assert.IsTrue (tree2 is System.Collections.Generic.IReadOnlyDictionary<string,int>);
-            Assert.IsTrue (tree2 is System.Collections.Generic.IReadOnlyCollection<KeyValuePair<string,int>>);
+            Assert.IsTrue (dary2 is System.Collections.Generic.IReadOnlyDictionary<string,int>);
+            Assert.IsTrue (dary2 is System.Collections.Generic.IReadOnlyCollection<KeyValuePair<string,int>>);
 
-            Assert.IsTrue (tree2.Keys is System.Collections.Generic.ICollection<string>);
-            Assert.IsTrue (tree2.Keys is System.Collections.Generic.IEnumerable<string>);
-            Assert.IsTrue (tree2.Keys is System.Collections.IEnumerable);
-            Assert.IsTrue (tree2.Keys is System.Collections.ICollection);
-            Assert.IsTrue (tree2.Keys is System.Collections.Generic.IReadOnlyCollection<string>);
+            Assert.IsTrue (dary2.Keys is System.Collections.Generic.ICollection<string>);
+            Assert.IsTrue (dary2.Keys is System.Collections.Generic.IEnumerable<string>);
+            Assert.IsTrue (dary2.Keys is System.Collections.IEnumerable);
+            Assert.IsTrue (dary2.Keys is System.Collections.ICollection);
+            Assert.IsTrue (dary2.Keys is System.Collections.Generic.IReadOnlyCollection<string>);
 
-            Assert.IsTrue (tree2.Values is System.Collections.Generic.ICollection<int>);
-            Assert.IsTrue (tree2.Values is System.Collections.Generic.IEnumerable<int>);
-            Assert.IsTrue (tree2.Values is System.Collections.IEnumerable);
-            Assert.IsTrue (tree2.Values is System.Collections.ICollection);
-            Assert.IsTrue (tree2.Values is System.Collections.Generic.IReadOnlyCollection<int>);
+            Assert.IsTrue (dary2.Values is System.Collections.Generic.ICollection<int>);
+            Assert.IsTrue (dary2.Values is System.Collections.Generic.IEnumerable<int>);
+            Assert.IsTrue (dary2.Values is System.Collections.IEnumerable);
+            Assert.IsTrue (dary2.Values is System.Collections.ICollection);
+            Assert.IsTrue (dary2.Values is System.Collections.Generic.IReadOnlyCollection<int>);
 
             Setup();
             System.Collections.IEnumerable roKeys
-                = ((System.Collections.Generic.IReadOnlyDictionary<string,int>) tree2).Keys;
+                = ((System.Collections.Generic.IReadOnlyDictionary<string,int>) dary2).Keys;
             System.Collections.IEnumerable roVals
-                = ((System.Collections.Generic.IReadOnlyDictionary<string,int>) tree2).Values;
+                = ((System.Collections.Generic.IReadOnlyDictionary<string,int>) dary2).Values;
         }
 
 
@@ -74,7 +74,7 @@ namespace Kaos.Test.Collections
         public void UnitRd_Ctor0Empty()
         {
             Setup();
-            Assert.AreEqual (0, tree1.Count);
+            Assert.AreEqual (0, dary1.Count);
         }
 
 
@@ -202,7 +202,7 @@ namespace Kaos.Test.Collections
         {
             Setup();
 
-            IComparer<string> result = tree2.Comparer;
+            IComparer<string> result = dary2.Comparer;
 
             Assert.AreEqual (Comparer<string>.Default, result);
         }
@@ -215,15 +215,15 @@ namespace Kaos.Test.Collections
 
             for (int i = 0; i < iVals1.Length; ++i)
             {
-                Assert.AreEqual (i, tree1.Count);
-                tree1.Add (iVals1[i], iVals1[i] * 10);
+                Assert.AreEqual (i, dary1.Count);
+                dary1.Add (iVals1[i], iVals1[i] * 10);
             }
-            Assert.AreEqual (iVals1.Length, tree1.Count);
+            Assert.AreEqual (iVals1.Length, dary1.Count);
 
             for (int i = 0; i < iVals1.Length; ++i)
             {
-                tree1.Remove (iVals1[i]);
-                Assert.AreEqual (iVals1.Length - i - 1, tree1.Count);
+                dary1.Remove (iVals1[i]);
+                Assert.AreEqual (iVals1.Length - i - 1, dary1.Count);
             }
         }
 
@@ -233,7 +233,7 @@ namespace Kaos.Test.Collections
         public void CrashRd_Item_ArgumentNullA()
         {
             Setup();
-            tree2[null] = 42;
+            dary2[null] = 42;
         }
 
 
@@ -242,7 +242,7 @@ namespace Kaos.Test.Collections
         public void CrashRd_Item_ArgumentNullB()
         {
             Setup();
-            int zz = tree2[null];
+            int zz = dary2[null];
         }
 
 
@@ -251,9 +251,9 @@ namespace Kaos.Test.Collections
         public void CrashRd_Item_KeyNotFoundA()
         {
             Setup();
-            tree2.Add ("pi", 9);
+            dary2.Add ("pi", 9);
 
-            int zz = tree2["omicron"];
+            int zz = dary2["omicron"];
         }
 
 
@@ -262,9 +262,9 @@ namespace Kaos.Test.Collections
         public void CrashRd_Item_KeyNotFoundB()
         {
             Setup();
-            tree1.Add (23, 230);
+            dary1.Add (23, 230);
 
-            int zz = tree1[9];
+            int zz = dary1[9];
         }
 
 
@@ -273,14 +273,14 @@ namespace Kaos.Test.Collections
         {
             Setup();
 
-            tree2["seven"] = 7;
-            tree2["eleven"] = 111;
+            dary2["seven"] = 7;
+            dary2["eleven"] = 111;
 
-            Assert.AreEqual (7, tree2["seven"]);
-            Assert.AreEqual (111, tree2["eleven"]);
+            Assert.AreEqual (7, dary2["seven"]);
+            Assert.AreEqual (111, dary2["eleven"]);
 
-            tree2["eleven"] = 11;
-            Assert.AreEqual (11, tree2["eleven"]);
+            dary2["eleven"] = 11;
+            Assert.AreEqual (11, dary2["eleven"]);
         }
 
         #endregion
@@ -292,7 +292,7 @@ namespace Kaos.Test.Collections
         public void CrashRd_Add_ArgumentNull()
         {
             Setup();
-            tree2.Add (null, 0);
+            dary2.Add (null, 0);
         }
 
 
@@ -301,8 +301,8 @@ namespace Kaos.Test.Collections
         public void CrashRd_Add_Argument()
         {
             Setup();
-            tree2.Add ("foo", 1);
-            tree2.Add ("foo", 2);
+            dary2.Add ("foo", 1);
+            dary2.Add ("foo", 2);
         }
 
 
@@ -311,10 +311,10 @@ namespace Kaos.Test.Collections
         {
             Setup();
 
-            tree1.Add (12, 120);
-            tree1.Add (18, 180);
+            dary1.Add (12, 120);
+            dary1.Add (18, 180);
 
-            Assert.AreEqual (2, tree1.Count);
+            Assert.AreEqual (2, dary1.Count);
         }
 
 
@@ -323,14 +323,14 @@ namespace Kaos.Test.Collections
         {
             Setup();
 
-            tree1.Add (41, 410);
-            Assert.AreEqual (1, tree1.Count);
+            dary1.Add (41, 410);
+            Assert.AreEqual (1, dary1.Count);
 
-            tree1.Clear();
-            Assert.AreEqual (0, tree1.Count);
+            dary1.Clear();
+            Assert.AreEqual (0, dary1.Count);
 
             int actualCount = 0;
-            foreach (KeyValuePair<int,int> pair in tree1)
+            foreach (KeyValuePair<int,int> pair in dary1)
                 ++actualCount;
 
             Assert.AreEqual(0, actualCount);
@@ -343,10 +343,10 @@ namespace Kaos.Test.Collections
         {
             Setup();
 
-            tree2.Add ("gamma", 3);
+            dary2.Add ("gamma", 3);
 
             // The nongeneric interface allows insert null key, but this is BCL behavior so...
-            bool zz = tree2.ContainsKey (null);
+            bool zz = dary2.ContainsKey (null);
         }
 
 
@@ -357,10 +357,10 @@ namespace Kaos.Test.Collections
 
             int key1 = 26;
             int key2 = 36;
-            tree1.Add (key1, key1 * 10);
+            dary1.Add (key1, key1 * 10);
 
-            Assert.IsTrue (tree1.ContainsKey (key1));
-            Assert.IsFalse (tree1.ContainsKey (key2));
+            Assert.IsTrue (dary1.ContainsKey (key1));
+            Assert.IsFalse (dary1.ContainsKey (key2));
         }
 
 
@@ -371,12 +371,12 @@ namespace Kaos.Test.Collections
             int n = 2000;
 
             for (int ii = 0; ii < n; ii += 2)
-                tree1.Add (ii, -ii);
+                dary1.Add (ii, -ii);
 
             for (int ii = 0; ii < n; ii += 2)
             {
-                Assert.IsTrue (tree1.ContainsValue (-ii));
-                Assert.IsFalse (tree1.ContainsValue (-ii - 1));
+                Assert.IsTrue (dary1.ContainsValue (-ii));
+                Assert.IsFalse (dary1.ContainsValue (-ii - 1));
             }
         }
 
@@ -387,13 +387,13 @@ namespace Kaos.Test.Collections
             Setup (4);
 
             for (int ii = 0; ii < 500; ++ii)
-                tree3.Add (ii.ToString(), -ii);
+                dary3.Add (ii.ToString(), -ii);
 
-            Assert.IsTrue (tree3.ContainsValue (-9));
-            Assert.IsFalse (tree3.ContainsValue (null));
+            Assert.IsTrue (dary3.ContainsValue (-9));
+            Assert.IsFalse (dary3.ContainsValue (null));
 
-            tree3.Add ("NaN", null);
-            Assert.IsTrue (tree3.ContainsValue (null));
+            dary3.Add ("NaN", null);
+            Assert.IsTrue (dary3.ContainsValue (null));
         }
 
 
@@ -402,15 +402,15 @@ namespace Kaos.Test.Collections
         {
             Setup();
 
-            tree4.Add (5, "ee");
-            tree4.Add (3, "cc");
-            tree4.Add (7, "gg");
-            Assert.IsFalse (tree4.ContainsValue (null));
+            dary4.Add (5, "ee");
+            dary4.Add (3, "cc");
+            dary4.Add (7, "gg");
+            Assert.IsFalse (dary4.ContainsValue (null));
 
-            tree4.Add (-1, null);
-            Assert.IsFalse (tree4.ContainsValue ("dd"));
-            Assert.IsTrue (tree4.ContainsValue ("cc"));
-            Assert.IsTrue (tree4.ContainsValue (null));
+            dary4.Add (-1, null);
+            Assert.IsFalse (dary4.ContainsValue ("dd"));
+            Assert.IsTrue (dary4.ContainsValue ("cc"));
+            Assert.IsTrue (dary4.ContainsValue (null));
         }
 
 
@@ -419,7 +419,7 @@ namespace Kaos.Test.Collections
         public void CrashRd_CopyTo_ArgumentNull()
         {
             Setup();
-            tree1.CopyTo (null, -1);
+            dary1.CopyTo (null, -1);
         }
 
 
@@ -429,7 +429,7 @@ namespace Kaos.Test.Collections
         {
             Setup();
             var target = new KeyValuePair<int,int>[iVals1.Length];
-            tree1.CopyTo (target, -1);
+            dary1.CopyTo (target, -1);
         }
 
 
@@ -440,10 +440,10 @@ namespace Kaos.Test.Collections
         {
             Setup();
             for (int key = 1; key < 10; ++key)
-                tree1.Add (key, key + 1000);
+                dary1.Add (key, key + 1000);
 
             var target = new KeyValuePair<int,int>[10];
-            tree1.CopyTo (target, 25);
+            dary1.CopyTo (target, 25);
         }
 
 
@@ -453,10 +453,10 @@ namespace Kaos.Test.Collections
         {
             Setup();
             for (int key = 1; key < 10; ++key)
-                tree1.Add (key, key + 1000);
+                dary1.Add (key, key + 1000);
 
             var target = new System.Collections.Generic.KeyValuePair<int,int>[4];
-            tree1.CopyTo (target, 2);
+            dary1.CopyTo (target, 2);
         }
 
 
@@ -468,11 +468,11 @@ namespace Kaos.Test.Collections
             int size = 20;
 
             for (int i = 0; i < size; ++i)
-                tree1.Add (i + 1000, i + 10000);
+                dary1.Add (i + 1000, i + 10000);
 
             var pairs = new KeyValuePair<int,int>[size + offset];
 
-            tree1.CopyTo (pairs, offset);
+            dary1.CopyTo (pairs, offset);
 
             for (int i = 0; i < offset; ++i)
             {
@@ -493,9 +493,9 @@ namespace Kaos.Test.Collections
         public void CrashRd_Remove_ArgumentNull()
         {
             Setup();
-            tree2.Add ("delta", 4);
+            dary2.Add ("delta", 4);
 
-            bool isRemoved = tree2.Remove ((String) null);
+            bool isRemoved = dary2.Remove ((String) null);
         }
 
 
@@ -505,15 +505,15 @@ namespace Kaos.Test.Collections
             Setup();
 
             foreach (int key in iVals1)
-                tree1.Add (key, key + 1000);
+                dary1.Add (key, key + 1000);
 
-            int c0 = tree1.Count;
-            bool isRemoved1 = tree1.Remove (iVals1[3]);
-            bool isRemoved2 = tree1.Remove (iVals1[3]);
+            int c0 = dary1.Count;
+            bool isRemoved1 = dary1.Remove (iVals1[3]);
+            bool isRemoved2 = dary1.Remove (iVals1[3]);
 
             Assert.IsTrue (isRemoved1);
             Assert.IsFalse (isRemoved2);
-            Assert.AreEqual (c0 - 1, tree1.Count);
+            Assert.AreEqual (c0 - 1, dary1.Count);
         }
 
 
@@ -524,7 +524,7 @@ namespace Kaos.Test.Collections
             Setup();
 
             int resultValue;
-            tree2.TryGetValue (null, out resultValue);
+            dary2.TryGetValue (null, out resultValue);
         }
 
 
@@ -533,11 +533,11 @@ namespace Kaos.Test.Collections
         {
             Setup (5);
             for (int i = 2; i <= 50; i += 2)
-                tree1.Add (i, i + 300);
+                dary1.Add (i, i + 300);
 
-            bool result1 = tree1.TryGetValue (5, out int val1);
-            bool result2 = tree1.TryGetValue (18, out int val2);
-            bool result3 = tree1.TryGetValue (26, out int val3);
+            bool result1 = dary1.TryGetValue (5, out int val1);
+            bool result2 = dary1.TryGetValue (18, out int val2);
+            bool result3 = dary1.TryGetValue (26, out int val3);
 
             Assert.AreEqual (val2, 318);
             Assert.AreEqual (val3, 326);
@@ -579,14 +579,14 @@ namespace Kaos.Test.Collections
             Setup();
 
             foreach (int key in iVals1)
-                tree1.Add (key, key + 1000);
+                dary1.Add (key, key + 1000);
 
             int resultValue;
-            tree1.TryGetValue (iVals1[0], out resultValue);
+            dary1.TryGetValue (iVals1[0], out resultValue);
 
             Assert.AreEqual (iVals1[0] + 1000, resultValue);
 
-            tree1.TryGetValue (50, out resultValue);
+            dary1.TryGetValue (50, out resultValue);
             Assert.AreEqual (default (int), resultValue);
         }
 
@@ -600,7 +600,7 @@ namespace Kaos.Test.Collections
             int actual = 0;
             Setup();
 
-            using (var e1 = tree2.GetEnumerator())
+            using (var e1 = dary2.GetEnumerator())
             {
                 while (e1.MoveNext())
                     ++actual;
@@ -618,11 +618,11 @@ namespace Kaos.Test.Collections
             int actual1 = 0, total1 = 0;
 
             Setup();
-            tree2.Add ("three", 3);
-            tree2.Add ("one", 1);
-            tree2.Add ("five", 5);
+            dary2.Add ("three", 3);
+            dary2.Add ("one", 1);
+            dary2.Add ("five", 5);
 
-            using (var e1 = tree2.GetEnumerator())
+            using (var e1 = dary2.GetEnumerator())
             {
                 while (e1.MoveNext())
                 {
@@ -645,11 +645,11 @@ namespace Kaos.Test.Collections
             Setup();
 
             for (int i = 0; i < iVals1.Length; ++i)
-                tree1.Add (iVals1[i], iVals1[i] + 1000);
+                dary1.Add (iVals1[i], iVals1[i] + 1000);
 
             int actualCount = 0;
 
-            foreach (KeyValuePair<int,int> pair in tree1)
+            foreach (KeyValuePair<int,int> pair in dary1)
             {
                 ++actualCount;
                 Assert.AreEqual (pair.Key + 1000, pair.Value);
@@ -664,8 +664,8 @@ namespace Kaos.Test.Collections
         public void CrashRd_oeCurrent_InvalidOperationA()
         {
             Setup();
-            tree2.Add ("cc", 3);
-            IEnumerator<KeyValuePair<string,int>> kvEtor = tree2.GetEnumerator();
+            dary2.Add ("cc", 3);
+            IEnumerator<KeyValuePair<string,int>> kvEtor = dary2.GetEnumerator();
 
             object zz = ((System.Collections.IEnumerator) kvEtor).Current;
         }
@@ -676,8 +676,8 @@ namespace Kaos.Test.Collections
         public void CrashRd_oeCurrent_InvalidOperationB()
         {
             Setup();
-            tree2.Add ("cc", 3);
-            IEnumerator<KeyValuePair<string,int>> kvEtor = tree2.GetEnumerator();
+            dary2.Add ("cc", 3);
+            IEnumerator<KeyValuePair<string,int>> kvEtor = dary2.GetEnumerator();
             kvEtor.MoveNext();
             kvEtor.MoveNext();
 
@@ -688,8 +688,8 @@ namespace Kaos.Test.Collections
         public void UnitRd_EtorPair()
         {
             Setup();
-            tree2.Add ("nine", 9);
-            IEnumerator<KeyValuePair<string,int>> kvEnum = tree2.GetEnumerator();
+            dary2.Add ("nine", 9);
+            IEnumerator<KeyValuePair<string,int>> kvEnum = dary2.GetEnumerator();
 
             KeyValuePair<string,int> pair0 = kvEnum.Current;
             Assert.AreEqual (default (int), pair0.Value);
@@ -712,15 +712,15 @@ namespace Kaos.Test.Collections
         public void CrashRd_EtorHotUpdate()
         {
             Setup (4);
-            tree2.Add ("vv", 1);
-            tree2.Add ("mm", 2);
-            tree2.Add ("qq", 3);
+            dary2.Add ("vv", 1);
+            dary2.Add ("mm", 2);
+            dary2.Add ("qq", 3);
 
             int n = 0;
-            foreach (var kv in tree2)
+            foreach (var kv in dary2)
             {
                 if (++n == 2)
-                    tree2.Add ("breaks enum", 4);
+                    dary2.Add ("breaks enum", 4);
             }
         }
 
@@ -728,7 +728,7 @@ namespace Kaos.Test.Collections
         public void UnitRd_oGetEnumerator()
         {
             Setup();
-            var aa = (System.Collections.IEnumerable) tree1;
+            var aa = (System.Collections.IEnumerable) dary1;
             var bb = aa.GetEnumerator();
         }
 
@@ -741,7 +741,7 @@ namespace Kaos.Test.Collections
         public void CrashRd_pcAdd_Argument()
         {
             Setup();
-            var pc = (ICollection<KeyValuePair<string,int>>) tree2;
+            var pc = (ICollection<KeyValuePair<string,int>>) dary2;
 
             var p1 = new KeyValuePair<string,int> ("beta", 1);
             var p2 = new KeyValuePair<string,int> (null, 98);
@@ -752,7 +752,7 @@ namespace Kaos.Test.Collections
             // Adding a null key is allowed here!
             pc.Add (p2);
 
-            int result2 = tree2.Count;
+            int result2 = dary2.Count;
             Assert.AreEqual (2, result2);
 
             // Should bomb on the second null key.
@@ -764,13 +764,13 @@ namespace Kaos.Test.Collections
         public void UnitRd_pcAdd()
         {
             Setup();
-            var pc = (ICollection<KeyValuePair<int,int>>) tree1;
+            var pc = (ICollection<KeyValuePair<int,int>>) dary1;
 
             var p1 = new KeyValuePair<int,int> (17, 170);
             pc.Add (p1);
 
-            Assert.AreEqual (1, tree1.Count);
-            Assert.IsTrue (tree1.ContainsKey (17));
+            Assert.AreEqual (1, dary1.Count);
+            Assert.IsTrue (dary1.ContainsKey (17));
         }
 
 
@@ -778,7 +778,7 @@ namespace Kaos.Test.Collections
         public void UnitRd_pcContains()
         {
             Setup (4);
-            var pc = (ICollection<KeyValuePair<string,int>>) tree2;
+            var pc = (ICollection<KeyValuePair<string,int>>) dary2;
 
             var nullKv = new KeyValuePair<string,int> (null, 0);
             var zedKv = new KeyValuePair<string,int> ("z", 0);
@@ -802,10 +802,10 @@ namespace Kaos.Test.Collections
         public void UnitRd_pcComparePairNullRef()
         {
             Setup();
-            var pc = (ICollection<KeyValuePair<int,string>>) tree4;
+            var pc = (ICollection<KeyValuePair<int,string>>) dary4;
 
-            tree4.Add (3, "cc");
-            tree4.Add (1, "aa");
+            dary4.Add (3, "cc");
+            dary4.Add (1, "aa");
 
             var pair0 = new KeyValuePair<int,string> (0, null);
             var pair1 = new KeyValuePair<int,string> (3, "cc");
@@ -814,7 +814,7 @@ namespace Kaos.Test.Collections
             Assert.IsFalse (pc.Contains (pair0));
             Assert.IsTrue (pc.Contains (pair1));
 
-            tree4.Add (0, null);
+            dary4.Add (0, null);
             Assert.IsTrue (pc.Contains (pair0));
         }
 
@@ -823,10 +823,10 @@ namespace Kaos.Test.Collections
         public void UnitRd_pcEtor()
         {
             Setup();
-            var pc = (ICollection<KeyValuePair<int,int>>) tree1;
+            var pc = (ICollection<KeyValuePair<int,int>>) dary1;
 
             foreach (int k in iVals1)
-                tree1.Add (k, k + 100);
+                dary1.Add (k, k + 100);
 
             int actualCount = 0;
             foreach (KeyValuePair<int,int> pair in pc)
@@ -843,10 +843,10 @@ namespace Kaos.Test.Collections
         public void UnitRd_peEtor()
         {
             Setup();
-            var pe = (IEnumerable<KeyValuePair<int,int>>) tree1;
+            var pe = (IEnumerable<KeyValuePair<int,int>>) dary1;
 
             foreach (int val in iVals1)
-                tree1.Add (val, val + 100);
+                dary1.Add (val, val + 100);
 
             int actualCount = 0;
             foreach (KeyValuePair<int,int> pair in pe)
@@ -863,9 +863,9 @@ namespace Kaos.Test.Collections
         public void UnitRd_oeGetEtor()
         {
             Setup();
-            var oe = (System.Collections.IEnumerable) tree4;
+            var oe = (System.Collections.IEnumerable) dary4;
 
-            tree4.Add (3, "cc");
+            dary4.Add (3, "cc");
 
             int rowCount = 0;
             foreach (object row in oe)
@@ -884,7 +884,7 @@ namespace Kaos.Test.Collections
         public void UnitRd_pcIsReadonly()
         {
             Setup();
-            var pc = (ICollection<KeyValuePair<int,int>>) tree1;
+            var pc = (ICollection<KeyValuePair<int,int>>) dary1;
 
             Assert.IsFalse (pc.IsReadOnly);
         }
@@ -894,9 +894,9 @@ namespace Kaos.Test.Collections
         public void UnitRd_gdKeys()
         {
             Setup();
-            tree2.Add ("alpha", 1);
-            tree2.Add ("beta", 2);
-            var gd = (IDictionary<string,int>) tree2;
+            dary2.Add ("alpha", 1);
+            dary2.Add ("beta", 2);
+            var gd = (IDictionary<string,int>) dary2;
             int count = gd.Keys.Count;
             Assert.AreEqual (2, count);
         }
@@ -906,7 +906,7 @@ namespace Kaos.Test.Collections
         public void UnitRd_pcRemovePair()
         {
             Setup();
-            var pc = (ICollection<KeyValuePair<string,int>>) tree2;
+            var pc = (ICollection<KeyValuePair<string,int>>) dary2;
 
             var pair0 = new KeyValuePair<string,int> (null, 0);
             var pair1 = new KeyValuePair<string,int> ("ten", 10);
@@ -916,22 +916,22 @@ namespace Kaos.Test.Collections
             pc.Add (pair0);
             pc.Add (pair1);
             pc.Add (pair3);
-            Assert.AreEqual (3, tree2.Count);
+            Assert.AreEqual (3, dary2.Count);
 
             bool isRemoved = pc.Remove (pair0);
             Assert.IsTrue (isRemoved);
-            Assert.AreEqual (2, tree2.Count);
+            Assert.AreEqual (2, dary2.Count);
 
             isRemoved = pc.Remove (pair0);
             Assert.IsFalse (isRemoved);
-            Assert.AreEqual (2, tree2.Count);
+            Assert.AreEqual (2, dary2.Count);
 
             isRemoved = pc.Remove (pair2);
-            Assert.AreEqual (2, tree2.Count);
+            Assert.AreEqual (2, dary2.Count);
 
             isRemoved = pc.Remove (pair1);
             Assert.IsTrue (isRemoved);
-            Assert.AreEqual (1, tree2.Count);
+            Assert.AreEqual (1, dary2.Count);
         }
 
 
@@ -939,18 +939,18 @@ namespace Kaos.Test.Collections
         public void UnitRd_pcRemovePairNull()
         {
             Setup();
-            tree4.Add (3, "cc");
-            tree4.Add (5, "ee");
-            tree4.Add (4, null);
+            dary4.Add (3, "cc");
+            dary4.Add (5, "ee");
+            dary4.Add (4, null);
 
-            var gpc = (ICollection<KeyValuePair<int,string>>) tree4;
+            var gpc = (ICollection<KeyValuePair<int,string>>) dary4;
             bool isOK = gpc.Remove (new KeyValuePair<int,string> (99, null));
             Assert.IsFalse (isOK);
 
             isOK = gpc.Remove (new KeyValuePair<int,string> (4, null));
             Assert.IsTrue (isOK);
 
-            isOK = tree4.ContainsKey (4);
+            isOK = dary4.ContainsKey (4);
             Assert.IsFalse (isOK);
         }
 
@@ -959,9 +959,9 @@ namespace Kaos.Test.Collections
         public void UnitRd_gdValues()
         {
             Setup();
-            tree2.Add ("alpha", 1);
-            tree2.Add ("beta", 2);
-            var gd = (IDictionary<string,int>) tree2;
+            dary2.Add ("alpha", 1);
+            dary2.Add ("beta", 2);
+            var gd = (IDictionary<string,int>) dary2;
             int count = gd.Values.Count;
             Assert.AreEqual (2, count);
         }
@@ -1447,7 +1447,7 @@ namespace Kaos.Test.Collections
             int total = 0;
             Setup (5);
 
-            foreach (var countdown in tree1.Reverse())
+            foreach (var countdown in dary1.Reverse())
                ++total;
 
             Assert.AreEqual (0, total);

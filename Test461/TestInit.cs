@@ -51,19 +51,19 @@ namespace Kaos.Test.Collections
     public partial class TestBtree
     {
         #if TEST_BCL
-        SortedDictionary<int,int> tree1;
-        SortedDictionary<string,int> tree2;
-        SortedDictionary<string,int?> tree3;
-        SortedDictionary<int,string> tree4;
+        SortedDictionary<int,int> dary1;
+        SortedDictionary<string,int> dary2;
+        SortedDictionary<string,int?> dary3;
+        SortedDictionary<int,string> dary4;
         SortedSet<int> setI;
         SortedSet<string> setS;
         SortedSet<TS1> setTS1;
         SortedSet<Person> personSet;
 #else
-        RankedDictionary<int,int> tree1;
-        RankedDictionary<string,int> tree2;
-        RankedDictionary<string,int?> tree3;
-        RankedDictionary<int,string> tree4;
+        RankedDictionary<int,int> dary1;
+        RankedDictionary<string,int> dary2;
+        RankedDictionary<string,int?> dary3;
+        RankedDictionary<int,string> dary4;
         RankedSet<int> setI;
         RankedSet<string> setS;
         RankedSet<TS1> setTS1;
@@ -99,43 +99,43 @@ namespace Kaos.Test.Collections
         public void Setup (int order)
         {
 #if TEST_BCL
-            tree1 = new SortedDictionary<int,int>();
-            tree2 = new SortedDictionary<string,int>();
-            tree3 = new SortedDictionary<string,int?>();
-            tree4 = new SortedDictionary<int,string>();
+            dary1 = new SortedDictionary<int,int>();
+            dary2 = new SortedDictionary<string,int>();
+            dary3 = new SortedDictionary<string,int?>();
+            dary4 = new SortedDictionary<int,string>();
             setI = new SortedSet<int>();
             setS = new SortedSet<string>();
             setTS1 = new SortedSet<TS1>();
             personSet = new SortedSet<Person> (new PersonComparer());
 #else
-            tree1 = new RankedDictionary<int,int>();
-            tree2 = new RankedDictionary<string,int>();
-            tree3 = new RankedDictionary<string,int?>();
-            tree4 = new RankedDictionary<int,string>();
+            dary1 = new RankedDictionary<int,int>();
+            dary2 = new RankedDictionary<string,int>();
+            dary3 = new RankedDictionary<string,int?>();
+            dary4 = new RankedDictionary<int,string>();
             setI = new RankedSet<int>();
             setS = new RankedSet<string>();
             setTS1 = new RankedSet<TS1>();
             personSet = new RankedSet<Person> (new PersonComparer());
-            tree1.Capacity = order;
-            tree2.Capacity = order;
-            tree3.Capacity = order;
-            tree4.Capacity = order;
+            dary1.Capacity = order;
+            dary2.Capacity = order;
+            dary3.Capacity = order;
+            dary4.Capacity = order;
             setI.Capacity = order;
             setS.Capacity = order;
             setTS1.Capacity = order;
             personSet.Capacity = order;
 #endif
 
-            Type treeType = tree1.GetType();
+            Type treeType = dary1.GetType();
 
             // For testing explicit implementations.
-            genCol2 = (ICollection<KeyValuePair<string,int>>) tree2;
-            genKeys2 = (ICollection<string>) tree2.Keys;
-            genValues2 = (ICollection<int>) tree2.Values;
-            objCol1 = (System.Collections.IDictionary) tree1;
-            objCol2 = (System.Collections.IDictionary) tree2;
-            objCol3 = (System.Collections.IDictionary) tree3;
-            objCol4 = (System.Collections.IDictionary) tree4;
+            genCol2 = (ICollection<KeyValuePair<string,int>>) dary2;
+            genKeys2 = (ICollection<string>) dary2.Keys;
+            genValues2 = (ICollection<int>) dary2.Values;
+            objCol1 = (System.Collections.IDictionary) dary1;
+            objCol2 = (System.Collections.IDictionary) dary2;
+            objCol3 = (System.Collections.IDictionary) dary3;
+            objCol4 = (System.Collections.IDictionary) dary4;
         }
     }
 }

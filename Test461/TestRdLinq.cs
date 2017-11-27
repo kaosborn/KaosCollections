@@ -17,13 +17,13 @@ namespace Kaos.Test.Collections
         {
             Setup();
 
-            var x1 = tree1.Any();
+            var x1 = dary1.Any();
 
-            tree1.Add (1, 10);
-            tree1.Add (3, 30);
-            tree1.Add (2, 20);
+            dary1.Add (1, 10);
+            dary1.Add (3, 30);
+            dary1.Add (2, 20);
 
-            var x2 = tree1.Any();
+            var x2 = dary1.Any();
 
             Assert.IsFalse (x1);
             Assert.IsTrue (x2);
@@ -34,11 +34,11 @@ namespace Kaos.Test.Collections
         public void UnitRd_LongCount()
         {
             Setup();
-            tree1.Add (3, -33);
-            tree1.Add (1, -11);
-            tree1.Add (2, -22);
+            dary1.Add (3, -33);
+            dary1.Add (1, -11);
+            dary1.Add (2, -22);
 
-            var result = tree1.LongCount();
+            var result = dary1.LongCount();
             var type = result.GetType();
 
             Assert.AreEqual (3, result);

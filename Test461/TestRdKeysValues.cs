@@ -28,11 +28,11 @@ namespace Kaos.Test.Collections
         public void UnitRdk_Ctor()
         {
             Setup();
-            tree1.Add (1, -1);
+            dary1.Add (1, -1);
 #if TEST_BCL
-            var keys = new SortedDictionary<int,int>.KeyCollection (tree1);
+            var keys = new SortedDictionary<int,int>.KeyCollection (dary1);
 #else
-            var keys = new RankedDictionary<int,int>.KeyCollection (tree1);
+            var keys = new RankedDictionary<int,int>.KeyCollection (dary1);
 #endif
             Assert.AreEqual (1, keys.Count);
         }
@@ -46,9 +46,9 @@ namespace Kaos.Test.Collections
         {
             Setup();
             foreach (int key in iVals1)
-                tree1.Add (key, key + 1000);
+                dary1.Add (key, key + 1000);
 
-            Assert.AreEqual (iVals1.Length, tree1.Keys.Count);
+            Assert.AreEqual (iVals1.Length, dary1.Keys.Count);
         }
 
 
@@ -56,7 +56,7 @@ namespace Kaos.Test.Collections
         public void UnitRdk_gcIsReadonly()
         {
             Setup();
-            var gc = (System.Collections.Generic.ICollection<int>) tree1.Keys;
+            var gc = (System.Collections.Generic.ICollection<int>) dary1.Keys;
             Assert.IsTrue (gc.IsReadOnly);
         }
 
@@ -65,7 +65,7 @@ namespace Kaos.Test.Collections
         public void UnitRdk_ocSyncRoot()
         {
             Setup();
-            var oc = (System.Collections.ICollection) tree1.Keys;
+            var oc = (System.Collections.ICollection) dary1.Keys;
             Assert.IsFalse (oc.SyncRoot.GetType().IsValueType);
         }
 
@@ -78,7 +78,7 @@ namespace Kaos.Test.Collections
         public void CrashRdk_gcAdd_NotSupported()
         {
             Setup();
-            var gc = (System.Collections.Generic.ICollection<string>) tree2.Keys;
+            var gc = (System.Collections.Generic.ICollection<string>) dary2.Keys;
             gc.Add ("omega");
         }
 
@@ -88,7 +88,7 @@ namespace Kaos.Test.Collections
         public void CrashRdk_gcClear_NotSupported()
         {
             Setup();
-            var gc = (System.Collections.Generic.ICollection<string>) tree2.Keys;
+            var gc = (System.Collections.Generic.ICollection<string>) dary2.Keys;
             gc.Clear();
         }
 
@@ -98,9 +98,9 @@ namespace Kaos.Test.Collections
         public void CrashRdk_gcContains_ArgumentNull()
         {
             Setup();
-            var gc = (System.Collections.Generic.ICollection<string>) tree2.Keys;
+            var gc = (System.Collections.Generic.ICollection<string>) dary2.Keys;
 
-            tree2.Add ("alpha", 10);
+            dary2.Add ("alpha", 10);
 
             var junk = gc.Contains (null);
         }
@@ -109,10 +109,10 @@ namespace Kaos.Test.Collections
         public void UnitRdk_gcContains()
         {
             Setup();
-            var gc = (System.Collections.Generic.ICollection<string>) tree2.Keys;
+            var gc = (System.Collections.Generic.ICollection<string>) dary2.Keys;
 
-            tree2.Add ("alpha", 10);
-            tree2.Add ("beta", 20);
+            dary2.Add ("alpha", 10);
+            dary2.Add ("beta", 20);
 
             Assert.IsTrue (gc.Contains ("beta"));
             Assert.IsFalse (gc.Contains ("zed"));
@@ -125,7 +125,7 @@ namespace Kaos.Test.Collections
         {
             Setup();
             var target = new int[10];
-            tree1.Keys.CopyTo (null, -1);
+            dary1.Keys.CopyTo (null, -1);
         }
 
         [TestMethod]
@@ -134,7 +134,7 @@ namespace Kaos.Test.Collections
         {
             Setup();
             var target = new int[iVals1.Length];
-            tree1.Keys.CopyTo (target, -1);
+            dary1.Keys.CopyTo (target, -1);
         }
 
         [TestMethod]
@@ -143,10 +143,10 @@ namespace Kaos.Test.Collections
         {
             Setup();
             for (int key = 1; key < 10; ++key)
-                tree1.Add (key, key + 1000);
+                dary1.Add (key, key + 1000);
 
             var target = new int[4];
-            tree1.Keys.CopyTo (target, 2);
+            dary1.Keys.CopyTo (target, 2);
         }
 
         [TestMethod]
@@ -156,10 +156,10 @@ namespace Kaos.Test.Collections
             int n = 10, offset = 5;
 
             for (int k = 0; k < n; ++k)
-                tree1.Add (k, k + 1000);
+                dary1.Add (k, k + 1000);
 
             int[] target = new int[n + offset];
-            tree1.Keys.CopyTo (target, offset);
+            dary1.Keys.CopyTo (target, offset);
 
             for (int k = 0; k < n; ++k)
                 Assert.AreEqual (k, target[k + offset]);
@@ -170,13 +170,13 @@ namespace Kaos.Test.Collections
         public void UnitRdk_gcCopyTo()
         {
             Setup();
-            var gc = (System.Collections.Generic.ICollection<string>) tree2.Keys;
+            var gc = (System.Collections.Generic.ICollection<string>) dary2.Keys;
 
-            tree2.Add ("alpha", 1);
-            tree2.Add ("beta", 2);
-            tree2.Add ("gamma", 3);
+            dary2.Add ("alpha", 1);
+            dary2.Add ("beta", 2);
+            dary2.Add ("gamma", 3);
 
-            var target = new string[tree2.Count];
+            var target = new string[dary2.Count];
 
             gc.CopyTo (target, 0);
 
@@ -191,7 +191,7 @@ namespace Kaos.Test.Collections
         public void CrashRdk_gcRemove_NotSupported()
         {
             Setup();
-            var gc = (System.Collections.Generic.ICollection<string>) tree2.Keys;
+            var gc = (System.Collections.Generic.ICollection<string>) dary2.Keys;
             gc.Remove ("omega");
         }
 
@@ -274,7 +274,7 @@ namespace Kaos.Test.Collections
         public void CrashRdk_ocCurrent_InvalidOperation()
         {
             Setup();
-            tree2.Add ("CC", 3);
+            dary2.Add ("CC", 3);
 
             System.Collections.ICollection oc = objCol2.Keys;
             System.Collections.IEnumerator etor = oc.GetEnumerator();
@@ -289,10 +289,10 @@ namespace Kaos.Test.Collections
             int n = 100;
 
             for (int k = 0; k < n; ++k)
-                tree1.Add (k, k + 1000);
+                dary1.Add (k, k + 1000);
 
             int actualCount = 0;
-            foreach (int key in tree1.Keys)
+            foreach (int key in dary1.Keys)
             {
                 Assert.AreEqual (actualCount, key);
                 ++actualCount;
@@ -308,7 +308,7 @@ namespace Kaos.Test.Collections
             int n = 10;
 
             for (int k = 0; k < n; ++k)
-                tree2.Add (k.ToString(), k);
+                dary2.Add (k.ToString(), k);
 
             int expected = 0;
             var etor = genKeys2.GetEnumerator();
@@ -330,15 +330,15 @@ namespace Kaos.Test.Collections
         public void CrashRdk_EtorHotUpdate()
         {
             Setup (4);
-            tree2.Add ("vv", 1);
-            tree2.Add ("mm", 2);
-            tree2.Add ("qq", 3);
+            dary2.Add ("vv", 1);
+            dary2.Add ("mm", 2);
+            dary2.Add ("qq", 3);
 
             int n = 0;
-            foreach (var kv in tree2.Keys)
+            foreach (var kv in dary2.Keys)
             {
                 if (++n == 2)
-                    tree2.Remove ("vv");
+                    dary2.Remove ("vv");
             }
         }
 
@@ -363,11 +363,11 @@ namespace Kaos.Test.Collections
         public void UnitRdv_Ctor()
         {
             Setup();
-            tree1.Add (1, -1);
+            dary1.Add (1, -1);
 #if TEST_BCL
-            var vals = new SortedDictionary<int,int>.ValueCollection (tree1);
+            var vals = new SortedDictionary<int,int>.ValueCollection (dary1);
 #else
-            var vals = new RankedDictionary<int,int>.ValueCollection (tree1);
+            var vals = new RankedDictionary<int,int>.ValueCollection (dary1);
 #endif
             Assert.AreEqual (1, vals.Count);
         }
@@ -381,9 +381,9 @@ namespace Kaos.Test.Collections
         {
             Setup();
             foreach (int key in iVals1)
-                tree1.Add (key, key + 1000);
+                dary1.Add (key, key + 1000);
 
-            Assert.AreEqual (iVals1.Length, tree1.Values.Count);
+            Assert.AreEqual (iVals1.Length, dary1.Values.Count);
         }
 
 
@@ -391,7 +391,7 @@ namespace Kaos.Test.Collections
         public void UnitRdv_gcIsReadonly()
         {
             Setup();
-            var gc = (System.Collections.Generic.ICollection<int>) tree1.Values;
+            var gc = (System.Collections.Generic.ICollection<int>) dary1.Values;
             Assert.IsTrue (gc.IsReadOnly);
         }
 
@@ -400,7 +400,7 @@ namespace Kaos.Test.Collections
         public void UnitRdv_ocSyncRoot()
         {
             Setup();
-            var oc = (System.Collections.ICollection) tree2.Values;
+            var oc = (System.Collections.ICollection) dary2.Values;
             Assert.IsFalse (oc.SyncRoot.GetType().IsValueType);
         }
 
@@ -413,7 +413,7 @@ namespace Kaos.Test.Collections
         public void CrashRdv_gcAdd_NotSupported()
         {
             Setup();
-            var gc = (System.Collections.Generic.ICollection<int>) tree2.Values;
+            var gc = (System.Collections.Generic.ICollection<int>) dary2.Values;
             gc.Add (9);
         }
 
@@ -423,7 +423,7 @@ namespace Kaos.Test.Collections
         public void CrashRdv_gcClear_NotSupported()
         {
             Setup();
-            var gc = (System.Collections.Generic.ICollection<int>) tree2.Values;
+            var gc = (System.Collections.Generic.ICollection<int>) dary2.Values;
             gc.Clear();
         }
 
@@ -432,10 +432,10 @@ namespace Kaos.Test.Collections
         public void UnitRdv_gcContains()
         {
             Setup();
-            var gc = (System.Collections.Generic.ICollection<int>) tree2.Values;
+            var gc = (System.Collections.Generic.ICollection<int>) dary2.Values;
 
-            tree2.Add ("alpha", 10);
-            tree2.Add ("beta", 20);
+            dary2.Add ("alpha", 10);
+            dary2.Add ("beta", 20);
 
             Assert.IsTrue (gc.Contains (20));
             Assert.IsFalse (gc.Contains (15));
@@ -448,7 +448,7 @@ namespace Kaos.Test.Collections
         {
             Setup();
             var target = new int[iVals1.Length];
-            tree1.Values.CopyTo (null, -1);
+            dary1.Values.CopyTo (null, -1);
         }
 
         [TestMethod]
@@ -457,7 +457,7 @@ namespace Kaos.Test.Collections
         {
             Setup();
             var target = new int[10];
-            tree1.Values.CopyTo (target, -1);
+            dary1.Values.CopyTo (target, -1);
         }
 
         [TestMethod]
@@ -467,10 +467,10 @@ namespace Kaos.Test.Collections
             Setup();
 
             for (int key = 1; key < 10; ++key)
-                tree1.Add (key, key + 1000);
+                dary1.Add (key, key + 1000);
 
             var target = new int[4];
-            tree1.Values.CopyTo (target, 2);
+            dary1.Values.CopyTo (target, 2);
         }
 
         [TestMethod]
@@ -480,10 +480,10 @@ namespace Kaos.Test.Collections
             int n = 10, offset = 5;
 
             for (int k = 0; k < n; ++k)
-                tree1.Add (k, k + 1000);
+                dary1.Add (k, k + 1000);
 
             int[] target = new int[n + offset];
-            tree1.Values.CopyTo (target, offset);
+            dary1.Values.CopyTo (target, offset);
 
             for (int k = 0; k < n; ++k)
                 Assert.AreEqual (k + 1000, target[k + offset]);
@@ -494,13 +494,13 @@ namespace Kaos.Test.Collections
         public void UnitRdv_gcCopyTo()
         {
             Setup();
-            var gc = (System.Collections.Generic.ICollection<int>) tree2.Values;
+            var gc = (System.Collections.Generic.ICollection<int>) dary2.Values;
 
-            tree2.Add ("alpha", 1);
-            tree2.Add ("beta", 2);
-            tree2.Add ("gamma", 3);
+            dary2.Add ("alpha", 1);
+            dary2.Add ("beta", 2);
+            dary2.Add ("gamma", 3);
 
-            var target = new int[tree2.Count];
+            var target = new int[dary2.Count];
 
             gc.CopyTo (target, 0);
 
@@ -515,7 +515,7 @@ namespace Kaos.Test.Collections
         public void CrashRdv_gcRemove_NotSupported()
         {
             Setup();
-            var gc = (System.Collections.Generic.ICollection<int>) tree2.Values;
+            var gc = (System.Collections.Generic.ICollection<int>) dary2.Values;
             gc.Remove (9);
         }
 
@@ -558,7 +558,7 @@ namespace Kaos.Test.Collections
         public void CrashRdv_ocCurrent_InvalidOperation()
         {
             Setup();
-            tree2.Add ("CC", 3);
+            dary2.Add ("CC", 3);
 
             System.Collections.ICollection oc = objCol2.Values;
             System.Collections.IEnumerator etor = oc.GetEnumerator();
@@ -573,10 +573,10 @@ namespace Kaos.Test.Collections
             int n = 100;
 
             for (int k = 0; k < n; ++k)
-                tree1.Add (k, k + 1000);
+                dary1.Add (k, k + 1000);
 
             int actualCount = 0;
-            foreach (int value in tree1.Values)
+            foreach (int value in dary1.Values)
             {
                 Assert.AreEqual (actualCount + 1000, value);
                 ++actualCount;
@@ -592,7 +592,7 @@ namespace Kaos.Test.Collections
             int n = 10;
 
             for (int k = 0; k < n; ++k)
-                tree2.Add (k.ToString(), k);
+                dary2.Add (k.ToString(), k);
 
             int expected = 0;
             var etor = genValues2.GetEnumerator();
@@ -614,15 +614,15 @@ namespace Kaos.Test.Collections
         public void CrashRdv_EtorHotUpdate()
         {
             Setup (4);
-            tree2.Add ("vv", 1);
-            tree2.Add ("mm", 2);
-            tree2.Add ("qq", 3);
+            dary2.Add ("vv", 1);
+            dary2.Add ("mm", 2);
+            dary2.Add ("qq", 3);
 
             int n = 0;
-            foreach (var kv in tree2.Keys)
+            foreach (var kv in dary2.Keys)
             {
                 if (++n == 2)
-                    tree2.Clear();
+                    dary2.Clear();
             }
         }
 

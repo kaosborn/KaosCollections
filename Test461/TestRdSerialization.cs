@@ -91,23 +91,23 @@ namespace Kaos.Test.Collections
         public void UnitRd_Serialization()
         {
             string fileName = "DaryScores.bin";
-            var dary1 = new PlayerDary();
-            dary1.Add (new Player ("GG", "Floyd"), 11);
-            dary1.Add (new Player (null, "Betty"), 22);
-            dary1.Add (new Player (null, "Alvin"), 33);
-            dary1.Add (new Player ("GG", "Chuck"), 44);
-            dary1.Add (new Player ("A1", "Ziggy"), 55);
-            dary1.Add (new Player ("GG", null), 66);
+            var p1 = new PlayerDary();
+            p1.Add (new Player ("GG", "Floyd"), 11);
+            p1.Add (new Player (null, "Betty"), 22);
+            p1.Add (new Player (null, "Alvin"), 33);
+            p1.Add (new Player ("GG", "Chuck"), 44);
+            p1.Add (new Player ("A1", "Ziggy"), 55);
+            p1.Add (new Player ("GG", null), 66);
 
             IFormatter formatter = new BinaryFormatter();
             using (var fs = new FileStream (fileName, FileMode.Create))
-            { formatter.Serialize (fs, dary1); }
+            { formatter.Serialize (fs, p1); }
 
-            PlayerDary dary2 = null;
+            PlayerDary p2 = null;
             using (var fs = new FileStream (fileName, FileMode.Open))
-            { dary2 = (PlayerDary) formatter.Deserialize (fs); }
+            { p2 = (PlayerDary) formatter.Deserialize (fs); }
 
-            Assert.AreEqual (6, dary2.Count);
+            Assert.AreEqual (6, p2.Count);
         }
     }
 }
