@@ -280,31 +280,20 @@ namespace Kaos.Test.Collections
         #region Test methods
 
         [TestMethod]
-        public void UnitRs_AddNull()
-        {
-            Setup();
-
-            // SortedSet allows null key (but SortedDictionary does not).
-            setTS1.Add (null);
-        }
-
-
-        [TestMethod]
         public void UnitRs_Add()
         {
-            bool isOk;
             Setup();
 
             setS.Add ("aa");
             setS.Add ("cc");
-            isOk = setS.Add ("bb");
-            Assert.IsTrue (isOk);
+            bool isOk1 = setS.Add ("bb");
+            Assert.IsTrue (isOk1);
+            bool isOk2 = setS.Add (null);
+            Assert.IsTrue (isOk2);
+            bool isOk3 = setS.Add ("cc");
+            Assert.IsFalse (isOk3);
 
-            // SortedSet ignores duplicates (but SortedDictionary throws).
-            isOk = setS.Add ("cc");
-            Assert.IsFalse (isOk);
-
-            Assert.AreEqual (3, setS.Count);
+            Assert.AreEqual (4, setS.Count);
         }
 
 
