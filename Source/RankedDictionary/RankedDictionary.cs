@@ -98,6 +98,11 @@ namespace Kaos.Collections
         #region Constructors
 
         /// <summary>Initializes a new dictionary instance using the default key comparer.</summary>
+        /// <example>
+        /// The below snippet is part of a larger example of the
+        /// <see cref="RankedDictionary{TKey,TValue}"/>class.
+        /// <code source="..\Bench\RdExample01\RdExample01.cs" lang="cs" region="Ctor0" />
+        /// </example>
         public RankedDictionary() : base (Comparer<TKey>.Default, new PairLeaf<TValue>())
         { }
 
@@ -158,6 +163,11 @@ namespace Kaos.Collections
         /// </para>
         /// <para>This is a O(log <em>n</em>) operation for both getting and setting.</para>
         /// </remarks>
+        /// <example>
+        /// The below snippet is part of a larger example of the
+        /// <see cref="RankedDictionary{TKey,TValue}"/>class.
+        /// <code source="..\Bench\RdExample01\RdExample01.cs" lang="cs" region="Indexer" />
+        /// </example>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
         /// <exception cref="KeyNotFoundException">When getting a value and <em>key</em> was not found.</exception>
         public TValue this[TKey key]
@@ -319,8 +329,13 @@ namespace Kaos.Collections
         /// <summary>Determines whether the dictionary contains the supplied key.</summary>
         /// <param name="key">The key to locate.</param>
         /// <returns><b>true</b> if <em>key</em> is contained in the dictionary; otherwise <b>false</b>.</returns>
-        /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
         /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
+        /// <example>
+        /// The below snippet is part of a larger example of the
+        /// <see cref="RankedDictionary{TKey,TValue}"/>class.
+        /// <code source="..\Bench\RdExample01\RdExample01.cs" lang="cs" region="ContainsKey" />
+        /// </example>
+        /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
         public bool ContainsKey (TKey key)
         {
             if (key == null)
@@ -457,6 +472,11 @@ namespace Kaos.Collections
         /// </param>
         /// <returns><b>true</b> if <em>key</em> is found; otherwise <b>false</b>.</returns>
         /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
+        /// <example>
+        /// The below snippet is part of a larger example of the
+        /// <see cref="RankedDictionary{TKey,TValue}"/>class.
+        /// <code source="..\Bench\RdExample01\RdExample01.cs" lang="cs" region="TryGetValue" />
+        /// </example>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
         public bool TryGetValue (TKey key, out TValue value)
         {
