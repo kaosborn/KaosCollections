@@ -181,8 +181,21 @@ namespace Kaos.Collections
             public int IndexOf (TKey key) => tree.FindEdgeForIndex (key, out Leaf leaf, out int leafIndex, leftEdge:true);
 
 
-            /// <summary>Gets the maximum key in the collection per the comparer.</summary>
-            /// <returns>The maximum key in the collection.</returns>
+            /// <summary>Gets the minimum key in the map per the comparer.</summary>
+            /// <returns>The minimum key in the map.</returns>
+            /// <remarks>This is a O(1) operation.</remarks>
+            /// <exception cref="InvalidOperationException">When <see cref="Count"/> is zero.</exception>
+            public TKey First()
+            {
+                if (Count == 0)
+                    throw new InvalidOperationException ("Sequence contains no elements");
+
+                return tree.leftmostLeaf.Key0;
+            }
+
+
+            /// <summary>Gets the maximum key in the map per the comparer.</summary>
+            /// <returns>The maximum key in the map.</returns>
             /// <remarks>This is a O(1) operation.</remarks>
             /// <exception cref="InvalidOperationException">When <see cref="Count"/> is zero.</exception>
             public TKey Last()

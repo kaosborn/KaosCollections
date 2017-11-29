@@ -99,6 +99,19 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRdq_First_InvalidOperation()
+        {
+            Setup();
+#if TEST_BCL
+            var zz = Enumerable.First (dary1);
+#else
+            var zz = dary1.First();
+#endif
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
         public void CrashRdq_Last_InvalidOperation()
         {
             Setup();
@@ -113,16 +126,18 @@ namespace Kaos.Test.Collections
         public void UnitRdq_Last()
         {
             Setup();
-            dary1.Add (3, -33);
-            dary1.Add (1, -11);
-            dary1.Add (2, -22);
+            for (int ii = 9; ii >= 1; --ii) dary1.Add (ii, -ii);
 #if TEST_BCL
-            var kv = Enumerable.Last (dary1);
+            var kv1 = Enumerable.First (dary1);
+            var kv9 = Enumerable.Last (dary1);
 #else
-            var kv = dary1.Last();
+            var kv1 = dary1.First();
+            var kv9 = dary1.Last();
 #endif
-            Assert.AreEqual (3, kv.Key, "didn't get expected last key");
-            Assert.AreEqual (-33, kv.Value, "didn't get expected last value");
+            Assert.AreEqual (1, kv1.Key, "wrong first key");
+            Assert.AreEqual (-1, kv1.Value, "wrong first value");
+            Assert.AreEqual (9, kv9.Key, "wrong last key");
+            Assert.AreEqual (-9, kv9.Value, "wrong last value");
         }
 
         #endregion

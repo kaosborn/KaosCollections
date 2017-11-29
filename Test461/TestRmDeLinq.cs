@@ -98,6 +98,19 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRmq_First_InvalidOperation()
+        {
+            var rm = new RankedMap<int,int>();
+#if TEST_BCL
+            var zz = Enumerable.First (rm);
+#else
+            var zz = rm.First();
+#endif
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
         public void CrashRmq_Last_InvalidOperation()
         {
             var rm = new RankedMap<int,int>();
@@ -109,17 +122,21 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void UnitRmq_Last()
+        public void UnitRmq_FirstLast()
         {
             var rm = new RankedMap<int,int>() { Capacity=5 };
-            for (int ii = 9; ii >= 0; --ii) rm.Add (ii, -ii);
+            for (int ii = 9; ii >= 1; --ii) rm.Add (ii, -ii);
 #if TEST_BCL
-            var kv = Enumerable.Last (rm);
+            var kv1 = Enumerable.First (rm);
+            var kv9 = Enumerable.Last (rm);
 #else
-            var kv = rm.Last();
+            var kv1 = rm.First();
+            var kv9 = rm.Last();
 #endif
-            Assert.AreEqual (9, kv.Key, "wrong last key");
-            Assert.AreEqual (-9, kv.Value, "wrong last value");
+            Assert.AreEqual (1, kv1.Key, "wrong first key");
+            Assert.AreEqual (-1, kv1.Value, "wrong first value");
+            Assert.AreEqual (9, kv9.Key, "wrong last key");
+            Assert.AreEqual (-9, kv9.Value, "wrong last value");
         }
 
         #endregion
@@ -271,6 +288,36 @@ namespace Kaos.Test.Collections
             Assert.AreEqual ("1one", rm.Keys.ElementAtOrDefault (2));
             Assert.AreEqual (default (string), rm.Keys.ElementAtOrDefault (-1));
             Assert.AreEqual (default (string), rm.Keys.ElementAtOrDefault (3));
+#endif
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRmkq_First()
+        {
+            var rm = new RankedMap<int,int>();
+            var keys = rm.Keys;
+#if TEST_BCL
+            var zz = Enumerable.First (rm.Keys);
+#else
+            int zz = keys.First();
+#endif
+        }
+
+        [TestMethod]
+        public void UnitRmkq_First()
+        {
+            var rm = new RankedMap<int,int> { Capacity=4 };
+            var keys = rm.Keys;
+            int n = 50;
+
+            for (int ii = n; ii >= 1; --ii)
+                rm.Add (ii, -ii);
+#if TEST_BCL
+            Assert.AreEqual (1, Enumerable.First (rm.Keys));
+#else
+            Assert.AreEqual (1, keys.First());
 #endif
         }
 

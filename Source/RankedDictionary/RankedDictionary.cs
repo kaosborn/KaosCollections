@@ -1011,6 +1011,19 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>Gets the element with the minimum key in the dictionary per the comparer.</summary>
+        /// <returns>The element with the minimum key in the dictionary.</returns>
+        /// <remarks>This is a O(1) operation.</remarks>
+        /// <exception cref="InvalidOperationException">When <see cref="Count"/> is zero.</exception>
+        public KeyValuePair<TKey,TValue> First()
+        {
+            if (Count == 0)
+                throw new InvalidOperationException ("Sequence contains no elements.");
+
+            return new KeyValuePair<TKey,TValue> (leftmostLeaf.Key0, ((PairLeaf<TValue>) leftmostLeaf).GetValue (0));
+        }
+
+
         /// <summary>Gets the element with the maximum key in the dictionary per the comparer.</summary>
         /// <returns>The element with the maximum key in the dictionary.</returns>
         /// <remarks>This is a O(1) operation.</remarks>

@@ -90,6 +90,19 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRbq_First_InvalidOperation()
+        {
+            var rb = new RankedBag<int>();
+#if TEST_BCL
+            var zz = Enumerable.First (rb);
+#else
+            var zz = rb.First();
+#endif
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
         public void CrashRbq_Last_InvalidOperation()
         {
             var rb = new RankedBag<int>();
@@ -101,14 +114,16 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void UnitRbq_Last()
+        public void UnitRbq_FirstLast()
         {
             var rb = new RankedBag<int> { Capacity=4 };
             int n = 99;
-            for (int ii = n; ii >= 0; --ii) rb.Add (ii);
+            for (int ii = n; ii >= 1; --ii) rb.Add (ii);
 #if TEST_BCL
+            Assert.AreEqual (1, Enumerable.First (rb));
             Assert.AreEqual (n, Enumerable.Last (rb));
 #else
+            Assert.AreEqual (1, rb.First());
             Assert.AreEqual (n, rb.Last());
 #endif
         }
