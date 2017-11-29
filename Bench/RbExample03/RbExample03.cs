@@ -28,8 +28,8 @@ namespace ExampleApp
             Console.WriteLine ("Variance = " + Variance (scores));
             Console.WriteLine ("Standard deviation = " + StandardDeviation (scores));
 
-            Console.WriteLine ("\nLow score: " + scores.Min());
-            Console.WriteLine ("High score: " + scores.Max());
+            Console.WriteLine ("\nLow score: " + scores.Min);
+            Console.WriteLine ("High score: " + scores.Max);
 
             Console.Write ("Scores within 1 standard deviation:");
             foreach (var score in scores.ElementsBetween ((int) (mean-stddev+0.5), (int) (mean+stddev+0.5)))

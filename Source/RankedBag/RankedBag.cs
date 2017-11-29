@@ -120,6 +120,14 @@ namespace Kaos.Collections
         /// <summary>Indicates that the collection is not thread safe.</summary>
         bool ICollection.IsSynchronized => false;
 
+        /// <summary>Gets the maximum item in the bag per the comparer.</summary>
+        /// <remarks>This is a O(1) operation.</remarks>
+        public T Max => Count==0 ? default (T) : rightmostLeaf.GetKey (rightmostLeaf.KeyCount-1);
+
+        /// <summary>Gets the minimum item in the bag per the comparer.</summary>
+        /// <remarks>This is a O(1) operation.</remarks>
+        public T Min => Count==0 ? default (T) : leftmostLeaf.Key0;
+
         /// <summary>Returns a wrapper of the method used to order items in the bag.</summary>
         /// <remarks>
         /// To override sorting based on the default comparer,
@@ -654,32 +662,6 @@ namespace Kaos.Collections
                 throw new InvalidOperationException ("Sequence contains no elements.");
 
             return rightmostLeaf.GetKey (rightmostLeaf.KeyCount - 1);
-        }
-
-
-        /// <summary>Gets the maximum item in the bag per the comparer.</summary>
-        /// <returns>The maximum item in the bag.</returns>
-        /// <remarks>This is a O(1) operation.</remarks>
-        /// <exception cref="InvalidOperationException">When <see cref="Count"/> is zero.</exception>
-        public T Max()
-        {
-            if (Count == 0)
-                throw new InvalidOperationException ("Sequence contains no elements");
-
-            return rightmostLeaf.GetKey (rightmostLeaf.KeyCount - 1);
-        }
-
-
-        /// <summary>Gets the minimum item in the bag per the comparer.</summary>
-        /// <returns>The minimum item in the bag.</returns>
-        /// <remarks>This is a O(1) operation.</remarks>
-        /// <exception cref="InvalidOperationException">When <see cref="Count"/> is zero.</exception>
-        public T Min()
-        {
-            if (Count == 0)
-                throw new InvalidOperationException ("Sequence contains no elements");
-
-            return leftmostLeaf.Key0;
         }
 
         #endregion
