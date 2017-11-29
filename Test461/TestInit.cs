@@ -55,6 +55,7 @@ namespace Kaos.Test.Collections
         SortedDictionary<string,int> dary2;
         SortedDictionary<string,int?> dary3;
         SortedDictionary<int,string> dary4;
+        SortedDictionary<string,int> dary5;
         SortedSet<int> setI;
         SortedSet<string> setS;
         SortedSet<TS1> setTS1;
@@ -64,6 +65,7 @@ namespace Kaos.Test.Collections
         RankedDictionary<string,int> dary2;
         RankedDictionary<string,int?> dary3;
         RankedDictionary<int,string> dary4;
+        RankedDictionary<string,int> dary5;
         RankedSet<int> setI;
         RankedSet<string> setS;
         RankedSet<TS1> setTS1;
@@ -103,6 +105,7 @@ namespace Kaos.Test.Collections
             dary2 = new SortedDictionary<string,int>();
             dary3 = new SortedDictionary<string,int?>();
             dary4 = new SortedDictionary<int,string>();
+            dary5 = new SortedDictionary<string,int> (StringComparer.InvariantCultureIgnoreCase);
             setI = new SortedSet<int>();
             setS = new SortedSet<string>();
             setTS1 = new SortedSet<TS1>();
@@ -112,6 +115,7 @@ namespace Kaos.Test.Collections
             dary2 = new RankedDictionary<string,int>();
             dary3 = new RankedDictionary<string,int?>();
             dary4 = new RankedDictionary<int,string>();
+            dary5 = new RankedDictionary<string,int> (StringComparer.InvariantCultureIgnoreCase);
             setI = new RankedSet<int>();
             setS = new RankedSet<string>();
             setTS1 = new RankedSet<TS1>();

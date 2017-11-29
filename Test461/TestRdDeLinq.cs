@@ -179,6 +179,29 @@ namespace Kaos.Test.Collections
         #region Test Keys methods (LINQ emulation)
 
         [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRdkq_Contains_ArgumentNull()
+        {
+            Setup();
+            dary2.Add ("pithy", 1);
+
+            var zz = dary2.Keys.Contains (null);
+        }
+
+        [TestMethod]
+        public void UnitRdkq_Contains()
+        {
+            Setup (4);
+            foreach (var kv in greek)
+                dary5.Add (kv.Key, kv.Value);
+
+            Assert.IsTrue (dary5.Keys.Contains ("Iota"));
+            Assert.IsTrue (dary5.Keys.Contains ("IOTA"));
+            Assert.IsFalse (dary5.Keys.Contains ("Zed"));
+        }
+
+
+        [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
         public void CrashRdkq_ElementAt_ArgumentOutOfRange1()
         {
@@ -245,6 +268,58 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (default (string), keys.ElementAtOrDefault (-1));
             Assert.AreEqual (default (string), keys.ElementAtOrDefault (3));
 #endif
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRdkq_First_InvalidOperation()
+        {
+            Setup();
+#if TEST_BCL
+            var zz = Enumerable.First (dary1.Keys);
+#else
+            var zz = dary1.Keys.First();
+#endif
+        }
+
+        [TestMethod]
+        public void UnitRdkq_First()
+        {
+            Setup (4);
+            for (int ii = 1; ii <= 9; ++ii) dary1.Add (ii,-ii);
+#if TEST_BCL
+            var k1 = Enumerable.First (dary1.Keys);
+#else
+            var k1 = dary1.Keys.First();
+#endif
+            Assert.AreEqual (1, k1);
+        }
+
+
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRdkq_Last_InvalidOperation()
+        {
+            Setup();
+#if TEST_BCL
+            var zz = Enumerable.Last (dary1.Keys);
+#else
+            var zz = dary1.Keys.Last();
+#endif
+        }
+
+        [TestMethod]
+        public void UnitRdkq_Last()
+        {
+            Setup (4);
+            for (int ii = 1; ii <= 9; ++ii) dary1.Add (ii,-ii);
+#if TEST_BCL
+            var k9 = Enumerable.Last (dary1.Keys);
+#else
+            var k9 = dary1.Keys.Last();
+#endif
+            Assert.AreEqual (9, k9);
         }
 
         #endregion

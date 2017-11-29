@@ -90,44 +90,6 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (InvalidOperationException))]
-        public void CrashRbq_Min_InvalidOperation()
-        {
-            var rb = new RankedBag<int>();
-#if TEST_BCL
-            var zz = Enumerable.Min (rb);
-#else
-            var zz = rb.Min();
-#endif
-        }
-
-        [TestMethod]
-        [ExpectedException (typeof (InvalidOperationException))]
-        public void CrashRbq_Max_InvalidOperation()
-        {
-            var rb = new RankedBag<int>();
-#if TEST_BCL
-            var zz = Enumerable.Max (rb);
-#else
-            var zz = rb.Max();
-#endif
-        }
-
-        [TestMethod]
-        public void UnitRbq_MinMax()
-        {
-            var rb = new RankedBag<int>() { Capacity=4 };
-
-            rb.Add (5); rb.Add (5); rb.Add (7); rb.Add (3); rb.Add (3);
-            var min1 = rb.Min();
-            var max1 = rb.Max();
-
-            Assert.AreEqual (3, rb.Min());
-            Assert.AreEqual (7, rb.Max());
-        }
-
-
-        [TestMethod]
-        [ExpectedException (typeof (InvalidOperationException))]
         public void CrashRbq_Last_InvalidOperation()
         {
             var rb = new RankedBag<int>();

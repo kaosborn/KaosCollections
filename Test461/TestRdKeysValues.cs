@@ -102,7 +102,7 @@ namespace Kaos.Test.Collections
 
             dary2.Add ("alpha", 10);
 
-            var junk = gc.Contains (null);
+            var zz = gc.Contains (null);
         }
 
         [TestMethod]

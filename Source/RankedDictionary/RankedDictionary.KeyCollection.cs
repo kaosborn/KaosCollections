@@ -90,12 +90,20 @@ namespace Kaos.Collections
             { throw new NotSupportedException(); }
 
 
+            /// <summary>Determines whether the dictionary contains the supplied key.</summary>
+            /// <param name="key">The key to locate.</param>
+            /// <returns><b>true</b> if <em>key</em> is contained in the dictionary; otherwise <b>false</b>.</returns>
+            /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
+            public bool Contains (TKey key)
+                => tree.ContainsKey (key);
+
+
             /// <summary>Determines whether the collection contains the supplied key.</summary>
             /// <param name="key">The key to locate.</param>
             /// <returns><b>true</b> if <em>key</em> is contained in the collection; otherwise <b>false</b>.</returns>
             /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
             bool ICollection<TKey>.Contains (TKey key)
-            { return tree.ContainsKey (key); }
+                => tree.ContainsKey (key);
 
 
             /// <summary>Copies keys to a supplied array, starting at the supplied position.</summary>
@@ -180,6 +188,32 @@ namespace Kaos.Collections
             /// </remarks>
             public int IndexOf (TKey key)
                 => tree.FindEdgeForIndex (key, out Leaf leaf, out int leafIndex, leftEdge:true);
+
+
+            /// <summary>Gets the minimum key in the dictionary per the comparer.</summary>
+            /// <returns>The minimum key in the dictionary.</returns>
+            /// <remarks>This is a O(1) operation.</remarks>
+            /// <exception cref="InvalidOperationException">When <see cref="Count"/> is zero.</exception>
+            public TKey First()
+            {
+                if (Count == 0)
+                    throw new InvalidOperationException ("Sequence contains no elements");
+
+                return tree.leftmostLeaf.Key0;
+            }
+
+
+            /// <summary>Gets the maximum key in the dictionary per the comparer.</summary>
+            /// <returns>The maximum key in the dictionary.</returns>
+            /// <remarks>This is a O(1) operation.</remarks>
+            /// <exception cref="InvalidOperationException">When <see cref="Count"/> is zero.</exception>
+            public TKey Last()
+            {
+                if (Count == 0)
+                    throw new InvalidOperationException ("Sequence contains no elements");
+
+                return tree.rightmostLeaf.GetKey (tree.rightmostLeaf.KeyCount - 1);
+            }
 
 
             /// <summary>Gets the maximum key per the comparer.</summary>
