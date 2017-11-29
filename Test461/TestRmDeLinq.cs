@@ -300,51 +300,6 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (9, key);
         }
 
-
-        [TestMethod]
-        [ExpectedException (typeof (InvalidOperationException))]
-        public void CrashRmkq_Max()
-        {
-            var rm = new RankedMap<int,int>();
-            var keys = rm.Keys;
-#if TEST_BCL
-            var zz = Enumerable.Max (rm.Keys);
-#else
-            int zz = keys.Max();
-#endif
-        }
-
-        [TestMethod]
-        [ExpectedException (typeof (InvalidOperationException))]
-        public void CrashRmkq_Min()
-        {
-            var rm = new RankedMap<int,int>();
-            var keys = rm.Keys;
-#if TEST_BCL
-            var zz = Enumerable.Min (rm.Keys);
-#else
-            int zz = keys.Min();
-#endif
-        }
-
-        [TestMethod]
-        public void UnitRmkq_MinMax()
-        {
-            var rm = new RankedMap<int,int> { Capacity=4 };
-            var keys = rm.Keys;
-            int n = 500;
-
-            for (int ii = 1; ii <= n; ++ii)
-                rm.Add (ii, -ii);
-#if TEST_BCL
-            Assert.AreEqual (1, Enumerable.Min (rm.Keys));
-            Assert.AreEqual (n, Enumerable.Max (rm.Keys));
-#else
-            Assert.AreEqual (1, keys.Min());
-            Assert.AreEqual (n, keys.Max());
-#endif
-        }
-
         #endregion
 
         #region Test Keys enumeration (LINQ emulation)

@@ -127,55 +127,6 @@ namespace Kaos.Test.Collections
 
         #endregion
 
-
-        #region Test Keys properties (LINQ emulation)
-
-        [TestMethod]
-        [ExpectedException (typeof (InvalidOperationException))]
-        public void CrashRdkq_Max()
-        {
-            Setup (4);
-            var keys = dary1.Keys;
-#if TEST_BCL
-            int zz = Enumerable.Max (keys);
-#else
-            int zz = keys.Max();
-#endif
-        }
-
-        [TestMethod]
-        [ExpectedException (typeof (InvalidOperationException))]
-        public void CrashRdkq_Min()
-        {
-            Setup (4);
-            var keys = dary1.Keys;
-#if TEST_BCL
-            int zz = Enumerable.Min (keys);
-#else
-            int zz = keys.Min();
-#endif
-        }
-
-        [TestMethod]
-        public void UnitRdkq_MinMax()
-        {
-            Setup (4);
-            var keys = dary1.Keys;
-            int n = 400;
-
-            for (int ii = 1; ii <= n; ++ii)
-                dary1.Add (ii, -ii);
-#if TEST_BCL
-            Assert.AreEqual (1, Enumerable.Min (keys));
-            Assert.AreEqual (n, Enumerable.Max (keys));
-#else
-            Assert.AreEqual (1, keys.Min());
-            Assert.AreEqual (n, keys.Max());
-#endif
-        }
-
-        #endregion
-
         #region Test Keys methods (LINQ emulation)
 
         [TestMethod]

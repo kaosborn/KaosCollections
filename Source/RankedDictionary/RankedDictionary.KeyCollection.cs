@@ -216,30 +216,6 @@ namespace Kaos.Collections
             }
 
 
-            /// <summary>Gets the maximum key per the comparer.</summary>
-            /// <returns>The maximum key per the comparer.</returns>
-            /// <remarks>This is a O(1) operation.</remarks>
-            public TKey Max()
-            {
-                if (Count == 0)
-                    throw new InvalidOperationException ("Sequence contains no elements");
-
-                return tree.rightmostLeaf.GetKey (tree.rightmostLeaf.KeyCount-1);
-            }
-
-
-            /// <summary>Gets the minimum key per the comparer.</summary>
-            /// <returns>The minimum key per the comparer.</returns>
-            /// <remarks>This is a O(1) operation.</remarks>
-            public TKey Min()
-            {
-                if (Count == 0)
-                    throw new InvalidOperationException ("Sequence contains no elements");
-
-                return tree.leftmostLeaf.Key0;
-            }
-
-
             /// <summary>Returns an enumerator that iterates thru the dictionary keys in reverse order.</summary>
             /// <returns>An enumerator that reverse iterates thru the dictionary keys.</returns>
             public IEnumerable<TKey> Reverse()
