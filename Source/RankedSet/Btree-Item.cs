@@ -108,8 +108,8 @@ namespace Kaos.Collections
                     foreach (var oKey in oBag.Distinct())
                     {
                         var oCount = oBag.GetCount (oKey);
-                        Remove2 (oKey, oCount);
-                        removed += oCount;
+                        int actual = Remove2 (oKey, oCount);
+                        removed += actual;
                     }
             }
             return removed;

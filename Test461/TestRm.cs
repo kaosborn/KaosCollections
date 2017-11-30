@@ -777,11 +777,11 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (0, rem0);
 
             int rem2 = rm.RemoveAll (new int[] { 2 });
-            Assert.AreEqual (0, rem0);
+            Assert.AreEqual (0, rem2);
 
-            int rem57 = rm.RemoveAll (new int[] { 3, 7 });
-            Assert.AreEqual (2, rem57);
-            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (new int[] { 3, 5, 5, 7 }, rm.Keys));
+            int rem57 = rm.RemoveAll (new int[] { 3, 3, 3, 7 });
+            Assert.AreEqual (3, rem57);
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (new int[] { 5, 5, 7 }, rm.Keys));
         }
 
 
