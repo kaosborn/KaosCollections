@@ -203,12 +203,13 @@ namespace Kaos.Test.Collections
         [TestMethod]
         public void UnitRmk_GetCount()
         {
-            var rm = new RankedMap<int,int> { {1,11}, {1,12}, {3,31}, {3,32}, {4,41} };
+            var rm = new RankedMap<int,int> { Capacity=4 };
+            foreach (int ii in new int[] { 1, 3, 5, 5, 5, 7 }) rm.Add (ii, -ii);
 
             Assert.AreEqual (0, rm.Keys.GetCount (0));
-            Assert.AreEqual (2, rm.Keys.GetCount (1));
-            Assert.AreEqual (0, rm.Keys.GetCount (2));
-            Assert.AreEqual (2, rm.Keys.GetCount (3));
+            Assert.AreEqual (1, rm.Keys.GetCount (3));
+            Assert.AreEqual (3, rm.Keys.GetCount (5));
+            Assert.AreEqual (1, rm.Keys.GetCount (7));
             Assert.AreEqual (0, rm.Keys.GetCount (9));
         }
 

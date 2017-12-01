@@ -498,23 +498,6 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRm_GetCount()
-        {
-            var map0 = new RankedMap<int,int>();
-            var map = new RankedMap<int,int> { Capacity=4 };
-            foreach (int ii in new int[] { 3, 5, 5, 5, 7 }) map.Add (ii, -ii);
-
-            Assert.AreEqual (0, map0.GetCount (9));
-
-            Assert.AreEqual (0, map.GetCount (1));
-            Assert.AreEqual (1, map.GetCount (3));
-            Assert.AreEqual (3, map.GetCount (5));
-            Assert.AreEqual (1, map.GetCount (7));
-            Assert.AreEqual (0, map.GetCount (9));
-        }
-
-
-        [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
         public void CrashRm_IndexOfKey_ArgumentNull()
         {

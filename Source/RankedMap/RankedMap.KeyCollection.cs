@@ -127,14 +127,12 @@ namespace Kaos.Collections
             /// where <em>n</em> is <see cref="Count"/>.
             /// </para>
             /// </remarks>
-            public int GetCount (TKey key)
-            {
-                int treeIx1 = tree.FindEdgeForIndex (key, out Leaf leaf1, out int leafIx1, leftEdge: true);
-                if (treeIx1 < 0)
-                    return 0;
-                else
-                    return tree.FindEdgeForIndex (key, out Leaf leaf2, out int leafIx2, leftEdge: false) - treeIx1;
-            }
+            /// <example>
+            /// The below snippet is part of a larger example of the
+            /// <see cref="RankedMap{TKey,TValue}"/>class.
+            /// <code source="..\Bench\RmExample01\RmExample01.cs" lang="cs" region="GetCount" />
+            /// </example>
+            public int GetCount (TKey key) => tree.GetCount2 (key);
 
 
             /// <summary>Returns the number of distinct keys in the map.</summary>

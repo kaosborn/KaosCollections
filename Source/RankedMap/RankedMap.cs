@@ -374,23 +374,6 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Returns the number of occurrences of the supplied key in the map.</summary>
-        /// <param name="key">The key to return the number of occurrences for.</param>
-        /// <returns>The number of occurrences of <em>key</em>.</returns>
-        /// <remarks>
-        /// <para>
-        /// This is a O(log <em>n</em>) operation
-        /// where <em>n</em> is <see cref="Count"/>.
-        /// </para>
-        /// </remarks>
-        /// <example>
-        /// The below snippet is part of a larger example of the
-        /// <see cref="RankedMap{TKey,TValue}"/>class.
-        /// <code source="..\Bench\RmExample01\RmExample01.cs" lang="cs" region="GetCount" />
-        /// </example>
-        public int GetCount (TKey key) => GetCount2 (key);
-
-
         /// <summary>Gets the index of the first element with the supplied key.</summary>
         /// <param name="key">The key of the element to find.</param>
         /// <returns>The index of the first element containing <em>key</em> if found; otherwise a negative value holding the bitwise complement of the insert point.</returns>
