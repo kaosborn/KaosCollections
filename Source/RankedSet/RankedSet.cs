@@ -690,6 +690,19 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>Gets the minimum item in the set per the comparer.</summary>
+        /// <returns>The minimum item in the set.</returns>
+        /// <remarks>This is a O(1) operation.</remarks>
+        /// <exception cref="InvalidOperationException">When <see cref="Count"/> is zero.</exception>
+        public T First()
+        {
+            if (Count == 0)
+                throw new InvalidOperationException ("Sequence contains no elements.");
+
+            return leftmostLeaf.Key0;
+        }
+
+
         /// <summary>Gets the maximum item in the set per the comparer.</summary>
         /// <returns>The maximum item in the set.</returns>
         /// <remarks>This is a O(1) operation.</remarks>

@@ -131,6 +131,18 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (InvalidOperationException))]
+        public void CrashRsq_First_InvalidOperation()
+        {
+            Setup();
+#if TEST_BCL
+            var zz = Enumerable.First (setI);
+#else
+            var zz = setI.First();
+#endif
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (InvalidOperationException))]
         public void CrashRsq_Last_InvalidOperation()
         {
             Setup();
@@ -142,15 +154,17 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void UnitRsq_Last()
+        public void UnitRsq_FirstLast()
         {
             Setup (4);
             int n = 99;
 
-            for (int ii = n; ii >= 0; --ii) setI.Add (ii);
+            for (int ii = n; ii >= 1; --ii) setI.Add (ii);
 #if TEST_BCL
+            Assert.AreEqual (1, Enumerable.First (setI));
             Assert.AreEqual (n, Enumerable.Last (setI));
 #else
+            Assert.AreEqual (1, setI.First());
             Assert.AreEqual (n, setI.Last());
 #endif
         }
