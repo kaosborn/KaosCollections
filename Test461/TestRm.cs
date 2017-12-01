@@ -883,7 +883,7 @@ namespace Kaos.Test.Collections
         public void CrashRm_RemoveWherePair_ArgumentNull()
         {
             var rm = new RankedMap<int,int>();
-            rm.RemoveWherePair (null);
+            rm.RemoveWhereElement (null);
         }
 
         [TestMethod]
@@ -894,18 +894,18 @@ namespace Kaos.Test.Collections
             for (int ix = 0; ix < 1100; ++ix)
                 rm.Add (ix, -ix);
 
-            int r1 = rm.RemoveWherePair (IsPairLeN1000);
+            int r1 = rm.RemoveWhereElement (IsPairLeN1000);
             Assert.AreEqual (100, r1);
             Assert.AreEqual (1000, rm.Count);
 
             int c0 = rm.Count;
-            int r2 = rm.RemoveWherePair (IsPairEven);
+            int r2 = rm.RemoveWhereElement (IsPairEven);
 
             Assert.AreEqual (500, r2);
             foreach (int v2 in rm.Values)
                 Assert.IsTrue (v2 % 2 != 0);
 
-            int r3 = rm.RemoveWherePair (IsPairAlways);
+            int r3 = rm.RemoveWhereElement (IsPairAlways);
             Assert.AreEqual (500, r3);
             Assert.AreEqual (0, rm.Count);
         }
