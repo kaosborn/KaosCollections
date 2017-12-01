@@ -136,6 +136,22 @@ namespace Kaos.Collections
                     return tree.FindEdgeForIndex (key, out Leaf leaf2, out int leafIx2, leftEdge: false) - treeIx1;
             }
 
+
+            /// <summary>Returns the number of distinct keys in the map.</summary>
+            /// <returns>The number of distinct keys in the map.</returns>
+            /// <remarks>
+            /// This is a O(<em>m</em> log <em>n</em>) operation
+            /// where <em>m</em> is the distinct key count
+            /// and <em>n</em> is <see cref="Count"/>.
+            /// </remarks>
+            /// <example>
+            /// The below snippet is part of a larger example of the
+            /// <see cref="RankedMap{TKey,TValue}"/>class.
+            /// <code source="..\Bench\RmExample01\RmExample01.cs" lang="cs" region="GetDistinctCount" />
+            /// </example>
+            public int GetDistinctCount() => tree.GetDistinctCount2();
+
+
             /// <summary>Gets the key at the supplied index.</summary>
             /// <param name="index">The zero-based index of the element to get.</param>
             /// <returns>The key at <em>index</em>.</returns>

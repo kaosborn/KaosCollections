@@ -391,21 +391,6 @@ namespace Kaos.Collections
         public int GetCount (TKey key) => GetCount2 (key);
 
 
-        /// <summary>Returns the number of distinct keys in the map.</summary>
-        /// <returns>The number of distinct items in the map.</returns>
-        /// <remarks>
-        /// This is a O(<em>m</em> log <em>n</em>) operation
-        /// where <em>m</em> is the distinct key count
-        /// and <em>n</em> is <see cref="Count"/>.
-        /// </remarks>
-        /// <example>
-        /// The below snippet is part of a larger example of the
-        /// <see cref="RankedMap{TKey,TValue}"/>class.
-        /// <code source="..\Bench\RmExample01\RmExample01.cs" lang="cs" region="GetDistinctCount" />
-        /// </example>
-        public int GetDistinctCount() => GetDistinctCount2();
-
-
         /// <summary>Gets the index of the first element with the supplied key.</summary>
         /// <param name="key">The key of the element to find.</param>
         /// <returns>The index of the first element containing <em>key</em> if found; otherwise a negative value holding the bitwise complement of the insert point.</returns>

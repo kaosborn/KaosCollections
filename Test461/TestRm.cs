@@ -515,18 +515,6 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRm_GetDistinctCount()
-        {
-            var map0 = new RankedMap<int,int>();
-            var map = new RankedMap<int,int> { Capacity=4 };
-            foreach (int ii in new int[] { 3, 5, 5, 5, 7 }) map.Add (ii, -ii);
-
-            Assert.AreEqual (0, map0.GetDistinctCount());
-            Assert.AreEqual (3, map.GetDistinctCount());
-        }
-
-
-        [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
         public void CrashRm_IndexOfKey_ArgumentNull()
         {

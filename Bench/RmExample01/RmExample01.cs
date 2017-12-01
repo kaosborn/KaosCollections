@@ -29,7 +29,7 @@ namespace ExampleApps
             #endregion
 
             #region GetCount
-            if (fmt.GetCount ("sln") > 1)
+            if (fmt.Keys.GetCount ("sln") > 1)
                 fmt.Add ("sln", "Visual Studio Version Selector");
             #endregion
 
@@ -42,7 +42,7 @@ namespace ExampleApps
             #endregion
 
             #region GetDistinctCount
-            Console.WriteLine ("\nDistinct format count: " + fmt.GetDistinctCount());
+            Console.WriteLine ("\nDistinct format count: " + fmt.Keys.GetDistinctCount());
             Console.WriteLine ("Total format count: " + fmt.Count);
             #endregion
 

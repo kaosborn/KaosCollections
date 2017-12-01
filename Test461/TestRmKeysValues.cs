@@ -214,6 +214,18 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
+        public void UnitRmk_GetDistinctCount()
+        {
+            var rm0 = new RankedMap<int,int>();
+            var rm = new RankedMap<int,int> { Capacity=4 };
+            foreach (int ii in new int[] { 3, 5, 5, 5, 7 }) rm.Add (ii, -ii);
+
+            Assert.AreEqual (0, rm0.Keys.GetDistinctCount());
+            Assert.AreEqual (3, rm.Keys.GetDistinctCount());
+        }
+
+
+        [TestMethod]
         public void UnitRmk_IndexOf()
         {
             var rm = new RankedMap<string,int> { {"0zero",0}, {"1one",-1}, {"1one",-2} };
