@@ -1277,6 +1277,38 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
+        [ExpectedException (typeof (ArgumentNullException))]
+        public void CrashRd_RemoveAll_ArgumentNull()
+        {
+            Setup();
+            dary1.RemoveAll (null);
+        }
+
+        [TestMethod]
+        public void UnitRd_RemoveAll()
+        {
+            Setup (4);
+
+            int rem0 = dary1.RemoveAll (new int[] { 2 });
+            Assert.AreEqual (0, rem0);
+
+            foreach (var ii in new int[] { 1, 3, 5, 7, 9 })
+                dary1.Add (ii, -ii);
+
+            int rem2 = dary1.RemoveAll (new int[] { 2 });
+            Assert.AreEqual (0, rem0);
+
+            int rem3 = dary1.RemoveAll (new int[] { 3, 4, 7, 7, 11 });
+            Assert.AreEqual (2, rem3);
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (new int[] { 1, 5, 9 }, dary1.Keys));
+
+            int rem4 = dary1.RemoveAll (dary1.Keys);
+            Assert.AreEqual (3, rem4);
+            Assert.AreEqual (0, dary1.Count);
+        }
+
+
+        [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
         public void CrashRd_xRemoveAtA_ArgumentOutOfRange()
         {

@@ -923,6 +923,33 @@ namespace Kaos.Collections
             => ContainsValue2<TValue> (value);
 
 
+        /// <summary>
+        /// Removes all elements from the dictionary with keys that are in the supplied collection.
+        /// </summary>
+        /// <param name="other">The keys of the elements to remove.</param>
+        /// <returns>The number of elements removed from the dictionary.</returns>
+        /// <exception cref="ArgumentNullException">When <em>other</em> is <b>null</b>.</exception>
+        public int RemoveAll (IEnumerable<TKey> other)
+        {
+            int result = 0;
+            if (other == null)
+                throw new ArgumentNullException (nameof (other));
+
+            StageBump();
+            if (Count > 0)
+                if (other == Keys)
+                {
+                    result = Count;
+                    Clear();
+                }
+                else
+                    foreach (TKey key in other)
+                        if (Remove (key))
+                            ++result;
+            return result;
+        }
+
+
         /// <summary>Removes an index range of elements from the dictionary.</summary>
         /// <param name="index">The zero-based starting index of the range of elements to remove.</param>
         /// <param name="count">The number of elements to remove.</param>
