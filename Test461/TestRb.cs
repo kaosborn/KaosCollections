@@ -665,6 +665,10 @@ namespace Kaos.Test.Collections
             int rem57 = rb.RemoveAll (new int[] { 5, 7 });
             Assert.AreEqual (2, rem57);
             Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (new int[] { 3, 5, 7 }, rb));
+
+            int rem4 = rb.RemoveAll (rb);
+            Assert.AreEqual (3, rem4);
+            Assert.AreEqual (0, rb.Count);
         }
 
 

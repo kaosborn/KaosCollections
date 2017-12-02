@@ -103,14 +103,22 @@ namespace Kaos.Collections
             if (root.Weight > 0)
             {
                 StageBump();
-                var oBag = other as RankedBag<T> ?? new RankedBag<T> (other, keyComparer);
-                if (oBag.Count > 0)
-                    foreach (var oKey in oBag.Distinct())
-                    {
-                        var oCount = oBag.GetCount (oKey);
-                        int actual = Remove2 (oKey, oCount);
-                        removed += actual;
-                    }
+                if (other == this)
+                {
+                    removed = root.Weight;
+                    Initialize();
+                }
+                else
+                {
+                    var oBag = other as RankedBag<T> ?? new RankedBag<T> (other, keyComparer);
+                    if (oBag.Count > 0)
+                        foreach (var oKey in oBag.Distinct())
+                        {
+                            var oCount = oBag.GetCount (oKey);
+                            int actual = Remove2 (oKey, oCount);
+                            removed += actual;
+                        }
+                }
             }
             return removed;
         }
