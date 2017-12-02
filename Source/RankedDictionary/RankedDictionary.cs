@@ -1127,7 +1127,7 @@ namespace Kaos.Collections
                 get
                 {
                     if (state != 0)
-                        throw new InvalidOperationException ("Enumeration is not active.");
+                        throw new InvalidOperationException ("Enumerator is not active.");
                     return leaf.GetKey (index);
                 }
             }
@@ -1138,7 +1138,7 @@ namespace Kaos.Collections
                 get
                 {
                     if (state != 0)
-                        throw new InvalidOperationException ("Enumeration is not active.");
+                        throw new InvalidOperationException ("Enumerator is not active.");
                     return leaf.GetValue (index);
                 }
             }
@@ -1149,7 +1149,7 @@ namespace Kaos.Collections
                 get
                 {
                     if (state != 0)
-                        throw new InvalidOperationException ("Enumeration is not active.");
+                        throw new InvalidOperationException ("Enumerator is not active.");
                     return new DictionaryEntry (leaf.GetKey (index), leaf.GetValue (index));
                 }
             }
@@ -1161,7 +1161,7 @@ namespace Kaos.Collections
                 {
                     tree.StageCheck (stageFreeze);
                     if (state != 0)
-                        throw new InvalidOperationException ("Enumeration is not active.");
+                        throw new InvalidOperationException ("Enumerator is not active.");
 
                     if (nonGeneric)
                         return new DictionaryEntry (leaf.GetKey (index), leaf.GetValue (index));

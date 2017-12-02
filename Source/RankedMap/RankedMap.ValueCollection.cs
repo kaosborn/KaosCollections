@@ -275,7 +275,7 @@ namespace Kaos.Collections
                     {
                         tree.StageCheck (stageFreeze);
                         if (index < 0)
-                            throw new InvalidOperationException();
+                            throw new InvalidOperationException ("Enumerator is not active.");
                         return (object) Current;
                     }
                 }

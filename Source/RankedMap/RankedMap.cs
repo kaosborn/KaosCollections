@@ -947,7 +947,7 @@ namespace Kaos.Collections
                 {
                     tree.StageCheck (stageFreeze);
                     if (state != 0)
-                        throw new InvalidOperationException ("Enumeration is not active.");
+                        throw new InvalidOperationException ("Enumerator is not active.");
 
                     if (nonGeneric)
                         return new DictionaryEntry (leaf.GetKey (index), leaf.GetValue (index));
