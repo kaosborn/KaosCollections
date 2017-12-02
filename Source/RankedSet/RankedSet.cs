@@ -288,7 +288,7 @@ namespace Kaos.Collections
 
         #region ISet implementation
 
-        /// <summary>Removes all items that are in a supplied collection.</summary>
+        /// <summary>Removes all items in the supplied collection from the set.</summary>
         /// <param name="other">The collection of items to remove.</param>
         /// <remarks>
         /// Duplicate values in <em>other</em> are ignored.

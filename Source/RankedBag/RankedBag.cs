@@ -402,7 +402,7 @@ namespace Kaos.Collections
 
 
         /// <summary>
-        /// Removes all items that are in the supplied collection from the bag.
+        /// Removes all items in the supplied collection from the bag.
         /// </summary>
         /// <param name="other">The items to remove.</param>
         /// <returns>The number of items removed from the bag.</returns>

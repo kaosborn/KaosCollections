@@ -560,7 +560,7 @@ namespace Kaos.Collections
 
 
         /// <summary>
-        /// Removes all elements from the map with keys that are in the supplied collection.
+        /// Removes all elements with keys in the supplied collection from the map.
         /// </summary>
         /// <param name="other">The keys of the elements to remove.</param>
         /// <returns>The number of elements removed from the map.</returns>
