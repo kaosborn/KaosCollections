@@ -1236,6 +1236,29 @@ namespace Kaos.Test.Collections
             rs.RemoveAt (0);
         }
 
+
+        [TestMethod]
+        public void Unit_TryGetKey()
+        {
+            var rs = new RankedSet<string> (StringComparer.InvariantCultureIgnoreCase);
+
+            rs.Add ("AAA");
+            rs.Add ("bbb");
+            rs.Add ("ccc");
+
+            bool got1 = rs.TryGet ("aaa", out string actual1);
+            Assert.IsTrue (got1);
+            Assert.AreEqual ("AAA", actual1);
+
+            bool got2 = rs.TryGet ("bb", out string actual2);
+            Assert.IsFalse (got2);
+
+            bool got3 = rs.TryGet ("CCC", out string actual3);
+            Assert.IsTrue (got3);
+            Assert.AreEqual ("ccc", actual3);
+        }
+
+
         [TestMethod]
         public void UnitRsx_RemoveAt()
         {

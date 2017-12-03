@@ -904,6 +904,29 @@ namespace Kaos.Collections
             RemoveAt2 (index);
         }
 
+
+        /// <summary>Gets the actual item for the supplied search item.</summary>
+        /// <param name="item">The item to find.</param>
+        /// <param name="actualItem">
+        /// If <em>item</em> is found, its value is placed here;
+        /// otherwise it will be loaded with the default value for its type.
+        /// </param>
+        /// <returns><b>true</b> if <em>item</em> is found; otherwise <b>false</b>.</returns>
+        public bool TryGet (T item, out T actualItem)
+        {
+            var leaf = Find (item, out int index);
+            if (index >= 0)
+            {
+                actualItem = leaf.GetKey (index);
+                return true;
+            }
+            else
+            {
+                actualItem = default (T);
+                return false;
+            }
+        }
+
         #endregion
 
         #region Class comparison
