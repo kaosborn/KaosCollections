@@ -24,7 +24,17 @@ namespace Kaos.Collections
     /// <para>
     /// This class emulates and extends
     /// <see cref="System.Collections.Generic.SortedSet{T}"/> while
-    /// improving performance of operations on large collections.
+    /// significantly improving performance on large collections.
+    /// </para>
+    /// <para>
+    /// Optimized instance methods with the signatures of LINQ methods have been implemented:
+    /// <list type="bullet">
+    /// <item><see cref="ElementAt"/></item>
+    /// <item><see cref="ElementAtOrDefault"/></item>
+    /// <item><see cref="First"/></item>
+    /// <item><see cref="Last"/></item>
+    /// <item><see cref="Reverse"/></item>
+    /// </list>
     /// </para>
     /// <para>
     /// Indexing enhancements include:
@@ -33,19 +43,18 @@ namespace Kaos.Collections
     /// <item><see cref="RemoveAt"/></item>
     /// <item><see cref="RemoveRange"/></item>
     /// </list>
-    /// <para>Indexing also includes extension methods that have been directly implemented and optimized:</para>
-    /// <list type="bullet">
-    /// <item><see cref="ElementAt"/></item>
-    /// <item><see cref="ElementAtOrDefault"/></item>
-    /// <item><see cref="Last"/></item>
-    /// <item><see cref="Reverse"/></item>
-    /// </list>
-    /// <para>Optimized range enumerators are provided:</para>
+    /// </para>
+    /// <para>
+    /// Optimized range enumerators are provided:
     /// <list type="bullet">
     /// <item><see cref="ElementsBetween"/></item>
     /// <item><see cref="ElementsFrom"/></item>
     /// <item><see cref="ElementsBetweenIndexes"/></item>
     /// </list>
+    /// </para>
+    /// <para>
+    /// An equivalent to BCL's <see cref="SortedSet{T}.GetViewBetween(T,T)"/> has not implemented for performance reasons.
+    /// However, <see cref="ElementsBetween"/> is available for range enumeration.
     /// </para>
     /// </remarks>
     /// <example>

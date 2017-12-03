@@ -23,10 +23,24 @@ namespace Kaos.Collections
     /// <typeparam name="TValue">The type of the values in the dictionary.</typeparam>
     /// <remarks>
     /// <para>
-    /// This class emulates and extends
-    /// <see cref="SortedDictionary{TKey,TValue}"/>while
-    /// improving performance of operations on large collections.
-    /// While primarily emulating SortedDictionary, this class also borrows heavily from
+    /// This class emulates and extends <see cref="SortedDictionary{TKey,TValue}"/>while
+    /// significantly improving performance on large collections.
+    /// Keys must be immutable as long as they are used as keys in the
+    /// <see cref="RankedDictionary{TKey,TValue}"/>class.
+    /// Every key must be distinct and cannot be null, but a value can be for a reference type.
+    /// </para>
+    /// <para>
+    /// Optimized instance methods with the signatures of LINQ methods have been implemented:
+    /// <list type="bullet">
+    /// <item><see cref="ElementAt"/></item>
+    /// <item><see cref="ElementAtOrDefault"/></item>
+    /// <item><see cref="First"/></item>
+    /// <item><see cref="Last"/></item>
+    /// <item><see cref="Reverse"/></item>
+    /// </list>
+    /// </para>
+    /// <para>
+    /// This class also borrows from
     /// <see cref="SortedList{TKey,TValue}"/>for indexing functionality:
     /// <list type="bullet">
     /// <item><see cref="IndexOfKey"/></item>
@@ -35,31 +49,23 @@ namespace Kaos.Collections
     /// <item><see cref="RemoveRange"/></item>
     /// <item><see cref="TryGetValueAndIndex"/></item>
     /// </list>
-    /// <para>Extension methods have been directly implemented and optimized:</para>
-    /// <list type="bullet">
-    /// <item><see cref="ElementAt"/></item>
-    /// <item><see cref="ElementAtOrDefault"/></item>
-    /// <item><see cref="Last"/></item>
-    /// </list>
-    /// <para>These optimized range enumerators are included:</para>
-    /// <list type="bullet">
-    /// <item><see cref="ElementsBetween"/></item>
-    /// <item><see cref="ElementsFrom"/></item>
-    /// <item><see cref="ElementsBetweenIndexes"/></item>
-    /// </list>
-    /// <para>Properties and a method have been shared with SortedSet:</para>
+    /// </para>
+    /// <para>
+    /// These properties and methods are inspired by <see cref="SortedSet{TKey}"/>:
     /// <list type="bullet">
     /// <item><see cref="MinKey"/></item>
     /// <item><see cref="MaxKey"/></item>
     /// <item><see cref="RemoveWhere"/></item>
     /// <item><see cref="RemoveWhereElement"/></item>
-    /// <item><see cref="Reverse"/></item>
     /// </list>
     /// </para>
     /// <para>
-    /// Keys must be immutable as long as they are used as keys in the
-    /// <see cref="RankedDictionary{TKey,TValue}"/>class.
-    /// Every key must be distinct and cannot be null, but a value can be for a reference type.
+    /// Optimized range enumerators are included:
+    /// <list type="bullet">
+    /// <item><see cref="ElementsBetween"/></item>
+    /// <item><see cref="ElementsFrom"/></item>
+    /// <item><see cref="ElementsBetweenIndexes"/></item>
+    /// </list>
     /// </para>
     /// </remarks>
     /// <example>
