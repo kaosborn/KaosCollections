@@ -52,11 +52,11 @@ A project may then reference the extracted platform-specific `.dll` directly.
 
 ### Project status
 
-For the latest stable release, install [version 3.1.0](#library-installation).
-The main branch is under construction for the upcoming version 4.0:
+For the latest stable release, [install version 3.1.0](#library-installation).
+The master branch is under construction for version 4.0:
 
-* The new RankedMap<K,V> class is code complete and stable.
-* Optimization of RemoveWhere is implemented.
+* The new `RankedMap<K,V>` class is code complete and stable.
+* Optimization of `RemoveWhere` is implemented.
 * Most v4 API changes are implemented but this area is a work in progress.
 
 Documentation for the main branch is available by building the Help project for the `.chm` output.
