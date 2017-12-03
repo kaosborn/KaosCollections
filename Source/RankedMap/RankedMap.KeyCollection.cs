@@ -203,7 +203,7 @@ namespace Kaos.Collections
             public TKey First()
             {
                 if (Count == 0)
-                    throw new InvalidOperationException ("Sequence contains no elements");
+                    throw new InvalidOperationException ("Sequence contains no elements.");
 
                 return tree.leftmostLeaf.Key0;
             }
@@ -216,7 +216,7 @@ namespace Kaos.Collections
             public TKey Last()
             {
                 if (Count == 0)
-                    throw new InvalidOperationException ("Sequence contains no elements");
+                    throw new InvalidOperationException ("Sequence contains no elements.");
 
                 return tree.rightmostLeaf.GetKey (tree.rightmostLeaf.KeyCount - 1);
             }
