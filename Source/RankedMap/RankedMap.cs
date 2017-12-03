@@ -394,7 +394,7 @@ namespace Kaos.Collections
             if (key == null)
                 throw new ArgumentNullException (nameof (key));
 
-            return FindEdgeForIndex (key, out Leaf leaf, out int leafIndex, leftEdge:true);
+            return FindEdgeForIndex (key, out Leaf _, out int _, leftEdge:true);
         }
 
 

@@ -187,7 +187,7 @@ namespace Kaos.Collections
             /// </para>
             /// </remarks>
             public int IndexOf (TKey key)
-                => tree.FindEdgeForIndex (key, out Leaf leaf, out int leafIndex, leftEdge:true);
+                => tree.FindEdgeForIndex (key, out Leaf _, out int _, leftEdge:true);
 
 
             /// <summary>Gets the minimum key in the dictionary per the comparer.</summary>

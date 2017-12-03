@@ -875,9 +875,7 @@ namespace Kaos.Collections
         /// </para>
         /// </remarks>
         public int IndexOf (T item)
-        {
-            return FindEdgeForIndex (item, out Leaf leaf, out int leafIndex, leftEdge:true);
-        }
+            => FindEdgeForIndex (item, out Leaf _, out int _, leftEdge:true);
 
 
         /// <summary>Removes the item at the supplied index from the set.</summary>

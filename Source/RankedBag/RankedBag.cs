@@ -349,10 +349,7 @@ namespace Kaos.Collections
         /// This is a O(log <em>n</em>) operation.
         /// </para>
         /// </remarks>
-        public int IndexOf (T item)
-        {
-            return FindEdgeForIndex (item, out Leaf leaf, out int leafIndex, leftEdge:true);
-        }
+        public int IndexOf (T item) => FindEdgeForIndex (item, out Leaf _, out int _, leftEdge:true);
 
 
         /// <summary>Removes all occurrences of the supplied item from the bag.</summary>

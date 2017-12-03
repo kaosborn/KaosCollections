@@ -192,7 +192,8 @@ namespace Kaos.Collections
             /// This is a O(log <em>n</em>) operation.
             /// </para>
             /// </remarks>
-            public int IndexOf (TKey key) => tree.FindEdgeForIndex (key, out Leaf leaf, out int leafIndex, leftEdge:true);
+            public int IndexOf (TKey key)
+                => tree.FindEdgeForIndex (key, out Leaf _, out int _, leftEdge:true);
 
 
             /// <summary>Gets the minimum key in the map per the comparer.</summary>
