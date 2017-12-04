@@ -79,6 +79,34 @@
       </content>
     </section>
 
+    <section>
+      <title>KaosCollections version 4.0.0 (20??-??-??)</title>
+      <content>
+        <list class="bullet">
+          <listItem>
+            Adds <codeInline>RankedMap</codeInline> class.
+          </listItem>
+          <listItem>
+            Optimizes the <codeInline>RemoveWhere</codeInline> and <codeInline>RemoveWhereElement</codeInline> methods.
+          </listItem>
+          <listItem>
+            Adds various LINQ-signatured methods methods to improve performance.
+          </listItem>
+        </list>
+        <para>
+          The new <codeInline>RankedMap</codeInline> generic class is similar to <codeInline>RankedDictionary</codeInline> but with duplicate keys allowed.
+          Therefore, <codeInline>RankedMap</codeInline> is to <codeInline>RankedDictionary</codeInline> what <codeInline>RankedBag</codeInline> is to <codeInline>RankedSet</codeInline>.
+          Like <codeInline>RankedBag</codeInline>, methods such as <codeInline>ElementAt</codeInline> and <codeInline>IndexOf</codeInline> are not implemented since keys are not distinct.
+          Also like <codeInline>RankedBag</codeInline>, the methods <codeInline>GetDistinctCount</codeInline> and <codeInline>GetCount(key)</codeInline> are implemented.
+          </para>
+        <para>
+          Previous versions of <codeInline>RemoveWhere</codeInline> degraded ungracefully when more than a few items were actually removed.
+          In worst case if all items are removed for a large collection, the time spent is 40 times that if no items are removed.
+          With this optimization, this penalty is reduced to 2 times that if no items are removed.
+        </para>
+      </content>
+    </section>
+
     <relatedTopics>
       <link xlink:href="bd99e66d-09ef-4adc-89eb-db2aaf89e8ad" />
     </relatedTopics>

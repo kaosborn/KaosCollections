@@ -24,8 +24,12 @@
             for collections of distinct items that can be accessed in sort order or by index.
         </listItem>
         <listItem>
+            <codeEntityReference qualifyHint="false">T:Kaos.Collections.RankedMap`2</codeEntityReference>-
+            for collections of key/value pairs with nondistinct keys that can be accessed in sort order or by index.
+        </listItem>
+        <listItem>
             <codeEntityReference qualifyHint="false">T:Kaos.Collections.RankedBag`1</codeEntityReference>-
-            for collections of items that can be accessed in sort order or by index. Also known as multisets.
+            for collections of nondistinct items that can be accessed in sort order or by index. Also known as multisets.
         </listItem>
       </list>
       <para>
@@ -57,19 +61,19 @@
       <content>
         <para>To install using Package Manager:</para>
         <list class="bullet">
-          <listItem><legacyBold><codeInline>Install-Package Kaos.Collections -Version 3.1.0</codeInline></legacyBold></listItem>
+          <listItem><userInput><codeInline>Install-Package Kaos.Collections -Version 3.1.0</codeInline></userInput></listItem>
         </list>
         <para>To install using the .NET CLI:</para>
         <list class="bullet">
-          <listItem><legacyBold><codeInline>dotnet add package Kaos.Collections --version 3.1.0</codeInline></legacyBold></listItem>
+          <listItem><userInput>dotnet add package Kaos.Collections --version 3.1.0</userInput></listItem>
         </list>
         <para>To install using the Visual Studio gallery:</para>
         <list class="ordered">
-          <listItem>Click <legacyBold>Manage NuGet Packages</legacyBold>.</listItem>
-          <listItem>Select package source of <legacyBold>nuget.org</legacyBold>.</listItem>
-          <listItem>Click <legacyBold>Browse</legacyBold> and input <legacyBold>Kaos.Collections</legacyBold>.</listItem>
+          <listItem>Click <userInput>Manage NuGet Packages</userInput>.</listItem>
+          <listItem>Select package source of <userInput>nuget.org</userInput>.</listItem>
+          <listItem>Click <userInput>Browse</userInput> and input <userInput>Kaos.Collections</userInput>.</listItem>
           <listItem>
-            The package should appear. Click <legacyBold>Install</legacyBold>.
+            The package should appear. Click <userInput>Install</userInput>.
             As a multitargeted package, the appropriate binary will be installed for your program.
           </listItem>
         </list>
