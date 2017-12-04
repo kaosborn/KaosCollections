@@ -361,7 +361,7 @@ namespace Kaos.Collections
 
         /// <summary>Determines if the collection contains the supplied key/value pair.</summary>
         /// <param name="keyValuePair">The key/value pair to locate.</param>
-        /// <returns><b>true</b> if <em>keyValuePair</em> is contained in the dictionary; otherwise <b>false</b>.</returns>
+        /// <returns><b>true</b> if <em>keyValuePair</em> is contained in the collection; otherwise <b>false</b>.</returns>
         bool ICollection<KeyValuePair<TKey,TValue>>.Contains (KeyValuePair<TKey,TValue> keyValuePair)
         {
             var leaf = (PairLeaf<TValue>) Find (keyValuePair.Key, out int index);
@@ -412,10 +412,10 @@ namespace Kaos.Collections
             return true;
         }
 
-        /// <summary>Deletes the supplied key and its associated value from the collection.</summary>
+        /// <summary>Removes an element with the supplied key and value from the collection.</summary>
         /// <param name="keyValuePair">Contains key and value to find and remove.</param>
-        /// <returns><b>true</b> if key/value pair removed; otherwise <b>false</b>.</returns>
-        /// <remarks>No operation is taken unless both key and value match.</remarks>
+        /// <returns><b>true</b> if element removed; otherwise <b>false</b>.</returns>
+        /// <remarks>No operation is performed unless both key and value match.</remarks>
         bool ICollection<KeyValuePair<TKey,TValue>>.Remove (KeyValuePair<TKey,TValue> keyValuePair)
         {
             var path = new NodeVector (this, keyValuePair.Key);
@@ -473,8 +473,8 @@ namespace Kaos.Collections
         /// <summary>Gets the value associated with the supplied key.</summary>
         /// <param name="key">The key of the value to get.</param>
         /// <param name="value">
-        /// If the key is found, its value is placed here;
-        /// otherwise it will be loaded with the default value for its type.
+        /// If <em>key</em> is found, its associated value is placed here;
+        /// otherwise it will be loaded with the default for its type.
         /// </param>
         /// <returns><b>true</b> if <em>key</em> is found; otherwise <b>false</b>.</returns>
         /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
@@ -593,7 +593,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Determines whether the dictionary contains a key/value pair with the supplied key.</summary>
+        /// <summary>Determines whether the dictionary contains an element with the supplied key.</summary>
         /// <param name="key">The key to locate.</param>
         /// <returns><b>true</b> if the dictionary contains <em>key</em>; otherwise <b>false</b>.</returns>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
@@ -610,7 +610,7 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Copies the elements of the dictionary to an array, starting at the supplied array index.</summary>
+        /// <summary>Copies the elements of the collection to an array, starting at the supplied array index.</summary>
         /// <param name="array">The destination array of the copy.</param>
         /// <param name="index">The zero-based index in <em>array</em> at which copying begins.</param>
         /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
@@ -646,8 +646,8 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Removes the supplied key and its associated value from the collection.</summary>
-        /// <param name="key">Key to remove.</param>
+        /// <summary>Removes an element with the supplied key from the dictionary.</summary>
+        /// <param name="key">Key of element to remove.</param>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
         void IDictionary.Remove (object key)
         {

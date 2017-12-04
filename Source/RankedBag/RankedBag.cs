@@ -22,9 +22,8 @@ namespace Kaos.Collections
     /// <para>
     /// This class is similar to <see cref="RankedSet{T}"/> but with multiple occurrences of an item allowed.
     /// Items with multiple occurrences have each occurrence stored individually.
-    /// This flattened implementation allows <see cref="RankedBag{T}"/> to be used
-    /// as a multimap as well as the more typical multiset.
-    /// Multimap usage requires supplying a user-defined comparer to the constructor.
+    /// This flattened implementation prevents any loss of information that might occur
+    /// if only a count of occurrences for a key were maintained.
     /// </para>
     /// <example>
     /// <para>The first program shows some basic operations of this class.</para>
