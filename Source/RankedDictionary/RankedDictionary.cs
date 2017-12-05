@@ -41,7 +41,7 @@ namespace Kaos.Collections
     /// </para>
     /// <para>
     /// This class also borrows from
-    /// <see cref="SortedList{TKey,TValue}"/>for indexing functionality:
+    /// <see cref="T:System.Collections.Generic.SortedList`2"/>for indexing functionality:
     /// <list type="bullet">
     /// <item><see cref="IndexOfKey"/></item>
     /// <item><see cref="IndexOfValue"/></item>
