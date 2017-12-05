@@ -1238,7 +1238,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void Unit_TryGetKey()
+        public void UnitRsx_TryGet()
         {
             var rs = new RankedSet<string> (StringComparer.InvariantCultureIgnoreCase);
 
@@ -1256,6 +1256,114 @@ namespace Kaos.Test.Collections
             bool got3 = rs.TryGet ("CCC", out string actual3);
             Assert.IsTrue (got3);
             Assert.AreEqual ("ccc", actual3);
+        }
+
+
+        [TestMethod]
+        public void UnitRsx_TryGetLELT()
+        {
+            Setup (4);
+            int n = 25;
+            for (int ii = 1; ii <= n; ii+=2) setI.Add (ii);
+
+            bool r0a = setS.TryGetLessThanOrEqual ("AA", out string k0a);
+            bool r0b = setS.TryGetLessThan ("BB", out string k0b);
+            Assert.IsFalse (r0a);
+            Assert.AreEqual (default (string), k0a);
+            Assert.IsFalse (r0b);
+            Assert.AreEqual (default (string), k0b);
+
+            for (int i1 = 3; i1 <= n; i1+=2)
+            {
+                bool r1a = setI.TryGetLessThanOrEqual (i1, out int k1a);
+                bool r1b = setI.TryGetLessThan (i1, out int k1b);
+
+                Assert.IsTrue (r1a);
+                Assert.AreEqual (i1, k1a);
+                Assert.IsTrue (r1b);
+                Assert.AreEqual (i1-2, k1b);
+            }
+
+            for (int i2 = 2; i2 <= n+1; i2+=2)
+            {
+                bool r2a = setI.TryGetLessThanOrEqual (i2, out int k2a);
+                bool r2b = setI.TryGetLessThan (i2, out int k2b);
+
+                Assert.IsTrue (r2a);
+                Assert.IsTrue (r2b);
+                Assert.AreEqual (i2-1, k2a);
+                Assert.AreEqual (i2-1, k2b);
+            }
+
+            bool r3a = setI.TryGetLessThanOrEqual (1, out int k3a);
+            Assert.IsTrue (r3a);
+            Assert.AreEqual (1, k3a);
+
+            bool r3b = setI.TryGetLessThan (1, out int k3b);
+            Assert.IsFalse (r3b);
+            Assert.AreEqual (default (int), k3b);
+
+            bool r4a = setI.TryGetLessThanOrEqual (0, out int k4a);
+            Assert.IsFalse (r4a);
+            Assert.AreEqual (default (int), k4a);
+
+            bool r4b = setI.TryGetLessThan (0, out int k4b);
+            Assert.IsFalse (r4b);
+            Assert.AreEqual (default (int), k4b);
+        }
+
+
+        [TestMethod]
+        public void UnitRsx_TryGetGEGT()
+        {
+            Setup (4);
+            int n = 99;
+            for (int ii = 1; ii <= n; ii+=2) setI.Add (ii);
+
+            bool r0a = setS.TryGetGreaterThanOrEqual ("AA", out string k0a);
+            bool r0b = setS.TryGetGreaterThan ("BB", out string k0b);
+            Assert.IsFalse (r0a);
+            Assert.AreEqual (default (string), k0a);
+            Assert.IsFalse (r0b);
+            Assert.AreEqual (default (string), k0b);
+
+            for (int i1 = 1; i1 < n; i1+=2)
+            {
+                bool r1a = setI.TryGetGreaterThanOrEqual (i1, out int k1a);
+                bool r1b = setI.TryGetGreaterThan (i1, out int k1b);
+
+                Assert.IsTrue (r1a);
+                Assert.AreEqual (i1, k1a);
+                Assert.IsTrue (r1b);
+                Assert.AreEqual (i1+2, k1b);
+            }
+
+            for (int i2 = 0; i2 < n; i2+=2)
+            {
+                bool r2a = setI.TryGetGreaterThanOrEqual (i2, out int k2a);
+                bool r2b = setI.TryGetGreaterThan (i2, out int k2b);
+
+                Assert.IsTrue (r2a);
+                Assert.IsTrue (r2b);
+                Assert.AreEqual (i2+1, k2a);
+                Assert.AreEqual (i2+1, k2b);
+            }
+
+            bool r3a = setI.TryGetGreaterThanOrEqual (n, out int k3a);
+            Assert.IsTrue (r3a);
+            Assert.AreEqual (n, k3a);
+
+            bool r3b = setI.TryGetGreaterThan (n, out int k3b);
+            Assert.IsFalse (r3b);
+            Assert.AreEqual (default (int), k3b);
+
+            bool r4a = setI.TryGetGreaterThanOrEqual (n+1, out int k4a);
+            Assert.IsFalse (r4a);
+            Assert.AreEqual (default (int), k4a);
+
+            bool r4b = setI.TryGetGreaterThan (n+1, out int k4b);
+            Assert.IsFalse (r4b);
+            Assert.AreEqual (default (int), k4b);
         }
 
 

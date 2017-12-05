@@ -669,6 +669,51 @@ namespace Kaos.Collections
         }
 
 
+        internal void TryGetLT (T key, out Leaf leaf, out int index)
+        {
+            bool _ = FindEdgeLeft (key, out leaf, out index);
+            if (--index < 0)
+                leaf = null;
+        }
+
+
+        internal void TryGetLE (T key, out Leaf leaf, out int index)
+        {
+            if (FindEdgeLeft (key, out leaf, out index))
+            {
+                if (index >= leaf.KeyCount)
+                {
+                    leaf = leaf.rightLeaf;
+                    index = 0;
+                }
+            }
+            else if (--index < 0)
+                leaf = null;
+        }
+
+
+        internal void TryGetGT (T key, out Leaf leaf, out int index)
+        {
+            bool _ = FindEdgeRight (key, out leaf, out index);
+            if (index >= leaf.KeyCount)
+            {
+                leaf = leaf.rightLeaf;
+                index = 0;
+            }
+        }
+
+
+        internal void TryGetGE (T key, out Leaf leaf, out int index)
+        {
+            bool _ = FindEdgeLeft (key, out leaf, out index);
+            if (index >= leaf.KeyCount)
+            {
+                leaf = leaf.rightLeaf;
+                index = 0;
+            }
+        }
+
+
         /// <exclude />
         protected int StageBump() => ++stage;
 

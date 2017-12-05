@@ -906,25 +906,76 @@ namespace Kaos.Collections
 
 
         /// <summary>Gets the actual item for the supplied search item.</summary>
-        /// <param name="item">The item to find.</param>
-        /// <param name="actualItem">
+        /// <param name="getItem">The item to find.</param>
+        /// <param name="item">
         /// If <em>item</em> is found, its value is placed here;
-        /// otherwise it will be loaded with the default value for its type.
+        /// otherwise it will be loaded with the default for its type.
         /// </param>
-        /// <returns><b>true</b> if <em>item</em> is found; otherwise <b>false</b>.</returns>
-        public bool TryGet (T item, out T actualItem)
+        /// <returns><b>true</b> if <em>getItem</em> is found; otherwise <b>false</b>.</returns>
+        public bool TryGet (T getItem, out T item)
         {
-            var leaf = Find (item, out int index);
-            if (index >= 0)
-            {
-                actualItem = leaf.GetKey (index);
-                return true;
-            }
+            var leaf = Find (getItem, out int index);
+            if (index < 0)
+            { item = default (T); return false; }
+
+            item = leaf.GetKey (index);
+            return true;
+        }
+
+
+        /// <summary>Gets the least item greater than the supplied item.</summary>
+        /// <param name="getItem">The item to use for comparison.</param>
+        /// <param name="item">The actual item if found; otherwise the default.</param>
+        /// <returns><b>true</b> if item greater than <em>getItem</em> is found; otherwise <b>false</b>.</returns>
+        public bool TryGetGreaterThan (T getItem, out T item)
+        {
+            TryGetGT (getItem, out Leaf leaf, out int index);
+            if (leaf == null)
+            { item = default (T); return false; }
             else
-            {
-                actualItem = default (T);
-                return false;
-            }
+            { item = leaf.GetKey (index); return true; }
+        }
+
+
+        /// <summary>Gets the least item greater than or equal to the supplied item.</summary>
+        /// <param name="getItem">The item to use for comparison.</param>
+        /// <param name="item">The actual item if found; otherwise the default.</param>
+        /// <returns><b>true</b> if item greater than or equal to <em>getItem</em> found; otherwise <b>false</b>.</returns>
+        public bool TryGetGreaterThanOrEqual (T getItem, out T item)
+        {
+            TryGetGE (getItem, out Leaf leaf, out int index);
+            if (leaf == null)
+            { item = default (T); return false; }
+            else
+            { item = leaf.GetKey (index); return true; }
+        }
+
+
+        /// <summary>Gets the greatest item that is less than the supplied item.</summary>
+        /// <param name="getItem">The item to use for comparison.</param>
+        /// <param name="item">The actual item if found; otherwise the default.</param>
+        /// <returns><b>true</b> if item less than <em>item</em> found; otherwise <b>false</b>.</returns>
+        public bool TryGetLessThan (T getItem, out T item)
+        {
+            TryGetLT (getItem, out Leaf leaf, out int index);
+            if (leaf == null)
+            { item = default (T); return false; }
+            else
+            { item = leaf.GetKey (index); return true; }
+        }
+
+
+        /// <summary>Gets the greatest item that is less than or equal to the supplied item.</summary>
+        /// <param name="getItem">The item to use for comparison.</param>
+        /// <param name="item">The actual item if found; otherwise the default.</param>
+        /// <returns><b>true</b> if item less than or equal to <em>item</em> found; otherwise <b>false</b>.</returns>
+        public bool TryGetLessThanOrEqual (T getItem, out T item)
+        {
+            TryGetLE (getItem, out Leaf leaf, out int index);
+            if (leaf == null)
+            { item = default (T); return false; }
+            else
+            { item = leaf.GetKey (index); return true; }
         }
 
         #endregion
