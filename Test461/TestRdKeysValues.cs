@@ -201,7 +201,7 @@ namespace Kaos.Test.Collections
 #if ! TEST_BCL
 
         [TestMethod]
-        public void UnitRdk_xIndexer()
+        public void UnitRdkx_Indexer()
         {
             var rd = new RankedDictionary<string,int> { {"0zero",0}, {"1one",-1}, {"2two",-2} };
 
@@ -213,7 +213,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRdk_xElementAt_ArgumentOutOfRange1()
+        public void CrashRdkx_ElementAt_ArgumentOutOfRange1()
         {
             var rd = new RankedDictionary<int,int>();
             var zz = rd.Keys.ElementAt (-1);
@@ -221,14 +221,14 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRdk_xElementAt_ArgumentOutOfRange2()
+        public void CrashRdkx_ElementAt_ArgumentOutOfRange2()
         {
             var rd = new RankedDictionary<int,int>();
             var zz = rd.Keys.ElementAt (0);
         }
 
         [TestMethod]
-        public void UnitRdk_xElementAt()
+        public void UnitRdkx_ElementAt()
         {
             var rd = new RankedDictionary<string,int> { {"one",1 }, {"two",2} };
             string k1 = rd.Keys.ElementAt (1);
@@ -238,7 +238,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRdk_xElementAtOrDefault()
+        public void UnitRdkx_ElementAtOrDefault()
         {
             var rd = new RankedDictionary<string,int> { {"one",1}, {"two", 2} };
 
@@ -253,7 +253,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRdk_xIndexOf()
+        public void UnitRdkx_IndexOf()
         {
             var rd = new RankedDictionary<string,int> { {"one",1}, {"two",2} };
             var pc = (System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string,int>>) rd;
