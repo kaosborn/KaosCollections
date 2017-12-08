@@ -264,6 +264,81 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (2, rd.Keys.IndexOf ("two"));
         }
 
+
+        [TestMethod]
+        public void UnitRdx_TryGet()
+        {
+            var rd = new RankedDictionary<string,int> (StringComparer.InvariantCultureIgnoreCase);
+            rd.Add ("AAA", 1);
+            rd.Add ("bbb", 2);
+            rd.Add ("ccc", 3);
+
+            bool got1 = rd.Keys.TryGet ("aaa", out string actual1);
+            Assert.IsTrue (got1);
+            Assert.AreEqual ("AAA", actual1);
+
+            bool got2 = rd.Keys.TryGet ("bb", out string actual2);
+            Assert.IsFalse (got2);
+
+            bool got3 = rd.Keys.TryGet ("CCC", out string actual3);
+            Assert.IsTrue (got3);
+            Assert.AreEqual ("ccc", actual3);
+        }
+
+
+        [TestMethod]
+        public void UnitRdkx_TryGetGEGT()
+        {
+            var rd = new RankedDictionary<string,int> { {"BB",1}, {"CC",2} };
+
+            bool r0a = rd.Keys.TryGetGreaterThan ("CC", out string k0a);
+            Assert.IsFalse (r0a);
+            Assert.AreEqual (default (string), k0a);
+
+            bool r0b = rd.Keys.TryGetGreaterThanOrEqual ("DD", out string k0b);
+            Assert.IsFalse (r0b);
+            Assert.AreEqual (default (string), k0b);
+
+            bool r1 = rd.Keys.TryGetGreaterThan ("BB", out string k1);
+            Assert.IsTrue (r1);
+            Assert.AreEqual ("CC", k1);
+
+            bool r2 = rd.Keys.TryGetGreaterThanOrEqual ("BB", out string k2);
+            Assert.IsTrue (r2);
+            Assert.AreEqual ("BB", k2);
+
+            bool r3 = rd.Keys.TryGetGreaterThanOrEqual ("AA", out string k3);
+            Assert.IsTrue (r3);
+            Assert.AreEqual ("BB", k3);
+        }
+
+
+        [TestMethod]
+        public void UnitRdkx_TryGetLELT()
+        {
+            var rd = new RankedDictionary<string,int> { {"BB",1}, {"CC",2} };
+
+            bool r0a = rd.Keys.TryGetLessThan ("BB", out string k0a);
+            Assert.IsFalse (r0a);
+            Assert.AreEqual (default (string), k0a);
+
+            bool r0b = rd.Keys.TryGetLessThanOrEqual ("AA", out string k0b);
+            Assert.IsFalse (r0b);
+            Assert.AreEqual (default (string), k0b);
+
+            bool r1 = rd.Keys.TryGetLessThan ("CC", out string k1);
+            Assert.IsTrue (r1);
+            Assert.AreEqual ("BB", k1);
+
+            bool r2 = rd.Keys.TryGetLessThanOrEqual ("CC", out string k2);
+            Assert.IsTrue (r2);
+            Assert.AreEqual ("CC", k2);
+
+            bool r3 = rd.Keys.TryGetLessThanOrEqual ("DD", out string k3);
+            Assert.IsTrue (r3);
+            Assert.AreEqual ("CC", k3);
+        }
+
 #endif
         #endregion
 
