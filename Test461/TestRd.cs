@@ -1386,6 +1386,70 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
+        public void UnitRdx_TryGetGEGT()
+        {
+            var rd = new RankedDictionary<string,int?> { {"BB",1}, {"CC",2} };
+
+            bool r0a = rd.TryGetGreaterThan ("CC", out KeyValuePair<string,int?> p0a);
+            Assert.IsFalse (r0a);
+            Assert.AreEqual (default (string), p0a.Key);
+            Assert.AreEqual (default (int?), p0a.Value);
+
+            bool r0b = rd.TryGetGreaterThanOrEqual ("DD", out KeyValuePair<string,int?> p0b);
+            Assert.IsFalse (r0b);
+            Assert.AreEqual (default (string), p0b.Key);
+            Assert.AreEqual (default (int?), p0b.Value);
+
+            bool r1 = rd.TryGetGreaterThan ("BB", out KeyValuePair<string,int?> p1);
+            Assert.IsTrue (r1);
+            Assert.AreEqual ("CC", p1.Key);
+            Assert.AreEqual (2, p1.Value);
+
+            bool r2 = rd.TryGetGreaterThanOrEqual ("BB", out KeyValuePair<string,int?> p2);
+            Assert.IsTrue (r2);
+            Assert.AreEqual ("BB", p2.Key);
+            Assert.AreEqual (1, p2.Value);
+
+            bool r3 = rd.TryGetGreaterThanOrEqual ("AA", out KeyValuePair<string,int?> p3);
+            Assert.IsTrue (r3);
+            Assert.AreEqual ("BB", p3.Key);
+            Assert.AreEqual (1, p3.Value);
+        }
+
+
+        [TestMethod]
+        public void UnitRdx_TryGetLELT()
+        {
+            var rd = new RankedDictionary<string,int?> { {"BB",1}, {"CC",2} };
+
+            bool r0a = rd.TryGetLessThan ("BB", out KeyValuePair<string,int?> p0a);
+            Assert.IsFalse (r0a);
+            Assert.AreEqual (default (string), p0a.Key);
+            Assert.AreEqual (default (int?), p0a.Value);
+
+            bool r0b = rd.TryGetLessThanOrEqual ("AA", out KeyValuePair<string,int?> p0b);
+            Assert.IsFalse (r0b);
+            Assert.AreEqual (default (string), p0b.Key);
+            Assert.AreEqual (default (int?), p0b.Value);
+
+            bool r1 = rd.TryGetLessThan ("CC", out KeyValuePair<string,int?> p1);
+            Assert.IsTrue (r1);
+            Assert.AreEqual ("BB", p1.Key);
+            Assert.AreEqual (1, p1.Value);
+
+            bool r2 = rd.TryGetLessThanOrEqual ("CC", out KeyValuePair<string,int?> p2);
+            Assert.IsTrue (r2);
+            Assert.AreEqual ("CC", p2.Key);
+            Assert.AreEqual (2, p2.Value);
+
+            bool r3 = rd.TryGetLessThanOrEqual ("DD", out KeyValuePair<string,int?> p3);
+            Assert.IsTrue (r3);
+            Assert.AreEqual ("CC", p3.Key);
+            Assert.AreEqual (2, p3.Value);
+        }
+
+
+        [TestMethod]
         public void UnitRd_xTryGetValueIndex()
         {
             var rd = new RankedDictionary<int,int>();

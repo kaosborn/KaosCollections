@@ -977,6 +977,78 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>Gets the element with the least key greater than the supplied key.</summary>
+        /// <param name="getKey">The key to use for comparison.</param>
+        /// <param name="keyValuePair">The actual element if found; otherwise contains defaults.</param>
+        /// <returns><b>true</b> if element with key greater than <em>getKey</em> is found; otherwise <b>false</b>.</returns>
+        public bool TryGetGreaterThan (TKey getKey, out KeyValuePair<TKey,TValue> keyValuePair)
+        {
+            TryGetGT (getKey, out Leaf leaf, out int index);
+            if (leaf == null)
+            {
+                keyValuePair = new KeyValuePair<TKey,TValue> (default (TKey), default (TValue));
+                return false;
+            }
+
+            keyValuePair = new KeyValuePair<TKey,TValue> (leaf.GetKey (index), ((PairLeaf<TValue>) leaf).GetValue (index));
+            return true;
+        }
+
+
+        /// <summary>Gets the element with the least key greater than or equal to the supplied key.</summary>
+        /// <param name="getKey">The key to use for comparison.</param>
+        /// <param name="keyValuePair">The actual element if found; otherwise contains defaults.</param>
+        /// <returns><b>true</b> if element with key greater than or equal to <em>getKey</em> is found; otherwise <b>false</b>.</returns>
+        public bool TryGetGreaterThanOrEqual (TKey getKey, out KeyValuePair<TKey,TValue> keyValuePair)
+        {
+            TryGetGE (getKey, out Leaf leaf, out int index);
+            if (leaf == null)
+            {
+                keyValuePair = new KeyValuePair<TKey,TValue> (default (TKey), default (TValue));
+                return false;
+            }
+
+            keyValuePair = new KeyValuePair<TKey,TValue> (leaf.GetKey (index), ((PairLeaf<TValue>) leaf).GetValue (index));
+            return true;
+        }
+
+
+        /// <summary>Gets the element with the greatest key less than the supplied key.</summary>
+        /// <param name="getKey">The key to use for comparison.</param>
+        /// <param name="keyValuePair">The actual element if found; otherwise contains defaults.</param>
+        /// <returns><b>true</b> if element with key less than or equal to <em>getKey</em> is found; otherwise <b>false</b>.</returns>
+        public bool TryGetLessThan (TKey getKey, out KeyValuePair<TKey,TValue> keyValuePair)
+        {
+            TryGetLT (getKey, out Leaf leaf, out int index);
+            if (leaf == null)
+            {
+                keyValuePair = new KeyValuePair<TKey,TValue> (default (TKey), default (TValue));
+                return false;
+            }
+
+            keyValuePair = new KeyValuePair<TKey,TValue> (leaf.GetKey (index), ((PairLeaf<TValue>) leaf).GetValue (index));
+            return true;
+        }
+
+
+        /// <summary>Gets the element with the greatest key less than or equal to the supplied key.</summary>
+        /// <param name="getKey">The key to use for comparison.</param>
+        /// <param name="keyValuePair">The actual element if found; otherwise contains defaults.</param>
+        /// <returns><b>true</b> if element with key less than or equal to <em>getKey</em> is found; otherwise <b>false</b>.</returns>
+        public bool TryGetLessThanOrEqual (TKey getKey, out KeyValuePair<TKey,TValue> keyValuePair)
+        {
+            TryGetLE (getKey, out Leaf leaf, out int index);
+            if (leaf == null)
+            {
+                keyValuePair = new KeyValuePair<TKey,TValue> (default (TKey), default (TValue));
+                return false;
+            }
+
+            keyValuePair = new KeyValuePair<TKey,TValue> (leaf.GetKey (index), ((PairLeaf<TValue>) leaf).GetValue (index));
+            return true;
+        }
+
+
         /// <summary>Gets the value and index associated with the supplied key.</summary>
         /// <param name="key">The key of the value and index to get.</param>
         /// <param name="value">If the key is found, its value is placed here; otherwise it will hold the default value.</param>
