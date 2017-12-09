@@ -972,7 +972,7 @@ namespace Kaos.Test.Collections
 #if ! TEST_BCL
 
         [TestMethod]
-        public void UnitRd_xMinMax()
+        public void UnitRdx_MinMax()
         {
             var rd = new RankedDictionary<int,int> { Capacity=4 };
 
@@ -995,14 +995,14 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRd_xCapacity_ArgumentOutOfRange()
+        public void CrashRdx_Capacity_ArgumentOutOfRange()
         {
             var rd = new RankedDictionary<int,int>();
             rd.Capacity = -1;
         }
 
         [TestMethod]
-        public void UnitRd_xCapacity()
+        public void UnitRdx_Capacity()
         {
             var rd = new RankedDictionary<int,int>();
             var initial = rd.Capacity;
@@ -1029,7 +1029,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRd_xElementsBetweenA()
+        public void UnitRdx_ElementsBetweenA()
         {
             var rd = new RankedDictionary<string,int>();
             var pc = (ICollection<KeyValuePair<string,int>>) rd;
@@ -1047,7 +1047,7 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void UnitRd_xElementsBetweenB()
+        public void UnitRdx_ElementsBetweenB()
         {
             var rd = new RankedDictionary<int,int> { Capacity=4 };
 
@@ -1067,7 +1067,7 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void UnitRd_xElementsBetweenPassedEnd()
+        public void UnitRdx_ElementsBetweenPassedEnd()
         {
             var rd = new RankedDictionary<int,int>();
 
@@ -1088,7 +1088,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRd_xElementsFromA()
+        public void UnitRdx_ElementsFromA()
         {
             var rd = new RankedDictionary<string,int>() { { "A",-1 }, { "B",-2 } };
             var pc = (ICollection<KeyValuePair<string,int>>) rd;
@@ -1108,7 +1108,7 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void UnitRd_xElementsFromB()
+        public void UnitRdx_ElementsFromB()
         {
             var rd = new RankedDictionary<int,int>();
 
@@ -1129,7 +1129,7 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void UnitRd_xElementsFromMissingVal()
+        public void UnitRdx_ElementsFromMissingVal()
         {
             var rd = new RankedDictionary<int,int>();
 
@@ -1151,7 +1151,7 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void UnitRd_xElementsFromPassedEnd()
+        public void UnitRdx_ElementsFromPassedEnd()
         {
             var rd = new RankedDictionary<int,int>();
 
@@ -1168,7 +1168,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRd_xElementsBetweenIndexes_ArgumentOutOfRangeA()
+        public void CrashRdx_ElementsBetweenIndexes_ArgumentOutOfRangeA()
         {
             var rd = new RankedDictionary<int,int> { { 0,0 }, { 1,-1 } };
             foreach (var pair in rd.ElementsBetweenIndexes (-1, 0))
@@ -1177,7 +1177,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRd_xElementsBetweenIndexes_ArgumentOutOfRangeB()
+        public void CrashRdx_ElementsBetweenIndexes_ArgumentOutOfRangeB()
         {
             var rd = new RankedDictionary<int,int> { { 0,0 }, { 1,-1 } };
             foreach (var pair in rd.ElementsBetweenIndexes (2, 0))
@@ -1186,7 +1186,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRd_xElementsBetweenIndexes_ArgumentOutOfRangeC()
+        public void CrashRdx_ElementsBetweenIndexes_ArgumentOutOfRangeC()
         {
             var rd = new RankedDictionary<int,int> { { 0,0 }, { 1,-1 } };
             foreach (var pair in rd.ElementsBetweenIndexes (0, -1))
@@ -1195,7 +1195,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRd_xElementsBetweenIndexes_ArgumentOutOfRangeD()
+        public void CrashRdx_ElementsBetweenIndexes_ArgumentOutOfRangeD()
         {
             var rd = new RankedDictionary<int,int> { { 0,0 }, { 1,-1 } };
             foreach (var pair in rd.ElementsBetweenIndexes (0, 2))
@@ -1204,7 +1204,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void CrashRd_xElementsBetweenIndexes_Argument()
+        public void CrashRdx_ElementsBetweenIndexes_Argument()
         {
             var rd = new RankedDictionary<int,int> { { 0,0 }, { 1,-1 }, { 2,-2 } };
             foreach (var pair in rd.ElementsBetweenIndexes (2, 1))
@@ -1212,7 +1212,7 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void UnitRd_xElementsBetweenIndexes()
+        public void UnitRdx_ElementsBetweenIndexes()
         {
             int n = 30;
             var rd = new RankedDictionary<int,int> { Capacity=4 };
@@ -1234,14 +1234,14 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void CrashRd_xIndexOfKey_ArgumentNull()
+        public void CrashRdx_IndexOfKey_ArgumentNull()
         {
             var rd = new RankedDictionary<string,int>();
             int ix = rd.IndexOfKey (null);
         }
 
         [TestMethod]
-        public void UnitRd_xIndexOfKey()
+        public void UnitRdx_IndexOfKey()
         {
             var rd = new RankedDictionary<int,int> { Capacity=5 };
             for (int ii = 0; ii < 500; ii+=2)
@@ -1262,7 +1262,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRd_xIndexOfValue()
+        public void UnitRdx_IndexOfValue()
         {
             var rd = new RankedDictionary<int,int>();
             for (int ii = 0; ii < 500; ++ii)
@@ -1310,7 +1310,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRd_xRemoveAtA_ArgumentOutOfRange()
+        public void CrashRdx_RemoveAtA_ArgumentOutOfRange()
         {
             var rd = new RankedDictionary<int,int>();
             rd.Add (42, 24);
@@ -1319,14 +1319,14 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRd_xRemoveAtB_ArgumentOutOfRange()
+        public void CrashRdx_RemoveAtB_ArgumentOutOfRange()
         {
             var rd = new RankedDictionary<int,int>();
             rd.RemoveAt (0);
         }
 
         [TestMethod]
-        public void UnitRd_xRemoveAt()
+        public void UnitRdx_RemoveAt()
         {
             var rd = new RankedDictionary<int,int>();
             for (int ii = 0; ii < 5000; ++ii)
@@ -1345,7 +1345,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRd_xRemoveRange_ArgumentOutOfRangeA()
+        public void CrashRdx_RemoveRange_ArgumentOutOfRangeA()
         {
             var rd = new RankedDictionary<int,int>();
             rd.RemoveRange (-1, 0);
@@ -1353,7 +1353,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRd_xRemoveRange_ArgumentOutOfRangeB()
+        public void CrashRdx_RemoveRange_ArgumentOutOfRangeB()
         {
             var rd = new RankedDictionary<int,int>();
             rd.RemoveRange (0, -1);
@@ -1361,7 +1361,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentException))]
-        public void CrashRd_xRemoveRange_Argument()
+        public void CrashRdx_RemoveRange_Argument()
         {
             var rd = new RankedDictionary<int,int>();
             rd.Add (3, 33); rd.Add (5, 55);
@@ -1369,7 +1369,7 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void UnitRd_xRemoveRange()
+        public void UnitRdx_RemoveRange()
         {
             var rd = new RankedDictionary<int,int> { Capacity=7 };
             for (int ii=0; ii<20; ++ii) rd.Add (ii, -ii);
@@ -1450,7 +1450,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRd_xTryGetValueIndex()
+        public void UnitRdx_TryGetValueIndex()
         {
             var rd = new RankedDictionary<int,int>();
             rd.Capacity = 5;
@@ -1480,7 +1480,7 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void UnitRd_xRemoveWhereA()
+        public void UnitRdx_RemoveWhereA()
         {
             var rd = new RankedDictionary<int,int>();
 
@@ -1497,7 +1497,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRd_xRemoveWhereB()
+        public void UnitRdx_RemoveWhereB()
         {
             int n = 2000;
             var rd = new RankedDictionary<int,int> { Capacity=7 };
@@ -1514,14 +1514,14 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void CrashRd_xRemoveWhereElement_ArgumentNull()
+        public void CrashRdx_RemoveWhereElement_ArgumentNull()
         {
             var rd = new RankedDictionary<int,int>();
             rd.RemoveWhereElement (null);
         }
 
         [TestMethod]
-        public void UnitRd_xRemoveWhereElement()
+        public void UnitRdx_RemoveWhereElement()
         {
             var rd = new RankedDictionary<int,int>();
 
@@ -1538,7 +1538,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRd_xReverseEmpty()
+        public void UnitRdx_ReverseEmpty()
         {
             int total = 0;
             Setup (5);
@@ -1550,7 +1550,7 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void UnitRd_xReverse()
+        public void UnitRdx_Reverse()
         {
             var rd = new RankedDictionary<int,int> { Capacity=5 };
             int expected = 500;
