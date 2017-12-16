@@ -92,7 +92,6 @@ These classes closely emulate the API of the Microsoft's classes they are based 
     <Folder Include="media" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\Comparison.aml" />
     <None Include="Content\History.aml" />
     <None Include="Content\Structure.aml" />
     <None Include="Content\Welcome.aml" />
