@@ -532,6 +532,81 @@ namespace Kaos.Collections
             return result;
         }
 
+
+        /// <summary>Gets the actual item for the supplied search item.</summary>
+        /// <param name="getItem">The item to find.</param>
+        /// <param name="item">
+        /// If <em>getItem</em> is found, its actual value is placed here;
+        /// otherwise it will be loaded with the default value for its type.
+        /// </param>
+        /// <returns><b>true</b> if <em>getItem</em> is found; otherwise <b>false</b>.</returns>
+        public bool TryGet (T getItem, out T item)
+        {
+            if (FindEdgeLeft (getItem, out Leaf leaf, out int index))
+            {
+                item = index >= leaf.KeyCount ? leaf.rightLeaf.Key0 : leaf.GetKey (index);
+                return true;
+            }
+
+            item = default (T);
+            return false;
+        }
+
+
+        /// <summary>Gets the least item greater than the supplied item.</summary>
+        /// <param name="getItem">The item to use for comparison.</param>
+        /// <param name="item">The actual item if found; otherwise the default.</param>
+        /// <returns><b>true</b> if item greater than <em>getItem</em> is found; otherwise <b>false</b>.</returns>
+        public bool TryGetGreaterThan (T getItem, out T item)
+        {
+            TryGetGT (getItem, out Leaf leaf, out int index);
+            if (leaf == null)
+            { item = default (T); return false; }
+            else
+            { item = leaf.GetKey (index); return true; }
+        }
+
+        /// <summary>Gets the least item greater than or equal to the supplied item.</summary>
+        /// <param name="getItem">The item to use for comparison.</param>
+        /// <param name="item">The actual item if found; otherwise the default.</param>
+        /// <returns><b>true</b> if item greater than or equal to <em>getItem</em> found; otherwise <b>false</b>.</returns>
+        public bool TryGetGreaterThanOrEqual (T getItem, out T item)
+        {
+            TryGetGE (getItem, out Leaf leaf, out int index);
+            if (leaf == null)
+            { item = default (T); return false; }
+            else
+            { item = leaf.GetKey (index); return true; }
+        }
+
+
+        /// <summary>Gets the greatest item that is less than the supplied item.</summary>
+        /// <param name="getItem">The item to use for comparison.</param>
+        /// <param name="item">The actual item if found; otherwise the default.</param>
+        /// <returns><b>true</b> if item less than <em>item</em> found; otherwise <b>false</b>.</returns>
+        public bool TryGetLessThan (T getItem, out T item)
+        {
+            TryGetLT (getItem, out Leaf leaf, out int index);
+            if (leaf == null)
+            { item = default (T); return false; }
+            else
+            { item = leaf.GetKey (index); return true; }
+        }
+
+
+        /// <summary>Gets the greatest item that is less than or equal to the supplied item.</summary>
+        /// <param name="getItem">The item to use for comparison.</param>
+        /// <param name="item">The actual item if found; otherwise the default.</param>
+        /// <returns><b>true</b> if item less than or equal to <em>item</em> found; otherwise <b>false</b>.</returns>
+        public bool TryGetLessThanOrEqual (T getItem, out T item)
+        {
+            TryGetLE (getItem, out Leaf leaf, out int index);
+            if (leaf == null)
+            { item = default (T); return false; }
+            else
+            { item = leaf.GetKey (index); return true; }
+        }
+
         #endregion
 
         #region ISerializable implementation and support

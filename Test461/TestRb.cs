@@ -799,6 +799,145 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (0, rb2.Count);
         }
 
+
+        [TestMethod]
+        public void UnitRb_TryGetEQ()
+        {
+            var rb = new RankedBag<string> (StringComparer.OrdinalIgnoreCase) { Capacity=4 };
+
+            bool r0a = rb.TryGet ("AA", out string k0a);
+            bool r0b = rb.TryGet ("BB", out string k0b);
+            Assert.IsFalse (r0a);
+            Assert.AreEqual (default (string), k0a);
+            Assert.IsFalse (r0b);
+            Assert.AreEqual (default (string), k0b);
+
+            for (char cx = 'b'; cx <= 'y'; ++cx)
+            {
+                rb.Add (cx.ToString());
+                rb.Add (Char.ToUpperInvariant(cx).ToString());
+            }
+
+            for (char c1 = 'b'; c1 <= 'y'; ++c1)
+            {
+                bool r1 = rb.TryGet (c1.ToString(), out string k1);
+
+                Assert.IsTrue (r1);
+                Assert.AreEqual (c1.ToString(), k1);
+            }
+
+            bool r2 = rb.TryGet ("A", out string k2);
+            bool r3 = rb.TryGet ("z", out string k3);
+            Assert.IsFalse (r2);
+            Assert.AreEqual (default (string), k2);
+            Assert.IsFalse (r3);
+            Assert.AreEqual (default (string), k3);
+        }
+
+
+        [TestMethod]
+        public void UnitRb_TryGetLELT()
+        {
+            var rb = new RankedBag<string> (StringComparer.OrdinalIgnoreCase) { Capacity=4 };
+
+            bool r0a = rb.TryGetLessThanOrEqual ("AA", out string k0a);
+            bool r0b = rb.TryGetLessThan ("BB", out string k0b);
+            Assert.IsFalse (r0a);
+            Assert.AreEqual (default (string), k0a);
+            Assert.IsFalse (r0b);
+            Assert.AreEqual (default (string), k0b);
+
+            for (char cx = 'b'; cx <= 'y'; ++cx)
+            {
+                rb.Add (cx.ToString());
+                rb.Add (Char.ToUpperInvariant(cx).ToString());
+            }
+
+            for (char c1 = 'c'; c1 <= 'y'; ++c1)
+            {
+                bool r1a = rb.TryGetLessThanOrEqual (c1.ToString().ToUpper(), out string k1a);
+                bool r1b = rb.TryGetLessThan (c1.ToString(), out string k1b);
+
+                Assert.IsTrue (r1a);
+                Assert.AreEqual (c1.ToString(), k1a);
+                Assert.IsTrue (r1b);
+                Assert.AreEqual (((char) (c1-1)).ToString().ToUpper(), k1b);
+            }
+
+            bool r2a = rb.TryGetLessThanOrEqual ("A", out string k2a);
+            bool r2b = rb.TryGetLessThan ("a", out string k2b);
+            Assert.IsFalse (r2a);
+            Assert.AreEqual (default (string), k2a);
+            Assert.IsFalse (r2b);
+            Assert.AreEqual (default (string), k2b);
+
+            bool r3a = rb.TryGetLessThanOrEqual ("B", out string k3a);
+            bool r3b = rb.TryGetLessThan ("b", out string k3b);
+            Assert.IsTrue (r3a);
+            Assert.AreEqual ("b", k3a);
+            Assert.IsFalse (r3b);
+            Assert.AreEqual (default (string), k3b);
+
+            bool r4a = rb.TryGetLessThanOrEqual ("Z", out string k4a);
+            bool r4b = rb.TryGetLessThan ("z", out string k4b);
+            Assert.IsTrue (r4a);
+            Assert.AreEqual ("Y", k4a);
+            Assert.IsTrue (r4b);
+            Assert.AreEqual ("Y", k4b);
+        }
+
+
+        [TestMethod]
+        public void UnitRb_TryGetGEGT()
+        {
+            var rb = new RankedBag<string> (StringComparer.OrdinalIgnoreCase) { Capacity=4 };
+
+            bool r0a = rb.TryGetGreaterThanOrEqual ("AA", out string k0a);
+            bool r0b = rb.TryGetGreaterThan ("BB", out string k0b);
+            Assert.IsFalse (r0a);
+            Assert.AreEqual (default (string), k0a);
+            Assert.IsFalse (r0b);
+            Assert.AreEqual (default (string), k0b);
+
+            for (char cx = 'b'; cx <= 'y'; ++cx)
+            {
+                rb.Add (cx.ToString());
+                rb.Add (Char.ToUpperInvariant(cx).ToString());
+            }
+
+            for (char c1 = 'b'; c1 <= 'x'; ++c1)
+            {
+                bool r1a = rb.TryGetGreaterThanOrEqual (c1.ToString().ToUpper(), out string k1a);
+                bool r1b = rb.TryGetGreaterThan (c1.ToString(), out string k1b);
+
+                Assert.IsTrue (r1a);
+                Assert.AreEqual (c1.ToString(), k1a);
+                Assert.IsTrue (r1b);
+                Assert.AreEqual (((char) (c1+1)).ToString(), k1b);
+            }
+
+            bool r2a = rb.TryGetGreaterThanOrEqual ("A", out string k2a);
+            bool r2b = rb.TryGetGreaterThan ("a", out string k2b);
+            Assert.IsTrue (r2a);
+            Assert.AreEqual ("b", k2a);
+            Assert.IsTrue (r2b);
+            Assert.AreEqual ("b", k2b);
+
+            bool r3a = rb.TryGetGreaterThanOrEqual ("Y", out string k3a);
+            bool r3b = rb.TryGetGreaterThan ("y", out string k3b);
+            Assert.IsTrue (r3a);
+            Assert.AreEqual ("y", k3a);
+            Assert.IsFalse (r3b);
+            Assert.AreEqual (default (string), k3b);
+
+            bool r4a = rb.TryGetGreaterThanOrEqual ("Z", out string k4a);
+            bool r4b = rb.TryGetGreaterThan ("z", out string k4b);
+            Assert.IsFalse (r4a);
+            Assert.AreEqual (default (string), k4a);
+            Assert.IsFalse (r4b);
+            Assert.AreEqual (default (string), k4b);
+        }
+
         #endregion
 
         #region Test enumeration
