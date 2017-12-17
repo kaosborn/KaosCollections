@@ -92,6 +92,9 @@
           <listItem>
             Adds various LINQ-signatured methods methods to improve performance.
           </listItem>
+          <listItem>
+            Adds <codeInline>Replace</codeInline> and various <codeInline>TryGet</codeInline> methods.
+          </listItem>
         </list>
         <para>
           The new <codeInline>RankedMap</codeInline> generic class is similar to <codeInline>RankedDictionary</codeInline> but with duplicate keys allowed.
@@ -103,6 +106,11 @@
           Previous versions of <codeInline>RemoveWhere</codeInline> degraded ungracefully when more than a few items were actually removed.
           In worst case if all items are removed for a large collection, the time spent is 40 times that if no items are removed.
           With this optimization, this penalty is reduced to 2 times that if no items are removed.
+        </para>
+        <para>
+          Several <codeInline>TryGet</codeInline> and <codeInline>Replace</codeInline> methods have been added to various classes.
+          These methods combine what could be accomplished in multiple operations into a single operation.
+          This both improves performance and decreases heap allocations.
         </para>
       </content>
     </section>
