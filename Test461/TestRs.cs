@@ -1238,6 +1238,47 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
+        public void UnitRsx_Replace1()
+        {
+            var rs = new RankedSet<string> (StringComparer.InvariantCultureIgnoreCase)
+            { "aa", "BB", "cc" };
+
+            bool r1 = rs.Replace ("bb");
+            Assert.IsTrue (r1);
+
+            bool r2 = rs.Replace ("dd");
+            Assert.IsFalse (r2);
+
+            bool r3 = rs.Replace ("AA");
+            Assert.IsTrue (r3);
+
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (rs, new string[] { "AA", "bb", "cc" }));
+        }
+
+
+        [TestMethod]
+        public void UnitRsx_Replace2()
+        {
+            var rs = new RankedSet<string> (StringComparer.InvariantCultureIgnoreCase)
+            { "aa", "BB", "cc" };
+
+            bool r1 = rs.Replace ("AA", true);
+            Assert.IsTrue (r1);
+
+            bool r2 = rs.Replace ("bb", false);
+            Assert.IsTrue (r2);
+
+            bool r3 = rs.Replace ("dd", true);
+            Assert.IsFalse (r3);
+
+            bool r4 = rs.Replace ("ee", false);
+            Assert.IsFalse (r4);
+
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (rs, new string[] { "AA", "bb", "cc", "dd" }));
+        }
+
+
+        [TestMethod]
         public void UnitRsx_TryGet()
         {
             var rs = new RankedSet<string> (StringComparer.InvariantCultureIgnoreCase);

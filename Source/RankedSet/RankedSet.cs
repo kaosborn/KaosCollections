@@ -905,6 +905,47 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>Replace an item if present.</summary>
+        /// <param name="item">The replacement item.</param>
+        /// <returns><b>true</b> if an item is replaced; otherwise <b>false</b>.</returns>
+        /// <remarks>
+        /// This single operation is equivalent to performing a
+        /// <see cref="Remove"/> operation followed by an
+        /// <see cref="Add"/> operation.
+        /// </remarks>
+        public bool Replace (T item)
+        {
+            var path = new NodeVector (this, item);
+            if (! path.IsFound)
+                return false;
+
+            ReplaceKey (path, item);
+            return true;
+        }
+
+
+        /// <summary>Replace an item or optionally add it if missing.</summary>
+        /// <param name="item">The replacement or new item.</param>
+        /// <param name="addIfMissing"><b>true</b> to add <em>item</em> if not already present.</param>
+        /// <returns><b>true</b> if item is replaced; otherwise <b>false</b>.</returns>
+        /// <remarks>
+        /// This operation is an optimized alternative to performing the implicit operations separately.
+        /// </remarks>
+        public bool Replace (T item, bool addIfMissing)
+        {
+            var path = new NodeVector (this, item);
+            if (! path.IsFound)
+            {
+                if (addIfMissing)
+                    AddKey (item, path);
+                return false;
+            }
+
+            ReplaceKey (path, item);
+            return true;
+        }
+
+
         /// <summary>Gets the actual item for the supplied search item.</summary>
         /// <param name="getItem">The item to find.</param>
         /// <param name="item">

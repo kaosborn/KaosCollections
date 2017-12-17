@@ -122,5 +122,12 @@ namespace Kaos.Collections
             }
             return removed;
         }
+
+
+        internal void ReplaceKey (NodeVector path, T item)
+        {
+            StageBump();
+            ((Leaf) path.TopNode).SetKey (path.TopIndex, item);
+        }
     }
 }
