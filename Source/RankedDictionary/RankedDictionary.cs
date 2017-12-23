@@ -1051,12 +1051,12 @@ namespace Kaos.Collections
 
         /// <summary>Gets the value and index associated with the supplied key.</summary>
         /// <param name="key">The key of the value and index to get.</param>
-        /// <param name="value">If the key is found, its value is placed here; otherwise it will hold the default value.</param>
-        /// <param name="index">If the key is found, its index is placed here; otherwise it will hold a negative value.</param>
-        /// <returns><b>true</b> if supplied key is found; otherwise <b>false</b>.</returns>
+        /// <param name="value">If <em>key</em> is found, its value is placed here; otherwise it will hold the default value.</param>
+        /// <param name="index">If <em>key</em> is found, its index is placed here; otherwise it will hold a negative value.</param>
+        /// <returns><b>true</b> if <em>key</em> is found; otherwise <b>false</b>.</returns>
         /// <remarks>
         /// <para>
-        /// If the item is not found, apply the bitwise complement operator
+        /// If <em>key</em> is not found, apply the bitwise complement operator
         /// (<see href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/bitwise-complement-operator">~</see>)
         /// to <em>index</em> to get the index of the next higher item.
         /// </para>
