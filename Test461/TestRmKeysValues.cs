@@ -251,6 +251,82 @@ namespace Kaos.Test.Collections
             gc.Remove ("omega");
         }
 
+
+        [TestMethod]
+        public void UnitRmk_TryGetGEGT()
+        {
+            var rm = new RankedMap<string,int> (StringComparer.OrdinalIgnoreCase) { Capacity=4 };
+            for (char ci = 'b'; ci <= 'y'; ++ci)
+            {
+                rm.Add (ci.ToString().ToUpper(), 'a'-ci);
+                rm.Add (ci.ToString(), ci-'a');
+            }
+
+            bool r0a = rm.Keys.TryGetGreaterThan ("a", out string k0a);
+            Assert.IsTrue (r0a);
+            Assert.AreEqual ("B", k0a);
+
+            bool r0b = rm.Keys.TryGetGreaterThanOrEqual ("a", out string k0b);
+            Assert.IsTrue (r0b);
+            Assert.AreEqual ("B", k0b);
+
+            bool r1 = rm.Keys.TryGetGreaterThan ("B", out string k1);
+            Assert.IsTrue (r1);
+            Assert.AreEqual ("C", k1);
+
+            bool r2 = rm.Keys.TryGetGreaterThanOrEqual ("b", out string k2);
+            Assert.IsTrue (r2);
+            Assert.AreEqual ("B", k2);
+
+            bool r3 = rm.Keys.TryGetGreaterThanOrEqual ("a", out string k3);
+            Assert.IsTrue (r3);
+            Assert.AreEqual ("B", k3);
+
+            bool r9a = rm.Keys.TryGetGreaterThan ("y", out string k9a);
+            Assert.IsFalse (r9a);
+            Assert.AreEqual (default (string), k9a);
+
+            bool r9b = rm.Keys.TryGetGreaterThan ("z", out string k9b);
+            Assert.IsFalse (r9a);
+            Assert.AreEqual (default (string), k9b);
+
+            bool r9c = rm.Keys.TryGetGreaterThanOrEqual ("z", out string k9c);
+            Assert.IsFalse (r9c);
+            Assert.AreEqual (default (string), k9c);
+        }
+
+
+        [TestMethod]
+        public void UnitRmkx_TryGetLELT()
+        {
+            var rm = new RankedMap<string,int> (StringComparer.OrdinalIgnoreCase) { Capacity=4 };
+            for (char ci = 'b'; ci <= 'y'; ++ci)
+            {
+                rm.Add (ci.ToString().ToUpper(), 'a'-ci);
+                rm.Add (ci.ToString(), ci-'a');
+            }
+
+            bool r0a = rm.Keys.TryGetLessThan ("B", out string k0a);
+            Assert.IsFalse (r0a);
+            Assert.AreEqual (default (string), k0a);
+
+            bool r0b = rm.Keys.TryGetLessThanOrEqual ("A", out string k0b);
+            Assert.IsFalse (r0b);
+            Assert.AreEqual (default (string), k0b);
+
+            bool r1 = rm.Keys.TryGetLessThan ("C", out string k1);
+            Assert.IsTrue (r1);
+            Assert.AreEqual ("b", k1);
+
+            bool r2 = rm.Keys.TryGetLessThanOrEqual ("C", out string k2);
+            Assert.IsTrue (r2);
+            Assert.AreEqual ("C", k2);
+
+            bool r3 = rm.Keys.TryGetLessThanOrEqual ("d", out string k3);
+            Assert.IsTrue (r3);
+            Assert.AreEqual ("D", k3);
+        }
+
         #endregion
 
         #region Test Keys enumeration

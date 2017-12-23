@@ -227,6 +227,62 @@ namespace Kaos.Collections
             /// <returns><b>true</b> if the object was removed; otherwise <b>false</b>.</returns>
             bool ICollection<TKey>.Remove (TKey key) => throw new NotSupportedException();
 
+
+            /// <summary>Gets the least key greater than the supplied key.</summary>
+            /// <param name="getKey">The key to use for comparison.</param>
+            /// <param name="key">The actual key if found; otherwise the default.</param>
+            /// <returns><b>true</b> if key greater than <em>getKey</em> is found; otherwise <b>false</b>.</returns>
+            public bool TryGetGreaterThan (TKey getKey, out TKey key)
+            {
+                tree.TryGetGT (getKey, out Leaf leaf, out int index);
+                if (leaf == null)
+                { key = default (TKey); return false; }
+                else
+                { key = leaf.GetKey (index); return true; }
+            }
+
+
+            /// <summary>Gets the least key greater than or equal to the supplied key.</summary>
+            /// <param name="getKey">The key to use for comparison.</param>
+            /// <param name="key">The actual key if found; otherwise the default.</param>
+            /// <returns><b>true</b> if key greater than or equal to <em>getKey</em> found; otherwise <b>false</b>.</returns>
+            public bool TryGetGreaterThanOrEqual (TKey getKey, out TKey key)
+            {
+                tree.TryGetGE (getKey, out Leaf leaf, out int index);
+                if (leaf == null)
+                { key = default (TKey); return false; }
+                else
+                { key = leaf.GetKey (index); return true; }
+            }
+
+
+            /// <summary>Gets the greatest key that is less than the supplied key.</summary>
+            /// <param name="getKey">The key to use for comparison.</param>
+            /// <param name="key">The actual key if found; otherwise the default.</param>
+            /// <returns><b>true</b> if key less than <em>getKey</em> found; otherwise <b>false</b>.</returns>
+            public bool TryGetLessThan (TKey getKey, out TKey key)
+            {
+                tree.TryGetLT (getKey, out Leaf leaf, out int index);
+                if (leaf == null)
+                { key = default (TKey); return false; }
+                else
+                { key = leaf.GetKey (index); return true; }
+            }
+
+
+            /// <summary>Gets the greatest key that is less than or equal to the supplied key.</summary>
+            /// <param name="getKey">The key to use for comparison.</param>
+            /// <param name="key">The actual key if found; otherwise the default.</param>
+            /// <returns><b>true</b> if key less than or equal to <em>getKey</em> found; otherwise <b>false</b>.</returns>
+            public bool TryGetLessThanOrEqual (TKey getKey, out TKey key)
+            {
+                tree.TryGetLE (getKey, out Leaf leaf, out int index);
+                if (leaf == null)
+                { key = default (TKey); return false; }
+                else
+                { key = leaf.GetKey (index); return true; }
+            }
+
             #endregion
 
             #region Enumeration

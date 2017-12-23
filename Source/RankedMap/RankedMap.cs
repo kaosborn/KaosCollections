@@ -642,6 +642,78 @@ namespace Kaos.Collections
         /// <exception cref="ArgumentNullException">When <em>match</em> is <b>null</b>.</exception>
         public int RemoveWhereElement (Predicate<KeyValuePair<TKey,TValue>> match) => RemoveWhere2<TValue> (match);
 
+
+        /// <summary>Gets an element with the least key greater than the supplied key.</summary>
+        /// <param name="getKey">The key to use for comparison.</param>
+        /// <param name="keyValuePair">The actual element if found; otherwise contains defaults.</param>
+        /// <returns><b>true</b> if element with key greater than <em>getKey</em> is found; otherwise <b>false</b>.</returns>
+        public bool TryGetGreaterThan (TKey getKey, out KeyValuePair<TKey,TValue> keyValuePair)
+        {
+            TryGetGT (getKey, out Leaf leaf, out int index);
+            if (leaf == null)
+            {
+                keyValuePair = new KeyValuePair<TKey,TValue> (default (TKey), default (TValue));
+                return false;
+            }
+
+            keyValuePair = new KeyValuePair<TKey,TValue> (leaf.GetKey (index), ((PairLeaf<TValue>) leaf).GetValue (index));
+            return true;
+        }
+
+
+        /// <summary>Gets an element with the least key greater than or equal to the supplied key.</summary>
+        /// <param name="getKey">The key to use for comparison.</param>
+        /// <param name="keyValuePair">The actual element if found; otherwise contains defaults.</param>
+        /// <returns><b>true</b> if element with key greater than or equal to <em>getKey</em> is found; otherwise <b>false</b>.</returns>
+        public bool TryGetGreaterThanOrEqual (TKey getKey, out KeyValuePair<TKey,TValue> keyValuePair)
+        {
+            TryGetGE (getKey, out Leaf leaf, out int index);
+            if (leaf == null)
+            {
+                keyValuePair = new KeyValuePair<TKey,TValue> (default (TKey), default (TValue));
+                return false;
+            }
+
+            keyValuePair = new KeyValuePair<TKey,TValue> (leaf.GetKey (index), ((PairLeaf<TValue>) leaf).GetValue (index));
+            return true;
+        }
+
+
+        /// <summary>Gets an element with the greatest key less than the supplied key.</summary>
+        /// <param name="getKey">The key to use for comparison.</param>
+        /// <param name="keyValuePair">The actual element if found; otherwise contains defaults.</param>
+        /// <returns><b>true</b> if element with key less than or equal to <em>getKey</em> is found; otherwise <b>false</b>.</returns>
+        public bool TryGetLessThan (TKey getKey, out KeyValuePair<TKey,TValue> keyValuePair)
+        {
+            TryGetLT (getKey, out Leaf leaf, out int index);
+            if (leaf == null)
+            {
+                keyValuePair = new KeyValuePair<TKey,TValue> (default (TKey), default (TValue));
+                return false;
+            }
+
+            keyValuePair = new KeyValuePair<TKey,TValue> (leaf.GetKey (index), ((PairLeaf<TValue>) leaf).GetValue (index));
+            return true;
+        }
+
+
+        /// <summary>Gets an element with the greatest key less than or equal to the supplied key.</summary>
+        /// <param name="getKey">The key to use for comparison.</param>
+        /// <param name="keyValuePair">The actual element if found; otherwise contains defaults.</param>
+        /// <returns><b>true</b> if element with key less than or equal to <em>getKey</em> is found; otherwise <b>false</b>.</returns>
+        public bool TryGetLessThanOrEqual (TKey getKey, out KeyValuePair<TKey,TValue> keyValuePair)
+        {
+            TryGetLE (getKey, out Leaf leaf, out int index);
+            if (leaf == null)
+            {
+                keyValuePair = new KeyValuePair<TKey,TValue> (default (TKey), default (TValue));
+                return false;
+            }
+
+            keyValuePair = new KeyValuePair<TKey,TValue> (leaf.GetKey (index), ((PairLeaf<TValue>) leaf).GetValue (index));
+            return true;
+        }
+
         #endregion
 
         #region ISerializable implementation and support

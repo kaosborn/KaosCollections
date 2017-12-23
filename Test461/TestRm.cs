@@ -910,6 +910,75 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (0, rm.Count);
         }
 
+
+        [TestMethod]
+        public void UnitRm_TryGetGEGT()
+        {
+            var rm = new RankedMap<string,int?> (StringComparer.OrdinalIgnoreCase) { Capacity=4 };
+            for (char ci = 'b'; ci <= 'y'; ++ci)
+            {
+                rm.Add (ci.ToString(), ci-'a');
+                rm.Add (ci.ToString().ToUpper(), 'a'-ci);
+            }
+
+            bool r0a = rm.TryGetGreaterThan ("y", out KeyValuePair<string,int?> p0a);
+            Assert.IsFalse (r0a);
+            Assert.AreEqual (default (string), p0a.Key);
+            Assert.AreEqual (default (int?), p0a.Value);
+
+            bool r0b = rm.TryGetGreaterThanOrEqual ("z", out KeyValuePair<string,int?> p0b);
+            Assert.IsFalse (r0b);
+            Assert.AreEqual (default (string), p0b.Key);
+            Assert.AreEqual (default (int?), p0b.Value);
+
+            bool r1 = rm.TryGetGreaterThan ("B", out KeyValuePair<string,int?> p1);
+            Assert.IsTrue (r1);
+            Assert.AreEqual ("c", p1.Key);
+            Assert.AreEqual (2, p1.Value);
+
+            bool r2 = rm.TryGetGreaterThanOrEqual ("B", out KeyValuePair<string,int?> p2);
+            Assert.IsTrue (r2);
+            Assert.AreEqual ("b", p2.Key);
+            Assert.AreEqual (1, p2.Value);
+
+            bool r3 = rm.TryGetGreaterThanOrEqual ("A", out KeyValuePair<string,int?> p3);
+            Assert.IsTrue (r3);
+            Assert.AreEqual ("b", p3.Key);
+            Assert.AreEqual (1, p3.Value);
+        }
+
+
+        [TestMethod]
+        public void UnitRm_TryGetLELT()
+        {
+            var rm = new RankedMap<string,int> (StringComparer.OrdinalIgnoreCase) { Capacity=4 };
+            for (char ci = 'b'; ci <= 'y'; ++ci)
+            {
+                rm.Add (ci.ToString(), ci-'a');
+                rm.Add (ci.ToString().ToUpper(), 'A'-ci);
+            }
+
+            bool r0a = rm.TryGetLessThan ("b", out KeyValuePair<string,int> p0a);
+            Assert.IsFalse (r0a);
+            Assert.AreEqual (default (KeyValuePair<string,int>), p0a);
+
+            bool r0b = rm.TryGetLessThanOrEqual ("A", out KeyValuePair<string,int> p0b);
+            Assert.IsFalse (r0b);
+            Assert.AreEqual (default (KeyValuePair<string,int>), p0b);
+
+            bool r1 = rm.TryGetLessThan ("c", out KeyValuePair<string,int> p1);
+            Assert.IsTrue (r1);
+            Assert.AreEqual ("B", p1.Key);
+
+            bool r2 = rm.TryGetLessThanOrEqual ("c", out KeyValuePair<string,int> p2);
+            Assert.IsTrue (r2);
+            Assert.AreEqual ("c", p2.Key);
+
+            bool r3 = rm.TryGetLessThanOrEqual ("D", out KeyValuePair<string,int> p3);
+            Assert.IsTrue (r3);
+            Assert.AreEqual ("d", p3.Key);
+        }
+
         #endregion
 
         #region Test generic enumeration
