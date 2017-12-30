@@ -50,7 +50,7 @@
     <Preliminary>False</Preliminary>
     <NamingMethod>Guid</NamingMethod>
     <HelpTitle>Kaos.Collections Library</HelpTitle>
-    <CopyrightText>[v{%40HelpFileVersion}] Copyright &amp;#169%3b 2009-2017 Kasey O. %28github.com/kaosborn%29</CopyrightText>
+    <CopyrightText>[v{%40HelpFileVersion}] Copyright &amp;#169%3b 2009-2018 Kasey O. %28github.com/kaosborn%29</CopyrightText>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
     <ProjectSummary>Free to use and share.</ProjectSummary>
     <NamespaceSummaries>
