@@ -1,12 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Topics>
-  <Topic id="bd99e66d-09ef-4adc-89eb-db2aaf89e8ad" visible="True" isDefault="true" title="Welcome to KaosCollections">
+  <Topic id="bd99e66d-09ef-4adc-89eb-db2aaf89e8ad" visible="True" isDefault="true" isSelected="true" title="Welcome to KaosCollections">
     <HelpKeywords>
       <HelpKeyword index="K" term="Welcome" />
     </HelpKeywords>
   </Topic>
-  <Topic id="937c1b5d-48fb-470d-8145-85fc116e2b22" visible="True" title="API Comparisons" />
-  <Topic id="60a5899d-5be3-4389-8ab8-71ba6c2d00ac" visible="True" isSelected="true" title="Internal Structure" />
+  <Topic id="60a5899d-5be3-4389-8ab8-71ba6c2d00ac" visible="True" title="Internal Structure" />
   <Topic id="90402bce-1f31-45f8-b0ea-0a73408bd45a" visible="True" title="Version History">
     <HelpKeywords>
       <HelpKeyword index="K" term="version, history" />
