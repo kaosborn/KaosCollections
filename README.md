@@ -27,11 +27,11 @@ This library is built as a .NET Standard project with multitargeting to:
 
 To install using Package Manager:
 
-* **`Install-Package Kaos.Collections -Version 3.1.0`**
+* **`Install-Package Kaos.Collections -Version 4.0.0`**
 
 To install using the .NET CLI:
 
-* **`dotnet add package Kaos.Collections --version 3.1.0`**
+* **`dotnet add package Kaos.Collections --version 4.0.0`**
 
 To install using the Visual Studio gallery:
 1. Click **Manage NuGet Packages**.
@@ -52,12 +52,7 @@ A project may then reference the extracted platform-specific `.dll` directly.
 
 ### Project status
 
-For the latest stable release, [install version 3.1.0](#library-installation).
-The master branch is under construction for version 4.0:
-
-* The new `RankedMap<K,V>` class is code complete and stable.
-* Optimization of `RemoveWhere` is implemented.
-* Most v4 API changes are implemented but this area is a work in progress.
+For the latest stable release, [install version 4.0.0](#library-installation).
 
 Documentation for the main branch is available by building the Help project for the `.chm` output.
 
