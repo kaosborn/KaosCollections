@@ -80,17 +80,17 @@
     </section>
 
     <section>
-      <title>KaosCollections version 4.0.0 (20??-??-??)</title>
+      <title>KaosCollections version 4.0.0 (2018-??-??)</title>
       <content>
         <list class="bullet">
           <listItem>
-            Adds <codeInline>RankedMap</codeInline> class.
+            Adds the <codeInline>RankedMap&lt;TKey,TValue&gt;</codeInline> class.
           </listItem>
           <listItem>
             Optimizes the <codeInline>RemoveWhere</codeInline> and <codeInline>RemoveWhereElement</codeInline> methods.
           </listItem>
           <listItem>
-            Adds various LINQ-signatured methods methods to improve performance.
+            Adds various LINQ-signatured methods as instance methods to improve performance.
           </listItem>
           <listItem>
             Adds <codeInline>Replace</codeInline> and various <codeInline>TryGet</codeInline> methods.
@@ -108,9 +108,14 @@
           With this optimization, this penalty is reduced to 2 times that if no items are removed.
         </para>
         <para>
-          Several <codeInline>TryGet</codeInline> and <codeInline>Replace</codeInline> methods have been added to various classes.
-          These methods combine what could be accomplished in multiple operations into a single operation.
-          This both improves performance and decreases heap allocations.
+          Methods <codeInline>First</codeInline>, <codeInline>Last</codeInline>, and <codeInline>Contains</codeInline>
+          and enumerators <codeInline>Distinct</codeInline> and <codeInline>Reverse</codeInline>
+          have been added to additional classes as instance methods to improve performance over their LINQ counterparts.
+        </para>
+        <para>
+          <codeInline>TryGet</codeInline> and <codeInline>Replace</codeInline> methods have been added to various classes.
+          These methods combine what could be accomplished in multiple operations into a single operation
+          in order to improve performance and reduce heap allocations.
         </para>
       </content>
     </section>
