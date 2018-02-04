@@ -11,7 +11,7 @@
     <FileVersion>3.1.0.1</FileVersion>
     <Company>github.com/kaosborn</Company>
     <PackageId>Kaos.Collections</PackageId>
-    <Copyright>Copyright © 2009-2017 github.com/kaosborn</Copyright>
+    <Copyright>Copyright © 2009-2018 github.com/kaosborn</Copyright>
     <PackageProjectUrl>https://github.com/kaosborn/KaosCollections/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/kaosborn/KaosCollections.git</RepositoryUrl>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
