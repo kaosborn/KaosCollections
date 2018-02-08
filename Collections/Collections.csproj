@@ -6,7 +6,13 @@
     <RootNamespace>Kaos.Collections</RootNamespace>
     <Version>4.0.0.0</Version>
     <Authors>Kasey O.</Authors>
-    <Description>A .NET library that provides generic collection classes for storing elements that are both sorted and indexed.</Description>
+    <Description>KaosCollections is a .NET library that provides generic collection classes for storing elements that are both sorted and indexed. Two of these classes emulate Microsoft's SortedDictionary and SortedSet while delivering superior performance and greatly enhanced capability. Additional classes include a multiset and multimap class. Based on order statistic B+ trees, all classes provide getting elements by index, getting the index of an element, range removal by index, range enumeration, and more.
+
+Primary types provided are:
+Kaos.Collections.RankedDictionary&lt;TKey,TValue&gt;
+Kaos.Collections.RankedSet&lt;T&gt;
+Kaos.Collections.RankedMap&lt;TKey,TValue&gt;
+Kaos.Collections.RankedBag&lt;T&gt;</Description>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
     <FileVersion>4.0.0.0</FileVersion>
     <Company>github.com/kaosborn</Company>
@@ -16,12 +22,8 @@
     <RepositoryUrl>https://github.com/kaosborn/KaosCollections.git</RepositoryUrl>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <RepositoryType>Git</RepositoryType>
-    <PackageReleaseNotes>A .NET library that provides generic collection classes for storing elements that are both sorted and indexed. Based on order statistic B+ trees, these classes emulate Microsoft's Base Class Library counterparts (SortedDictionary and SortedSet) while delivering superior performance and greatly enhanced capability. Also includes a multiset class. All classes provide getting elements by index, getting the index of an element, range removal by index, range enumeration, and more.
-
-Primary types provided are:
-Kaos.Collections.RankedDictionary&lt;TKey,TValue&gt;
-Kaos.Collections.RankedSet&lt;T&gt;
-Kaos.Collections.RankedBag&lt;T&gt;</PackageReleaseNotes>
+    <PackageReleaseNotes>For complete documentation including release history:
+https://kaosborn.github.io/help/KaosCollections/</PackageReleaseNotes>
     <PackageTags>Generics Collections SortedDictionary SortedSet SortedList BTree Order Statistic Dictionary Set Bag Multiset Multimap</PackageTags>
     <PackageLicenseUrl>https://github.com/kaosborn/KaosCollections/blob/master/LICENSE.txt</PackageLicenseUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/kaosborn/KaosCollections/master/Images/KaosCollections-064.png</PackageIconUrl>
