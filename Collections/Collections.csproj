@@ -42,4 +42,6 @@ https://kaosborn.github.io/help/KaosCollections/</PackageReleaseNotes>
 
   <Import Project="..\Source\RankedBag\RankedBag.projitems" Label="Shared" />
 
+  <Import Project="..\Source\RankedMap\RankedMap.projitems" Label="Shared" />
+
 </Project>
