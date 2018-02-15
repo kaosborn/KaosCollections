@@ -6,14 +6,14 @@ for storing elements that are both sorted and indexed.
 Based on order statistic B+ trees,
 the classes that emulate Microsoft's SortedDictionary and SortedSet
 provide greater capability than their counterparts while outperforming them for large collection sizes.
-Two classes without Microsoft BCL equivalents are included - a sorted bag class and a sorted map class.
+Also included is a bag class and a map class.
 All classes provide getting elements by index, getting the index of an element, range removal by index, range enumeration, and more.
 
 Primary types provided are:
 
 * `RankedDictionary<TKey,TValue>` - for collections of key/value pairs with distinct keys that can be accessed in sort order or by index.
 * `RankedSet<T>` - for collections of distinct items that can be accessed in sort order or by index.
-* `RankedMap<TKey,TValue>` - for collections of key/value pairs with nondistinct keys that can be accessed in sort order or by index. [New to v4.0.0]
+* `RankedMap<TKey,TValue>` - for collections of key/value pairs with nondistinct keys that can be accessed in sort order or by index.
 * `RankedBag<T>` - for collections of nondistinct items that can be accessed in sort order or by index. Also known as multisets.
 
 This library is built as a .NET Standard project with multitargeting to:
@@ -27,11 +27,11 @@ This library is built as a .NET Standard project with multitargeting to:
 
 To install using Package Manager:
 
-* **`Install-Package Kaos.Collections -Version 4.0.0`**
+* **`Install-Package Kaos.Collections -Version 4.1.0`**
 
 To install using the .NET CLI:
 
-* **`dotnet add package Kaos.Collections --version 4.0.0`**
+* **`dotnet add package Kaos.Collections --version 4.1.0`**
 
 To install using the Visual Studio gallery:
 1. Click **Manage NuGet Packages**.
@@ -52,7 +52,7 @@ A project may then reference the extracted platform-specific `.dll` directly.
 
 ### Project status
 
-For the latest stable release, [install version 4.0.0](#library-installation).
+For the latest stable release, [install version 4.1.0](#library-installation).
 
 Documentation for the main branch is available by building the Help project for the `.chm` output.
 
