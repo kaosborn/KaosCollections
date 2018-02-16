@@ -8,7 +8,7 @@
         Based on order statistic B+ trees,
         the classes that emulate Microsoft's SortedDictionary and SortedSet
         provide greater capability than their counterparts while outperforming them for large collection sizes.
-        Also included is a multiset class.
+        Also included is a sorted map class and a sorted bag class.
         All classes provide getting elements by index, getting the index of an element, range removal by index, range enumeration, and more.
       </para>
       <para>
@@ -61,11 +61,11 @@
       <content>
         <para>To install using Package Manager:</para>
         <list class="bullet">
-          <listItem><userInput><codeInline>Install-Package Kaos.Collections -Version 4.0.0</codeInline></userInput></listItem>
+          <listItem><userInput><codeInline>Install-Package Kaos.Collections -Version 4.1.0</codeInline></userInput></listItem>
         </list>
         <para>To install using the .NET CLI:</para>
         <list class="bullet">
-          <listItem><userInput>dotnet add package Kaos.Collections --version 4.0.0</userInput></listItem>
+          <listItem><userInput>dotnet add package Kaos.Collections --version 4.1.0</userInput></listItem>
         </list>
         <para>To install using the Visual Studio gallery:</para>
         <list class="ordered">
