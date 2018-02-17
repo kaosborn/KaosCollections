@@ -4,7 +4,7 @@
     <TargetFrameworks>netstandard1.0;net45;net40;net35</TargetFrameworks>
     <AssemblyName>KaosCollections</AssemblyName>
     <RootNamespace>Kaos.Collections</RootNamespace>
-    <Version>4.1.0.0</Version>
+    <Version>4.1.0.1</Version>
     <Authors>Kasey O.</Authors>
     <Description>KaosCollections is a .NET library that provides generic collection classes for storing elements that are both sorted and indexed. Two of these classes emulate Microsoft's SortedDictionary and SortedSet while delivering superior performance and greatly enhanced capability. Also included are sorted bag and a map classes. Based on order statistic B+ trees, all classes provide getting elements by index, getting the index of an element, range removal by index, range enumeration, and more.
 
@@ -13,8 +13,8 @@ Kaos.Collections.RankedDictionary&lt;TKey,TValue&gt;
 Kaos.Collections.RankedSet&lt;T&gt;
 Kaos.Collections.RankedMap&lt;TKey,TValue&gt;
 Kaos.Collections.RankedBag&lt;T&gt;</Description>
-    <AssemblyVersion>4.1.0.0</AssemblyVersion>
-    <FileVersion>4.1.0.0</FileVersion>
+    <AssemblyVersion>4.1.0.1</AssemblyVersion>
+    <FileVersion>4.1.0.1</FileVersion>
     <Company>github.com/kaosborn</Company>
     <PackageId>Kaos.Collections</PackageId>
     <Copyright>Copyright © 2009-2018 github.com/kaosborn</Copyright>
