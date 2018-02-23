@@ -107,11 +107,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RmExample02", "Bench\RmExam
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RxBench01", "Bench\RxBench01\RxBench01.csproj", "{3B7F5072-B38D-438A-954A-E91C8A1C336F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBench02", "Bench\RxBench02\RxBench02.csproj", "{EDE8BEF7-8503-45D1-95C5-47B827F18130}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Source\RankedSet\RankedSet.projitems*{c39a213b-5aae-4c05-8ca8-946331511d0d}*SharedItemsImports = 13
 		Source\RankedMap\RankedMap.projitems*{c40f0adc-f1f0-41be-9d08-adfe38f8d8b5}*SharedItemsImports = 13
 		Source\RankedDictionary\RankedDictionary.projitems*{d1e37c27-b068-4f2e-8603-f8f5495b3330}*SharedItemsImports = 13
+		Source\Btree\Btree.projitems*{ede8bef7-8503-45d1-95c5-47b827f18130}*SharedItemsImports = 4
+		Source\RankedBag\RankedBag.projitems*{ede8bef7-8503-45d1-95c5-47b827f18130}*SharedItemsImports = 4
+		Source\RankedSet\RankedSet.projitems*{ede8bef7-8503-45d1-95c5-47b827f18130}*SharedItemsImports = 4
 		Source\Btree\Btree.projitems*{f46832d9-2950-47b9-bb68-42ee79668f61}*SharedItemsImports = 13
 		Source\RankedBag\RankedBag.projitems*{f7b692f7-c69c-4791-b3af-6727bb08e016}*SharedItemsImports = 13
 		Source\Btree\Btree.projitems*{fb547c0b-556f-4d84-bf48-9da674832089}*SharedItemsImports = 4
@@ -287,6 +292,10 @@ Global
 		{3B7F5072-B38D-438A-954A-E91C8A1C336F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B7F5072-B38D-438A-954A-E91C8A1C336F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B7F5072-B38D-438A-954A-E91C8A1C336F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDE8BEF7-8503-45D1-95C5-47B827F18130}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDE8BEF7-8503-45D1-95C5-47B827F18130}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDE8BEF7-8503-45D1-95C5-47B827F18130}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDE8BEF7-8503-45D1-95C5-47B827F18130}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -334,6 +343,7 @@ Global
 		{40823D4F-4AB8-4BF7-A9A2-4CCE6F8CB46E} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{333AFE6C-CF9B-45F0-B4C3-74AF2C0E65B2} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{3B7F5072-B38D-438A-954A-E91C8A1C336F} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
+		{EDE8BEF7-8503-45D1-95C5-47B827F18130} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {201DA9DF-651F-47A0-B578-167533C3D874}
