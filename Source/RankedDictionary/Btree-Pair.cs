@@ -14,7 +14,7 @@ namespace Kaos.Collections
     public abstract partial class Btree<T>
     {
 
-        internal void Add2<TValue> (NodeVector path, T key, TValue value)
+        private protected void Add2<TValue> (NodeVector path, T key, TValue value)
         {
             StageBump();
 
@@ -67,7 +67,7 @@ namespace Kaos.Collections
         }
 
 
-        internal int ContainsValue2<TValue> (TValue value)
+        private protected int ContainsValue2<TValue> (TValue value)
         {
             int result = 0;
 
@@ -95,7 +95,7 @@ namespace Kaos.Collections
         }
 
 
-        internal int RemoveWhere2<V> (Predicate<KeyValuePair<T,V>> match)
+        private protected int RemoveWhere2<V> (Predicate<KeyValuePair<T,V>> match)
         {
             if (match == null)
                 throw new ArgumentNullException (nameof (match));

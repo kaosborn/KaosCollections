@@ -17,7 +17,7 @@ namespace Kaos.Collections
     public abstract partial class Btree<T>
     {
         /// <summary>Base page of the B+ tree. May be internal (Branch) or terminal (Leaf, PairLeaf).</summary>
-        internal abstract class Node
+        private protected abstract class Node
         {
             protected readonly List<T> keys;
 
@@ -34,7 +34,7 @@ namespace Kaos.Collections
             public void AddKey (T key) { keys.Add (key); }
             public T GetKey (int index) { return keys[index]; }
             public int Search (T key) { return keys.BinarySearch (key); }
-             public int Search (T key, IComparer<T> comparer) { return keys.BinarySearch (key, comparer); }
+            public int Search (T key, IComparer<T> comparer) { return keys.BinarySearch (key, comparer); }
             public void SetKey (int index, T key) { keys[index] = key; }
             public void RemoveKey (int index) { keys.RemoveAt (index); }
             public void RemoveKeys (int index, int count) { keys.RemoveRange (index, count); }
@@ -93,7 +93,7 @@ namespace Kaos.Collections
         /// <remarks>
         /// Contains copies of the first key ('anchor') of every leaf except the leftmost.
         /// </remarks>
-        internal sealed class Branch : Node
+        private protected sealed class Branch : Node
         {
             private readonly List<Node> childNodes;
             private int weight;
@@ -183,7 +183,7 @@ namespace Kaos.Collections
         }
 
 
-        internal class Leaf : Node
+        private protected class Leaf : Node
         {
             public Leaf leftLeaf,
                         rightLeaf;

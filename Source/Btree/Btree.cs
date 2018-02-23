@@ -24,29 +24,29 @@ namespace Kaos.Collections
         private const int DefaultOrder = 128;
         private const int MaximumOrder = 256;
 
-        internal Node root;
-        internal Leaf rightmostLeaf;
-        internal Leaf leftmostLeaf;
-        internal IComparer<T> keyComparer;
-        internal int maxKeyCount;
-        internal int stage = 0;
+        private protected Node root;
+        private protected Leaf rightmostLeaf;
+        private protected Leaf leftmostLeaf;
+        private protected IComparer<T> keyComparer;
+        private protected int maxKeyCount;
+        private protected int stage = 0;
 
-        internal Btree (Leaf startLeaf)
+        private protected Btree (Leaf startLeaf)
         {
             this.maxKeyCount = DefaultOrder - 1;
             this.root = this.rightmostLeaf = this.leftmostLeaf = startLeaf;
         }
 
-        internal Btree (IComparer<T> comparer, Leaf startLeaf) : this (startLeaf)
+        private protected Btree (IComparer<T> comparer, Leaf startLeaf) : this (startLeaf)
         {
             this.keyComparer = comparer ?? Comparer<T>.Default;
         }
 
         #region Nonpublic methods
 
-        internal bool IsUnderflow (int count) => count < ((maxKeyCount + 1) >> 1);
+        private protected bool IsUnderflow (int count) => count < ((maxKeyCount + 1) >> 1);
 
-        internal void CopyKeysTo1 (T[] array, int index, int count)
+        private protected void CopyKeysTo1 (T[] array, int index, int count)
         {
             if (array == null)
                 throw new ArgumentNullException (nameof (array));
@@ -78,7 +78,7 @@ namespace Kaos.Collections
         }
 
 
-        internal void CopyKeysTo2 (Array array, int index)
+        private protected void CopyKeysTo2 (Array array, int index)
         {
             if (array == null)
                 throw new ArgumentNullException (nameof (array));
@@ -119,7 +119,7 @@ namespace Kaos.Collections
         /// <param name="key">Target of search.</param>
         /// <param name="index">When found, holds index of returned Leaf; else ~index of nearest greater key.</param>
         /// <returns>Leaf holding target (found or not).</returns>
-        internal Leaf Find (T key, out int index)
+        private protected Leaf Find (T key, out int index)
         {
             //  Unfold on default comparer for 5% speed improvement.
             if (keyComparer == Comparer<T>.Default)
@@ -149,7 +149,7 @@ namespace Kaos.Collections
         /// <param name="treeIndex">Index of collection.</param>
         /// <param name="leafIndex">Leaf index of result.</param>
         /// <returns>Leaf holding item.</returns>
-        internal Node Find (int treeIndex, out int leafIndex)
+        private protected Node Find (int treeIndex, out int leafIndex)
         {
             System.Diagnostics.Debug.Assert (treeIndex < root.Weight);
             Node node = root;
@@ -171,7 +171,7 @@ namespace Kaos.Collections
         }
 
 
-        internal int FindEdgeForIndex (T key, out Leaf leaf, out int leafIndex, bool leftEdge=false)
+        private protected int FindEdgeForIndex (T key, out Leaf leaf, out int leafIndex, bool leftEdge=false)
         {
             bool isFound = false;
             int treeIndex = 0;
@@ -232,7 +232,7 @@ namespace Kaos.Collections
         }
 
 
-        internal bool FindEdgeLeft (T key, out Leaf leaf, out int leafIndex)
+        private protected bool FindEdgeLeft (T key, out Leaf leaf, out int leafIndex)
         {
             bool isFound = false;
             leafIndex = 0;
@@ -265,7 +265,7 @@ namespace Kaos.Collections
             }
         }
 
-        internal bool FindEdgeRight (T key, out Leaf leaf, out int leafIndex)
+        private protected bool FindEdgeRight (T key, out Leaf leaf, out int leafIndex)
         {
             bool isFound = false;
             leafIndex = 0;
@@ -299,7 +299,7 @@ namespace Kaos.Collections
         }
 
 
-        internal int GetCount2 (T key)
+        private protected int GetCount2 (T key)
         {
             int treeIx1 = FindEdgeForIndex (key, out Leaf leaf1, out int leafIx1, leftEdge:true);
             if (treeIx1 < 0)
@@ -309,7 +309,7 @@ namespace Kaos.Collections
         }
 
 
-        internal int GetDistinctCount2()
+        private protected int GetDistinctCount2()
         {
             int result = 0;
             if (root.Weight > 0)
@@ -347,7 +347,7 @@ namespace Kaos.Collections
         [NonSerialized]
 #endif
         private object syncRoot = null;
-        internal object GetSyncRoot()
+        private protected object GetSyncRoot()
         {
             if (syncRoot == null)
                 Interlocked.CompareExchange (ref syncRoot, new object(), null);
@@ -355,7 +355,7 @@ namespace Kaos.Collections
         }
 
 
-        internal void Initialize()
+        private protected void Initialize()
         {
             StageBump();
             leftmostLeaf.Truncate (0);
@@ -364,7 +364,7 @@ namespace Kaos.Collections
         }
 
 
-        internal void Remove2 (NodeVector path)
+        private protected void Remove2 (NodeVector path)
         {
             StageBump();
             ((Leaf) path.TopNode).RemoveRange (path.TopIndex, 1);
@@ -373,7 +373,7 @@ namespace Kaos.Collections
         }
 
 
-        internal int Remove2 (T item, int count)
+        private protected int Remove2 (T item, int count)
         {
             if (count <= 0)
                 return 0;
@@ -396,13 +396,13 @@ namespace Kaos.Collections
         }
 
 
-        internal void RemoveAt2 (int index)
+        private protected void RemoveAt2 (int index)
         {
             Remove2 (NodeVector.CreateFromIndex (this, index));
         }
 
 
-        internal void RemoveRange2 (int index, int count)
+        private protected void RemoveRange2 (int index, int count)
         {
             if (count == 0)
                 return;
@@ -416,7 +416,7 @@ namespace Kaos.Collections
 
 
         // delete all elements between path1 & path2 inclusive.
-        internal void Delete (NodeVector path1, NodeVector path2)
+        private protected void Delete (NodeVector path1, NodeVector path2)
         {
             var leaf1 = (Leaf) path1.TopNode; int ix1 = path1.TopIndex, deltaW1 = 0;
             var leaf2 = (Leaf) path2.TopNode; int ix2 = path2.TopIndex, deltaW2 = 0;
@@ -583,7 +583,7 @@ namespace Kaos.Collections
         }
 
 
-        internal int RemoveWhere2 (Predicate<T> match)
+        private protected int RemoveWhere2 (Predicate<T> match)
         {
             if (match == null)
                 throw new ArgumentNullException (nameof (match));
@@ -662,14 +662,14 @@ namespace Kaos.Collections
         }
 
 
-        internal void TrimRoot()
+        private protected void TrimRoot()
         {
             while (root is Branch && root.KeyCount == 0)
                 root = ((Branch) root).Child0;
         }
 
 
-        internal void TryGetLT (T key, out Leaf leaf, out int index)
+        private protected void TryGetLT (T key, out Leaf leaf, out int index)
         {
             bool _ = FindEdgeLeft (key, out leaf, out index);
             if (--index < 0)
@@ -677,7 +677,7 @@ namespace Kaos.Collections
         }
 
 
-        internal void TryGetLE (T key, out Leaf leaf, out int index)
+        private protected void TryGetLE (T key, out Leaf leaf, out int index)
         {
             if (FindEdgeLeft (key, out leaf, out index))
             {
@@ -692,7 +692,7 @@ namespace Kaos.Collections
         }
 
 
-        internal void TryGetGT (T key, out Leaf leaf, out int index)
+        private protected void TryGetGT (T key, out Leaf leaf, out int index)
         {
             bool _ = FindEdgeRight (key, out leaf, out index);
             if (index >= leaf.KeyCount)
@@ -703,7 +703,7 @@ namespace Kaos.Collections
         }
 
 
-        internal void TryGetGE (T key, out Leaf leaf, out int index)
+        private protected void TryGetGE (T key, out Leaf leaf, out int index)
         {
             bool _ = FindEdgeLeft (key, out leaf, out index);
             if (index >= leaf.KeyCount)

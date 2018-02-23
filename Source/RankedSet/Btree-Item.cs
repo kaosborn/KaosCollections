@@ -10,7 +10,7 @@ namespace Kaos.Collections
 {
     public abstract partial class Btree<T>
     {
-        internal bool AddKey (T item, NodeVector path)
+        private protected bool AddKey (T item, NodeVector path)
         {
             StageBump();
 
@@ -64,7 +64,7 @@ namespace Kaos.Collections
         }
 
 
-        internal System.Collections.Generic.IEnumerable<T> Distinct2()
+        private protected System.Collections.Generic.IEnumerable<T> Distinct2()
         {
             if (root.Weight == 0)
                 yield break;
@@ -97,7 +97,7 @@ namespace Kaos.Collections
         }
 
 
-        internal int RemoveAll2 (System.Collections.Generic.IEnumerable<T> other)
+        private protected int RemoveAll2 (System.Collections.Generic.IEnumerable<T> other)
         {
             int removed = 0;
             if (root.Weight > 0)
@@ -124,7 +124,7 @@ namespace Kaos.Collections
         }
 
 
-        internal void ReplaceKey (NodeVector path, T item)
+        private protected void ReplaceKey (NodeVector path, T item)
         {
             StageBump();
             ((Leaf) path.TopNode).SetKey (path.TopIndex, item);

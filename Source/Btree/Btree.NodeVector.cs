@@ -18,7 +18,7 @@ namespace Kaos.Collections
         /// Provides traversal path to existing key or insertion point for non-existing key
         /// along with various helper methods.
         /// </remarks>
-        internal class NodeVector
+        private protected class NodeVector
         {
             private readonly Btree<T> tree;
             private readonly List<int> indexStack;
@@ -39,7 +39,7 @@ namespace Kaos.Collections
             /// <summary>Make a copy with indexes of zero.</summary>
             /// <param name="path">Target of copy.</param>
             /// <param name="count">Depth of copy.</param>
-            internal NodeVector (NodeVector path, int count) : this (path.tree)
+            public NodeVector (NodeVector path, int count) : this (path.tree)
             {
                 for (int ix = 0; ix < count; ++ix)
                 {
@@ -235,9 +235,9 @@ namespace Kaos.Collections
             public bool IsFound
             { get; private set; }
 
-            internal Node TopNode => nodeStack[indexStack.Count-1];
+            public Node TopNode => nodeStack[indexStack.Count-1];
 
-            internal int TopIndex => indexStack[indexStack.Count-1];
+            public int TopIndex => indexStack[indexStack.Count-1];
 
             public int Height => indexStack.Count;
 
@@ -245,9 +245,9 @@ namespace Kaos.Collections
 
             #region Methods
 
-            internal Node GetNode (int level) => nodeStack[level];
+            public Node GetNode (int level) => nodeStack[level];
 
-            internal int GetIndex (int level) => indexStack[level];
+            public int GetIndex (int level) => indexStack[level];
 
             public T LeftKey => ((Leaf) TopNode).GetKey (TopIndex-1);
 
@@ -346,7 +346,7 @@ namespace Kaos.Collections
             }
 
 
-            internal void Push (Node node, int nodeIndex)
+            public void Push (Node node, int nodeIndex)
             {
                 nodeStack.Add (node);
                 indexStack.Add (nodeIndex);
@@ -381,7 +381,7 @@ namespace Kaos.Collections
             /// <summary>Adjust tree path to node to the right.</summary>
             /// <returns>Node to immediate right of current path;
             /// <b>null</b> if current path at rightmost node.</returns>
-            internal Node TraverseRight()
+            public Node TraverseRight()
             {
                 Node node = null;
                 int height = indexStack.Count;
@@ -437,7 +437,7 @@ namespace Kaos.Collections
 
 
             // Leaf or branch has been split so insert the new anchor into a branch.
-            internal void Promote (T key, Node newNode, bool isAppend)
+            public void Promote (T key, Node newNode, bool isAppend)
             {
                 for (;;)
                 {
