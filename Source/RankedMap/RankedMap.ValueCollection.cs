@@ -276,7 +276,7 @@ namespace Kaos.Collections
                         tree.StageCheck (stageFreeze);
                         if (index < 0)
                             throw new InvalidOperationException ("Enumerator is not active.");
-                        return (object) Current;
+                        return (object) leaf.GetValue (index);
                     }
                 }
 
@@ -294,7 +294,7 @@ namespace Kaos.Collections
                 /// <summary>Advances the enumerator to the next value in the collection.</summary>
                 /// <returns><b>true</b> if the enumerator was successfully advanced to the next value; <b>false</b> if the enumerator has passed the end of the collection.</returns>
                 /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
-                    public bool MoveNext()
+                public bool MoveNext()
                 {
                     tree.StageCheck (stageFreeze);
 
