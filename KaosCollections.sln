@@ -116,6 +116,8 @@ Global
 		Source\RankedDictionary\RankedDictionary.projitems*{d1e37c27-b068-4f2e-8603-f8f5495b3330}*SharedItemsImports = 13
 		Source\Btree\Btree.projitems*{ede8bef7-8503-45d1-95c5-47b827f18130}*SharedItemsImports = 4
 		Source\RankedBag\RankedBag.projitems*{ede8bef7-8503-45d1-95c5-47b827f18130}*SharedItemsImports = 4
+		Source\RankedDictionary\RankedDictionary.projitems*{ede8bef7-8503-45d1-95c5-47b827f18130}*SharedItemsImports = 4
+		Source\RankedMap\RankedMap.projitems*{ede8bef7-8503-45d1-95c5-47b827f18130}*SharedItemsImports = 4
 		Source\RankedSet\RankedSet.projitems*{ede8bef7-8503-45d1-95c5-47b827f18130}*SharedItemsImports = 4
 		Source\Btree\Btree.projitems*{f46832d9-2950-47b9-bb68-42ee79668f61}*SharedItemsImports = 13
 		Source\RankedBag\RankedBag.projitems*{f7b692f7-c69c-4791-b3af-6727bb08e016}*SharedItemsImports = 13
