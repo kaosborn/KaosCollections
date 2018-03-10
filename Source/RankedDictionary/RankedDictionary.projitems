@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Btree-Pair.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ICollectionKVDebugView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PairEnumerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.KeyCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Btree.PairLeaf.cs" />

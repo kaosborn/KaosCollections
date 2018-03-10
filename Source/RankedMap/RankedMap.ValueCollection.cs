@@ -257,26 +257,19 @@ namespace Kaos.Collections
             /// <summary>Enumerates the items of a <see cref="RankedMap{TKey,TValue}.ValueCollection"/> in key sort order.</summary>
             public sealed class Enumerator : IEnumerator<TValue>
             {
-                private readonly RankedMap<TKey,TValue> tree;
-                private PairLeaf<TValue> leaf;
-                private int index;
-                private int stageFreeze;
+                private readonly ValueEnumerator<TValue> etor;
 
-                internal Enumerator (RankedMap<TKey,TValue> map)
-                {
-                    this.tree = map;
-                    ((IEnumerator) this).Reset();
-                }
+                internal Enumerator (RankedMap<TKey,TValue> map, bool isReverse=false) => etor = new ValueEnumerator<TValue> (map, isReverse);
 
                 /// <summary>Gets the value at the current position.</summary>
                 object IEnumerator.Current
                 {
                     get
                     {
-                        tree.StageCheck (stageFreeze);
-                        if (index < 0)
+                        etor.StageCheck();
+                        if (etor.NotActive)
                             throw new InvalidOperationException ("Enumerator is not active.");
-                        return (object) leaf.GetValue (index);
+                        return (object) etor.CurrentValue;
                     }
                 }
 
@@ -286,40 +279,18 @@ namespace Kaos.Collections
                 {
                     get
                     {
-                        tree.StageCheck (stageFreeze);
-                        return index < 0 ? default (TValue) : leaf.GetValue (index);
+                        etor.StageCheck();
+                        return etor.CurrentValueOrDefault;
                     }
                 }
 
                 /// <summary>Advances the enumerator to the next value in the collection.</summary>
                 /// <returns><b>true</b> if the enumerator was successfully advanced to the next value; <b>false</b> if the enumerator has passed the end of the collection.</returns>
                 /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
-                public bool MoveNext()
-                {
-                    tree.StageCheck (stageFreeze);
-
-                    if (leaf != null)
-                    {
-                        if (++index < leaf.KeyCount)
-                            return true;
-
-                        leaf = (PairLeaf<TValue>) leaf.rightLeaf;
-                        if (leaf != null)
-                        { index = 0; return true; }
-
-                        index = -1;
-                    }
-
-                    return false;
-                }
+                public bool MoveNext() => etor.Advance();
 
                 /// <summary>Rewinds the enumerator to its initial state.</summary>
-                void IEnumerator.Reset()
-                {
-                    stageFreeze = tree.stage;
-                    index = -1;
-                    leaf = (PairLeaf<TValue>) tree.leftmostLeaf;
-                }
+                void IEnumerator.Reset() => etor.Init();
 
                 /// <summary>Releases all resources used by the enumerator.</summary>
                 public void Dispose() { }

@@ -1179,34 +1179,22 @@ namespace Kaos.Collections
         /// <summary>Enumerates the sorted key/value pairs of a <see cref="RankedDictionary{TKey,TValue}"/>.</summary>
         public sealed class Enumerator : IEnumerator<KeyValuePair<TKey,TValue>>, IDictionaryEnumerator
         {
-            private readonly RankedDictionary<TKey,TValue> tree;
-            private readonly bool isReverse;
-            private readonly bool nonGeneric;
-            private PairLeaf<TValue> leaf;
-            private int index;
-            private int stageFreeze;
-            private int state;  // -1=rewound; 0=active; 1=consumed
+            private readonly PairEnumerator<TValue> etor;
 
             /// <summary>Make an iterator that will loop thru the collection in order.</summary>
             /// <param name="dictionary">Collection containing these key/value pairs.</param>
             /// <param name="isReverse">Supply <b>true</b> to iterate from last to first.</param>
             /// <param name="nonGeneric">Supply <b>true</b> to indicate object Current should return DictionaryEntry values.</param>
-            internal Enumerator (RankedDictionary<TKey,TValue> dictionary, bool isReverse=false, bool nonGeneric=false)
-            {
-                this.tree = dictionary;
-                this.isReverse = isReverse;
-                this.nonGeneric = nonGeneric;
-                ((IEnumerator) this).Reset();
-            }
+            internal Enumerator (RankedDictionary<TKey,TValue> dary, bool isReverse=false, bool nonGeneric=false) => etor = new PairEnumerator<TValue> (dary, isReverse, nonGeneric);
 
             /// <summary>Gets the key of the element at the current position.</summary>
             object IDictionaryEnumerator.Key
             {
                 get
                 {
-                    if (state != 0)
+                    if (etor.NotActive)
                         throw new InvalidOperationException ("Enumerator is not active.");
-                    return leaf.GetKey (index);
+                    return (object) etor.CurrentKey;
                 }
             }
 
@@ -1215,9 +1203,9 @@ namespace Kaos.Collections
             {
                 get
                 {
-                    if (state != 0)
+                    if (etor.NotActive)
                         throw new InvalidOperationException ("Enumerator is not active.");
-                    return leaf.GetValue (index);
+                    return (object) etor.CurrentValue;
                 }
             }
 
@@ -1226,9 +1214,9 @@ namespace Kaos.Collections
             {
                 get
                 {
-                    if (state != 0)
+                    if (etor.NotActive)
                         throw new InvalidOperationException ("Enumerator is not active.");
-                    return new DictionaryEntry (leaf.GetKey (index), leaf.GetValue (index));
+                    return etor.CurrentEntry;
                 }
             }
 
@@ -1237,14 +1225,13 @@ namespace Kaos.Collections
             {
                 get
                 {
-                    tree.StageCheck (stageFreeze);
-                    if (state != 0)
+                    etor.StageCheck();
+                    if (etor.NotActive)
                         throw new InvalidOperationException ("Enumerator is not active.");
-
-                    if (nonGeneric)
-                        return new DictionaryEntry (leaf.GetKey (index), leaf.GetValue (index));
+                    if (etor.NonGeneric)
+                        return etor.CurrentEntry;
                     else
-                        return leaf.GetPair (index);
+                        return etor.CurrentPair;
                 }
             }
 
@@ -1254,58 +1241,18 @@ namespace Kaos.Collections
             {
                 get
                 {
-                    tree.StageCheck (stageFreeze);
-                    return state == 0 ? leaf.GetPair (index)
-                                      : new KeyValuePair<TKey,TValue> (default (TKey), default (TValue));
+                    etor.StageCheck();
+                    return etor.CurrentPairOrDefault;
                 }
             }
 
             /// <summary>Advances the enumerator to the next element in the dictionary.</summary>
             /// <returns><b>true</b> if the enumerator was successfully advanced to the next element; <b>false</b> if the enumerator has passed the end of the collection.</returns>
             /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
-            public bool MoveNext()
-            {
-                tree.StageCheck (stageFreeze);
-
-                if (state != 0)
-                    if (state > 0)
-                        return false;
-                    else
-                    {
-                        leaf = (PairLeaf<TValue>) (isReverse ? tree.rightmostLeaf : tree.leftmostLeaf);
-                        index = isReverse ? leaf.KeyCount : -1;
-                        state = 0;
-                    }
-
-                if (isReverse)
-                {
-                    if (--index >= 0)
-                        return true;
-
-                    leaf = (PairLeaf<TValue>) leaf.leftLeaf;
-                    if (leaf != null)
-                    { index = leaf.KeyCount - 1; return true; }
-                }
-                else
-                {
-                    if (++index < leaf.KeyCount)
-                        return true;
-
-                    leaf = (PairLeaf<TValue>) leaf.rightLeaf;
-                    if (leaf != null)
-                    { index = 0; return true; }
-                }
-
-                state = 1;
-                return false;
-            }
+            public bool MoveNext() => etor.Advance();
 
             /// <summary>Rewinds the enumerator to its initial state.</summary>
-            void IEnumerator.Reset()
-            {
-                stageFreeze = tree.stage;
-                state = -1;
-            }
+            void IEnumerator.Reset() => etor.Init();
 
             /// <summary>Releases all resources used by the enumerator.</summary>
             public void Dispose() { }

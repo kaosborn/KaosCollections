@@ -925,29 +925,19 @@ namespace Kaos.Collections
         /// <summary>Enumerates the items of a <see cref="RankedBag{T}"/> in sort order.</summary>
         public sealed class Enumerator : IEnumerator<T>
         {
-            private readonly RankedBag<T> tree;
-            private readonly bool isReverse;
-            private Leaf leaf;
-            private int index;
-            private int stageFreeze;
-            private int state;  // -1=rewound; 0=active; 1=consumed
+            private readonly KeyEnumerator etor;
 
-            internal Enumerator (RankedBag<T> bag, bool isReverse=false)
-            {
-                this.tree = bag;
-                this.isReverse = isReverse;
-                ((IEnumerator) this).Reset();
-            }
+            internal Enumerator (RankedBag<T> bag, bool isReverse=false) => etor = new KeyEnumerator (bag, isReverse);
 
             /// <summary>Gets the element at the current position.</summary>
             object IEnumerator.Current
             {
                 get
                 {
-                    tree.StageCheck (stageFreeze);
-                    if (state != 0)
+                    etor.StageCheck();
+                    if (etor.NotActive)
                         throw new InvalidOperationException ("Enumerator is not active.");
-                    return (object) leaf.GetKey (index);
+                    return (object) etor.CurrentKey;
                 }
             }
 
@@ -957,57 +947,18 @@ namespace Kaos.Collections
             {
                 get
                 {
-                    tree.StageCheck (stageFreeze);
-                    return state != 0 ? default (T) : leaf.GetKey (index);
+                    etor.StageCheck();
+                    return etor.CurrentKeyOrDefault;
                 }
             }
 
             /// <summary>Advances the enumerator to the next item in the bag.</summary>
             /// <returns><b>true</b> if the enumerator was successfully advanced to the next item; <b>false</b> if the enumerator has passed the end of the bag.</returns>
             /// <exception cref="InvalidOperationException">When the bag was modified after the enumerator was created.</exception>
-            public bool MoveNext()
-            {
-                tree.StageCheck (stageFreeze);
-
-                if (state != 0)
-                    if (state > 0)
-                        return false;
-                    else
-                    {
-                        leaf = isReverse ? tree.rightmostLeaf : tree.leftmostLeaf;
-                        index = isReverse ? leaf.KeyCount : -1;
-                        state = 0;
-                    }
-
-                if (isReverse)
-                {
-                    if (--index >= 0)
-                        return true;
-
-                    leaf = leaf.leftLeaf;
-                    if (leaf != null)
-                    { index = leaf.KeyCount - 1; return true; }
-                }
-                else
-                {
-                    if (++index < leaf.KeyCount)
-                        return true;
-
-                    leaf = leaf.rightLeaf;
-                    if (leaf != null)
-                    { index = 0; return true; }
-                }
-
-                state = 1;
-                return false;
-            }
+            public bool MoveNext() => etor.Advance();
 
             /// <summary>Rewinds the enumerator to its initial state.</summary>
-            void IEnumerator.Reset()
-            {
-                stageFreeze = tree.stage;
-                state = -1;
-            }
+            void IEnumerator.Reset() => etor.Init();
 
             /// <summary>Releases all resources used by the enumerator.</summary>
             public void Dispose() { }
