@@ -16,6 +16,7 @@ namespace Kaos.Collections
     public abstract partial class Btree<T>
     {
         /// <summary>A terminal B+ tree node for key/value pairs.</summary>
+        /// <exclude />
         private protected sealed class PairLeaf<TValue> : Leaf
         {
             private readonly List<TValue> values;
