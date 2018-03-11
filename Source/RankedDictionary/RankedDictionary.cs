@@ -1146,12 +1146,7 @@ namespace Kaos.Collections
         /// <summary>Returns an enumerator that iterates thru the dictionary in reverse order.</summary>
         /// <returns>An enumerator that reverse iterates thru the dictionary.</returns>
         /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
-        public IEnumerable<KeyValuePair<TKey,TValue>> Reverse()
-        {
-            Enumerator etor = new Enumerator (this, isReverse:true);
-            while (etor.MoveNext())
-                yield return etor.Current;
-        }
+        public Enumerator Reverse() => new Enumerator (this, isReverse:true);
 
         #endregion
 
@@ -1177,7 +1172,7 @@ namespace Kaos.Collections
 
 
         /// <summary>Enumerates the sorted key/value pairs of a <see cref="RankedDictionary{TKey,TValue}"/>.</summary>
-        public sealed class Enumerator : IEnumerator<KeyValuePair<TKey,TValue>>, IDictionaryEnumerator
+        public sealed class Enumerator : IEnumerator<KeyValuePair<TKey,TValue>>, IDictionaryEnumerator,IEnumerable<KeyValuePair<TKey,TValue>>
         {
             private readonly PairEnumerator<TValue> etor;
 
@@ -1256,6 +1251,14 @@ namespace Kaos.Collections
 
             /// <summary>Releases all resources used by the enumerator.</summary>
             public void Dispose() { }
+
+            /// <summary>Gets an iterator for this collection.</summary>
+            /// <returns>An iterator for this collection.</returns>
+            public IEnumerator<KeyValuePair<TKey,TValue>> GetEnumerator() => this;
+
+            /// <summary>Gets an iterator for this collection.</summary>
+            /// <returns>An iterator for this collection.</returns>
+            IEnumerator IEnumerable.GetEnumerator() => this;
         }
 
         #endregion

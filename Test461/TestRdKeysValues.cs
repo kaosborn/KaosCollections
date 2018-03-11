@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #if TEST_BCL
 using System.Collections.Generic;
+using System.Linq;
 #else
 using Kaos.Collections;
 #endif
@@ -399,6 +400,26 @@ namespace Kaos.Test.Collections
             }
             Assert.AreEqual (n, expected);
         }
+
+
+        [TestMethod]
+        public void UnitRdk_Reverse()
+        {
+            Setup (4);
+            int n = 50;
+            for (int k = 0; k < n; ++k)
+                dary1.Add (k, k + 1000);
+
+            int expected = n;
+            foreach (int ak in dary1.Keys.Reverse())
+            {
+                --expected;
+                Assert.AreEqual (expected, ak);
+            }
+
+            Assert.AreEqual (0, expected);
+        }
+
 
         [TestMethod]
         [ExpectedException (typeof (InvalidOperationException))]

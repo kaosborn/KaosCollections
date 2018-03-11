@@ -304,21 +304,7 @@ namespace Kaos.Collections
 
             /// <summary>Returns an enumerator that iterates thru the map keys in reverse order.</summary>
             /// <returns>An enumerator that reverse iterates thru the map keys.</returns>
-            public IEnumerable<TKey> Reverse()
-            {
-                var stageFreeze = tree.stage;
-                for (var leaf = tree.rightmostLeaf;;)
-                {
-                    for (int ix = leaf.KeyCount; --ix >= 0; )
-                    {
-                        yield return leaf.GetKey (ix);
-                        tree.StageCheck (stageFreeze);
-                    }
-                    leaf = leaf.leftLeaf;
-                    if (leaf == null)
-                        yield break;
-                }
-            }
+            public Enumerator Reverse() => new Enumerator (tree, isReverse:true);
 
 
             /// <summary>Gets an enumerator that iterates thru the collection.</summary>
@@ -335,11 +321,11 @@ namespace Kaos.Collections
 
 
             /// <summary>Enumerates the items of a <see cref="RankedMap{TKey,TValue}.KeyCollection"/> in sort order.</summary>
-            public sealed class Enumerator : IEnumerator<TKey>
+            public sealed class Enumerator : IEnumerator<TKey>, IEnumerable<TKey>
             {
                 private readonly KeyEnumerator etor;
 
-                internal Enumerator (RankedMap<TKey,TValue> map) => etor = new KeyEnumerator (map);
+                internal Enumerator (RankedMap<TKey,TValue> map, bool isReverse=false) => etor = new KeyEnumerator (map, isReverse);
 
                 /// <summary>Gets the key at the current position.</summary>
                 object IEnumerator.Current
@@ -374,6 +360,14 @@ namespace Kaos.Collections
 
                 /// <summary>Releases all resources used by the enumerator.</summary>
                 public void Dispose() { }
+
+                /// <summary>Gets an iterator for this collection.</summary>
+                /// <returns>An iterator for this collection.</returns>
+                public IEnumerator<TKey> GetEnumerator() => this;
+
+                /// <summary>Gets an iterator for this collection.</summary>
+                /// <returns>An iterator for this collection.</returns>
+                IEnumerator IEnumerable.GetEnumerator() => this;
             }
 
             #endregion

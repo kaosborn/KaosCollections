@@ -247,21 +247,7 @@ namespace Kaos.Collections
 
             /// <summary>Returns an enumerator that iterates thru the dictionary values in reverse key order.</summary>
             /// <returns>An enumerator that reverse iterates thru the dictionary values.</returns>
-            public IEnumerable<TValue> Reverse()
-            {
-                var stageFreeze = tree.stage;
-                for (var leaf = (PairLeaf<TValue>) tree.rightmostLeaf;;)
-                {
-                    for (int ix = leaf.KeyCount; --ix >= 0;)
-                    {
-                        yield return leaf.GetValue (ix);
-                        tree.StageCheck (stageFreeze);
-                    }
-                    leaf = (PairLeaf<TValue>) leaf.leftLeaf;
-                    if (leaf == null)
-                        yield break;
-                }
-            }
+            public Enumerator Reverse() => new Enumerator (tree, isReverse:true);
 
             #endregion
 
@@ -281,7 +267,7 @@ namespace Kaos.Collections
 
 
             /// <summary>Enumerates the items of a <see cref="RankedDictionary{TKey,TValue}.ValueCollection"/> in key sort order.</summary>
-            public sealed class Enumerator : IEnumerator<TValue>
+            public sealed class Enumerator : IEnumerator<TValue>, IEnumerable<TValue>
             {
                 private readonly ValueEnumerator<TValue> etor;
 
@@ -320,6 +306,14 @@ namespace Kaos.Collections
 
                 /// <summary>Releases all resources used by the enumerator.</summary>
                 public void Dispose() { }
+
+                /// <summary>Gets an iterator for this collection.</summary>
+                /// <returns>An iterator for this collection.</returns>
+                public IEnumerator<TValue> GetEnumerator() => this;
+
+                /// <summary>Gets an iterator for this collection.</summary>
+                /// <returns>An iterator for this collection.</returns>
+                IEnumerator IEnumerable.GetEnumerator() => this;
             }
 
             #endregion

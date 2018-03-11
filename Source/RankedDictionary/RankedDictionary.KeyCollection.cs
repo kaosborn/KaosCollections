@@ -303,21 +303,7 @@ namespace Kaos.Collections
 
             /// <summary>Returns an enumerator that iterates thru the dictionary keys in reverse order.</summary>
             /// <returns>An enumerator that reverse iterates thru the dictionary keys.</returns>
-            public IEnumerable<TKey> Reverse()
-            {
-                var stageFreeze = tree.stage;
-                for (var leaf = tree.rightmostLeaf;;)
-                {
-                    for (int ix = leaf.KeyCount; --ix >= 0; )
-                    {
-                        yield return leaf.GetKey (ix);
-                        tree.StageCheck (stageFreeze);
-                    }
-                    leaf = leaf.leftLeaf;
-                    if (leaf == null)
-                        yield break;
-                }
-            }
+            public Enumerator Reverse() => new Enumerator (tree, isReverse:true);
 
             #endregion
 
@@ -337,7 +323,7 @@ namespace Kaos.Collections
 
 
             /// <summary>Enumerates the items of a <see cref="RankedDictionary{TKey,TValue}.KeyCollection"/> in sort order.</summary>
-            public sealed class Enumerator : IEnumerator<TKey>
+            public sealed class Enumerator : IEnumerator<TKey>, IEnumerable<TKey>
             {
                 private readonly KeyEnumerator etor;
 
@@ -376,6 +362,14 @@ namespace Kaos.Collections
 
                 /// <summary>Releases all resources used by the enumerator.</summary>
                 public void Dispose() { }
+
+                /// <summary>Gets an iterator for this collection.</summary>
+                /// <returns>An iterator for this collection.</returns>
+                public IEnumerator<TKey> GetEnumerator() => this;
+
+                /// <summary>Gets an iterator for this collection.</summary>
+                /// <returns>An iterator for this collection.</returns>
+                IEnumerator IEnumerable.GetEnumerator() => this;
             }
 
             #endregion

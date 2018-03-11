@@ -967,12 +967,7 @@ namespace Kaos.Collections
 
         /// <summary>Returns an enumerator that iterates thru the map in reverse order.</summary>
         /// <returns>An enumerator that reverse iterates thru the map.</returns>
-        public IEnumerable<KeyValuePair<TKey,TValue>> Reverse()
-        {
-            Enumerator etor = new Enumerator (this, isReverse:true);
-            while (etor.MoveNext())
-                yield return etor.Current;
-        }
+        public Enumerator Reverse() => new Enumerator (this, isReverse:true);
 
 
         /// <summary>Gets an enumerator that iterates thru the map.</summary>
@@ -990,7 +985,7 @@ namespace Kaos.Collections
 
 
         /// <summary>Enumerates the sorted key/value pairs of a <see cref="RankedMap{TKey,TValue}"/>.</summary>
-        public sealed class Enumerator : IEnumerator<KeyValuePair<TKey,TValue>>
+        public sealed class Enumerator : IEnumerator<KeyValuePair<TKey,TValue>>, IEnumerable<KeyValuePair<TKey,TValue>>
         {
             private readonly PairEnumerator<TValue> etor;
 
@@ -1037,6 +1032,14 @@ namespace Kaos.Collections
 
             /// <summary>Releases all resources used by the enumerator.</summary>
             public void Dispose() { }
+
+            /// <summary>Gets an iterator for this collection.</summary>
+            /// <returns>An iterator for this collection.</returns>
+            public IEnumerator<KeyValuePair<TKey,TValue>> GetEnumerator() => this;
+
+            /// <summary>Gets an iterator for this collection.</summary>
+            /// <returns>An iterator for this collection.</returns>
+            IEnumerator IEnumerable.GetEnumerator() => this;
         }
 
         #endregion

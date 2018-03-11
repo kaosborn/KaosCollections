@@ -901,12 +901,7 @@ namespace Kaos.Collections
         /// <summary>Returns an IEnumerable that iterates thru the bag in reverse sort order.</summary>
         /// <returns>An enumerator that reverse iterates thru the bag.</returns>
         /// <exception cref="InvalidOperationException">When the bag was modified after the enumerator was created.</exception>
-        public IEnumerable<T> Reverse()
-        {
-            Enumerator enor = new Enumerator (this, isReverse:true);
-            while (enor.MoveNext())
-                yield return enor.Current;
-        }
+        public Enumerator Reverse() => new Enumerator (this, isReverse:true);
 
 
         /// <summary>Returns an enumerator that iterates thru the bag.</summary>
@@ -923,7 +918,7 @@ namespace Kaos.Collections
 
 
         /// <summary>Enumerates the items of a <see cref="RankedBag{T}"/> in sort order.</summary>
-        public sealed class Enumerator : IEnumerator<T>
+        public sealed class Enumerator : IEnumerator<T>, IEnumerable<T>
         {
             private readonly KeyEnumerator etor;
 
@@ -962,6 +957,14 @@ namespace Kaos.Collections
 
             /// <summary>Releases all resources used by the enumerator.</summary>
             public void Dispose() { }
+
+            /// <summary>Gets an iterator for this collection.</summary>
+            /// <returns>An iterator for this collection.</returns>
+            public IEnumerator<T> GetEnumerator() => this;
+
+            /// <summary>Gets an iterator for this collection.</summary>
+            /// <returns>An iterator for this collection.</returns>
+            IEnumerator IEnumerable.GetEnumerator() => this;
         }
 
         #endregion
