@@ -7,7 +7,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>ccb7fb93-229a-494d-a044-9095a523c71f</ProjectGuid>
-    <SHFBSchemaVersion>2015.6.5.0</SHFBSchemaVersion>
+    <SHFBSchemaVersion>2017.9.26.0</SHFBSchemaVersion>
     <!-- AssemblyName, Name, and RootNamespace are not used by SHFB but Visual Studio adds them anyway -->
     <AssemblyName>Help</AssemblyName>
     <RootNamespace>Help</RootNamespace>
@@ -57,7 +57,7 @@
       <NamespaceSummaryItem name="Kaos.Collections" isDocumented="True">The Kaos.Collections namespace contains the classes RankedDictionary, RankedSet, RankedBag and their supporting classes.
 These classes closely emulate the API of the Microsoft's classes they are based on while extending capability and improving performance in many common scenarios.</NamespaceSummaryItem>
     </NamespaceSummaries>
-    <VisibleItems>ExplicitInterfaceImplementations, InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected</VisibleItems>
+    <VisibleItems>ExplicitInterfaceImplementations, InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected, EditorBrowsableNever, NonBrowsable</VisibleItems>
     <PlugInConfigurations>
       <PlugInConfig id="Member ID Fix-Ups" enabled="True">
         <configuration>
