@@ -941,6 +941,13 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>Returns an IEnumerable that iterates thru the items after a supplied index.</summary>
+        /// <param name="count">Number of elements to skip.</param>
+        /// <returns>An enumerator that iterates thru remaining items.</returns>
+        /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
+        public Enumerator Skip (int count) => new Enumerator (this, count);
+
+
         /// <summary>Gets the actual item for the supplied search item.</summary>
         /// <param name="getItem">The item to find.</param>
         /// <param name="item">
@@ -1097,6 +1104,8 @@ namespace Kaos.Collections
 
             internal Enumerator (RankedSet<T> set, bool isReverse=false) => etor = new KeyEnumerator (set, isReverse);
 
+            internal Enumerator (RankedSet<T> set, int count) => etor = new KeyEnumerator (set, count);
+
             /// <summary>Gets the element at the current position.</summary>
             object IEnumerator.Current
             {
@@ -1138,6 +1147,16 @@ namespace Kaos.Collections
             /// <summary>Gets an iterator for this collection.</summary>
             /// <returns>An iterator for this collection.</returns>
             IEnumerator IEnumerable.GetEnumerator() => this;
+
+            /// <summary>Bypasses a supplied number of elements and yields the remaining elements.</summary>
+            /// <param name="count">Number of elements to skip.</param>
+            /// <returns>An enumerator suitable for chaining.</returns>
+            /// <remarks>This is a O(1) operation.</remarks>
+            public Enumerator Skip (int count)
+            {
+                etor.Bypass (count);
+                return this;
+            }
         }
 
         #endregion

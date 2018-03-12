@@ -198,6 +198,83 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (n, a1);
         }
 
+
+        [TestMethod]
+        public void UnitRbq_SkipA()
+        {
+            Setup (4);
+            setI.Add (1); setI.Add (2);
+
+            int k1 = System.Linq.Enumerable.Count (setI.Skip (-1));
+            Assert.AreEqual (2, k1);
+
+            int k2 = System.Linq.Enumerable.Count (setI.Skip (3));
+            Assert.AreEqual (0, k2);
+
+            int k3 = System.Linq.Enumerable.Count (setI.Skip (0).Skip (-1));
+            Assert.AreEqual (2, k3);
+
+            int k4 = System.Linq.Enumerable.Count (setI.Skip (0).Skip (1));
+            Assert.AreEqual (1, k4);
+
+            int k5 = System.Linq.Enumerable.Count (setI.Skip (0).Skip (3));
+            Assert.AreEqual (0, k5);
+
+            int k6 = System.Linq.Enumerable.Count (setI.Reverse().Skip (-1));
+            Assert.AreEqual (2, k6);
+
+            var ee = setI.GetEnumerator();
+
+            int k7 = System.Linq.Enumerable.Count (setI.Reverse().Skip (1));
+            Assert.AreEqual (1, k7);
+
+            int k8 = System.Linq.Enumerable.Count (setI.Reverse().Skip (3));
+            Assert.AreEqual (0, k8);
+        }
+
+        [TestMethod]
+        public void StressRbq_SkipF()
+        {
+            Setup (4);
+            int n = 20;
+
+            for (int ix = 0; ix < n; ++ix)
+                setI.Add (n + ix);
+
+            for (int s1 = 0; s1 <= n; ++s1)
+                for (int s2 = 0; s2 <= n-s1; ++s2)
+                {
+                    int e0 = n + s1+s2;
+                    foreach (var a0 in setI.Skip (s1).Skip (s2))
+                    {
+                        Assert.AreEqual (e0, a0);
+                        ++e0;
+                    }
+                    Assert.AreEqual (n + n, e0);
+                }
+        }
+
+        [TestMethod]
+        public void StressRbq_SkipR()
+        {
+            Setup (4);
+            int n = 20;
+
+            for (int ix = 0; ix < n; ++ix)
+                setI.Add (n + ix);
+
+            for (int s1 = 0; s1 <= n; ++s1)
+            {
+                int e0 = n + n - s1;
+                foreach (var a0 in setI.Reverse().Skip (s1))
+                {
+                    --e0;
+                    Assert.AreEqual (e0, a0);
+                }
+                Assert.AreEqual (20, e0);
+            }
+        }
+
         #endregion
     }
 }

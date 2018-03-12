@@ -113,6 +113,36 @@ namespace Kaos.Collections
 
                 return true;
             }
+
+
+            public void Bypass (int count)
+            {
+                if (state < 0 && count > 0)
+                    if (isReverse)
+                        if (index < count)
+                            state = 1;
+                        else
+                        {
+                            index -= count;
+                            if (leaf != null)
+                                if (leafIndex < count)
+                                    leaf = null;
+                                else
+                                    leafIndex -= count;
+                        }
+                    else
+                        if (index >= tree.root.Weight - count)
+                            state = 1;
+                        else
+                        {
+                            index += count;
+                            if (leaf != null)
+                                if (leafIndex > leaf.KeyCount - count)
+                                    leaf = null;
+                                else
+                                    leafIndex += count;
+                        }
+            }
         }
     }
 }
