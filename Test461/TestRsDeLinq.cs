@@ -275,6 +275,95 @@ namespace Kaos.Test.Collections
             }
         }
 
+         [TestMethod]
+         public void UnitRsq_SkipWhile2Ctor()
+         {
+             Setup (5);
+
+             int a0 = 0, a1 = 0;
+             foreach (var k0 in setI.SkipWhile (x => false))
+                 ++a0;
+             Assert.AreEqual (0, a0);
+
+             foreach (var k0 in setI.SkipWhile (x => true))
+                 ++a0;
+             Assert.AreEqual (0, a0);
+
+             setI.Add (1);
+
+             foreach (var k0 in setI.SkipWhile (x => false))
+             {
+                 Assert.AreEqual (a0+1, k0);
+                 ++a0;
+             }
+             Assert.AreEqual (1, a0);
+
+             foreach (var k0 in setI.SkipWhile (x => true))
+                 ++a1;
+             Assert.AreEqual (0, a1);
+         }
+
+         [TestMethod]
+         public void UnitRsq_SkipWhile2F()
+         {
+             Setup (5);
+             System.Collections.Generic.IEnumerable<int> q0;
+             int a0 = 0;
+
+             foreach (var k0 in setI.Skip (0).SkipWhile (x => true))
+                 ++a0;
+
+             q0 = setI.Skip (0).SkipWhile (x => true);
+             Assert.AreEqual (0, System.Linq.Enumerable.Count (q0));
+
+             setI.Add (-1);
+             q0 = setI.Skip (0).SkipWhile (x => true);
+             Assert.AreEqual (0, System.Linq.Enumerable.Count (q0));
+             q0 = setI.Skip (0).SkipWhile (x => false);
+             Assert.AreEqual (1, System.Linq.Enumerable.Count (q0));
+        }
+
+         [TestMethod]
+         public void UnitRsq_SkipWhile2R()
+         {
+             Setup (5);
+
+             int a0 = 0;
+             foreach (var k0 in setI.Reverse().SkipWhile (x => false))
+                 ++a0;
+             Assert.AreEqual (0, a0);
+
+             foreach (var k0 in setI.Reverse().SkipWhile (x => true))
+                 ++a0;
+             Assert.AreEqual (0, a0);
+
+             setI.Add (1);
+
+             foreach (var k0 in setI.Reverse().SkipWhile (x => false))
+             {
+                 Assert.AreEqual (a0+1, k0);
+                 ++a0;
+             }
+             Assert.AreEqual (1, a0);
+         }
+
+         [TestMethod]
+         public void StressRsq_SkipWhile()
+         {
+            Setup (5);
+
+            for (int x1 = 0; x1 < 20; ++x1)
+            {
+                setI.Clear();
+                for (int x3 = 0; x3 < x1; ++x3)
+                    setI.Add (x3);
+
+                System.Collections.Generic.IEnumerable<int> q0 = setI.SkipWhile (x=>false);
+
+                Assert.AreEqual (x1, System.Linq.Enumerable.Count (q0));
+            }
+         }
+
         #endregion
     }
 }

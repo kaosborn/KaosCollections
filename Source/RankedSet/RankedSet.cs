@@ -947,6 +947,13 @@ namespace Kaos.Collections
         /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
         public Enumerator Skip (int count) => new Enumerator (this, count);
 
+        /// <summary>
+        /// Bypasses elements in the collection as long as a supplied condition is true and yields the remaining elements.
+        /// </summary>
+        /// <param name="predicate">The condition to test for.</param>
+        /// <returns>Remaining elements after the first element that does not satisfy the supplied condition.</returns>
+        public Enumerator SkipWhile (Func<T,bool> predicate) => new Enumerator (this, predicate);
+
 
         /// <summary>Gets the actual item for the supplied search item.</summary>
         /// <param name="getItem">The item to find.</param>
@@ -1106,6 +1113,8 @@ namespace Kaos.Collections
 
             internal Enumerator (RankedSet<T> set, int count) => etor = new KeyEnumerator (set, count);
 
+            internal Enumerator (RankedSet<T> set, Func<T,bool> predicate) => etor = new KeyEnumerator (set, predicate);
+
             /// <summary>Gets the element at the current position.</summary>
             object IEnumerator.Current
             {
@@ -1155,6 +1164,17 @@ namespace Kaos.Collections
             public Enumerator Skip (int count)
             {
                 etor.Bypass (count);
+                return this;
+            }
+
+            /// <summary>
+            /// Bypasses elements in the collection as long as a supplied condition is true and yields the remaining elements.
+            /// </summary>
+            /// <param name="predicate">The condition to test for.</param>
+            /// <returns>Remaining elements after the first element that does not satisfy the supplied condition.</returns>
+            public Enumerator SkipWhile (Func<T,bool> predicate)
+            {
+                etor.Bypass (predicate);
                 return this;
             }
         }

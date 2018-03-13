@@ -1,7 +1,4 @@
-﻿//using System;
-//using System.Collections;
-//using System.Collections.Generic;
-//using System.Diagnostics;
+﻿using System;
 
 namespace Kaos.Collections
 {
@@ -17,6 +14,7 @@ namespace Kaos.Collections
             protected int index = 0;
             private int stageFreeze;
             protected int state;  // -1=rewound; 0=active; 1=consumed
+            private Func<T,bool> condition2;
 
             public T CurrentKey => leaf.GetKey (leafIndex);
             public T CurrentKeyOrDefault => state != 0 ? default : leaf.GetKey (leafIndex);
@@ -51,6 +49,13 @@ namespace Kaos.Collections
                     }
                 }
             }
+
+            public KeyEnumerator (Btree<T> owner, Func<T,bool> pred) : this (owner)
+            {
+                condition2 = pred;
+                BypassWhile2();
+            }
+
 
             public void Init()
             {
@@ -142,6 +147,70 @@ namespace Kaos.Collections
                                 else
                                     leafIndex += count;
                         }
+            }
+
+
+            protected virtual bool TestWhile2() => condition2 (leaf.GetKey (leafIndex));
+
+            public void Bypass (Func<T,bool> bypassCondition)
+            {
+                condition2 = bypassCondition;
+                BypassWhile2();
+            }
+
+            public void BypassWhile2()
+            {
+                if (state > 0)
+                    return;
+
+                if (isReverse)
+                {
+                    if (index < 0)
+                    { state = 1; return; }
+
+                    if (leaf == null)
+                        leaf = (Leaf) tree.Find (index, out leafIndex);
+
+                    for (;;)
+                    {
+                        if (leafIndex < 0)
+                        {
+                            leaf = leaf.leftLeaf;
+                            if (leaf == null)
+                            { state = 1; break; }
+                            leafIndex = leaf.KeyCount - 1;
+                        }
+
+                        if (! TestWhile2())
+                            break;
+                        --leafIndex;
+                        --index;
+                    }
+                }
+                else
+                {
+                    if (index >= tree.root.Weight)
+                    { state = 1; return; }
+
+                    if (leaf == null)
+                        leaf = (Leaf) tree.Find (index, out leafIndex);
+
+                    for (;;)
+                    {
+                        if (leafIndex >= leaf.KeyCount)
+                        {
+                            leaf = leaf.rightLeaf;
+                            if (leaf == null)
+                            { state = 1; break; }
+                            leafIndex = 0;
+                        }
+
+                        if (! TestWhile2())
+                            break;
+                        ++leafIndex;
+                        ++index;
+                    }
+                }
             }
         }
     }
