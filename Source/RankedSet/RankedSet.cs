@@ -1105,6 +1105,7 @@ namespace Kaos.Collections
 
 
         /// <summary>Enumerates the items of a <see cref="RankedSet{T}"/> in sort order.</summary>
+        [DebuggerTypeProxy (typeof (IEnumerableDebugView<>))]
         public sealed class Enumerator : IEnumerator<T>, IEnumerable<T>
         {
             private readonly KeyEnumerator etor;
