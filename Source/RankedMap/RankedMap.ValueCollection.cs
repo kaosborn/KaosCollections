@@ -224,6 +224,7 @@ namespace Kaos.Collections
 
             /// <summary>Returns an enumerator that iterates thru the map values in reverse key order.</summary>
             /// <returns>An enumerator that reverse iterates thru the map values.</returns>
+            /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
             public Enumerator Reverse() => new Enumerator (tree, isReverse:true);
 
 

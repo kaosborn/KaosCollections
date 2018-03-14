@@ -967,6 +967,7 @@ namespace Kaos.Collections
 
         /// <summary>Returns an enumerator that iterates thru the map in reverse order.</summary>
         /// <returns>An enumerator that reverse iterates thru the map.</returns>
+        /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
         public Enumerator Reverse() => new Enumerator (this, isReverse:true);
 
 
@@ -1011,7 +1012,7 @@ namespace Kaos.Collections
                 }
             }
 
-            /// <summary>Gets the key/value pair at the current position.</summary>
+            /// <summary>Gets the key/value pair at the current position of the enumerator.</summary>
             /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
             public KeyValuePair<TKey,TValue> Current
             {

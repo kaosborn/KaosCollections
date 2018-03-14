@@ -303,6 +303,7 @@ namespace Kaos.Collections
 
             /// <summary>Returns an enumerator that iterates thru the dictionary keys in reverse order.</summary>
             /// <returns>An enumerator that reverse iterates thru the dictionary keys.</returns>
+            /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
             public Enumerator Reverse() => new Enumerator (tree, isReverse:true);
 
             #endregion

@@ -1177,7 +1177,7 @@ namespace Kaos.Collections
             private readonly PairEnumerator<TValue> etor;
 
             /// <summary>Make an iterator that will loop thru the collection in order.</summary>
-            /// <param name="dictionary">Collection containing these key/value pairs.</param>
+            /// <param name="dary">Collection containing these key/value pairs.</param>
             /// <param name="isReverse">Supply <b>true</b> to iterate from last to first.</param>
             /// <param name="nonGeneric">Supply <b>true</b> to indicate object Current should return DictionaryEntry values.</param>
             internal Enumerator (RankedDictionary<TKey,TValue> dary, bool isReverse=false, bool nonGeneric=false) => etor = new PairEnumerator<TValue> (dary, isReverse, nonGeneric);
@@ -1230,7 +1230,7 @@ namespace Kaos.Collections
                 }
             }
 
-            /// <summary>Gets the key/value pair at the current position.</summary>
+            /// <summary>Gets the key/value pair at the current position of the enumerator.</summary>
             /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
             public KeyValuePair<TKey,TValue> Current
             {

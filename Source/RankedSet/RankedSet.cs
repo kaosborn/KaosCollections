@@ -947,11 +947,13 @@ namespace Kaos.Collections
         /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
         public Enumerator Skip (int count) => new Enumerator (this, count);
 
+
         /// <summary>
-        /// Bypasses elements in the collection as long as a supplied condition is true and yields the remaining elements.
+        /// Bypasses elements in the set as long as a supplied condition is true and yields the remaining elements.
         /// </summary>
         /// <param name="predicate">The condition to test for.</param>
         /// <returns>Remaining elements after the first element that does not satisfy the supplied condition.</returns>
+        /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
         public Enumerator SkipWhile (Func<T,bool> predicate) => new Enumerator (this, predicate);
 
 
@@ -1128,7 +1130,7 @@ namespace Kaos.Collections
                 }
             }
 
-            /// <summary>Gets the item at the current position.</summary>
+            /// <summary>Gets the item at the current position of the enumerator.</summary>
             /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
             public T Current
             {
@@ -1162,6 +1164,7 @@ namespace Kaos.Collections
             /// <param name="count">Number of elements to skip.</param>
             /// <returns>An enumerator suitable for chaining.</returns>
             /// <remarks>This is a O(1) operation.</remarks>
+            /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
             public Enumerator Skip (int count)
             {
                 etor.Bypass (count);
@@ -1169,10 +1172,11 @@ namespace Kaos.Collections
             }
 
             /// <summary>
-            /// Bypasses elements in the collection as long as a supplied condition is true and yields the remaining elements.
+            /// Bypasses elements in the set as long as a supplied condition is true and yields the remaining elements.
             /// </summary>
             /// <param name="predicate">The condition to test for.</param>
             /// <returns>Remaining elements after the first element that does not satisfy the supplied condition.</returns>
+            /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
             public Enumerator SkipWhile (Func<T,bool> predicate)
             {
                 etor.Bypass (predicate);
