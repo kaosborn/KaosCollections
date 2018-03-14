@@ -215,6 +215,183 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (n, a1);
         }
 
+
+
+        [TestMethod]
+        public void UnitRbq_SkipA()
+        {
+            var rb = new RankedBag<int> { Capacity=5 };
+
+            int k0 = System.Linq.Enumerable.Count (rb.Skip (0));
+            Assert.AreEqual (0, k0);
+
+            k0 = System.Linq.Enumerable.Count (rb.Skip (-1));
+            Assert.AreEqual (0, k0);
+
+            k0 = System.Linq.Enumerable.Count (rb.Skip (1));
+            Assert.AreEqual (0, k0);
+
+            rb.Add (1); rb.Add (2);
+
+            int k1 = System.Linq.Enumerable.Count (rb.Skip (-1));
+            Assert.AreEqual (2, k1);
+
+            int k2 = System.Linq.Enumerable.Count (rb.Skip (3));
+            Assert.AreEqual (0, k2);
+
+            int k3 = System.Linq.Enumerable.Count (rb.Skip (0).Skip (-1));
+            Assert.AreEqual (2, k3);
+
+            int k4 = System.Linq.Enumerable.Count (rb.Skip (0).Skip (1));
+            Assert.AreEqual (1, k4);
+
+            int k5 = System.Linq.Enumerable.Count (rb.Skip (0).Skip (3));
+            Assert.AreEqual (0, k5);
+
+            int k6 = System.Linq.Enumerable.Count (rb.Reverse().Skip (-1));
+            Assert.AreEqual (2, k6);
+
+            int k7 = System.Linq.Enumerable.Count (rb.Reverse().Skip (1));
+            Assert.AreEqual (1, k7);
+
+            int k8 = System.Linq.Enumerable.Count (rb.Reverse().Skip (3));
+            Assert.AreEqual (0, k8);
+        }
+
+        [TestMethod]
+        public void StressRbq_SkipF()
+        {
+            var rb = new RankedBag<int> { Capacity=5 };
+            int n = 25;
+
+            for (int ix = 0; ix < n; ++ix)
+                rb.Add (n + ix);
+
+            for (int s1 = 0; s1 <= n; ++s1)
+                for (int s2 = 0; s2 <= n-s1; ++s2)
+                {
+                    int e0 = n + s1+s2;
+                    foreach (var a0 in rb.Skip (s1).Skip (s2))
+                    {
+                        Assert.AreEqual (e0, a0);
+                        ++e0;
+                    }
+                    Assert.AreEqual (n + n, e0);
+                }
+        }
+
+        [TestMethod]
+        public void StressRbq_SkipR()
+        {
+            var rb = new RankedBag<int> { Capacity=5 };
+            int n = 25;
+
+            for (int ix = 0; ix < n; ++ix)
+                rb.Add (n + ix);
+
+            for (int s1 = 0; s1 <= n; ++s1)
+            {
+                int e0 = n + n - s1;
+                foreach (var a0 in rb.Reverse().Skip (s1))
+                {
+                    --e0;
+                    Assert.AreEqual (e0, a0);
+                }
+                Assert.AreEqual (n, e0);
+            }
+        }
+
+
+        [TestMethod]
+        public void UnitRbq_SkipWhile2Ctor()
+        {
+            var rb = new RankedBag<int> { Capacity=4 };
+
+            int a0 = 0, a1 = 0;
+            foreach (var k0 in rb.SkipWhile (x => false))
+                ++a0;
+            Assert.AreEqual (0, a0);
+
+            foreach (var k0 in rb.SkipWhile (x => true))
+                ++a0;
+            Assert.AreEqual (0, a0);
+
+            rb.Add (1);
+
+            foreach (var k0 in rb.SkipWhile (x => false))
+            {
+                Assert.AreEqual (a0+1, k0);
+                ++a0;
+            }
+            Assert.AreEqual (1, a0);
+
+            foreach (var k0 in rb.SkipWhile (x => true))
+                ++a1;
+            Assert.AreEqual (0, a1);
+        }
+
+        [TestMethod]
+        public void UnitRbq_SkipWhile2F()
+        {
+            var rb = new RankedBag<int> { Capacity=4 };
+            System.Collections.Generic.IEnumerable<int> q0;
+            int a0 = 0;
+
+            foreach (var k0 in rb.Skip (0).SkipWhile (x => true))
+                ++a0;
+
+            q0 = rb.Skip (0).SkipWhile (x => true);
+            Assert.AreEqual (0, System.Linq.Enumerable.Count (q0));
+
+            rb.Add (-1);
+            q0 = rb.Skip (0).SkipWhile (x => true);
+            Assert.AreEqual (0, System.Linq.Enumerable.Count (q0));
+            q0 = rb.Skip (0).SkipWhile (x => false);
+            Assert.AreEqual (1, System.Linq.Enumerable.Count (q0));
+        }
+
+        [TestMethod]
+        public void UnitRbq_SkipWhile2R()
+        {
+            var rb = new RankedBag<int> { Capacity=4 };
+
+            int a0 = 0;
+            foreach (var k0 in rb.Reverse().SkipWhile (x => false))
+                ++a0;
+            Assert.AreEqual (0, a0);
+
+            foreach (var k0 in rb.Reverse().SkipWhile (x => true))
+                ++a0;
+            Assert.AreEqual (0, a0);
+
+            rb.Add (1);
+
+            foreach (var k0 in rb.Reverse().SkipWhile (x => false))
+            {
+                Assert.AreEqual (a0+1, k0);
+                ++a0;
+            }
+            Assert.AreEqual (1, a0);
+        }
+
+        [TestMethod]
+        public void StressRbq_SkipWhile()
+        {
+            var rb = new RankedBag<int> { Capacity=4 };
+            int n = 25;
+
+            for (int x1 = 0; x1 < n; ++x1)
+            {
+                rb.Clear();
+                for (int x3 = 0; x3 < x1; ++x3)
+                    rb.Add (x3);
+
+                System.Collections.Generic.IEnumerable<int> q0 = rb.SkipWhile (x=>false);
+
+                Assert.AreEqual (x1, System.Linq.Enumerable.Count (q0));
+            }
+        }
+
         #endregion
     }
 }

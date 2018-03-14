@@ -533,6 +533,21 @@ namespace Kaos.Collections
         }
 
 
+        /// <summary>Returns an IEnumerable that iterates thru the items after a supplied index.</summary>
+        /// <param name="count">Number of elements to skip.</param>
+        /// <returns>An enumerator that iterates thru remaining items.</returns>
+        /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
+        public Enumerator Skip (int count) => new Enumerator (this, count);
+
+
+        /// <summary>
+        /// Bypasses elements in the bag as long as a supplied condition is true and yields the remaining elements.
+        /// </summary>
+        /// <param name="predicate">The condition to test for.</param>
+        /// <returns>Remaining elements after the first element that does not satisfy the supplied condition.</returns>
+        public Enumerator SkipWhile (Func<T,bool> predicate) => new Enumerator (this, predicate);
+
+
         /// <summary>Gets the actual item for the supplied search item.</summary>
         /// <param name="getItem">The item to find.</param>
         /// <param name="item">
@@ -924,6 +939,10 @@ namespace Kaos.Collections
 
             internal Enumerator (RankedBag<T> bag, bool isReverse=false) => etor = new KeyEnumerator (bag, isReverse);
 
+            internal Enumerator (RankedBag<T> bag, int count) => etor = new KeyEnumerator (bag, count);
+
+            internal Enumerator (RankedBag<T> bag, Func<T,bool> predicate) => etor = new KeyEnumerator (bag, predicate);
+
             /// <summary>Gets the element at the current position.</summary>
             object IEnumerator.Current
             {
@@ -965,6 +984,27 @@ namespace Kaos.Collections
             /// <summary>Gets an iterator for this collection.</summary>
             /// <returns>An iterator for this collection.</returns>
             IEnumerator IEnumerable.GetEnumerator() => this;
+
+            /// <summary>Bypasses a supplied number of elements and yields the remaining elements.</summary>
+            /// <param name="count">Number of elements to skip.</param>
+            /// <returns>An enumerator suitable for chaining.</returns>
+            /// <remarks>This is a O(1) operation.</remarks>
+            public Enumerator Skip (int count)
+            {
+                etor.Bypass (count);
+                return this;
+            }
+
+            /// <summary>
+            /// Bypasses elements in the bag as long as a supplied condition is true and yields the remaining elements.
+            /// </summary>
+            /// <param name="predicate">The condition to test for.</param>
+            /// <returns>Remaining elements after the first element that does not satisfy the supplied condition.</returns>
+            public Enumerator SkipWhile (Func<T,bool> predicate)
+            {
+                etor.Bypass (predicate);
+                return this;
+            }
         }
 
         #endregion
