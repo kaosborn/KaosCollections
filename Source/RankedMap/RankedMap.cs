@@ -986,7 +986,7 @@ namespace Kaos.Collections
 
 
         /// <summary>Enumerates the sorted key/value pairs of a <see cref="RankedMap{TKey,TValue}"/>.</summary>
-        public sealed class Enumerator : IEnumerator<KeyValuePair<TKey,TValue>>, IEnumerable<KeyValuePair<TKey,TValue>>
+        public struct Enumerator : IEnumerator<KeyValuePair<TKey,TValue>>, IEnumerable<KeyValuePair<TKey,TValue>>
         {
             private readonly PairEnumerator<TValue> etor;
 

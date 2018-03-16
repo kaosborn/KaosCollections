@@ -322,7 +322,7 @@ namespace Kaos.Collections
 
 
             /// <summary>Enumerates the items of a <see cref="RankedMap{TKey,TValue}.KeyCollection"/> in sort order.</summary>
-            public sealed class Enumerator : IEnumerator<TKey>, IEnumerable<TKey>
+            public struct Enumerator : IEnumerator<TKey>, IEnumerable<TKey>
             {
                 private readonly KeyEnumerator etor;
 

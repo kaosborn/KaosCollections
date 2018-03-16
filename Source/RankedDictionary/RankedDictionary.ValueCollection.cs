@@ -268,7 +268,7 @@ namespace Kaos.Collections
 
 
             /// <summary>Enumerates the items of a <see cref="RankedDictionary{TKey,TValue}.ValueCollection"/> in key sort order.</summary>
-            public sealed class Enumerator : IEnumerator<TValue>, IEnumerable<TValue>
+            public struct Enumerator : IEnumerator<TValue>, IEnumerable<TValue>
             {
                 private readonly ValueEnumerator<TValue> etor;
 
