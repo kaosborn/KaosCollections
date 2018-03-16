@@ -4,6 +4,7 @@
 //
 
 using System;
+using SLE=System.Linq.Enumerable;
 #if TEST_BCL
 using System.Linq;
 #endif
@@ -200,34 +201,53 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRsq_SkipA()
+        public void UnitRsq_Skip()
         {
             Setup (4);
-            setI.Add (1); setI.Add (2);
 
-            int k1 = System.Linq.Enumerable.Count (setI.Skip (-1));
-            Assert.AreEqual (2, k1);
+            Assert.AreEqual (0, SLE.Count (setI.Skip (-1)));
+            Assert.AreEqual (0, SLE.Count (setI.Skip (0)));
+            Assert.AreEqual (0, SLE.Count (setI.Skip (1)));
+            Assert.AreEqual (0, SLE.Count (setI.Skip(0).Skip (-1)));
+            Assert.AreEqual (0, SLE.Count (setI.Skip(0).Skip (0)));
+            Assert.AreEqual (0, SLE.Count (setI.Skip(0).Skip (1)));
+            Assert.AreEqual (0, SLE.Count (setI.Reverse().Skip (-1)));
+            Assert.AreEqual (0, SLE.Count (setI.Reverse().Skip (0)));
+            Assert.AreEqual (0, SLE.Count (setI.Reverse().Skip (1)));
 
-            int k2 = System.Linq.Enumerable.Count (setI.Skip (3));
-            Assert.AreEqual (0, k2);
+            setI.Add (1);
 
-            int k3 = System.Linq.Enumerable.Count (setI.Skip (0).Skip (-1));
-            Assert.AreEqual (2, k3);
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 1 }, setI.Skip (-1)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 1 }, setI.Skip (0)));
+            Assert.AreEqual (0, SLE.Count (setI.Skip (1)));
+            Assert.AreEqual (0, SLE.Count (setI.Skip (2)));
 
-            int k4 = System.Linq.Enumerable.Count (setI.Skip (0).Skip (1));
-            Assert.AreEqual (1, k4);
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 1 }, setI.Skip (0).Skip (-1)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 1 }, setI.Skip (0).Skip (0)));
+            Assert.AreEqual (0, SLE.Count (setI.Skip(0).Skip (1)));
+            Assert.AreEqual (0, SLE.Count (setI.Skip(0).Skip (2)));
 
-            int k5 = System.Linq.Enumerable.Count (setI.Skip (0).Skip (3));
-            Assert.AreEqual (0, k5);
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 1 }, setI.Reverse().Skip (-1)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 1 }, setI.Reverse().Skip (0)));
+            Assert.AreEqual (0, SLE.Count (setI.Reverse().Skip (1)));
+            Assert.AreEqual (0, SLE.Count (setI.Reverse().Skip (2)));
 
-            int k6 = System.Linq.Enumerable.Count (setI.Reverse().Skip (-1));
-            Assert.AreEqual (2, k6);
+            setI.Add (2);
+            setI.Add (3);
 
-            int k7 = System.Linq.Enumerable.Count (setI.Reverse().Skip (1));
-            Assert.AreEqual (1, k7);
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 1,2,3 }, setI.Skip (-1)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 1,2,3 }, setI.Skip (0)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 2,3 },   setI.Skip (1)));
+            Assert.AreEqual (0, SLE.Count (setI.Skip (3)));
 
-            int k8 = System.Linq.Enumerable.Count (setI.Reverse().Skip (3));
-            Assert.AreEqual (0, k8);
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 2,3 }, setI.Skip(0).Skip (1)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 3 },   setI.Skip(0).Skip (2)));
+            Assert.AreEqual (0, SLE.Count (setI.Skip(0).Skip (3)));
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 3,2,1 }, setI.Reverse().Skip (-1)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 3,2,1 }, setI.Reverse().Skip (0)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 2,1 },   setI.Reverse().Skip (1)));
+            Assert.AreEqual (0, SLE.Count (setI.Reverse().Skip (3)));
         }
 
         [TestMethod]
@@ -279,47 +299,37 @@ namespace Kaos.Test.Collections
         {
             Setup (5);
 
-            int a0 = 0, a1 = 0;
-            foreach (var k0 in setI.SkipWhile (x => false))
-                ++a0;
-            Assert.AreEqual (0, a0);
-
-            foreach (var k0 in setI.SkipWhile (x => true))
-                ++a0;
-            Assert.AreEqual (0, a0);
+            Assert.AreEqual (0, SLE.Count (setI.SkipWhile (x => false)));
+            Assert.AreEqual (0, SLE.Count (setI.SkipWhile (x => true)));
 
             setI.Add (1);
 
-            foreach (var k0 in setI.SkipWhile (x => false))
-            {
-                Assert.AreEqual (a0+1, k0);
-                ++a0;
-            }
-            Assert.AreEqual (1, a0);
+            Assert.AreEqual (0, SLE.Count (setI.SkipWhile (x => true)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 1 }, setI.SkipWhile (x => false)));
 
-            foreach (var k0 in setI.SkipWhile (x => true))
-                ++a1;
-            Assert.AreEqual (0, a1);
+            setI.Add (2);
+            setI.Add (3);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 2,3 }, setI.SkipWhile (x => x%2!=0)));
         }
 
         [TestMethod]
         public void UnitRsq_SkipWhile2F()
         {
             Setup (5);
-            System.Collections.Generic.IEnumerable<int> q0;
-            int a0 = 0;
 
-            foreach (var k0 in setI.Skip (0).SkipWhile (x => true))
-                ++a0;
+            Assert.AreEqual (0, SLE.Count (setI.Skip(0).SkipWhile (x => false)));
+            Assert.AreEqual (0, SLE.Count (setI.Skip(0).SkipWhile (x => true)));
 
-            q0 = setI.Skip (0).SkipWhile (x => true);
-            Assert.AreEqual (0, System.Linq.Enumerable.Count (q0));
+            setI.Add (1);
 
-            setI.Add (-1);
-            q0 = setI.Skip (0).SkipWhile (x => true);
-            Assert.AreEqual (0, System.Linq.Enumerable.Count (q0));
-            q0 = setI.Skip (0).SkipWhile (x => false);
-            Assert.AreEqual (1, System.Linq.Enumerable.Count (q0));
+            Assert.AreEqual (0, SLE.Count (setI.Skip(0).SkipWhile (x => true)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 1 }, setI.Skip(0).SkipWhile (x => false)));
+
+            setI.Add (2);
+            setI.Add (3);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 2,3 }, setI.Skip(0).SkipWhile (x => x%2!=0)));
         }
 
         [TestMethod]
@@ -327,23 +337,18 @@ namespace Kaos.Test.Collections
         {
             Setup (5);
 
-            int a0 = 0;
-            foreach (var k0 in setI.Reverse().SkipWhile (x => false))
-                ++a0;
-            Assert.AreEqual (0, a0);
-
-            foreach (var k0 in setI.Reverse().SkipWhile (x => true))
-                ++a0;
-            Assert.AreEqual (0, a0);
+            Assert.AreEqual (0, SLE.Count (setI.Reverse().SkipWhile (x => false)));
+            Assert.AreEqual (0, SLE.Count (setI.Reverse().SkipWhile (x => true)));
 
             setI.Add (1);
 
-            foreach (var k0 in setI.Reverse().SkipWhile (x => false))
-            {
-                Assert.AreEqual (a0+1, k0);
-                ++a0;
-            }
-            Assert.AreEqual (1, a0);
+            Assert.AreEqual (0, SLE.Count (setI.Reverse ().SkipWhile (x => true)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 1 }, setI.Reverse().SkipWhile (x => false)));
+
+            setI.Add (2);
+            setI.Add (3);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 2,1 }, setI.Reverse().SkipWhile (x => x%2!=0)));
         }
 
         [TestMethod]
@@ -359,7 +364,7 @@ namespace Kaos.Test.Collections
 
                 System.Collections.Generic.IEnumerable<int> q0 = setI.SkipWhile (x=>false);
 
-                Assert.AreEqual (x1, System.Linq.Enumerable.Count (q0));
+                Assert.AreEqual (x1, SLE.Count (q0));
             }
         }
 
