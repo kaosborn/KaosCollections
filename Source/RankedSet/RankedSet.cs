@@ -941,18 +941,18 @@ namespace Kaos.Collections
         }
 
 
-        /// <summary>Returns an IEnumerable that iterates thru the items after a supplied index.</summary>
-        /// <param name="count">Number of elements to skip.</param>
-        /// <returns>An enumerator that iterates thru remaining items.</returns>
+        /// <summary>Bypasses a supplied number of items and yields the remaining items.</summary>
+        /// <param name="count">Number of items to skip.</param>
+        /// <returns>The items after the supplied index.</returns>
         /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
         public Enumerator Skip (int count) => new Enumerator (this, count);
 
 
         /// <summary>
-        /// Bypasses elements in the set as long as a supplied condition is true and yields the remaining elements.
+        /// Bypasses elements as long as a supplied condition is true and yields the remaining items.
         /// </summary>
         /// <param name="predicate">The condition to test for.</param>
-        /// <returns>Remaining elements after the first element that does not satisfy the supplied condition.</returns>
+        /// <returns>Remaining items after the first item that does not satisfy the supplied condition.</returns>
         /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
         public Enumerator SkipWhile (Func<T,bool> predicate) => new Enumerator (this, predicate);
 
@@ -1160,9 +1160,9 @@ namespace Kaos.Collections
             /// <returns>An iterator for this collection.</returns>
             IEnumerator IEnumerable.GetEnumerator() => this;
 
-            /// <summary>Bypasses a supplied number of elements and yields the remaining elements.</summary>
-            /// <param name="count">Number of elements to skip.</param>
-            /// <returns>An enumerator suitable for chaining.</returns>
+            /// <summary>Bypasses a supplied number of items and yields the remaining items.</summary>
+            /// <param name="count">Number of items to skip.</param>
+            /// <returns>The items after the supplied index.</returns>
             /// <remarks>This is a O(1) operation.</remarks>
             /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
             public Enumerator Skip (int count)
@@ -1172,10 +1172,10 @@ namespace Kaos.Collections
             }
 
             /// <summary>
-            /// Bypasses elements in the set as long as a supplied condition is true and yields the remaining elements.
+            /// Bypasses items as long as a supplied condition is true and yields the remaining items.
             /// </summary>
             /// <param name="predicate">The condition to test for.</param>
-            /// <returns>Remaining elements after the first element that does not satisfy the supplied condition.</returns>
+            /// <returns>Remaining items after the first item that does not satisfy the supplied condition.</returns>
             /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
             public Enumerator SkipWhile (Func<T,bool> predicate)
             {
