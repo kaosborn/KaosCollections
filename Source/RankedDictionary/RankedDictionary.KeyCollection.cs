@@ -342,6 +342,7 @@ namespace Kaos.Collections
 
 
             /// <summary>Enumerates the items of a <see cref="RankedDictionary{TKey,TValue}.KeyCollection"/> in sort order.</summary>
+            [DebuggerTypeProxy (typeof (IEnumerableKeysDebugView<,>))]
             public struct Enumerator : IEnumerator<TKey>, IEnumerable<TKey>
             {
                 private readonly KeyEnumerator etor;

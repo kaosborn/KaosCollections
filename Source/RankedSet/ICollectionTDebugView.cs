@@ -1,13 +1,12 @@
 ﻿//
 // Library: KaosCollections
-// File:    ICollectionTDebugView.cs
+// File:    TDebugView.cs
 //
 // Copyright © 2009-2018 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely
 //
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -44,7 +43,7 @@ namespace Kaos.Collections
 #endif
     internal class IEnumerableDebugView<T>
     {
-        [DebuggerBrowsable (DebuggerBrowsableState.Never)] 
+        [DebuggerBrowsable (DebuggerBrowsableState.Never)]
         private readonly IEnumerable<T> target;
 
         public IEnumerableDebugView (IEnumerable<T> enumerable)
@@ -59,7 +58,7 @@ namespace Kaos.Collections
         {
             get
             {
-                ((IEnumerator) target).Reset();
+                ((System.Collections.IEnumerator) target).Reset();
                 foreach (T item in target)
                     yield return item;
             }

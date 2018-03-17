@@ -1,6 +1,6 @@
 ﻿//
 // Library: KaosCollections
-// File:    ICollectionKVDebugView.cs
+// File:    KVDebugView.cs
 //
 // Copyright © 2009-2018 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely
@@ -92,6 +92,89 @@ namespace Kaos.Collections
                 var items = new V[target.Count];
                 target.CopyTo (items, 0);
                 return items;
+            }
+        }
+    }
+
+
+#if ! NET35 && ! NETSTANDARD1_0
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+#endif
+    internal class IEnumerableDebugView<K,V>
+    {
+        [DebuggerBrowsable (DebuggerBrowsableState.Never)] 
+        private readonly IEnumerable<KeyValuePair<K,V>> target;
+
+        public IEnumerableDebugView (IEnumerable<KeyValuePair<K,V>> enumerable)
+        {
+            if (enumerable == null)
+                throw new ArgumentNullException (nameof (enumerable));
+            this.target = enumerable;
+        }
+
+        [DebuggerBrowsable (DebuggerBrowsableState.RootHidden)]
+        public IEnumerable<KeyValuePair<K,V>> Items
+        {
+            get
+            {
+                ((System.Collections.IEnumerator) target).Reset();
+                foreach (var item in target)
+                    yield return item;
+            }
+        }
+    }
+
+
+#if ! NET35 && ! NETSTANDARD1_0
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+#endif
+    internal class IEnumerableKeysDebugView<K,V>
+    {
+        [DebuggerBrowsable (DebuggerBrowsableState.Never)] 
+        private readonly IEnumerable<K> target;
+
+        public IEnumerableKeysDebugView (IEnumerable<K> enumerable)
+        {
+            if (enumerable == null)
+                throw new ArgumentNullException (nameof (enumerable));
+            this.target = enumerable;
+        }
+
+        [DebuggerBrowsable (DebuggerBrowsableState.RootHidden)]
+        public IEnumerable<K> Items
+        {
+            get
+            {
+                ((System.Collections.IEnumerator) target).Reset();
+                foreach (var item in target)
+                    yield return item;
+            }
+        }
+    }
+
+#if ! NET35 && ! NETSTANDARD1_0
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+#endif
+    internal class IEnumerableValuesDebugView<K,V>
+    {
+        [DebuggerBrowsable (DebuggerBrowsableState.Never)] 
+        private readonly IEnumerable<V> target;
+
+        public IEnumerableValuesDebugView (IEnumerable<V> enumerable)
+        {
+            if (enumerable == null)
+                throw new ArgumentNullException (nameof (enumerable));
+            this.target = enumerable;
+        }
+
+        [DebuggerBrowsable (DebuggerBrowsableState.RootHidden)]
+        public IEnumerable<V> Items
+        {
+            get
+            {
+                ((System.Collections.IEnumerator) target).Reset();
+                foreach (var item in target)
+                    yield return item;
             }
         }
     }

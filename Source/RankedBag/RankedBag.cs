@@ -934,6 +934,7 @@ namespace Kaos.Collections
 
 
         /// <summary>Enumerates the items of a <see cref="RankedBag{T}"/> in sort order.</summary>
+        [DebuggerTypeProxy (typeof (IEnumerableDebugView<>))]
         public struct Enumerator : IEnumerator<T>, IEnumerable<T>
         {
             private readonly KeyEnumerator etor;
