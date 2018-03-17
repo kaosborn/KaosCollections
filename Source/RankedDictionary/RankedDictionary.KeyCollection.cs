@@ -228,6 +228,24 @@ namespace Kaos.Collections
             }
 
 
+            /// <summary>
+            /// Bypasses a supplied number of keys and yields the remaining keys.
+            /// </summary>
+            /// <param name="count">Number of keys to skip.</param>
+            /// <returns>The keys after the supplied index.</returns>
+            /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
+            public Enumerator Skip (int count) => new Enumerator (tree, count);
+
+
+            /// <summary>
+            /// Bypasses keys as long as a supplied condition is true and yields the remaining keys.
+            /// </summary>
+            /// <param name="predicate">The condition to test for.</param>
+            /// <returns>Remaining keys after the first key that does not satisfy the supplied condition.</returns>
+            /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
+            public Enumerator SkipWhile (Func<TKey,bool> predicate) => new Enumerator (tree, predicate);
+
+
             /// <summary>Gets the actual key for the supplied search key.</summary>
             /// <param name="getKey">The key to find.</param>
             /// <param name="key">
@@ -330,6 +348,10 @@ namespace Kaos.Collections
 
                 internal Enumerator (RankedDictionary<TKey,TValue> dary, bool isReverse=false) => etor = new KeyEnumerator (dary, isReverse);
 
+                internal Enumerator (RankedDictionary<TKey,TValue> dary, int count) => etor = new KeyEnumerator (dary, count);
+
+                internal Enumerator (RankedDictionary<TKey,TValue> dary, Func<TKey,bool> predicate) => etor = new KeyEnumerator (dary, predicate);
+
                 /// <summary>Gets the key at the current position.</summary>
                 object IEnumerator.Current
                 {
@@ -371,6 +393,31 @@ namespace Kaos.Collections
                 /// <summary>Gets an iterator for this collection.</summary>
                 /// <returns>An iterator for this collection.</returns>
                 IEnumerator IEnumerable.GetEnumerator() => this;
+
+                /// <summary>
+                /// Bypasses a supplied number of keys and yields the remaining keys.
+                /// </summary>
+                /// <param name="count">Number of keys to skip.</param>
+                /// <returns>The keys after the supplied index.</returns>
+                /// <remarks>This is a O(1) operation.</remarks>
+                /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
+                public Enumerator Skip (int count)
+                {
+                    etor.Bypass (count);
+                    return this;
+                }
+
+                /// <summary>
+                /// Bypasses keys as long as a supplied condition is true and yields the remaining keys.
+                /// </summary>
+                /// <param name="predicate">The condition to test for.</param>
+                /// <returns>Remaining keys after the first key that does not satisfy the supplied condition.</returns>
+                /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
+                public Enumerator SkipWhile (Func<TKey,bool> predicate)
+                {
+                    etor.Bypass (predicate);
+                    return this;
+                }
             }
 
             #endregion

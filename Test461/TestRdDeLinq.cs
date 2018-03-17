@@ -5,6 +5,8 @@
 
 using System;
 using System.Collections.Generic;
+using SLE = System.Linq.Enumerable;
+using SCG = System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 #if TEST_BCL
 using System.Linq;
@@ -138,6 +140,107 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (-1, kv1.Value, "wrong first value");
             Assert.AreEqual (9, kv9.Key, "wrong last key");
             Assert.AreEqual (-9, kv9.Value, "wrong last value");
+        }
+
+
+        [TestMethod]
+        public void UnitRdq_Skip()
+        {
+            Setup (4);
+
+            Assert.AreEqual (0, SLE.Count (dary1.Skip (-1)));
+            Assert.AreEqual (0, SLE.Count (dary1.Skip (0)));
+            Assert.AreEqual (0, SLE.Count (dary1.Skip (1)));
+
+            dary1.Add (1,11); dary1.Add (2,22);
+            var p1 = new SCG.KeyValuePair<int,int> (1,11);
+            var p2 = new SCG.KeyValuePair<int,int> (2,22);
+
+            Assert.IsTrue (SLE.SequenceEqual (new SCG.KeyValuePair<int,int>[] { p1,p2 }, dary1.Skip (-1)));
+            Assert.IsTrue (SLE.SequenceEqual (new SCG.KeyValuePair<int,int>[] { p1,p2 }, dary1.Skip (0)));
+            Assert.IsTrue (SLE.SequenceEqual (new SCG.KeyValuePair<int,int>[] { p2 }, dary1.Skip (1)));
+
+            Assert.AreEqual (0, SLE.Count (dary1.Skip (0).Skip (2)));
+            Assert.AreEqual (0, SLE.Count (dary1.Skip (0).Skip (3)));
+            Assert.IsTrue (SLE.SequenceEqual (new SCG.KeyValuePair<int,int>[] { p1,p2 }, dary1.Skip (0).Skip (-1)));
+            Assert.IsTrue (SLE.SequenceEqual (new SCG.KeyValuePair<int,int>[] { p1,p2 }, dary1.Skip (0).Skip (0)));
+            Assert.IsTrue (SLE.SequenceEqual (new SCG.KeyValuePair<int,int>[] { p2 }, dary1.Skip (0).Skip (1)));
+
+            Assert.IsTrue (SLE.SequenceEqual (new SCG.KeyValuePair<int,int>[] { p2 }, dary1.Skip (1).Skip (-1)));
+            Assert.IsTrue (SLE.SequenceEqual (new SCG.KeyValuePair<int,int>[] { p2 }, dary1.Skip (1).Skip (0)));
+
+            Assert.AreEqual (0, SLE.Count (dary1.Skip (2).Skip (0)));
+            Assert.AreEqual (0, SLE.Count (dary1.Skip (2).Skip (1)));
+
+            Assert.IsTrue (SLE.SequenceEqual (new SCG.KeyValuePair<int,int>[] { p2,p1 }, dary1.Reverse().Skip (-1)));
+            Assert.IsTrue (SLE.SequenceEqual (new SCG.KeyValuePair<int,int>[] { p2,p1 }, dary1.Reverse().Skip (0)));
+            Assert.IsTrue (SLE.SequenceEqual (new SCG.KeyValuePair<int,int>[] { p1 }, dary1.Reverse().Skip (1)));
+            Assert.AreEqual (0, SLE.Count (dary1.Reverse().Skip (2)));
+            Assert.AreEqual (0, SLE.Count (dary1.Reverse().Skip (3)));
+        }
+
+
+        [TestMethod]
+        public void UnitRdq_SkipWhile2Ctor()
+        {
+            Setup (5);
+            var p1 = new SCG.KeyValuePair<int,int> (1,11);
+            var p2 = new SCG.KeyValuePair<int,int> (2,22);
+
+            Assert.AreEqual (0, SLE.Count (dary1.SkipWhile (x => false)));
+            Assert.AreEqual (0, SLE.Count (dary1.SkipWhile (x => true)));
+
+            dary1.Add (p1.Key, p1.Value); 
+            dary1.Add (p2.Key, p2.Value);
+
+            Assert.IsTrue (SLE.SequenceEqual (new SCG.KeyValuePair<int,int>[] { p1,p2 }, dary1.SkipWhile (x => false)));
+            Assert.IsTrue (SLE.SequenceEqual (new SCG.KeyValuePair<int,int>[] { p2 }, dary1.SkipWhile (x => x.Key%2!=0)));
+            Assert.AreEqual (0, SLE.Count (dary1.SkipWhile (x => true)));
+        }
+
+
+        [TestMethod]
+        public void UnitRdq_SkipWhile2F()
+        {
+            Setup (5);
+            var p1 = new SCG.KeyValuePair<int,int> (1,-1);
+            var p2 = new SCG.KeyValuePair<int,int> (2,-2);
+            var p3 = new SCG.KeyValuePair<int,int> (3,-3);
+
+            Assert.AreEqual (0, SLE.Count (dary1.Skip (0).SkipWhile (x => false)));
+            Assert.AreEqual (0, SLE.Count (dary1.Skip (0).SkipWhile (x => true)));
+
+            dary1.Add (p1.Key, p1.Value);
+
+            Assert.AreEqual (0, SLE.Count (dary1.Skip (0).SkipWhile (x => true)));
+            Assert.IsTrue (SLE.SequenceEqual (new SCG.KeyValuePair<int,int>[] { p1 }, dary1.Skip(0).SkipWhile (x => false)));
+
+            dary1.Add (p2.Key, p2.Value);
+            dary1.Add (p3.Key, p3.Value);
+
+            Assert.IsTrue (SLE.SequenceEqual (new SCG.KeyValuePair<int,int>[] { p2,p3 }, dary1.Skip(0).SkipWhile (kv => kv.Key%2!=0)));
+        }
+
+        [TestMethod]
+        public void UnitRdq_SkipWhile2R()
+        {
+            Setup (5);
+            var p1 = new SCG.KeyValuePair<int,int> (1,-1);
+            var p2 = new SCG.KeyValuePair<int,int> (2,-2);
+            var p3 = new SCG.KeyValuePair<int,int> (3,-3);
+
+            Assert.AreEqual (0, SLE.Count (dary1.Reverse().SkipWhile (x => false)));
+            Assert.AreEqual (0, SLE.Count (dary1.Reverse().SkipWhile (x => true)));
+
+            dary1.Add (p1.Key, p1.Value);
+
+            Assert.IsTrue (SLE.SequenceEqual (new SCG.KeyValuePair<int,int>[] { p1 }, dary1.Reverse().SkipWhile (x => false)));
+            Assert.AreEqual (0, SLE.Count (dary1.Reverse().SkipWhile (x => true)));
+
+            dary1.Add (p2.Key, p2.Value);
+            dary1.Add (p3.Key, p3.Value);
+
+            Assert.IsTrue (SLE.SequenceEqual (new SCG.KeyValuePair<int,int>[] { p2,p1 }, dary1.Reverse().SkipWhile (x => x.Key%2!=0)));
         }
 
         #endregion
@@ -288,6 +391,94 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (9, k9);
         }
 
+
+        [TestMethod]
+        public void UnitRdkq_Skip()
+        {
+            Setup();
+
+            Assert.AreEqual (0, SLE.Count (dary1.Keys.Skip (-1)));
+            Assert.AreEqual (0, SLE.Count (dary1.Keys.Skip (0)));
+            Assert.AreEqual (0, SLE.Count (dary1.Keys.Skip (1)));
+
+            dary1.Add (1,-1);
+            dary1.Add (2,-2);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 1,2 }, dary1.Keys.Skip (-1)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 1,2 }, dary1.Keys.Skip (0)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 2 },   dary1.Keys.Skip (1)));
+            Assert.AreEqual (0, SLE.Count (dary1.Keys.Skip (2)));
+            Assert.AreEqual (0, SLE.Count (dary1.Keys.Skip (3)));
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 1,2 }, dary1.Keys.Skip (0).Skip (-1)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 1,2 }, dary1.Keys.Skip (0).Skip (0)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 2 },   dary1.Keys.Skip (0).Skip (1)));
+            Assert.AreEqual (0, SLE.Count (dary1.Skip(0).Skip (3)));
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 2,1 }, dary1.Keys.Reverse().Skip (-1)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 2,1 }, dary1.Keys.Reverse().Skip (0)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 1 },   dary1.Keys.Reverse().Skip (1)));
+            Assert.AreEqual (0, SLE.Count (dary1.Keys.Reverse().Skip (2)));
+            Assert.AreEqual (0, SLE.Count (dary1.Keys.Reverse().Skip (3)));
+        }
+
+        [TestMethod]
+        public void UnitRdkq_SkipWhile2Ctor()
+        {
+            Setup();
+
+            Assert.AreEqual (0, SLE.Count (dary1.Keys.SkipWhile (x => false)));
+            Assert.AreEqual (0, SLE.Count (dary1.Keys.SkipWhile (x => true)));
+
+            dary1.Add (1,-1);
+            dary1.Add (2,-2);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 1,2 }, dary1.Keys.SkipWhile (x => false)));
+            Assert.AreEqual (0, SLE.Count (dary1.Keys.SkipWhile (x => true)));
+
+            dary1.Add (3,-3);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 2,3 }, dary1.Keys.SkipWhile (x => x%2!=0)));
+        }
+
+        [TestMethod]
+        public void UnitRdkq_SkipWhile2F()
+        {
+            Setup();
+
+            Assert.AreEqual (0, SLE.Count (dary1.Keys.Skip(0).SkipWhile (x => false)));
+            Assert.AreEqual (0, SLE.Count (dary1.Keys.Skip(0).SkipWhile (x => true)));
+
+            dary1.Add (1,-1);
+
+            Assert.AreEqual (0, SLE.Count (dary1.Keys.Skip(0).SkipWhile (x => true)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 1 }, dary1.Keys.Skip(0).SkipWhile (x => false)));
+
+            dary1.Add (2,-2);
+            dary1.Add (3,-3);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 2,3 }, dary1.Keys.Skip(0).SkipWhile (x => x%2!=0)));
+        }
+
+        [TestMethod]
+        public void UnitRdkq_SkipWhile2R()
+        {
+            Setup();
+
+            Assert.AreEqual (0, SLE.Count (dary1.Keys.Reverse().SkipWhile (x => false)));
+            Assert.AreEqual (0, SLE.Count (dary1.Keys.Reverse().SkipWhile (x => true)));
+
+            dary1.Add (1,-1);
+
+            Assert.AreEqual (0, SLE.Count (dary1.Values.Reverse().SkipWhile (x => true)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 1 }, dary1.Keys.Reverse().SkipWhile (x => false)));
+
+            dary1.Add (2,-2);
+            dary1.Add (3,-3);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 2,1 }, dary1.Keys.Reverse().SkipWhile (x => x%2!=0)));
+        }
+
         #endregion
 
         #region Test Keys enumeration (LINQ emulation)
@@ -436,6 +627,100 @@ namespace Kaos.Test.Collections
 #else
             Assert.AreEqual (-9, dary1.Values.Last());
 #endif
+        }
+
+
+        [TestMethod]
+        public void UnitRdvq_Skip()
+        {
+            Setup (4);
+
+            Assert.AreEqual (0, SLE.Count (dary1.Values.Skip (-1)));
+            Assert.AreEqual (0, SLE.Count (dary1.Values.Skip (0)));
+            Assert.AreEqual (0, SLE.Count (dary1.Values.Skip (1)));
+
+            dary1.Add (1,11);
+            dary1.Add (2,22);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 11,22 }, dary1.Values.Skip (-1)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 11,22 }, dary1.Values.Skip (0)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 22 }, dary1.Values.Skip (1)));
+
+            Assert.AreEqual (0, SLE.Count (dary1.Values.Skip (0).Skip (2)));
+            Assert.AreEqual (0, SLE.Count (dary1.Values.Skip (0).Skip (3)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 11, 22 }, dary1.Values.Skip (0).Skip (-1)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 11, 22 }, dary1.Values.Skip (0).Skip (0)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 22 }, dary1.Values.Skip (0).Skip (1)));
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 22 }, dary1.Values.Skip (1).Skip (-1)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 22 }, dary1.Values.Skip (1).Skip (0)));
+
+            Assert.AreEqual (0, SLE.Count (dary1.Values.Skip (2).Skip (0)));
+            Assert.AreEqual (0, SLE.Count (dary1.Values.Skip (2).Skip (1)));
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 22,11 }, dary1.Values.Reverse().Skip (-1)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 22,11 }, dary1.Values.Reverse().Skip (0)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 11 }, dary1.Values.Reverse().Skip (1)));
+            Assert.AreEqual (0, SLE.Count (dary1.Values.Reverse().Skip (2)));
+            Assert.AreEqual (0, SLE.Count (dary1.Values.Reverse().Skip (3)));
+        }
+
+
+        [TestMethod]
+        public void UnitRdvq_SkipWhile2Ctor()
+        {
+            Setup (4);
+
+            Assert.AreEqual (0, SLE.Count (dary1.Values.SkipWhile (x => false)));
+            Assert.AreEqual (0, SLE.Count (dary1.Values.SkipWhile (x => true)));
+
+            dary1.Add (1,-1);
+            dary1.Add (2,-2);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { -1,-2 }, dary1.Values.SkipWhile (x => false)));
+            Assert.AreEqual (0, SLE.Count (dary1.Values.SkipWhile (x => true)));
+
+            dary1.Add (3,-3);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { -2,-3 }, dary1.Values.SkipWhile (x => x%2!=0)));
+        }
+
+        [TestMethod]
+        public void UnitRdvq_SkipWhile2F()
+        {
+            Setup (4);
+
+            Assert.AreEqual (0, SLE.Count (dary1.Values.Skip(0).SkipWhile (x => false)));
+            Assert.AreEqual (0, SLE.Count (dary1.Values.Skip(0).SkipWhile (x => true)));
+
+            dary1.Add (1,-1);
+
+            Assert.AreEqual (0, SLE.Count (dary1.Values.Skip(0).SkipWhile (x => true)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { -1 }, dary1.Values.Skip(0).SkipWhile (x => false)));
+
+            dary1.Add (2,-2);
+            dary1.Add (3,-3);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { -2,-3 }, dary1.Values.Skip(0).SkipWhile (x => x%2!=0)));
+        }
+
+        [TestMethod]
+        public void UnitRdvq_SkipWhile2R()
+        {
+            Setup (4);
+
+            Assert.AreEqual (0, SLE.Count (dary1.Values.Reverse().SkipWhile (x => false)));
+            Assert.AreEqual (0, SLE.Count (dary1.Values.Reverse().SkipWhile (x => true)));
+
+            dary1.Add (1,-1);
+
+            Assert.AreEqual (0, SLE.Count (dary1.Values.Reverse().SkipWhile (x => true)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { -1 }, dary1.Values.Reverse().SkipWhile (x => false)));
+
+            dary1.Add (2,-2);
+            dary1.Add (3,-3);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { -2,-1 }, dary1.Values.Reverse().SkipWhile (x => x%2!=0)));
         }
 
         #endregion

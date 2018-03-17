@@ -245,6 +245,24 @@ namespace Kaos.Collections
             }
 
 
+            /// <summary>
+            /// Bypasses a supplied number of values and yields the remaining values.
+            /// </summary>
+            /// <param name="count">Number of values to skip.</param>
+            /// <returns>The values after the supplied index.</returns>
+            /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
+            public Enumerator Skip (int count) => new Enumerator (tree, count);
+
+
+            /// <summary>
+            /// Bypasses values as long as a supplied condition is true and yields the remaining values.
+            /// </summary>
+            /// <param name="predicate">The condition to test for.</param>
+            /// <returns>Remaining values after the first value that does not satisfy the supplied condition.</returns>
+            /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
+            public Enumerator SkipWhile (Func<TValue,bool> predicate) => new Enumerator (tree, predicate);
+
+
             /// <summary>Returns an enumerator that iterates thru the dictionary values in reverse key order.</summary>
             /// <returns>An enumerator that reverse iterates thru the dictionary values.</returns>
             /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
@@ -273,6 +291,10 @@ namespace Kaos.Collections
                 private readonly ValueEnumerator<TValue> etor;
 
                 internal Enumerator (RankedDictionary<TKey,TValue> dary, bool isReverse=false) => etor = new ValueEnumerator<TValue> (dary, isReverse);
+
+                internal Enumerator (RankedDictionary<TKey,TValue> dary, int count) => etor = new ValueEnumerator<TValue> (dary, count);
+
+                internal Enumerator (RankedDictionary<TKey,TValue> dary, Func<TValue,bool> predicate) => etor = new ValueEnumerator<TValue> (dary, predicate);
 
                 /// <summary>Gets the value at the current position.</summary>
                 object IEnumerator.Current
@@ -315,6 +337,31 @@ namespace Kaos.Collections
                 /// <summary>Gets an iterator for this collection.</summary>
                 /// <returns>An iterator for this collection.</returns>
                 IEnumerator IEnumerable.GetEnumerator() => this;
+
+                /// <summary>
+                /// Bypasses a supplied number of values and yields the remaining values.
+                /// </summary>
+                /// <param name="count">Number of values to skip.</param>
+                /// <returns>The values after the supplied index.</returns>
+                /// <remarks>This is a O(1) operation.</remarks>
+                /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
+                public Enumerator Skip (int count)
+                {
+                    etor.Bypass (count);
+                    return this;
+                }
+
+                /// <summary>
+                /// Bypasses values as long as a supplied condition is true and yields the remaining values.
+                /// </summary>
+                /// <param name="predicate">The condition to test for.</param>
+                /// <returns>Remaining values after the first value that does not satisfy the supplied condition.</returns>
+                /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
+                public Enumerator SkipWhile (Func<TValue,bool> predicate)
+                {
+                    etor.Bypass (predicate);
+                    return this;
+                }
             }
 
             #endregion
