@@ -971,6 +971,24 @@ namespace Kaos.Collections
         public Enumerator Reverse() => new Enumerator (this, isReverse:true);
 
 
+        /// <summary>
+        /// Bypasses a supplied number of elements and yields the remaining elements.
+        /// </summary>
+        /// <param name="count">Number of elements to skip.</param>
+        /// <returns>The elements after the supplied index.</returns>
+        /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
+        public Enumerator Skip (int count) => new Enumerator (this, count);
+
+
+        /// <summary>
+        /// Bypasses elements as long as a supplied condition is true and yields the remaining elements.
+        /// </summary>
+        /// <param name="predicate">The condition to test for.</param>
+        /// <returns>Remaining elements after the first element that does not satisfy the supplied condition.</returns>
+        /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
+        public Enumerator SkipWhile (Func<KeyValuePair<TKey,TValue>,bool> predicate) => new Enumerator (this, predicate);
+
+
         /// <summary>Gets an enumerator that iterates thru the map.</summary>
         /// <returns>An enumerator for the map.</returns>
         public Enumerator GetEnumerator() => new Enumerator (this);
@@ -986,6 +1004,7 @@ namespace Kaos.Collections
 
 
         /// <summary>Enumerates the sorted key/value pairs of a <see cref="RankedMap{TKey,TValue}"/>.</summary>
+        [DebuggerTypeProxy (typeof (IEnumerableDebugView<,>))]
         public struct Enumerator : IEnumerator<KeyValuePair<TKey,TValue>>, IEnumerable<KeyValuePair<TKey,TValue>>
         {
             private readonly PairEnumerator<TValue> etor;
@@ -996,6 +1015,12 @@ namespace Kaos.Collections
             /// <param name="nonGeneric">Supply <b>true</b> to indicate object Current should return DictionaryEntry values.</param>
             internal Enumerator (RankedMap<TKey,TValue> map, bool isReverse=false, bool nonGeneric=false)
                 => etor = new PairEnumerator<TValue> (map, isReverse, nonGeneric);
+
+            internal Enumerator (RankedMap<TKey,TValue> map, int count)
+                => etor = new PairEnumerator<TValue> (map, count);
+
+            internal Enumerator (RankedMap<TKey,TValue> map, Func<KeyValuePair<TKey,TValue>,bool> predicate)
+                => etor = new PairEnumerator<TValue> (map, predicate);
 
             /// <summary>Gets the element at the current position.</summary>
             object IEnumerator.Current
@@ -1041,6 +1066,31 @@ namespace Kaos.Collections
             /// <summary>Gets an iterator for this collection.</summary>
             /// <returns>An iterator for this collection.</returns>
             IEnumerator IEnumerable.GetEnumerator() => this;
+
+            /// <summary>
+            /// Bypasses a supplied number of elements and yields the remaining elements.
+            /// </summary>
+            /// <param name="count">Number of elements to skip.</param>
+            /// <returns>The elements after the supplied index.</returns>
+            /// <remarks>This is a O(1) operation.</remarks>
+            /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
+            public Enumerator Skip (int count)
+            {
+                etor.Bypass (count);
+                return this;
+            }
+
+            /// <summary>
+            /// Bypasses elements as long as a supplied condition is true and yields the remaining elements.
+            /// </summary>
+            /// <param name="predicate">The condition to test for.</param>
+            /// <returns>Remaining elements after the first element that does not satisfy the supplied condition.</returns>
+            /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
+            public Enumerator SkipWhile (Func<KeyValuePair<TKey,TValue>,bool> predicate)
+            {
+                etor.Bypass (predicate);
+                return this;
+            }
         }
 
         #endregion

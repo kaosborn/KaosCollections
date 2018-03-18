@@ -228,6 +228,24 @@ namespace Kaos.Collections
             bool ICollection<TKey>.Remove (TKey key) => throw new NotSupportedException();
 
 
+            /// <summary>
+            /// Bypasses a supplied number of keys and yields the remaining keys.
+            /// </summary>
+            /// <param name="count">Number of keys to skip.</param>
+            /// <returns>The keys after the supplied index.</returns>
+            /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
+            public Enumerator Skip (int count) => new Enumerator (tree, count);
+
+
+            /// <summary>
+            /// Bypasses keys as long as a supplied condition is true and yields the remaining keys.
+            /// </summary>
+            /// <param name="predicate">The condition to test for.</param>
+            /// <returns>Remaining keys after the first key that does not satisfy the supplied condition.</returns>
+            /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
+            public Enumerator SkipWhile (Func<TKey,bool> predicate) => new Enumerator (tree, predicate);
+
+
             /// <summary>Gets the least key greater than the supplied key.</summary>
             /// <param name="getKey">The key to use for comparison.</param>
             /// <param name="key">The actual key if found; otherwise the default.</param>
@@ -322,11 +340,16 @@ namespace Kaos.Collections
 
 
             /// <summary>Enumerates the items of a <see cref="RankedMap{TKey,TValue}.KeyCollection"/> in sort order.</summary>
+            [DebuggerTypeProxy (typeof (IEnumerableKeysDebugView<,>))]
             public struct Enumerator : IEnumerator<TKey>, IEnumerable<TKey>
             {
                 private readonly KeyEnumerator etor;
 
                 internal Enumerator (RankedMap<TKey,TValue> map, bool isReverse=false) => etor = new KeyEnumerator (map, isReverse);
+
+                internal Enumerator (RankedMap<TKey,TValue> map, int count) => etor = new KeyEnumerator (map, count);
+
+                internal Enumerator (RankedMap<TKey,TValue> map, Func<TKey,bool> predicate) => etor = new KeyEnumerator (map, predicate);
 
                 /// <summary>Gets the key at the current position.</summary>
                 object IEnumerator.Current
@@ -369,6 +392,31 @@ namespace Kaos.Collections
                 /// <summary>Gets an iterator for this collection.</summary>
                 /// <returns>An iterator for this collection.</returns>
                 IEnumerator IEnumerable.GetEnumerator() => this;
+
+                /// <summary>
+                /// Bypasses a supplied number of keys and yields the remaining keys.
+                /// </summary>
+                /// <param name="count">Number of keys to skip.</param>
+                /// <returns>The keys after the supplied index.</returns>
+                /// <remarks>This is a O(1) operation.</remarks>
+                /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
+                public Enumerator Skip (int count)
+                {
+                    etor.Bypass (count);
+                    return this;
+                }
+
+                /// <summary>
+                /// Bypasses keys as long as a supplied condition is true and yields the remaining keys.
+                /// </summary>
+                /// <param name="predicate">The condition to test for.</param>
+                /// <returns>Remaining keys after the first key that does not satisfy the supplied condition.</returns>
+                /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
+                public Enumerator SkipWhile (Func<TKey,bool> predicate)
+                {
+                    etor.Bypass (predicate);
+                    return this;
+                }
             }
 
             #endregion
