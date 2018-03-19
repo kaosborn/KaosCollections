@@ -10,7 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Btree-Pair.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ICollectionKVDebugView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KVDebugView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PairEnumerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.KeyCollection.cs" />

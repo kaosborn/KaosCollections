@@ -10,7 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Btree-Item.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ICollectionTDebugView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TDebugView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)KeyEnumerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RankedSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RankedSetEqualityComparer.cs" />
