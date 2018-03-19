@@ -8,10 +8,11 @@ namespace Kaos.Collections
         private protected class KeyEnumerator
         {
             private readonly Btree<T> tree;
-            private readonly bool isReverse = false;
-            protected Leaf leaf = null;
-            protected int leafIndex = 0;
-            protected int index = 0;
+            private readonly bool isReverse=false;
+            protected Leaf leaf=null;
+            protected int leafIndex;
+            protected int index;
+            private int start=0;
             private int stageFreeze;
             protected int state;  // -1=rewound; 0=active; 1=consumed
             private Func<T,bool> condition2;
@@ -26,33 +27,37 @@ namespace Kaos.Collections
             {
                 this.tree = owner;
                 this.isReverse = isReverse;
-                Init();
+                this.stageFreeze = tree.stage;
+                this.state = -1;
+                if (isReverse)
+                {
+                    this.start = owner.root.Weight-1;
+                    this.leaf = owner.rightmostLeaf;
+                    this.leafIndex = owner.rightmostLeaf.KeyCount-1;
+                }
+                else
+                    this.leaf = owner.leftmostLeaf;
             }
 
             public KeyEnumerator (Btree<T> owner, int count)
             {
-                tree = owner;
-                stageFreeze = tree.stage;
+                this.tree = owner;
+                this.stageFreeze = owner.stage;
+                this.state = -1;
 
-                if (count >= tree.root.Weight)
-                    state = 1;
-                else
+                if (count > 0)
+                    this.start = count;
+
+                if (this.start <= owner.leftmostLeaf.KeyCount)
                 {
-                    state = -1;
-                    if (count > 0)
-                        index = count;
-
-                    if (index <= tree.leftmostLeaf.KeyCount)
-                    {
-                        leaf = tree.leftmostLeaf;
-                        leafIndex = index;
-                    }
+                    this.leaf = owner.leftmostLeaf;
+                    this.leafIndex = this.start;
                 }
             }
 
-            public KeyEnumerator (Btree<T> owner, Func<T,bool> pred) : this (owner)
+            public KeyEnumerator (Btree<T> owner, Func<T,bool> condition) : this (owner)
             {
-                condition2 = pred;
+                this.condition2 = condition;
                 BypassWhile2();
             }
 
@@ -60,20 +65,9 @@ namespace Kaos.Collections
             public void Init()
             {
                 state = -1;
-                stageFreeze = tree.stage;
-                if (isReverse)
-                {
-                    leaf = tree.rightmostLeaf;
-                    leafIndex = leaf.KeyCount-1;
-                    index = tree.root.Weight-1;
-                }
-                else
-                {
-                    leaf = tree.leftmostLeaf;
-                    leafIndex = 0;
-                    index = 0;
-                }
+                leaf = null;
             }
+
 
             public bool Advance()
             {
@@ -88,13 +82,11 @@ namespace Kaos.Collections
                 else
                 {
                     if (leaf == null)
-                        if (! isReverse && index <= tree.leftmostLeaf.KeyCount)
-                          { leaf = tree.leftmostLeaf; leafIndex = index; }
+                        if (start >= tree.root.Weight)
+                          { state = 1; return false; }
                         else
-                            if (index < tree.root.Weight)
-                                leaf = (Leaf) tree.Find (index, out leafIndex);
-                            else
-                              { state = 1; return false; }
+                            leaf = (Leaf) tree.Find (start, out leafIndex);
+                    index = start;
                     state = 0;
                 }
 
@@ -124,11 +116,11 @@ namespace Kaos.Collections
             {
                 if (state < 0 && count > 0)
                     if (isReverse)
-                        if (index < count)
+                        if (start < count)
                             state = 1;
                         else
                         {
-                            index -= count;
+                            start -= count;
                             if (leaf != null)
                                 if (leafIndex < count)
                                     leaf = null;
@@ -136,11 +128,11 @@ namespace Kaos.Collections
                                     leafIndex -= count;
                         }
                     else
-                        if (index >= tree.root.Weight - count)
+                        if (start >= tree.root.Weight - count)
                             state = 1;
                         else
                         {
-                            index += count;
+                            start += count;
                             if (leaf != null)
                                 if (leafIndex > leaf.KeyCount - count)
                                     leaf = null;
@@ -165,11 +157,11 @@ namespace Kaos.Collections
 
                 if (isReverse)
                 {
-                    if (index < 0)
+                    if (start < 0)
                     { state = 1; return; }
 
                     if (leaf == null)
-                        leaf = (Leaf) tree.Find (index, out leafIndex);
+                        leaf = (Leaf) tree.Find (start, out leafIndex);
 
                     for (;;)
                     {
@@ -184,16 +176,16 @@ namespace Kaos.Collections
                         if (! TestWhile2())
                             break;
                         --leafIndex;
-                        --index;
+                        --start;
                     }
                 }
                 else
                 {
-                    if (index >= tree.root.Weight)
+                    if (start >= tree.root.Weight)
                     { state = 1; return; }
 
                     if (leaf == null)
-                        leaf = (Leaf) tree.Find (index, out leafIndex);
+                        leaf = (Leaf) tree.Find (start, out leafIndex);
 
                     for (;;)
                     {
@@ -208,7 +200,7 @@ namespace Kaos.Collections
                         if (! TestWhile2())
                             break;
                         ++leafIndex;
-                        ++index;
+                        ++start;
                     }
                 }
             }

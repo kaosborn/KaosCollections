@@ -365,6 +365,21 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (n, a1);
         }
 
+
+        [TestMethod]
+        public void UnitRbq_Reset()
+        {
+            var rb = new RankedBag<int>(new int[] { 1,2,5,8,9 }) { Capacity=4 };
+
+            System.Collections.Generic.IEnumerable<int> bagEtor = rb.Reverse().Skip (1).SkipWhile (x => x%2==0);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 5,2,1 }, bagEtor));
+
+            ((System.Collections.IEnumerator) bagEtor).Reset();
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 5,2,1 }, bagEtor));
+        }
+
         #endregion
     }
 }
