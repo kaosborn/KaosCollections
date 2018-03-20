@@ -42,7 +42,7 @@ namespace Kaos.Collections
             { Bypass2 (condition, (leaf,ix) => ((PairLeaf<V>) leaf).GetPair (ix)); }
 
 
-            public DictionaryEntry CurrentEntry => new DictionaryEntry (leaf.GetKey (leafIndex), ((PairLeaf<V>) leaf).GetValue (leafIndex));
+            public DictionaryEntry CurrentEntry => ((PairLeaf<V>) leaf).GetEntry (leafIndex);
 
             public KeyValuePair<T,V> CurrentPair => ((PairLeaf<V>) leaf).GetPair (leafIndex);
 
