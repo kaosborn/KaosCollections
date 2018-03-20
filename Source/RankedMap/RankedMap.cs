@@ -1088,7 +1088,7 @@ namespace Kaos.Collections
             /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
             public Enumerator SkipWhile (Func<KeyValuePair<TKey,TValue>,bool> predicate)
             {
-                etor.Bypass (predicate);
+                etor.BypassPair (predicate);
                 return this;
             }
         }

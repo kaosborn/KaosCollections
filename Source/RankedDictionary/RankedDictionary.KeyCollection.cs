@@ -416,7 +416,7 @@ namespace Kaos.Collections
                 /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
                 public Enumerator SkipWhile (Func<TKey,bool> predicate)
                 {
-                    etor.Bypass (predicate);
+                    etor.BypassKey (predicate);
                     return this;
                 }
             }

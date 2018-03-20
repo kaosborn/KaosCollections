@@ -15,7 +15,6 @@ namespace Kaos.Collections
             private int start=0;
             private int stageFreeze;
             protected int state;  // -1=rewound; 0=active; 1=consumed
-            private Func<T,bool> condition2;
 
             public T CurrentKey => leaf.GetKey (leafIndex);
             public T CurrentKeyOrDefault => state != 0 ? default : leaf.GetKey (leafIndex);
@@ -56,10 +55,7 @@ namespace Kaos.Collections
             }
 
             public KeyEnumerator (Btree<T> owner, Func<T,bool> condition) : this (owner)
-            {
-                this.condition2 = condition;
-                BypassWhile2();
-            }
+            { Bypass2 (condition, (leaf,ix) => leaf.GetKey (ix)); }
 
 
             public void Init()
@@ -142,15 +138,9 @@ namespace Kaos.Collections
             }
 
 
-            protected virtual bool TestWhile2() => condition2 (leaf.GetKey (leafIndex));
+            public void BypassKey (Func<T,bool> condition) => Bypass2 (condition, (leaf,ix) => leaf.GetKey (ix));
 
-            public void Bypass (Func<T,bool> bypassCondition)
-            {
-                condition2 = bypassCondition;
-                BypassWhile2();
-            }
-
-            public void BypassWhile2()
+            public void Bypass2<X> (Func<X,bool> condition, Func<Leaf,int,X> getter)
             {
                 if (state > 0)
                     return;
@@ -173,7 +163,7 @@ namespace Kaos.Collections
                             leafIndex = leaf.KeyCount - 1;
                         }
 
-                        if (! TestWhile2())
+                        if (! condition (getter (leaf, leafIndex)))
                             break;
                         --leafIndex;
                         --start;
@@ -197,7 +187,7 @@ namespace Kaos.Collections
                             leafIndex = 0;
                         }
 
-                        if (! TestWhile2())
+                        if (! condition (getter (leaf, leafIndex)))
                             break;
                         ++leafIndex;
                         ++start;
