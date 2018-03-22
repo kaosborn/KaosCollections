@@ -221,6 +221,7 @@ namespace Kaos.Test.Collections
             Assert.IsTrue (SLE.SequenceEqual (new int[] { 1 }, setI.Skip (0)));
             Assert.AreEqual (0, SLE.Count (setI.Skip (1)));
             Assert.AreEqual (0, SLE.Count (setI.Skip (2)));
+            Assert.AreEqual (0, SLE.Count (setI.Skip (1).Skip (1).Skip (1)));
 
             Assert.IsTrue (SLE.SequenceEqual (new int[] { 1 }, setI.Skip (0).Skip (-1)));
             Assert.IsTrue (SLE.SequenceEqual (new int[] { 1 }, setI.Skip (0).Skip (0)));
@@ -231,6 +232,7 @@ namespace Kaos.Test.Collections
             Assert.IsTrue (SLE.SequenceEqual (new int[] { 1 }, setI.Reverse().Skip (0)));
             Assert.AreEqual (0, SLE.Count (setI.Reverse().Skip (1)));
             Assert.AreEqual (0, SLE.Count (setI.Reverse().Skip (2)));
+            Assert.AreEqual (0, SLE.Count (setI.Reverse().Skip (1).Skip (1)));
 
             setI.Add (2);
             setI.Add (3);
@@ -241,13 +243,21 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (0, SLE.Count (setI.Skip (3)));
 
             Assert.IsTrue (SLE.SequenceEqual (new int[] { 2,3 }, setI.Skip(0).Skip (1)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 3 },   setI.Skip(1).Skip (1)));
             Assert.IsTrue (SLE.SequenceEqual (new int[] { 3 },   setI.Skip(0).Skip (2)));
             Assert.AreEqual (0, SLE.Count (setI.Skip(0).Skip (3)));
 
             Assert.IsTrue (SLE.SequenceEqual (new int[] { 3,2,1 }, setI.Reverse().Skip (-1)));
             Assert.IsTrue (SLE.SequenceEqual (new int[] { 3,2,1 }, setI.Reverse().Skip (0)));
             Assert.IsTrue (SLE.SequenceEqual (new int[] { 2,1 },   setI.Reverse().Skip (1)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 1 },     setI.Reverse().Skip (1).Skip (1)));
             Assert.AreEqual (0, SLE.Count (setI.Reverse().Skip (3)));
+
+            for (int i = 4; i <= 50; ++i)
+                setI.Add (i);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 46,47,48,49,50 }, setI.Skip(30).Skip (15)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 5,4,3,2,1 }, setI.Reverse().Skip(30).Skip (15)));
         }
 
         [TestMethod]
@@ -320,6 +330,7 @@ namespace Kaos.Test.Collections
 
             Assert.AreEqual (0, SLE.Count (setI.Skip(0).SkipWhile (x => false)));
             Assert.AreEqual (0, SLE.Count (setI.Skip(0).SkipWhile (x => true)));
+            Assert.AreEqual (0, SLE.Count (setI.SkipWhile (x => true).SkipWhile (x => true)));
 
             setI.Add (1);
 
@@ -330,6 +341,11 @@ namespace Kaos.Test.Collections
             setI.Add (3);
 
             Assert.IsTrue (SLE.SequenceEqual (new int[] { 2,3 }, setI.Skip(0).SkipWhile (x => x%2!=0)));
+
+            for (int i = 4; i < 50; ++i)
+                setI.Add (i);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 45,46,47,48,49 }, setI.Skip(30).SkipWhile (x => x<45)));
         }
 
         [TestMethod]
@@ -339,6 +355,7 @@ namespace Kaos.Test.Collections
 
             Assert.AreEqual (0, SLE.Count (setI.Reverse().SkipWhile (x => false)));
             Assert.AreEqual (0, SLE.Count (setI.Reverse().SkipWhile (x => true)));
+            Assert.AreEqual (0, SLE.Count (setI.Reverse().SkipWhile (x => true).SkipWhile (x => true)));
 
             setI.Add (1);
 
@@ -349,6 +366,11 @@ namespace Kaos.Test.Collections
             setI.Add (3);
 
             Assert.IsTrue (SLE.SequenceEqual (new int[] { 2,1 }, setI.Reverse().SkipWhile (x => x%2!=0)));
+
+            for (int i = 4; i < 50; ++i)
+                setI.Add (i);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 5,4,3,2,1 }, setI.Reverse().Skip(20).SkipWhile (x => x>5)));
         }
 
         [TestMethod]
@@ -368,6 +390,34 @@ namespace Kaos.Test.Collections
             }
         }
 
+        #endregion
+
+        #region Test bonus (LINQ emulation)
+#if ! TEST_BCL
+
+        [TestMethod]
+        public void UnitRsqx_oEtorGetEnumerator()
+        {
+            Setup();
+            var ia = new int[] { 2,3,5,6,8 };
+            foreach (var x in ia) setI.Add (x);
+
+            var oAble1 = (System.Collections.IEnumerable) setI;
+            System.Collections.IEnumerator oEtor1 = oAble1.GetEnumerator();
+            var oAble2 = (System.Collections.IEnumerable) oEtor1;
+            System.Collections.IEnumerator oEtor2 = oAble2.GetEnumerator();
+
+            int ix = 0;
+            while (oEtor2.MoveNext())
+            {
+                object oItem = oEtor2.Current;
+                Assert.AreEqual (ia[ix], oItem);
+                ++ix;
+            }
+            Assert.AreEqual (ia.Length, ix);
+        }
+
+#endif
         #endregion
     }
 }

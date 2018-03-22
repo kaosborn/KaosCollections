@@ -303,6 +303,35 @@ namespace Kaos.Test.Collections
 
         #endregion
 
+        #region Test bonus (LINQ emulation)
+#if ! TEST_BCL
+
+        [TestMethod]
+        public void UnitRmqx_oEtorGetEnumerator()
+        {
+            var ia = new int[] { 2,2,3,5,6,8,8 };
+            var rm = new RankedMap<int,int> { Capacity=4 };
+            foreach (var x in ia) rm.Add (x, -x);
+
+            var oAble1 = (System.Collections.IEnumerable) rm;
+            System.Collections.IEnumerator oEtor1 = oAble1.GetEnumerator();
+            var oAble2 = (System.Collections.IEnumerable) oEtor1;
+            System.Collections.IEnumerator oEtor2 = oAble2.GetEnumerator();
+
+            int ix = 0;
+            while (oEtor2.MoveNext())
+            {
+                var entry = (System.Collections.DictionaryEntry) oEtor2.Current;
+                Assert.AreEqual (ia[ix], entry.Key);
+                Assert.AreEqual (-ia[ix], entry.Value);
+                ++ix;
+            }
+            Assert.AreEqual (ia.Length, ix);
+        }
+
+#endif
+        #endregion
+
 
         #region Test Keys methods (LINQ emulation)
 
@@ -627,6 +656,34 @@ namespace Kaos.Test.Collections
 
         #endregion
 
+        #region Test Keys bonus (LINQ emulation)
+#if ! TEST_BCL
+
+        [TestMethod]
+        public void UnitRmkqx_oEtorGetEnumerator()
+        {
+            var ia = new int[] { 2,3,5,5,6,8 };
+            var rm = new RankedMap<int,int> { Capacity=4 };
+            foreach (var x in ia) rm.Add (x, -x);
+
+            var oAble1 = (System.Collections.IEnumerable) rm.Keys;
+            System.Collections.IEnumerator oEtor1 = oAble1.GetEnumerator();
+            var oAble2 = (System.Collections.IEnumerable) oEtor1;
+            System.Collections.IEnumerator oEtor2 = oAble2.GetEnumerator();
+
+            int ix = 0;
+            while (oEtor2.MoveNext())
+            {
+                var oKey = oEtor2.Current;
+                Assert.AreEqual (ia[ix], oKey);
+                ++ix;
+            }
+            Assert.AreEqual (ia.Length, ix);
+        }
+
+#endif
+        #endregion
+
 
         #region Test Values methods (LINQ emulation)
 
@@ -883,6 +940,34 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (n, a1);
         }
 
+        #endregion
+
+        #region Test Values bonus (LINQ emulation)
+#if ! TEST_BCL
+
+        [TestMethod]
+        public void UnitRmvqx_oEtorGetEnumerator()
+        {
+            var ia = new int[] { 2,3,3,5,6,8,8 };
+            var rm = new RankedMap<int,int> { Capacity=4 };
+            foreach (var x in ia) rm.Add (x, -x);
+
+            var oAble1 = (System.Collections.IEnumerable) rm.Values;
+            System.Collections.IEnumerator oEtor1 = oAble1.GetEnumerator();
+            var oAble2 = (System.Collections.IEnumerable) oEtor1;
+            System.Collections.IEnumerator oEtor2 = oAble2.GetEnumerator();
+
+            int ix = 0;
+            while (oEtor2.MoveNext())
+            {
+                var oValue = oEtor2.Current;
+                Assert.AreEqual (-ia[ix], oValue);
+                ++ix;
+            }
+            Assert.AreEqual (ia.Length, ix);
+        }
+
+#endif
         #endregion
     }
 }

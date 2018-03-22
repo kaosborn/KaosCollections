@@ -381,5 +381,32 @@ namespace Kaos.Test.Collections
         }
 
         #endregion
+
+        #region Test bonus (LINQ emulation)
+#if ! TEST_BCL
+
+        [TestMethod]
+        public void UnitRbqx_oEtorGetEnumerator()
+        {
+            var ia = new int[] { 2,2,3,3,5,6,8 };
+            var rb = new RankedBag<int> (ia) { Capacity=4 };
+
+            var oAble1 = (System.Collections.IEnumerable) rb;
+            System.Collections.IEnumerator oEtor1 = oAble1.GetEnumerator();
+            var oAble2 = (System.Collections.IEnumerable) oEtor1;
+            System.Collections.IEnumerator oEtor2 = oAble2.GetEnumerator();
+
+            int ix = 0;
+            while (oEtor2.MoveNext())
+            {
+                object oItem = oEtor2.Current;
+                Assert.AreEqual (ia[ix], oItem);
+                ++ix;
+            }
+            Assert.AreEqual (ia.Length, ix);
+        }
+
+#endif
+        #endregion
     }
 }

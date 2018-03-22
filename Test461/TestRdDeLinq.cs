@@ -245,6 +245,36 @@ namespace Kaos.Test.Collections
 
         #endregion
 
+        #region Test bonus (LINQ emulation)
+#if ! TEST_BCL
+
+        [TestMethod]
+        public void UnitRdqx_oEtorGetEnumerator()
+        {
+            Setup (4);
+            var ia = new int[] { 2,3,5,6,8 };
+            foreach (var x in ia) dary1.Add (x, -x);
+
+            var oAble1 = (System.Collections.IEnumerable) dary1;
+            System.Collections.IEnumerator oEtor1 = oAble1.GetEnumerator();
+            var oAble2 = (System.Collections.IEnumerable) oEtor1;
+            System.Collections.IEnumerator oEtor2 = oAble2.GetEnumerator();
+
+            int ix = 0;
+            while (oEtor2.MoveNext())
+            {
+                var row = (KeyValuePair<int,int>) oEtor2.Current;
+                Assert.AreEqual (ia[ix], row.Key);
+                Assert.AreEqual (-ia[ix], row.Value);
+                ++ix;
+            }
+            Assert.AreEqual (ia.Length, ix);
+        }
+
+#endif
+        #endregion
+
+
         #region Test Keys methods (LINQ emulation)
 
         [TestMethod]
@@ -524,6 +554,35 @@ namespace Kaos.Test.Collections
 
         #endregion
 
+        #region Test Keys bonus (LINQ emulation)
+#if ! TEST_BCL
+
+        [TestMethod]
+        public void UnitRdkqx_oEtorGetEnumerator()
+        {
+            Setup (4);
+            var ia = new int[] { 2,3,5,6,8 };
+            foreach (var x in ia) dary1.Add (x, -x);
+
+            var oAble1 = (System.Collections.IEnumerable) dary1.Keys;
+            System.Collections.IEnumerator oEtor1 = oAble1.GetEnumerator();
+            var oAble2 = (System.Collections.IEnumerable) oEtor1;
+            System.Collections.IEnumerator oEtor2 = oAble2.GetEnumerator();
+
+            int ix = 0;
+            while (oEtor2.MoveNext())
+            {
+                object oValue = oEtor2.Current;
+                Assert.IsTrue (oValue.GetType().IsValueType);
+                Assert.AreEqual (ia[ix], oValue);
+                ++ix;
+            }
+            Assert.AreEqual (ia.Length, ix);
+        }
+
+#endif
+        #endregion
+
 
         #region Test Values methods (LINQ emulation)
 
@@ -770,6 +829,34 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (n, an);
         }
 
+        #endregion
+
+        #region Test Values bonus (LINQ emulation)
+#if ! TEST_BCL
+
+        [TestMethod]
+        public void UnitRdvqx_oEtorGetEnumerator()
+        {
+            Setup (4);
+            var ia = new int[] { 2,3,5,6,8 };
+            foreach (var x in ia) dary1.Add (x, -x);
+
+            var oVals = (System.Collections.IEnumerable) dary1.Values;
+            System.Collections.IEnumerator oEtor1 = oVals.GetEnumerator();
+            var oAble = (System.Collections.IEnumerable) oEtor1;
+            System.Collections.IEnumerator oEtor2 = oAble.GetEnumerator();
+
+            int ix = 0;
+            while (oEtor2.MoveNext())
+            {
+                object oValue = oEtor2.Current;
+                Assert.AreEqual (-ia[ix], oValue);
+                ++ix;
+            }
+            Assert.AreEqual (ia.Length, ix);
+        }
+
+#endif
         #endregion
     }
 }
