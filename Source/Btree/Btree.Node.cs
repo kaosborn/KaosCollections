@@ -146,11 +146,8 @@ namespace Kaos.Collections
 
             public void RemoveChildRange2 (int index, int count)
             {
-                if (count > 0)
-                {
-                    childNodes.RemoveRange (index, count);
-                    keys.RemoveRange (index, count);
-                }
+                childNodes.RemoveRange (index, count);
+                keys.RemoveRange (index, count);
             }
 
             public void Add (Node node)

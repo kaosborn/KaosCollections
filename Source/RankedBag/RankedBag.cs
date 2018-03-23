@@ -500,8 +500,8 @@ namespace Kaos.Collections
                 if (oBag.Count == 0)
                 {
                     result = Count;
-                    if (result != 0)
-                    { StageBump(); Clear(); }
+                    StageBump();
+                    Clear();
                     return result;
                 }
 
