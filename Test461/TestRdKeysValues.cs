@@ -438,6 +438,41 @@ namespace Kaos.Test.Collections
             }
         }
 
+
+        [TestMethod]
+        public void UnitRdk_oReset()
+        {
+            Setup (5);
+            int n = 9;
+
+            for (int ix = 0; ix < n; ++ix)
+                dary1.Add (ix, -ix);
+#if TEST_BCL
+            SortedDictionary<int,int>.KeyCollection.Enumerator etor;
+#else
+            RankedDictionary<int,int>.KeyCollection.Enumerator etor;
+#endif
+            etor = dary1.Keys.GetEnumerator();
+
+            int ix1 = 0;
+            while (etor.MoveNext())
+            {
+                Assert.AreEqual (ix1, etor.Current);
+                ++ix1;
+            }
+            Assert.AreEqual (n, ix1);
+
+            ((System.Collections.IEnumerator) etor).Reset();
+
+            int ix2 = 0;
+            while (etor.MoveNext())
+            {
+                Assert.AreEqual (ix2, etor.Current);
+                ++ix2;
+            }
+            Assert.AreEqual (n, ix2);
+        }
+
         #endregion
 
 
@@ -720,6 +755,41 @@ namespace Kaos.Test.Collections
                 if (++n == 2)
                     dary2.Clear();
             }
+        }
+
+
+        [TestMethod]
+        public void UnitRdv_oReset()
+        {
+            Setup (5);
+            int n = 9;
+
+            for (int ix = 0; ix < n; ++ix)
+                dary1.Add (ix, -ix);
+#if TEST_BCL
+            SortedDictionary<int,int>.ValueCollection.Enumerator etor;
+#else
+            RankedDictionary<int,int>.ValueCollection.Enumerator etor;
+#endif
+            etor = dary1.Values.GetEnumerator();
+
+            int ix1 = 0;
+            while (etor.MoveNext())
+            {
+                Assert.AreEqual (-ix1, etor.Current);
+                ++ix1;
+            }
+            Assert.AreEqual (n, ix1);
+
+            ((System.Collections.IEnumerator) etor).Reset();
+
+            int ix2 = 0;
+            while (etor.MoveNext())
+            {
+                Assert.AreEqual (-ix2, etor.Current);
+                ++ix2;
+            }
+            Assert.AreEqual (n, ix2);
         }
 
         #endregion

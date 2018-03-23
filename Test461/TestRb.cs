@@ -1097,34 +1097,26 @@ namespace Kaos.Test.Collections
         public void UnitRb_GetEnumerator()
         {
             var rb = new RankedBag<int> { Capacity=4 };
-            int e1 = 0, e2 = 0;
             for (int ii=0; ii<10; ++ii) rb.Add (ii);
 
             var etor = rb.GetEnumerator();
+
+            int ix = 0;
             while (etor.MoveNext())
             {
                 int gActual = etor.Current;
                 object oActual = ((System.Collections.IEnumerator) etor).Current;
-                Assert.AreEqual (e1, gActual);
-                Assert.AreEqual (e1, oActual);
-                ++e1;
+                Assert.AreEqual (ix, gActual);
+                Assert.AreEqual (ix, oActual);
+                ++ix;
             }
-            Assert.AreEqual (10, e1);
+            Assert.AreEqual (10, ix);
 
             int gActualEnd = etor.Current;
             Assert.AreEqual (default (int), gActualEnd);
 
             bool isValid = etor.MoveNext();
             Assert.IsFalse (isValid);
-
-            ((System.Collections.IEnumerator) etor).Reset();
-            while (etor.MoveNext())
-            {
-                int val = etor.Current;
-                Assert.AreEqual (e2, val);
-                ++e2;
-            }
-            Assert.AreEqual (10, e2);
         }
 
         [TestMethod]
@@ -1140,6 +1132,36 @@ namespace Kaos.Test.Collections
                 if (++n == 2)
                     rb.Add (49);
             }
+        }
+
+
+        [TestMethod]
+        public void UnitRb_oReset()
+        {
+            var rb = new RankedBag<int> { Capacity=4 };
+            var ia = new int[] { 1,2,2,5,8,8,9 };
+            foreach (var x in ia)
+                rb.Add (x);
+
+            var etor = rb.GetEnumerator();
+
+            int ix1 = 0;
+            while (etor.MoveNext())
+            {
+                Assert.AreEqual (ia[ix1], etor.Current);
+                ++ix1;
+            }
+            Assert.AreEqual (ia.Length, ix1);
+
+            ((System.Collections.IEnumerator) etor).Reset();
+
+            int ix2 = 0;
+            while (etor.MoveNext())
+            {
+                Assert.AreEqual (ia[ix2], etor.Current);
+                ++ix2;
+            }
+            Assert.AreEqual (ia.Length, ix2);
         }
 
         #endregion

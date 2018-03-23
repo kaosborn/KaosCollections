@@ -1641,6 +1641,36 @@ namespace Kaos.Test.Collections
             }
         }
 
+
+        [TestMethod]
+        public void UnitRs_oReset()
+        {
+            Setup (4);
+            var ia = new int[] { 1,2,5,8,9 };
+            foreach (var x in ia)
+                setI.Add (x);
+
+            var etor = setI.GetEnumerator();
+
+            int ix1 = 0;
+            while (etor.MoveNext())
+            {
+                Assert.AreEqual (ia[ix1], etor.Current);
+                ++ix1;
+            }
+            Assert.AreEqual (ia.Length, ix1);
+
+            ((System.Collections.IEnumerator) etor).Reset();
+
+            int ix2 = 0;
+            while (etor.MoveNext())
+            {
+                Assert.AreEqual (ia[ix2], etor.Current);
+                ++ix2;
+            }
+            Assert.AreEqual (ia.Length, ix2);
+        }
+
         #endregion
     }
 }

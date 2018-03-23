@@ -966,6 +966,35 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (2, count);
         }
 
+
+        [TestMethod]
+        public void UnitRd_oReset()
+        {
+            Setup (4);
+            var exKeys = new int[] { 1,2,5,8,9 };
+            foreach (var x in exKeys)
+                dary1.Add (x, -x);
+
+            int ix;
+            var etor = dary1.GetEnumerator();
+
+            for (ix = 0; etor.MoveNext(); ++ix)
+            {
+                Assert.AreEqual (exKeys[ix], etor.Current.Key);
+                Assert.AreEqual (-exKeys[ix], etor.Current.Value);
+            }
+            Assert.AreEqual (exKeys.Length, ix);
+
+            ((System.Collections.IEnumerator) etor).Reset();
+
+            for (ix = 0; etor.MoveNext(); ++ix)
+            {
+                Assert.AreEqual (exKeys[ix], etor.Current.Key);
+                Assert.AreEqual (-exKeys[ix], etor.Current.Value);
+            }
+            Assert.AreEqual (exKeys.Length, ix);
+        }
+
         #endregion
 
         #region Test bonus methods

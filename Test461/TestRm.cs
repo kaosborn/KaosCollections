@@ -1402,6 +1402,39 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (iVals1.Length, actualCount);
         }
 
+
+        [TestMethod]
+        public void UnitRm_oReset()
+        {
+            var rm = new RankedMap<int,int> { Capacity=5 };
+            int n = 11;
+
+            for (int ix = 0; ix < n; ++ix)
+                rm.Add (ix, -ix);
+
+            RankedMap<int,int>.Enumerator etor = rm.GetEnumerator();
+
+            int ix1 = 0;
+            while (etor.MoveNext())
+            {
+                Assert.AreEqual (ix1, etor.Current.Key);
+                Assert.AreEqual (-ix1, etor.Current.Value);
+                ++ix1;
+            }
+            Assert.AreEqual (n, ix1);
+
+            ((System.Collections.IEnumerator) etor).Reset();
+
+            int ix2 = 0;
+            while (etor.MoveNext())
+            {
+                Assert.AreEqual (ix2, etor.Current.Key);
+                Assert.AreEqual (-ix2, etor.Current.Value);
+                ++ix2;
+            }
+            Assert.AreEqual (n, ix2);
+        }
+
         #endregion
     }
 }

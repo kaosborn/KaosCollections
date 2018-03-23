@@ -419,6 +419,37 @@ namespace Kaos.Test.Collections
             Assert.AreEqual (rm.Count, actual);
         }
 
+
+        [TestMethod]
+        public void UnitRmk_oReset()
+        {
+            var rm = new RankedMap<int,int> { Capacity=4 };
+            int n = 7;
+
+            for (int ix = 0; ix < n; ++ix)
+                rm.Add (ix*10, -ix);
+
+            RankedMap<int,int>.KeyCollection.Enumerator etor = rm.Keys.GetEnumerator();
+
+            int ix1 = 0;
+            while (etor.MoveNext())
+            {
+                Assert.AreEqual (ix1*10, etor.Current);
+                ++ix1;
+            }
+            Assert.AreEqual (n, ix1);
+
+            ((System.Collections.IEnumerator) etor).Reset();
+
+            int ix2 = 0;
+            while (etor.MoveNext())
+            {
+                Assert.AreEqual (ix2*10, etor.Current);
+                ++ix2;
+            }
+            Assert.AreEqual (n, ix2);
+        }
+
         #endregion
 
 
@@ -767,14 +798,44 @@ namespace Kaos.Test.Collections
             var rm = new RankedMap<char,int> { {'a',1}, {'b',2}, {'c',3} };
             var oc = (ICollection) rm.Values;
 
-            int actual = 0;
+            int ix = 0;
             foreach (object oItem in oc)
             {
-                Assert.AreEqual (rm.ElementAt (actual).Value, (int) oItem);
-                ++actual;
+                Assert.AreEqual (ix+1, (int) oItem);
+                ++ix;
             }
+            Assert.AreEqual (rm.Count, ix);
+        }
 
-            Assert.AreEqual (rm.Count, actual);
+
+        [TestMethod]
+        public void UnitRmv_oReset()
+        {
+            var rm = new RankedMap<int,int> { Capacity=4 };
+            int n = 7;
+
+            for (int ix = 0; ix < n; ++ix)
+                rm.Add (ix, -ix);
+
+            RankedMap<int,int>.ValueCollection.Enumerator etor = rm.Values.GetEnumerator();
+
+            int ix1 = 0;
+            while (etor.MoveNext())
+            {
+                Assert.AreEqual (-ix1, etor.Current);
+                ++ix1;
+            }
+            Assert.AreEqual (n, ix1);
+
+            ((System.Collections.IEnumerator) etor).Reset();
+
+            int ix2 = 0;
+            while (etor.MoveNext())
+            {
+                Assert.AreEqual (-ix2, etor.Current);
+                ++ix2;
+            }
+            Assert.AreEqual (n, ix2);
         }
 
         #endregion
