@@ -659,6 +659,9 @@ namespace Kaos.Test.Collections
             int rem0 = rb0.RemoveAll (new int[] { 2 });
             Assert.AreEqual (0, rem0);
 
+            int rem1 = rb.RemoveAll (new int[] { });
+            Assert.AreEqual (0, rem1);
+
             int rem2 = rb.RemoveAll (new int[] { 2 });
             Assert.AreEqual (0, rem0);
 

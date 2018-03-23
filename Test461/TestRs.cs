@@ -273,6 +273,7 @@ namespace Kaos.Test.Collections
             Setup();
             var oc = (System.Collections.ICollection) setI;
             Assert.IsFalse (oc.SyncRoot.GetType().IsValueType);
+            Assert.IsFalse (oc.SyncRoot.GetType().IsValueType);
         }
 
         #endregion
@@ -977,15 +978,15 @@ namespace Kaos.Test.Collections
 #if TEST_BCL
             var set1 = new SortedSet<int> { 5, 6 };
             var set2 = new SortedSet<int> { 1, 8 };
+            var set3 = new SortedSet<int> { 4 };
 #else
             var set1 = new RankedSet<int> { 5, 6 };
             var set2 = new RankedSet<int> { 1, 8 };
+            var set3 = new RankedSet<int> { 4 };
 #endif
-            bool isOlap1 = setI.Overlaps (set1);
-            bool isOlap2 = setI.Overlaps (set2);
-
             Assert.IsTrue (setI.Overlaps (set1));
             Assert.IsFalse (setI.Overlaps (set2));
+            Assert.IsFalse (setI.Overlaps (set3));
         }
 
         [TestMethod]

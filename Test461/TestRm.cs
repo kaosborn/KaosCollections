@@ -290,6 +290,10 @@ namespace Kaos.Test.Collections
 
             pc.Add (nullKv);
             Assert.IsTrue (pc.Contains (nullKv));
+
+            pc.Add (new KeyValuePair<string,int> ("alpha",0));
+            Assert.IsTrue (pc.Contains (new KeyValuePair<string,int> ("alpha", 0)));
+            Assert.IsFalse (pc.Contains (new KeyValuePair<string,int> ("alpha", 99)));
         }
 
         [TestMethod]
@@ -1361,17 +1365,16 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        public void UnitRm_oeEtor()
+        public void UnitRm_ocEtor()
         {
             var rm = new RankedMap<int,string> { {3,"cc"} };
             var oc = (ICollection) rm;
             int rowCount = 0;
 
-            foreach (object row in oc)
+            foreach (DictionaryEntry row in oc)
             {
-                var kv = (DictionaryEntry) row;
-                Assert.AreEqual (3, (int) kv.Key);
-                Assert.AreEqual ("cc", (string) kv.Value);
+                Assert.AreEqual (3, (int) row.Key);
+                Assert.AreEqual ("cc", (string) row.Value);
                 ++rowCount;
             }
 
@@ -1380,7 +1383,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRm_oEtorEntry ()
+        public void UnitRm_oEtorEntry()
         {
             var rm = new RankedMap<int,int>();
             var oc = (ICollection) rm;
