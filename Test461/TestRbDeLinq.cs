@@ -46,7 +46,7 @@ namespace Kaos.Test.Collections
         public void UnitRbq_ElementAt()
         {
             var rb = new RankedBag<int> { Capacity=5 };
-            int n = 800;
+            int n = 200;
 
             for (int ii = 0; ii <= n; ++ii)
                 rb.Add (ii/2);

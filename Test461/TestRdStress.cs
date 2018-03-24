@@ -7,16 +7,21 @@ namespace Kaos.Test.Collections
         [TestMethod]
         public void StressRd_WithLongPermutations()
         {
-            for (int order = 5; order < 9; ++order)
+#if STRESS
+            int n = 8, m = 500;
+#else
+            int n = 5, m = 100;
+#endif
+            for (int order = 5; order <= n; ++order)
             {
                 Setup (order);
 
-                for (int w = 1; w <= 500; ++w)
+                for (int w = 1; w <= m; ++w)
                 {
-                    for (int m = 0; m < w; m++)
-                        dary1.Add (m, m + 1000);
-                    for (int m = w - 1; m >= 0; --m)
-                        dary1.Remove (m);
+                    for (int v = 0; v < w; v++)
+                        dary1.Add (v, v + 1000);
+                    for (int v = w - 1; v >= 0; --v)
+                        dary1.Remove (v);
 
                     Assert.AreEqual (0, dary1.Count);
                 }
@@ -52,8 +57,12 @@ namespace Kaos.Test.Collections
         public void StressRd_RemoveSlidingWindowForCoalesce()
         {
             Setup (5);
-
-            for (int size = 65; size <= 75; ++size)
+#if STRESS
+            int n = 75;
+#else
+            int n = 65;
+#endif
+            for (int size = 65; size <= n; ++size)
             {
                 for (int a = 1; a <= size; ++a)
                     for (int b = a; b <= size; ++b)

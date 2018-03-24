@@ -779,15 +779,17 @@ namespace Kaos.Test.Collections
         [TestMethod]
         public void UnitRm_RemoveAt()
         {
+            int n = 500, m = 10;
+
             var rm = new RankedMap<int,int>() { Capacity=4 };
-            for (int ii = 0; ii < 5000; ++ii)
+            for (int ii = 0; ii < n; ++ii)
                 rm.Add (ii, -ii);
 
-            for (int i2 = 4900; i2 >= 0; i2 -= 100)
+            for (int i2 = n-m; i2 >= 0; i2 -= m)
                 rm.RemoveAt (i2);
 
-            for (int i2 = 0; i2 < 5000; ++i2)
-                if (i2 % 100 == 0)
+            for (int i2 = 0; i2 < n; ++i2)
+                if (i2 % m == 0)
                 {
                     Assert.IsFalse (rm.ContainsKey (i2));
                     Assert.IsFalse (rm.ContainsValue (-i2));
@@ -895,22 +897,25 @@ namespace Kaos.Test.Collections
         {
             var rm = new RankedMap<int,int> { Capacity=6 };
 
-            for (int ix = 0; ix < 1100; ++ix)
+            for (int ix = 0; ix < 110; ++ix)
                 rm.Add (ix, -ix);
 
-            int r1 = rm.RemoveWhereElement (IsPairLeN1000);
-            Assert.AreEqual (100, r1);
-            Assert.AreEqual (1000, rm.Count);
+            int r1 = rm.RemoveWhereElement (IsPairLeN100);
+            Assert.AreEqual (10, r1);
+            Assert.AreEqual (100, rm.Count);
 
             int c0 = rm.Count;
             int r2 = rm.RemoveWhereElement (IsPairEven);
 
-            Assert.AreEqual (500, r2);
+            Assert.AreEqual (50, r2);
             foreach (int v2 in rm.Values)
                 Assert.IsTrue (v2 % 2 != 0);
 
+            int r2b = rm.RemoveWhereElement (IsPairEven);
+            Assert.AreEqual (0, r2b);
+
             int r3 = rm.RemoveWhereElement (IsPairAlways);
-            Assert.AreEqual (500, r3);
+            Assert.AreEqual (50, r3);
             Assert.AreEqual (0, rm.Count);
         }
 

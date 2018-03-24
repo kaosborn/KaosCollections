@@ -16,7 +16,7 @@ namespace Kaos.Test.Collections
     {
         static bool IsPairAlways (KeyValuePair<int,int> kv) => true;
         static bool IsPairEven (KeyValuePair<int,int> kv) => kv.Value % 2 == 0;
-        static bool IsPairLeN1000 (KeyValuePair<int,int> kv) => kv.Value <= -1000;
+        static bool IsPairLeN100 (KeyValuePair<int,int> kv) => kv.Value <= -100;
 
         #region Test constructors
 
@@ -367,8 +367,8 @@ namespace Kaos.Test.Collections
         [TestMethod]
         public void UnitRd_ContainsValue()
         {
-            Setup();
-            int n = 2000;
+            Setup (5);
+            int n = 200;
 
             for (int ii = 0; ii < n; ii += 2)
                 dary1.Add (ii, -ii);
