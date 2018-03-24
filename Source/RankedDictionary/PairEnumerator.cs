@@ -1,4 +1,12 @@
-﻿using System;
+﻿//
+// Library: KaosCollections
+// File:    PairEnumerator.cs
+//
+// Copyright © 2009-2018 Kasey Osborn (github.com/kaosborn)
+// MIT License - Use and redistribute freely
+//
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 

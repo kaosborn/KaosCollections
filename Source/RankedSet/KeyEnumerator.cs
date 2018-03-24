@@ -1,4 +1,12 @@
-﻿using System;
+﻿//
+// Library: KaosCollections
+// File:    KeyEnumerator.cs
+//
+// Copyright © 2009-2018 Kasey Osborn (github.com/kaosborn)
+// MIT License - Use and redistribute freely
+//
+
+using System;
 
 namespace Kaos.Collections
 {
@@ -140,40 +148,37 @@ namespace Kaos.Collections
 
             public void BypassKey (Func<T,bool> condition) => Bypass2 (condition, (leaf,ix) => leaf.GetKey (ix));
 
-            public void Bypass2<X> (Func<X,bool> condition, Func<Leaf,int,X> getter)
+            protected void Bypass2<X> (Func<X,bool> condition, Func<Leaf,int,X> getter)
             {
                 if (state > 0)
                     return;
 
                 if (isReverse)
                 {
-                    if (start < 0)
-                    { state = 1; return; }
-
-                    if (leaf == null)
-                        leaf = (Leaf) tree.Find (start, out leafIndex);
-
-                    for (;;)
+                    if (start >= 0)
                     {
-                        if (leafIndex < 0)
-                        {
-                            leaf = leaf.leftLeaf;
-                            if (leaf == null)
-                            { state = 1; break; }
-                            leafIndex = leaf.KeyCount - 1;
-                        }
+                        if (leaf == null)
+                            leaf = (Leaf) tree.Find (start, out leafIndex);
 
-                        if (! condition (getter (leaf, leafIndex)))
-                            break;
-                        --leafIndex;
-                        --start;
+                        for (;;)
+                        {
+                            if (leafIndex < 0)
+                            {
+                                leaf = leaf.leftLeaf;
+                                if (leaf == null)
+                                    break;
+                                leafIndex = leaf.KeyCount - 1;
+                            }
+
+                            if (! condition (getter (leaf, leafIndex)))
+                                return;
+                            --leafIndex;
+                            --start;
+                        }
                     }
                 }
-                else
+                else if (start < tree.root.Weight)
                 {
-                    if (start >= tree.root.Weight)
-                    { state = 1; return; }
-
                     if (leaf == null)
                         leaf = (Leaf) tree.Find (start, out leafIndex);
 
@@ -183,16 +188,18 @@ namespace Kaos.Collections
                         {
                             leaf = leaf.rightLeaf;
                             if (leaf == null)
-                            { state = 1; break; }
+                                break;
                             leafIndex = 0;
                         }
 
                         if (! condition (getter (leaf, leafIndex)))
-                            break;
+                            return;
                         ++leafIndex;
                         ++start;
                     }
                 }
+
+                state = 1;
             }
         }
     }
