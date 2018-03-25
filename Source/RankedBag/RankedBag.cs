@@ -548,6 +548,14 @@ namespace Kaos.Collections
         /// <exception cref="InvalidOperationException">When the bag was modified after the enumerator was created.</exception>
         public Enumerator SkipWhile (Func<T,bool> predicate) => new Enumerator (this, predicate);
 
+        /// <summary>
+        /// Bypasses elements as long as a supplied index-based condition is true and yields the remaining items.
+        /// </summary>
+        /// <param name="predicate">The condition to test for.</param>
+        /// <returns>Remaining items after the first item that does not satisfy the supplied condition.</returns>
+        /// <exception cref="InvalidOperationException">When the bag was modified after the enumerator was created.</exception>
+        public Enumerator SkipWhile (Func<T,int,bool> predicate) => new Enumerator (this, predicate);
+
 
         /// <summary>Gets the actual item for the supplied search item.</summary>
         /// <param name="getItem">The item to find.</param>
@@ -945,6 +953,8 @@ namespace Kaos.Collections
 
             internal Enumerator (RankedBag<T> bag, Func<T,bool> predicate) => etor = new KeyEnumerator (bag, predicate);
 
+            internal Enumerator (RankedBag<T> bag, Func<T,int,bool> predicate) => etor = new KeyEnumerator (bag, predicate);
+
             /// <summary>Gets the element at the current position.</summary>
             object IEnumerator.Current
             {
@@ -1005,6 +1015,18 @@ namespace Kaos.Collections
             /// <returns>Remaining items after the first item that does not satisfy the supplied condition.</returns>
             /// <exception cref="InvalidOperationException">When the bag was modified after the enumerator was created.</exception>
             public Enumerator SkipWhile (Func<T,bool> predicate)
+            {
+                etor.BypassKey (predicate);
+                return this;
+            }
+
+            /// <summary>
+            /// Bypasses items as long as a supplied index-based condition is true and yields the remaining items.
+            /// </summary>
+            /// <param name="predicate">The condition to test for.</param>
+            /// <returns>Remaining items after the first item that does not satisfy the supplied condition.</returns>
+            /// <exception cref="InvalidOperationException">When the bag was modified after the enumerator was created.</exception>
+            public Enumerator SkipWhile (Func<T,int,bool> predicate)
             {
                 etor.BypassKey (predicate);
                 return this;

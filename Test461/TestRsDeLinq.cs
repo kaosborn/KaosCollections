@@ -373,6 +373,78 @@ namespace Kaos.Test.Collections
             Assert.IsTrue (SLE.SequenceEqual (new int[] { 5,4,3,2,1 }, setI.Reverse().Skip(20).SkipWhile (x => x>5)));
         }
 
+
+        [TestMethod]
+        public void UnitRsq_SkipWhile3Ctor()
+        {
+            Setup (5);
+
+            Assert.AreEqual (0, SLE.Count (setI.SkipWhile ((x,i) => false)));
+            Assert.AreEqual (0, SLE.Count (setI.SkipWhile ((x,i) => true)));
+
+            setI.Add (1);
+
+            Assert.AreEqual (0, SLE.Count (setI.SkipWhile ((x,i) => true)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 1 }, setI.SkipWhile ((x,i) => false)));
+
+            setI.Add (2);
+            setI.Add (3);
+            setI.Add (4);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 4 }, setI.SkipWhile ((x,i) => x%2!=0 || i<3)));
+        }
+
+        [TestMethod]
+        public void UnitRsq_SkipWhile3F()
+        {
+            Setup (5);
+
+            Assert.AreEqual (0, SLE.Count (setI.Skip(0).SkipWhile ((x,i) => false)));
+            Assert.AreEqual (0, SLE.Count (setI.Skip(0).SkipWhile ((x,i) => true)));
+            Assert.AreEqual (0, SLE.Count (setI.SkipWhile ((x,i) => true).SkipWhile ((x,i) => true)));
+
+            setI.Add (1);
+
+            Assert.AreEqual (0, SLE.Count (setI.Skip(0).SkipWhile ((x,i) => true)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 1 }, setI.Skip(0).SkipWhile ((x,i) => false)));
+
+            setI.Add (2);
+            setI.Add (3);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 2,3 }, setI.Skip(0).SkipWhile ((x,i) => x%2!=0)));
+
+            for (int i = 4; i < 50; ++i)
+                setI.Add (i);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 48,49 }, setI.Skip(30).SkipWhile ((x,i) => x%3!=0 || i<45)));
+        }
+
+        [TestMethod]
+        public void UnitRsq_SkipWhile3R()
+        {
+            Setup (5);
+
+            Assert.AreEqual (0, SLE.Count (setI.Reverse().SkipWhile ((x,i) => false)));
+            Assert.AreEqual (0, SLE.Count (setI.Reverse().SkipWhile ((x,i) => true)));
+            Assert.AreEqual (0, SLE.Count (setI.Reverse().SkipWhile ((x,i) => true).SkipWhile ((x,i) => true)));
+
+            setI.Add (1);
+
+            Assert.AreEqual (0, SLE.Count (setI.Reverse ().SkipWhile ((x,i) => true)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 1 }, setI.Reverse().SkipWhile ((x,i) => false)));
+
+            setI.Add (2);
+            setI.Add (3);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 2,1 }, setI.Reverse().SkipWhile ((x,i) => x%2!=0)));
+
+            for (int i = 4; i < 50; ++i)
+                setI.Add (i);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 3,2,1 }, setI.Reverse().Skip(20).SkipWhile ((x,i) => x%3!=0 || i>4)));
+        }
+
+
         [TestMethod]
         public void StressRsq_SkipWhile()
         {

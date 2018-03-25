@@ -65,6 +65,9 @@ namespace Kaos.Collections
             public KeyEnumerator (Btree<T> owner, Func<T,bool> condition) : this (owner)
             { Bypass2 (condition, (leaf,ix) => leaf.GetKey (ix)); }
 
+            public KeyEnumerator (Btree<T> owner, Func<T,int,bool> condition) : this (owner)
+            { Bypass3 (condition, (leaf,ix) => leaf.GetKey (ix)); }
+
 
             public void Init()
             {
@@ -201,6 +204,63 @@ namespace Kaos.Collections
 
                 state = 1;
             }
-        }
+
+
+            public void BypassKey (Func<T,int,bool> condition) => Bypass3 (condition, (leaf,ix) => leaf.GetKey (ix));
+
+            protected void Bypass3<X> (Func<X,int,bool> condition, Func<Leaf,int,X> getter)
+            {
+                if (state > 0)
+                    return;
+
+                if (isReverse)
+                {
+                    if (start >= 0)
+                    {
+                        if (leaf == null)
+                            leaf = (Leaf) tree.Find (start, out leafIndex);
+
+                        for (;;)
+                        {
+                            if (leafIndex < 0)
+                            {
+                                leaf = leaf.leftLeaf;
+                                if (leaf == null)
+                                    break;
+                                leafIndex = leaf.KeyCount - 1;
+                            }
+
+                            if (! condition (getter (leaf, leafIndex), start))
+                                return;
+                            --leafIndex;
+                            --start;
+                        }
+                    }
+                }
+                else if (start < tree.root.Weight)
+                {
+                    if (leaf == null)
+                        leaf = (Leaf) tree.Find (start, out leafIndex);
+
+                    for (;;)
+                    {
+                        if (leafIndex >= leaf.KeyCount)
+                        {
+                            leaf = leaf.rightLeaf;
+                            if (leaf == null)
+                                break;
+                            leafIndex = 0;
+                        }
+
+                        if (! condition (getter (leaf, leafIndex), start))
+                            return;
+                        ++leafIndex;
+                        ++start;
+                    }
+                }
+
+                state = 1;
+           }
+       }
     }
 }

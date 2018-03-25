@@ -262,6 +262,77 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
+        public void UnitRbq_SkipWhile3Ctor()
+        {
+            var rb = new RankedBag<int> { Capacity=5 };
+
+            Assert.AreEqual (0, SLE.Count (rb.SkipWhile ((x,i) => false)));
+            Assert.AreEqual (0, SLE.Count (rb.SkipWhile ((x,i) => true)));
+
+            rb.Add (1);
+
+            Assert.AreEqual (0, SLE.Count (rb.SkipWhile ((x,i) => true)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 1 }, rb.SkipWhile ((x,i) => false)));
+
+            rb.Add (2);
+            rb.Add (3);
+            rb.Add (4);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 4 }, rb.SkipWhile ((x,i) => x%2!=0 || i<3)));
+        }
+
+        [TestMethod]
+        public void UnitRbq_SkipWhile3F()
+        {
+            var rb = new RankedBag<int> { Capacity=5 };
+
+            Assert.AreEqual (0, SLE.Count (rb.Skip(0).SkipWhile ((x,i) => false)));
+            Assert.AreEqual (0, SLE.Count (rb.Skip(0).SkipWhile ((x,i) => true)));
+            Assert.AreEqual (0, SLE.Count (rb.SkipWhile ((x,i) => true).SkipWhile ((x,i) => true)));
+
+            rb.Add (1);
+
+            Assert.AreEqual (0, SLE.Count (rb.Skip(0).SkipWhile ((x,i) => true)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 1 }, rb.Skip(0).SkipWhile ((x,i) => false)));
+
+            rb.Add (2);
+            rb.Add (3);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 2,3 }, rb.Skip(0).SkipWhile ((x,i) => x%2!=0)));
+
+            for (int i = 4; i < 50; ++i)
+                rb.Add (i);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 48,49 }, rb.Skip(30).SkipWhile ((x,i) => x%3!=0 || i<45)));
+        }
+
+        [TestMethod]
+        public void UnitRbq_SkipWhile3R()
+        {
+            var rb = new RankedBag<int> { Capacity=5 };
+
+            Assert.AreEqual (0, SLE.Count (rb.Reverse().SkipWhile ((x,i) => false)));
+            Assert.AreEqual (0, SLE.Count (rb.Reverse().SkipWhile ((x,i) => true)));
+            Assert.AreEqual (0, SLE.Count (rb.Reverse().SkipWhile ((x,i) => true).SkipWhile ((x,i) => true)));
+
+            rb.Add (1);
+
+            Assert.AreEqual (0, SLE.Count (rb.Reverse ().SkipWhile ((x,i) => true)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 1 }, rb.Reverse().SkipWhile ((x,i) => false)));
+
+            rb.Add (2);
+            rb.Add (3);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 2,1 }, rb.Reverse().SkipWhile ((x,i) => x%2!=0)));
+
+            for (int i = 4; i < 50; ++i)
+                rb.Add (i);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 3,2,1 }, rb.Reverse().Skip(20).SkipWhile ((x,i) => x%3!=0 || i>4)));
+        }
+
+
+        [TestMethod]
         public void StressRbq_SkipWhile()
         {
             var rb = new RankedBag<int> { Capacity=4 };
