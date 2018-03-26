@@ -245,6 +245,14 @@ namespace Kaos.Collections
             /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
             public Enumerator SkipWhile (Func<TKey,bool> predicate) => new Enumerator (tree, predicate);
 
+            /// <summary>
+            /// Bypasses keys as long as a supplied index-based condition is true and yields the remaining keys.
+            /// </summary>
+            /// <param name="predicate">The condition to test for.</param>
+            /// <returns>Remaining keys after the first key that does not satisfy the supplied condition.</returns>
+            /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
+            public Enumerator SkipWhile (Func<TKey,int,bool> predicate) => new Enumerator (tree, predicate);
+
 
             /// <summary>Gets the actual key for the supplied search key.</summary>
             /// <param name="getKey">The key to find.</param>
@@ -353,6 +361,8 @@ namespace Kaos.Collections
 
                 internal Enumerator (RankedDictionary<TKey,TValue> dary, Func<TKey,bool> predicate) => etor = new KeyEnumerator (dary, predicate);
 
+                internal Enumerator (RankedDictionary<TKey,TValue> dary, Func<TKey,int,bool> predicate) => etor = new KeyEnumerator (dary, predicate);
+
                 /// <summary>Gets the key at the current position.</summary>
                 object IEnumerator.Current
                 {
@@ -415,6 +425,18 @@ namespace Kaos.Collections
                 /// <returns>Remaining keys after the first key that does not satisfy the supplied condition.</returns>
                 /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
                 public Enumerator SkipWhile (Func<TKey,bool> predicate)
+                {
+                    etor.BypassKey (predicate);
+                    return this;
+                }
+
+                /// <summary>
+                /// Bypasses keys as long as a supplied index-based condition is true and yields the remaining keys.
+                /// </summary>
+                /// <param name="predicate">The condition to test for.</param>
+                /// <returns>Remaining keys after the first key that does not satisfy the supplied condition.</returns>
+                /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
+                public Enumerator SkipWhile (Func<TKey,int,bool> predicate)
                 {
                     etor.BypassKey (predicate);
                     return this;

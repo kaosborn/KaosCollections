@@ -26,12 +26,17 @@ namespace Kaos.Collections
             public ValueEnumerator (Btree<T> owner, Func<V,bool> condition) : this (owner)
             { Bypass2 (condition, (leaf,ix) => ((PairLeaf<V>) leaf).GetValue (ix)); }
 
+            public ValueEnumerator (Btree<T> owner, Func<V,int,bool> condition) : this (owner)
+            { Bypass3 (condition, (leaf,ix) => ((PairLeaf<V>) leaf).GetValue (ix)); }
+
 
             public V CurrentValue => ((PairLeaf<V>) leaf).GetValue (leafIndex);
 
             public V CurrentValueOrDefault => state != 0 ? default : ((PairLeaf<V>) leaf).GetValue (leafIndex);
 
             public void BypassValue (Func<V,bool> condition) => Bypass2 (condition, (leaf,ix) => ((PairLeaf<V>) leaf).GetValue (ix));
+
+            public void BypassValue (Func<V,int,bool> condition) => Bypass3 (condition, (leaf,ix) => ((PairLeaf<V>) leaf).GetValue (ix));
         }
 
 
@@ -49,6 +54,9 @@ namespace Kaos.Collections
             public PairEnumerator (Btree<T> owner, Func<KeyValuePair<T,V>,bool> condition) : this (owner)
             { Bypass2 (condition, (leaf,ix) => ((PairLeaf<V>) leaf).GetPair (ix)); }
 
+            public PairEnumerator (Btree<T> owner, Func<KeyValuePair<T,V>,int,bool> condition) : this (owner)
+            { Bypass3 (condition, (leaf,ix) => ((PairLeaf<V>) leaf).GetPair (ix)); }
+
 
             public DictionaryEntry CurrentEntry => ((PairLeaf<V>) leaf).GetEntry (leafIndex);
 
@@ -60,6 +68,8 @@ namespace Kaos.Collections
             public V CurrentValue => ((PairLeaf<V>) leaf).GetValue (leafIndex);
 
             public void BypassPair (Func<KeyValuePair<T,V>,bool> condition) => Bypass2 (condition, (leaf,ix) => ((PairLeaf<V>) leaf).GetPair (ix));
+
+            public void BypassPair (Func<KeyValuePair<T,V>,int,bool> condition) => Bypass3 (condition, (leaf,ix) => ((PairLeaf<V>) leaf).GetPair (ix));
         }
     }
 }

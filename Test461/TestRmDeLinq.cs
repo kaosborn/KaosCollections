@@ -241,6 +241,71 @@ namespace Kaos.Test.Collections
             Assert.IsTrue (SLE.SequenceEqual (new SCG.KeyValuePair<int,int>[] { p2,p1 }, rm.Reverse().SkipWhile (x => x.Key%2!=0)));
         }
 
+
+        [TestMethod]
+        public void UnitRmq_SkipWhile3Ctor()
+        {
+            var rm = new RankedMap<int,int> { Capacity=4 };
+            var p1 = new SCG.KeyValuePair<int,int> (1,11);
+            var p2 = new SCG.KeyValuePair<int,int> (2,22);
+
+            Assert.AreEqual (0, SLE.Count (rm.SkipWhile ((p,i) => false)));
+            Assert.AreEqual (0, SLE.Count (rm.SkipWhile ((p,i) => true)));
+
+            rm.Add (p1.Key, p1.Value);
+            rm.Add (p2.Key, p2.Value);
+
+            Assert.IsTrue (SLE.SequenceEqual (new SCG.KeyValuePair<int,int>[] { p1,p2 }, rm.SkipWhile ((p,i) => false)));
+            Assert.IsTrue (SLE.SequenceEqual (new SCG.KeyValuePair<int,int>[] { p2 },    rm.SkipWhile ((p,i) => p.Key%2!=0)));
+            Assert.AreEqual (0, SLE.Count (rm.SkipWhile ((p,i) => true)));
+        }
+
+        [TestMethod]
+        public void UnitRmq_SkipWhile3F()
+        {
+            var rm = new RankedMap<int,int> { Capacity=5 };
+            var p1 = new SCG.KeyValuePair<int,int> (1,-1);
+            var p2 = new SCG.KeyValuePair<int,int> (2,-2);
+            var p3 = new SCG.KeyValuePair<int,int> (3,-3);
+
+            Assert.AreEqual (0, SLE.Count (rm.Skip (0).SkipWhile ((p,i) => false)));
+            Assert.AreEqual (0, SLE.Count (rm.Skip (0).SkipWhile ((p,i) => true)));
+
+            rm.Add (p1.Key, p1.Value);
+
+            Assert.AreEqual (0, SLE.Count (rm.Skip (0).SkipWhile ((p,i) => true)));
+            Assert.IsTrue (SLE.SequenceEqual (new SCG.KeyValuePair<int,int>[] { p1 }, rm.Skip(0).SkipWhile ((p,i) => false)));
+
+            rm.Add (p2.Key, p2.Value);
+            rm.Add (p3.Key, p3.Value);
+
+            Assert.IsTrue (SLE.SequenceEqual (new SCG.KeyValuePair<int,int>[] { p3 }, rm.Skip(0).SkipWhile ((p,i) => p.Key%2==0 || i<1)));
+            Assert.AreEqual (0, SLE.Count (rm.Skip (0).SkipWhile ((p,i) => true)));
+        }
+
+        [TestMethod]
+        public void UnitRmq_SkipWhile3R()
+        {
+            var rm = new RankedMap<int,int> { Capacity=4 };
+            var p1 = new SCG.KeyValuePair<int,int> (1,-1);
+            var p2 = new SCG.KeyValuePair<int,int> (2,-2);
+            var p3 = new SCG.KeyValuePair<int,int> (3,-3);
+
+            Assert.AreEqual (0, SLE.Count (rm.Reverse().SkipWhile ((p,i) => false)));
+            Assert.AreEqual (0, SLE.Count (rm.Reverse().SkipWhile ((p,i) => true)));
+
+            rm.Add (p1.Key, p1.Value);
+
+            Assert.IsTrue (SLE.SequenceEqual (new SCG.KeyValuePair<int,int>[] { p1 }, rm.Reverse().SkipWhile ((p,i) => false)));
+            Assert.AreEqual (0, SLE.Count (rm.Reverse().SkipWhile ((p,i) => true)));
+
+            rm.Add (p2.Key, p2.Value);
+            rm.Add (p3.Key, p3.Value);
+
+            Assert.IsTrue (SLE.SequenceEqual (new SCG.KeyValuePair<int,int>[] { p1 }, rm.Reverse().SkipWhile ((p,i) => p.Key%2==0 || i>1)));
+            Assert.AreEqual (0, SLE.Count (rm.Reverse().SkipWhile ((p,i) => true)));
+        }
+
         #endregion
 
         #region Test enumeration (LINQ emulation)
@@ -557,13 +622,75 @@ namespace Kaos.Test.Collections
 
             rm.Add (1,-1);
 
-            Assert.AreEqual (0, SLE.Count (rm.Values.Reverse().SkipWhile (x => true)));
+            Assert.AreEqual (0, SLE.Count (rm.Keys.Reverse().SkipWhile (x => true)));
             Assert.IsTrue (SLE.SequenceEqual (new int[] { 1 }, rm.Keys.Reverse().SkipWhile (x => false)));
 
             rm.Add (2,-2);
             rm.Add (3,-3);
 
             Assert.IsTrue (SLE.SequenceEqual (new int[] { 2,1 }, rm.Keys.Reverse().SkipWhile (x => x%2!=0)));
+        }
+
+
+        [TestMethod]
+        public void UnitRmkq_SkipWhile3Ctor()
+        {
+            var rm = new RankedMap<int,int> { Capacity=4 };
+
+            Assert.AreEqual (0, SLE.Count (rm.Keys.SkipWhile ((k,i) => false)));
+            Assert.AreEqual (0, SLE.Count (rm.Keys.SkipWhile ((k,i) => true)));
+
+            rm.Add (1,-1);
+            rm.Add (2,-2);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 1,2 }, rm.Keys.SkipWhile ((k,i) => false)));
+            Assert.AreEqual (0, SLE.Count (rm.Keys.SkipWhile ((k,i) => true)));
+
+            rm.Add (3,-3);
+            rm.Add (4,-4);
+            rm.Add (5,-5);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 4,5 }, rm.Keys.SkipWhile ((k,i) => i<2 || k%2!=0)));
+        }
+
+        [TestMethod]
+        public void UnitRmkq_SkipWhile3F()
+        {
+            var rm = new RankedMap<int,int> { Capacity=4 };
+
+            Assert.AreEqual (0, SLE.Count (rm.Keys.Skip(0).SkipWhile ((k,i) => false)));
+            Assert.AreEqual (0, SLE.Count (rm.Keys.Skip(0).SkipWhile ((k,i) => true)));
+
+            rm.Add (1,-1);
+            rm.Add (2,-2);
+
+            Assert.AreEqual (0, SLE.Count (rm.Keys.Skip(0).SkipWhile ((k,i) => true)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 1,2 }, rm.Keys.Skip(0).SkipWhile ((k,i) => false)));
+
+            rm.Add (3,-3);
+            rm.Add (4,-4);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 3,4 }, rm.Keys.Skip(0).SkipWhile ((k,i) => i<1 || k%2==0)));
+        }
+
+        [TestMethod]
+        public void UnitRmkq_SkipWhile3R()
+        {
+            var rm = new RankedMap<int,int> { Capacity=4 };
+
+            Assert.AreEqual (0, SLE.Count (rm.Keys.Reverse().SkipWhile ((k,i) => false)));
+            Assert.AreEqual (0, SLE.Count (rm.Keys.Reverse().SkipWhile ((k,i) => true)));
+
+            rm.Add (1,-1);
+            rm.Add (2,-2);
+
+            Assert.AreEqual (0, SLE.Count (rm.Keys.Reverse().SkipWhile ((k,i) => true)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 2,1 }, rm.Keys.Reverse().SkipWhile ((k,i) => false)));
+
+            rm.Add (3,-3);
+            rm.Add (4,-4);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 2,1 }, rm.Keys.Reverse().SkipWhile ((k,i) => i>2 || k%2!=0)));
         }
 
         #endregion
@@ -889,6 +1016,68 @@ namespace Kaos.Test.Collections
             rm.Add (3,-3);
 
             Assert.IsTrue (SLE.SequenceEqual (new int[] { -2,-1 }, rm.Values.Reverse().SkipWhile (x => x%2!=0)));
+        }
+
+
+        [TestMethod]
+        public void UnitRmvq_SkipWhile3Ctor()
+        {
+            var rm = new RankedMap<int,int> { Capacity=4 };
+
+            Assert.AreEqual (0, SLE.Count (rm.Values.SkipWhile ((v,i) => false)));
+            Assert.AreEqual (0, SLE.Count (rm.Values.SkipWhile ((v,i) => true)));
+
+            rm.Add (1,-1);
+            rm.Add (2,-2);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { -1,-2 }, rm.Values.SkipWhile ((v,i) => false)));
+            Assert.AreEqual (0, SLE.Count (rm.Values.SkipWhile ((v,i) => true)));
+
+            rm.Add (3,-3);
+            rm.Add (4,-4);
+            rm.Add (5,-5);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { -4,-5 }, rm.Values.SkipWhile ((v,i) => v>-3 || i%2==0)));
+        }
+
+        [TestMethod]
+        public void UnitRmvq_SkipWhile3F()
+        {
+            var rm = new RankedMap<int,int> { Capacity=4 };
+
+            Assert.AreEqual (0, SLE.Count (rm.Values.Skip(0).SkipWhile ((v,i) => false)));
+            Assert.AreEqual (0, SLE.Count (rm.Values.Skip(0).SkipWhile ((v,i) => true)));
+
+            rm.Add (1,-1);
+            rm.Add (2,-2);
+
+            Assert.AreEqual (0, SLE.Count (rm.Values.Skip(0).SkipWhile ((v,i) => true)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { -1,-2 }, rm.Values.Skip(0).SkipWhile ((v,i) => false)));
+
+            rm.Add (3,-3);
+            rm.Add (4,-4);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { -3,-4 }, rm.Values.Skip(0).SkipWhile ((v,i) => v>-2 || i%2!=0)));
+        }
+
+        [TestMethod]
+        public void UnitRmvq_SkipWhile3R()
+        {
+            var rm = new RankedMap<int,int> { Capacity=4 };
+
+            Assert.AreEqual (0, SLE.Count (rm.Values.Reverse().SkipWhile ((v,i) => false)));
+            Assert.AreEqual (0, SLE.Count (rm.Values.Reverse().SkipWhile ((v,i) => true)));
+
+            rm.Add (1,-1);
+            rm.Add (2,-2);
+
+            Assert.AreEqual (0, SLE.Count (rm.Values.Reverse().SkipWhile ((v,i) => true)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { -2,-1 }, rm.Values.Reverse().SkipWhile ((v,i) => false)));
+
+            rm.Add (3,-3);
+            rm.Add (4,-4);
+
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { -2,-1 }, rm.Values.Reverse().SkipWhile ((v,i) => v<-3 || i%2==0)));
         }
 
         #endregion

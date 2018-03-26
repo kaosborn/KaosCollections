@@ -988,6 +988,14 @@ namespace Kaos.Collections
         /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
         public Enumerator SkipWhile (Func<KeyValuePair<TKey,TValue>,bool> predicate) => new Enumerator (this, predicate);
 
+        /// <summary>
+        /// Bypasses elements as long as a supplied index-based condition is true and yields the remaining elements.
+        /// </summary>
+        /// <param name="predicate">The condition to test for.</param>
+        /// <returns>Remaining elements after the first element that does not satisfy the supplied condition.</returns>
+        /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
+        public Enumerator SkipWhile (Func<KeyValuePair<TKey,TValue>,int,bool> predicate) => new Enumerator (this, predicate);
+
 
         /// <summary>Gets an enumerator that iterates thru the map.</summary>
         /// <returns>An enumerator for the map.</returns>
@@ -1020,6 +1028,9 @@ namespace Kaos.Collections
                 => etor = new PairEnumerator<TValue> (map, count);
 
             internal Enumerator (RankedMap<TKey,TValue> map, Func<KeyValuePair<TKey,TValue>,bool> predicate)
+                => etor = new PairEnumerator<TValue> (map, predicate);
+
+            internal Enumerator (RankedMap<TKey,TValue> map, Func<KeyValuePair<TKey,TValue>,int,bool> predicate)
                 => etor = new PairEnumerator<TValue> (map, predicate);
 
             /// <summary>Gets the element at the current position.</summary>
@@ -1087,6 +1098,18 @@ namespace Kaos.Collections
             /// <returns>Remaining elements after the first element that does not satisfy the supplied condition.</returns>
             /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
             public Enumerator SkipWhile (Func<KeyValuePair<TKey,TValue>,bool> predicate)
+            {
+                etor.BypassPair (predicate);
+                return this;
+            }
+
+            /// <summary>
+            /// Bypasses elements as long as a supplied index-based condition is true and yields the remaining elements.
+            /// </summary>
+            /// <param name="predicate">The condition to test for.</param>
+            /// <returns>Remaining elements after the first element that does not satisfy the supplied condition.</returns>
+            /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
+            public Enumerator SkipWhile (Func<KeyValuePair<TKey,TValue>,int,bool> predicate)
             {
                 etor.BypassPair (predicate);
                 return this;
