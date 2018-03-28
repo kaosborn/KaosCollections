@@ -220,7 +220,7 @@ namespace Kaos.Collections
                         if (leaf == null)
                             leaf = (Leaf) tree.Find (start, out leafIndex);
 
-                        for (;;)
+                        for (int offset = 0;; ++offset)
                         {
                             if (leafIndex < 0)
                             {
@@ -230,10 +230,9 @@ namespace Kaos.Collections
                                 leafIndex = leaf.KeyCount - 1;
                             }
 
-                            if (! condition (getter (leaf, leafIndex), start))
-                                return;
+                            if (! condition (getter (leaf, leafIndex), offset))
+                             { start -= offset; return; }
                             --leafIndex;
-                            --start;
                         }
                     }
                 }
@@ -242,7 +241,7 @@ namespace Kaos.Collections
                     if (leaf == null)
                         leaf = (Leaf) tree.Find (start, out leafIndex);
 
-                    for (;;)
+                    for (int offset = 0;; ++offset)
                     {
                         if (leafIndex >= leaf.KeyCount)
                         {
@@ -252,10 +251,9 @@ namespace Kaos.Collections
                             leafIndex = 0;
                         }
 
-                        if (! condition (getter (leaf, leafIndex), start))
-                            return;
+                        if (! condition (getter (leaf, leafIndex), offset))
+                         { start += offset; return; }
                         ++leafIndex;
-                        ++start;
                     }
                 }
 

@@ -303,7 +303,7 @@ namespace Kaos.Test.Collections
             for (int i = 4; i < 50; ++i)
                 rb.Add (i);
 
-            Assert.IsTrue (SLE.SequenceEqual (new int[] { 48,49 }, rb.Skip(30).SkipWhile ((x,i) => x%3!=0 || i<45)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 48,49 }, rb.Skip(30).SkipWhile ((x,i) => x%3!=0 || i<15)));
         }
 
         [TestMethod]
@@ -328,7 +328,7 @@ namespace Kaos.Test.Collections
             for (int i = 4; i < 50; ++i)
                 rb.Add (i);
 
-            Assert.IsTrue (SLE.SequenceEqual (new int[] { 3,2,1 }, rb.Reverse().Skip(20).SkipWhile ((x,i) => x%3!=0 || i>4)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 3,2,1 }, rb.Reverse().Skip(20).SkipWhile ((x,i) => x%3!=0 || i<24)));
         }
 
 

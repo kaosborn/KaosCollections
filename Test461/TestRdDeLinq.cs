@@ -304,7 +304,7 @@ namespace Kaos.Test.Collections
             dary1.Add (p2.Key, p2.Value);
             dary1.Add (p3.Key, p3.Value);
 
-            Assert.IsTrue (SLE.SequenceEqual (new SCG.KeyValuePair<int,int>[] { p1 }, dary1.Reverse().SkipWhile ((p,i) => p.Key%2==0 || i>1)));
+            Assert.IsTrue (SLE.SequenceEqual (new SCG.KeyValuePair<int,int>[] { p1 }, dary1.Reverse().SkipWhile ((p,i) => p.Key%2==0 || i<1)));
             Assert.AreEqual (0, SLE.Count (dary1.Reverse().SkipWhile ((p,i) => true)));
         }
 
@@ -633,7 +633,7 @@ namespace Kaos.Test.Collections
             dary1.Add (3,-3);
             dary1.Add (4,-4);
 
-            Assert.IsTrue (SLE.SequenceEqual (new int[] { 2,1 }, dary1.Keys.Reverse().SkipWhile ((k,i) => i>2 || k%2!=0)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { 2,1 }, dary1.Keys.Reverse().SkipWhile ((k,i) => i<1 || k%2!=0)));
         }
 
         #endregion
@@ -968,7 +968,7 @@ namespace Kaos.Test.Collections
             dary1.Add (3,-3);
             dary1.Add (4,-4);
 
-            Assert.IsTrue (SLE.SequenceEqual (new int[] { -2,-1 }, dary1.Values.Reverse().SkipWhile ((v,i) => v<-3 || i%2==0)));
+            Assert.IsTrue (SLE.SequenceEqual (new int[] { -2,-1 }, dary1.Values.Reverse().SkipWhile ((v,i) => v<-3 || i%2!=0)));
         }
 
         #endregion
