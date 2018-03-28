@@ -971,11 +971,14 @@ namespace Kaos.Collections
         public Enumerator Reverse() => new Enumerator (this, isReverse:true);
 
 
-        /// <summary>
-        /// Bypasses a supplied number of elements and yields the remaining elements.
-        /// </summary>
+        /// <summary>Bypasses a supplied number of elements and yields the remaining elements.</summary>
         /// <param name="count">Number of elements to skip.</param>
         /// <returns>The elements after the supplied index.</returns>
+        /// <remarks>This is a O(1) operation.</remarks>
+        /// <example>
+        /// In the below snippet, both Skip operations perform an order of magnitude faster than their LINQ equivalent.
+        /// <code source="..\Bench\RxExample01\RxExample01.cs" lang="cs" region="RmSkip" />
+        /// </example>
         /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
         public Enumerator Skip (int count) => new Enumerator (this, count);
 
@@ -1078,12 +1081,14 @@ namespace Kaos.Collections
             /// <returns>An iterator for this collection.</returns>
             IEnumerator IEnumerable.GetEnumerator() => this;
 
-            /// <summary>
-            /// Bypasses a supplied number of elements and yields the remaining elements.
-            /// </summary>
+            /// <summary>Bypasses a supplied number of elements and yields the remaining elements.</summary>
             /// <param name="count">Number of elements to skip.</param>
-            /// <returns>The elements after the supplied index.</returns>
+            /// <returns>The elements after the supplied offset.</returns>
             /// <remarks>This is a O(1) operation.</remarks>
+            /// <example>
+            /// In the below snippet, both Skip operations perform an order of magnitude faster than their LINQ equivalent.
+            /// <code source="..\Bench\RxExample01\RxExample01.cs" lang="cs" region="RmSkip" />
+            /// </example>
             /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
             public Enumerator Skip (int count)
             {

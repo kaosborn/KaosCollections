@@ -228,11 +228,14 @@ namespace Kaos.Collections
             bool ICollection<TKey>.Remove (TKey key) => throw new NotSupportedException();
 
 
-            /// <summary>
-            /// Bypasses a supplied number of keys and yields the remaining keys.
-            /// </summary>
+            /// <summary>Bypasses a supplied number of keys and yields the remaining keys.</summary>
             /// <param name="count">Number of keys to skip.</param>
-            /// <returns>The keys after the supplied index.</returns>
+            /// <returns>The keys after the supplied offset.</returns>
+            /// <remarks>This is a O(1) operation.</remarks>
+            /// <example>
+            /// In the below snippet, both Skip operations perform an order of magnitude faster than their LINQ equivalent.
+            /// <code source="..\Bench\RxExample01\RxExample01.cs" lang="cs" region="RmkSkip" />
+            /// </example>
             /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
             public Enumerator Skip (int count) => new Enumerator (tree, count);
 
@@ -403,12 +406,14 @@ namespace Kaos.Collections
                 /// <returns>An iterator for this collection.</returns>
                 IEnumerator IEnumerable.GetEnumerator() => this;
 
-                /// <summary>
-                /// Bypasses a supplied number of keys and yields the remaining keys.
-                /// </summary>
+                /// <summary>Bypasses a supplied number of keys and yields the remaining keys.</summary>
                 /// <param name="count">Number of keys to skip.</param>
-                /// <returns>The keys after the supplied index.</returns>
+                /// <returns>The keys after the supplied offset.</returns>
                 /// <remarks>This is a O(1) operation.</remarks>
+                /// <example>
+                /// In the below snippet, both Skip operations perform an order of magnitude faster than their LINQ equivalent.
+                /// <code source="..\Bench\RxExample01\RxExample01.cs" lang="cs" region="RmkSkip" />
+                /// </example>
                 /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
                 public Enumerator Skip (int count)
                 {

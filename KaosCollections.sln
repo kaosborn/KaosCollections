@@ -109,6 +109,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RxBench01", "Bench\RxBench0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBench02", "Bench\RxBench02\RxBench02.csproj", "{EDE8BEF7-8503-45D1-95C5-47B827F18130}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxExample01", "Bench\RxExample01\RxExample01.csproj", "{8FF5A924-F981-477B-AD0C-52ED16DC1FE6}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Source\RankedSet\RankedSet.projitems*{c39a213b-5aae-4c05-8ca8-946331511d0d}*SharedItemsImports = 13
@@ -298,6 +300,10 @@ Global
 		{EDE8BEF7-8503-45D1-95C5-47B827F18130}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDE8BEF7-8503-45D1-95C5-47B827F18130}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDE8BEF7-8503-45D1-95C5-47B827F18130}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FF5A924-F981-477B-AD0C-52ED16DC1FE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FF5A924-F981-477B-AD0C-52ED16DC1FE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FF5A924-F981-477B-AD0C-52ED16DC1FE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FF5A924-F981-477B-AD0C-52ED16DC1FE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -346,6 +352,7 @@ Global
 		{333AFE6C-CF9B-45F0-B4C3-74AF2C0E65B2} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{3B7F5072-B38D-438A-954A-E91C8A1C336F} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{EDE8BEF7-8503-45D1-95C5-47B827F18130} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
+		{8FF5A924-F981-477B-AD0C-52ED16DC1FE6} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {201DA9DF-651F-47A0-B578-167533C3D874}

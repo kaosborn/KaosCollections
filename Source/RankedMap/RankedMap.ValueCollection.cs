@@ -218,11 +218,14 @@ namespace Kaos.Collections
                 return ((PairLeaf<TValue>) tree.rightmostLeaf).GetValue (tree.rightmostLeaf.KeyCount - 1);
             }
 
-            /// <summary>
-            /// Bypasses a supplied number of values and yields the remaining values.
-            /// </summary>
+            /// <summary>Bypasses a supplied number of values and yields the remaining values.</summary>
             /// <param name="count">Number of values to skip.</param>
-            /// <returns>The values after the supplied index.</returns>
+            /// <returns>The values after the supplied offset.</returns>
+            /// <remarks>This is a O(1) operation.</remarks>
+            /// <example>
+            /// In the below snippet, both Skip operations perform an order of magnitude faster than their LINQ equivalent.
+            /// <code source="..\Bench\RxExample01\RxExample01.cs" lang="cs" region="RmvSkip" />
+            /// </example>
             /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
             public Enumerator Skip (int count) => new Enumerator (tree, count);
 
@@ -322,12 +325,14 @@ namespace Kaos.Collections
                 /// <returns>An iterator for this collection.</returns>
                 IEnumerator IEnumerable.GetEnumerator() => this;
 
-                /// <summary>
-                /// Bypasses a supplied number of values and yields the remaining values.
-                /// </summary>
+                /// <summary>Bypasses a supplied number of values and yields the remaining values.</summary>
                 /// <param name="count">Number of values to skip.</param>
-                /// <returns>The values after the supplied index.</returns>
+                /// <returns>The values after the supplied offset.</returns>
                 /// <remarks>This is a O(1) operation.</remarks>
+                /// <example>
+                /// In the below snippet, both Skip operations perform an order of magnitude faster than their LINQ equivalent.
+                /// <code source="..\Bench\RxExample01\RxExample01.cs" lang="cs" region="RmvSkip" />
+                /// </example>
                 /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
                 public Enumerator Skip (int count)
                 {

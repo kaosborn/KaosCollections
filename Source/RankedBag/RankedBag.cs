@@ -535,8 +535,13 @@ namespace Kaos.Collections
 
         /// <summary>Bypasses a supplied number of items and yields the remaining items.</summary>
         /// <param name="count">Number of items to skip.</param>
-        /// <returns>The items after the supplied index.</returns>
+        /// <returns>The items after the supplied offset.</returns>
         /// <exception cref="InvalidOperationException">When the bag was modified after the enumerator was created.</exception>
+        /// <remarks>This is a O(1) operation.</remarks>
+        /// <example>
+        /// In the below snippet, both Skip operations perform an order of magnitude faster than their LINQ equivalent.
+        /// <code source="..\Bench\RxExample01\RxExample01.cs" lang="cs" region="RbSkip" />
+        /// </example>
         public Enumerator Skip (int count) => new Enumerator (this, count);
 
 
@@ -999,8 +1004,12 @@ namespace Kaos.Collections
 
             /// <summary>Bypasses a supplied number of items and yields the remaining items.</summary>
             /// <param name="count">Number of items to skip.</param>
-            /// <returns>The items after the supplied index.</returns>
+            /// <returns>The items after the supplied offset.</returns>
             /// <remarks>This is a O(1) operation.</remarks>
+            /// <example>
+            /// In the below snippet, both Skip operations perform an order of magnitude faster than their LINQ equivalent.
+            /// <code source="..\Bench\RxExample01\RxExample01.cs" lang="cs" region="RbSkip" />
+            /// </example>
             /// <exception cref="InvalidOperationException">When the bag was modified after the enumerator was created.</exception>
             public Enumerator Skip (int count)
             {
