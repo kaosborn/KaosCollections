@@ -13,24 +13,20 @@ namespace Kaos.Collections
     public abstract partial class Btree<T>
     {
         /// <exclude />
-        private protected class KeyEnumerator
+        private protected abstract class BaseEnumerator
         {
             private readonly Btree<T> tree;
             private readonly bool isReverse=false;
             protected Leaf leaf=null;
             protected int leafIndex;
-            protected int index;
+            private int index;
             private int start=0;
             private int stageFreeze;
-            protected int state;  // -1=rewound; 0=active; 1=consumed
+            private int state;  // -1=rewound; 0=active; 1=consumed
 
-            public T CurrentKey { get; private set; }
-            public T CurrentKeyOrDefault => state != 0 ? default : CurrentKey;
             public bool NotActive => state != 0;
 
-            public void StageCheck() => tree.StageCheck (stageFreeze);
-
-            public KeyEnumerator (Btree<T> owner, bool isReverse=false)
+            public BaseEnumerator (Btree<T> owner, bool isReverse=false)
             {
                 this.tree = owner;
                 this.isReverse = isReverse;
@@ -46,7 +42,7 @@ namespace Kaos.Collections
                     this.leaf = owner.leftmostLeaf;
             }
 
-            public KeyEnumerator (Btree<T> owner, int count)
+            public BaseEnumerator (Btree<T> owner, int count)
             {
                 this.tree = owner;
                 this.stageFreeze = owner.stage;
@@ -62,21 +58,13 @@ namespace Kaos.Collections
                 }
             }
 
-            public KeyEnumerator (Btree<T> owner, Func<T,bool> condition) : this (owner)
-            { Bypass2 (condition, (leaf,ix) => leaf.GetKey (ix)); }
-
-            public KeyEnumerator (Btree<T> owner, Func<T,int,bool> condition) : this (owner)
-            { Bypass3 (condition, (leaf,ix) => leaf.GetKey (ix)); }
-
-
-            public void Init()
+            protected void Init()
             {
                 state = -1;
                 leaf = null;
             }
 
-
-            public bool Advance()
+            protected bool AdvanceBase()
             {
                 tree.StageCheck (stageFreeze);
                 if (state == 0)
@@ -115,10 +103,8 @@ namespace Kaos.Collections
                     leafIndex = 0;
                 }
 
-                CurrentKey = leaf.GetKey (leafIndex);
                 return true;
             }
-
 
             public void Bypass (int count)
             {
@@ -148,9 +134,6 @@ namespace Kaos.Collections
                                     leafIndex += count;
                         }
             }
-
-
-            public void BypassKey (Func<T,bool> condition) => Bypass2 (condition, (leaf,ix) => leaf.GetKey (ix));
 
             protected void Bypass2<X> (Func<X,bool> condition, Func<Leaf,int,X> getter)
             {
@@ -206,9 +189,6 @@ namespace Kaos.Collections
                 state = 1;
             }
 
-
-            public void BypassKey (Func<T,int,bool> condition) => Bypass3 (condition, (leaf,ix) => leaf.GetKey (ix));
-
             protected void Bypass3<X> (Func<X,int,bool> condition, Func<Leaf,int,X> getter)
             {
                 if (state > 0)
@@ -232,7 +212,7 @@ namespace Kaos.Collections
                             }
 
                             if (! condition (getter (leaf, leafIndex), offset))
-                             { start -= offset; return; }
+                              { start -= offset; return; }
                             --leafIndex;
                         }
                     }
@@ -253,13 +233,52 @@ namespace Kaos.Collections
                         }
 
                         if (! condition (getter (leaf, leafIndex), offset))
-                         { start += offset; return; }
+                          { start += offset; return; }
                         ++leafIndex;
                     }
                 }
 
                 state = 1;
            }
+        }
+
+
+        /// <exclude />
+        private protected class KeyEnumerator : BaseEnumerator
+        {
+            public T CurrentKey { get; private set; }
+            public T CurrentKeyOrDefault => NotActive ? default : CurrentKey;
+
+            public KeyEnumerator (Btree<T> owner, bool isReverse=false) : base (owner, isReverse)
+            { }
+
+            public KeyEnumerator (Btree<T> owner, int count) : base (owner, count)
+            { }
+
+            public KeyEnumerator (Btree<T> owner, Func<T,bool> condition) : base (owner)
+            { Bypass2 (condition, (leaf,ix) => leaf.GetKey (ix)); }
+
+            public KeyEnumerator (Btree<T> owner, Func<T,int,bool> condition) : base (owner)
+            { Bypass3 (condition, (leaf,ix) => leaf.GetKey (ix)); }
+
+
+            public void Initialize()
+            {
+                Init();
+                CurrentKey = default;
+            }
+
+            public bool Advance()
+            {
+                if (AdvanceBase())
+                  { CurrentKey = leaf.GetKey (leafIndex); return true; }
+                else
+                  { CurrentKey = default; return false; }
+            }
+
+            public void BypassKey (Func<T,bool> condition) => Bypass2 (condition, (leaf,ix) => leaf.GetKey (ix));
+
+            public void BypassKey (Func<T,int,bool> condition) => Bypass3 (condition, (leaf,ix) => leaf.GetKey (ix));
        }
     }
 }

@@ -38,8 +38,6 @@ namespace Kaos.Collections
 
             public int ValueCount => values.Count;
 
-            public System.Collections.DictionaryEntry GetEntry (int index) => new System.Collections.DictionaryEntry (keys[index], values[index]);
-
             public KeyValuePair<T,TValue> GetPair (int index) => new KeyValuePair<T,TValue> (keys[index], values[index]);
 
             public TValue GetValue (int index) => values[index];

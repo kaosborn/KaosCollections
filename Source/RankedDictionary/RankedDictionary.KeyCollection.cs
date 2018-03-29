@@ -386,7 +386,7 @@ namespace Kaos.Collections
                 public bool MoveNext() => etor.Advance();
 
                 /// <summary>Rewinds the enumerator to its initial state.</summary>
-                void IEnumerator.Reset() => etor.Init();
+                void IEnumerator.Reset() => etor.Initialize();
 
                 /// <summary>Releases all resources used by the enumerator.</summary>
                 public void Dispose() { }
