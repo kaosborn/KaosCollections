@@ -24,8 +24,8 @@ namespace Kaos.Collections
             private int stageFreeze;
             protected int state;  // -1=rewound; 0=active; 1=consumed
 
-            public T CurrentKey => leaf.GetKey (leafIndex);
-            public T CurrentKeyOrDefault => state != 0 ? default : leaf.GetKey (leafIndex);
+            public T CurrentKey { get; private set; }
+            public T CurrentKeyOrDefault => state != 0 ? default : CurrentKey;
             public bool NotActive => state != 0;
 
             public void StageCheck() => tree.StageCheck (stageFreeze);
@@ -115,6 +115,7 @@ namespace Kaos.Collections
                     leafIndex = 0;
                 }
 
+                CurrentKey = leaf.GetKey (leafIndex);
                 return true;
             }
 

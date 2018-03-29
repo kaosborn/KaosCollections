@@ -965,7 +965,6 @@ namespace Kaos.Collections
             {
                 get
                 {
-                    etor.StageCheck();
                     if (etor.NotActive)
                         throw new InvalidOperationException ("Enumerator is not active.");
                     return (object) etor.CurrentKey;
@@ -973,15 +972,7 @@ namespace Kaos.Collections
             }
 
             /// <summary>Gets the item at the current position of the enumerator.</summary>
-            /// <exception cref="InvalidOperationException">When the bag was modified after the enumerator was created.</exception>
-            public T Current
-            {
-                get
-                {
-                    etor.StageCheck();
-                    return etor.CurrentKeyOrDefault;
-                }
-            }
+            public T Current => etor.CurrentKeyOrDefault;
 
             /// <summary>Advances the enumerator to the next item in the bag.</summary>
             /// <returns><b>true</b> if the enumerator was successfully advanced to the next item; <b>false</b> if the enumerator has passed the end of the bag.</returns>

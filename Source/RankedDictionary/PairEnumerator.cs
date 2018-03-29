@@ -30,9 +30,16 @@ namespace Kaos.Collections
             { Bypass3 (condition, (leaf,ix) => ((PairLeaf<V>) leaf).GetValue (ix)); }
 
 
-            public V CurrentValue => ((PairLeaf<V>) leaf).GetValue (leafIndex);
+            public V CurrentValue { get; private set; }
 
-            public V CurrentValueOrDefault => state != 0 ? default : ((PairLeaf<V>) leaf).GetValue (leafIndex);
+            public V CurrentValueOrDefault => state != 0 ? default : CurrentValue;
+
+            public new bool Advance()
+            {
+                bool ok = base.Advance();
+                CurrentValue = ok ? ((PairLeaf<V>) leaf).GetValue (leafIndex) : default;
+                return ok;
+            }
 
             public void BypassValue (Func<V,bool> condition) => Bypass2 (condition, (leaf,ix) => ((PairLeaf<V>) leaf).GetValue (ix));
 
@@ -58,14 +65,21 @@ namespace Kaos.Collections
             { Bypass3 (condition, (leaf,ix) => ((PairLeaf<V>) leaf).GetPair (ix)); }
 
 
-            public DictionaryEntry CurrentEntry => ((PairLeaf<V>) leaf).GetEntry (leafIndex);
+            public DictionaryEntry CurrentEntry => new DictionaryEntry (CurrentPair.Key, CurrentPair.Value);
 
-            public KeyValuePair<T,V> CurrentPair => ((PairLeaf<V>) leaf).GetPair (leafIndex);
+            public KeyValuePair<T,V> CurrentPair { get; private set; }
 
             public KeyValuePair<T,V> CurrentPairOrDefault
-                => state != 0 ? new KeyValuePair<T,V> (default, default) : ((PairLeaf<V>) leaf).GetPair (leafIndex);
+                => state != 0 ? new KeyValuePair<T,V> (default, default) : CurrentPair;
 
-            public V CurrentValue => ((PairLeaf<V>) leaf).GetValue (leafIndex);
+            public V CurrentValue => CurrentPair.Value;
+
+            public new bool Advance()
+            {
+                bool ok = base.Advance();
+                CurrentPair = ok ? ((PairLeaf<V>) leaf).GetPair (leafIndex) : default;
+                return ok;
+            }
 
             public void BypassPair (Func<KeyValuePair<T,V>,bool> condition) => Bypass2 (condition, (leaf,ix) => ((PairLeaf<V>) leaf).GetPair (ix));
 

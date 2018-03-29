@@ -1356,6 +1356,31 @@ namespace Kaos.Test.Collections
                     rm.Add ("kaboom", 4);
         }
 
+        [TestMethod]
+        public void UnitRm_EtorCurrentHotUpdate()
+        {
+            var rm1 = new RankedMap<int,int>();
+            var kv1 = new KeyValuePair<int,int> (1,-1);
+            var kvd1 = new KeyValuePair<int,int> (default(int), default(int));
+            rm1.Add (kv1.Key, kv1.Value);
+            var etor1 = rm1.GetEnumerator();
+            Assert.AreEqual (kvd1, etor1.Current);
+            bool ok1 = etor1.MoveNext();
+            Assert.AreEqual (kv1, etor1.Current);
+            rm1.Remove (kv1.Key);
+            Assert.AreEqual (kv1, etor1.Current);
+
+            var rm2 = new RankedMap<string,int>();
+            var kv2 = new KeyValuePair<string,int> ("MM",13);
+            var kvd2 = new KeyValuePair<string,int> (default(string), default(int));
+            rm2.Add (kv2.Key, kv2.Value);
+            var etor2 = rm2.GetEnumerator();
+            Assert.AreEqual (kvd2, etor2.Current);
+            bool ok2 = etor2.MoveNext();
+            Assert.AreEqual (kv2, etor2.Current);
+            rm2.Clear();
+            Assert.AreEqual (kv2, etor2.Current);
+        }
 
         #endregion
 
@@ -1405,6 +1430,24 @@ namespace Kaos.Test.Collections
             }
 
             Assert.AreEqual (iVals1.Length, actualCount);
+        }
+
+
+        [TestMethod]
+        public void UnitRm_ocCurrent_HotUpdate()
+        {
+            var rm = new RankedMap<int,int>();
+            var kv = new KeyValuePair<int,int> (1,-1);
+            rm.Add (kv.Key, kv.Value);
+
+            System.Collections.ICollection oc = rm;
+            System.Collections.IEnumerator etor = oc.GetEnumerator();
+
+            bool ok = etor.MoveNext();
+            Assert.AreEqual (new DictionaryEntry (kv.Key, kv.Value), etor.Current);
+
+            rm.Clear();
+            Assert.AreEqual (new DictionaryEntry (kv.Key, kv.Value), etor.Current);
         }
 
 

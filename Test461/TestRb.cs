@@ -1134,6 +1134,43 @@ namespace Kaos.Test.Collections
             }
         }
 
+        [TestMethod]
+        public void UnitRb_ocCurrent_HotUpdate()
+        {
+            var rb = new RankedBag<int> { 2 };
+
+            System.Collections.ICollection oc = rb;
+            System.Collections.IEnumerator etor = oc.GetEnumerator();
+
+            bool ok = etor.MoveNext();
+            Assert.IsTrue (ok);
+            Assert.AreEqual (2, etor.Current);
+
+            rb.Clear();
+            Assert.AreEqual (2, etor.Current);
+        }
+
+        [TestMethod]
+        public void UnitRb_EtorCurrentHotUpdate()
+        {
+            var rb1 = new RankedBag<int> { 2 };
+            var etor1 = rb1.GetEnumerator();
+            Assert.AreEqual (default (int), etor1.Current);
+            bool ok1 = etor1.MoveNext();
+            Assert.IsTrue (ok1);
+            Assert.AreEqual (2, etor1.Current);
+            rb1.Remove (2);
+            Assert.AreEqual (2, etor1.Current);
+
+            var rb2 = new RankedBag<string> {"BB"};
+            var etor2 = rb2.GetEnumerator();
+            Assert.AreEqual (default (string), etor2.Current);
+            bool ok2 = etor2.MoveNext();
+            Assert.AreEqual ("BB", etor2.Current);
+            rb2.Clear();
+            Assert.AreEqual ("BB", etor2.Current);
+        }
+
 
         [TestMethod]
         public void UnitRb_oReset()

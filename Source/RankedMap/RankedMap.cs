@@ -1041,7 +1041,6 @@ namespace Kaos.Collections
             {
                 get
                 {
-                    etor.StageCheck();
                     if (etor.NotActive)
                         throw new InvalidOperationException ("Enumerator is not active.");
                     if (etor.NonGeneric)
@@ -1052,15 +1051,7 @@ namespace Kaos.Collections
             }
 
             /// <summary>Gets the key/value pair at the current position of the enumerator.</summary>
-            /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
-            public KeyValuePair<TKey,TValue> Current
-            {
-                get
-                {
-                    etor.StageCheck();
-                    return etor.CurrentPairOrDefault;
-                }
-            }
+            public KeyValuePair<TKey,TValue> Current => etor.CurrentPairOrDefault;
 
             /// <summary>Advances the enumerator to the next element in the map.</summary>
             /// <returns><b>true</b> if the enumerator was successfully advanced to the next element; <b>false</b> if the enumerator has passed the end of the collection.</returns>

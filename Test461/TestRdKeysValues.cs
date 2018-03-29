@@ -438,6 +438,43 @@ namespace Kaos.Test.Collections
             }
         }
 
+        [TestMethod]
+        public void UnitRdk_ocCurrent_HotUpdate()
+        {
+            Setup();
+            dary2.Add ("AA", 11);
+
+            System.Collections.ICollection oc = objCol2.Keys;
+            System.Collections.IEnumerator etor = oc.GetEnumerator();
+
+            bool ok = etor.MoveNext();
+            Assert.AreEqual ("AA", etor.Current);
+
+            dary2.Clear();
+            Assert.AreEqual ("AA", etor.Current);
+        }
+
+        [TestMethod]
+        public void UnitRdk_EtorCurrentHotUpdate()
+        {
+            Setup();
+            dary1.Add (1,-1);
+            var etor1 = dary1.Keys.GetEnumerator();
+            Assert.AreEqual (default (int), etor1.Current);
+            bool ok1 = etor1.MoveNext();
+            Assert.AreEqual (1, etor1.Current);
+            dary1.Remove (1);
+            Assert.AreEqual (1, etor1.Current);
+
+            dary2.Add ("AA",11);
+            var etor2 = dary2.Keys.GetEnumerator();
+            Assert.AreEqual (default (string), etor2.Current);
+            bool ok2 = etor2.MoveNext();
+            Assert.AreEqual ("AA", etor2.Current);
+            dary2.Clear();
+            Assert.AreEqual ("AA", etor2.Current);
+        }
+
 
         [TestMethod]
         public void UnitRdk_oReset()
@@ -739,6 +776,45 @@ namespace Kaos.Test.Collections
             }
             Assert.AreEqual (n, expected);
         }
+
+
+        [TestMethod]
+        public void UnitRdv_ocCurrent_HotUpdate()
+        {
+            Setup();
+            dary2.Add ("AA", 11);
+
+            System.Collections.ICollection oc = objCol2.Values;
+            System.Collections.IEnumerator etor = oc.GetEnumerator();
+
+            bool ok = etor.MoveNext();
+            Assert.AreEqual (11, etor.Current);
+
+            dary2.Clear();
+            Assert.AreEqual (11, etor.Current);
+        }
+
+        [TestMethod]
+        public void UnitRdv_EtorCurrentHotUpdate()
+        {
+            Setup();
+            dary1.Add (1,-1);
+            var etor1 = dary1.Values.GetEnumerator();
+            Assert.AreEqual (default (int), etor1.Current);
+            bool ok1 = etor1.MoveNext();
+            Assert.AreEqual (-1, etor1.Current);
+            dary1.Remove (1);
+            Assert.AreEqual (-1, etor1.Current);
+
+            dary2.Add ("AA",11);
+            var etor2 = dary2.Values.GetEnumerator();
+            Assert.AreEqual (default (int), etor2.Current);
+            bool ok2 = etor2.MoveNext();
+            Assert.AreEqual (11, etor2.Current);
+            dary2.Clear();
+            Assert.AreEqual (11, etor2.Current);
+        }
+
 
         [TestMethod]
         [ExpectedException (typeof (InvalidOperationException))]

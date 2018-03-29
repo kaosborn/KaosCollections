@@ -724,6 +724,50 @@ namespace Kaos.Test.Collections
             }
         }
 
+
+        [TestMethod]
+        public void UnitRd_ocCurrent_HotUpdate()
+        {
+            Setup();
+            var kv = new KeyValuePair<string,int> ("AA",11);
+            dary2.Add (kv.Key, kv.Value);
+
+            System.Collections.ICollection oc = objCol2;
+            System.Collections.IEnumerator etor = oc.GetEnumerator();
+
+            bool ok = etor.MoveNext();
+            Assert.AreEqual (kv, etor.Current);
+
+            dary2.Clear();
+            Assert.AreEqual (kv, etor.Current);
+        }
+
+        [TestMethod]
+        public void UnitRd_EtorCurrentHotUpdate()
+        {
+            Setup();
+            var kv1 = new KeyValuePair<int,int> (1,-1);
+            var kvd1 = new KeyValuePair<int,int> (default(int), default(int));
+            dary1.Add (kv1.Key, kv1.Value);
+            var etor1 = dary1.GetEnumerator();
+            Assert.AreEqual (kvd1, etor1.Current);
+            bool ok1 = etor1.MoveNext();
+            Assert.AreEqual (kv1, etor1.Current);
+            dary1.Remove (1);
+            Assert.AreEqual (kv1, etor1.Current);
+
+            var kv2 = new KeyValuePair<string,int> ("AA",11);
+            var kvd2 = new KeyValuePair<string,int> (default(string), default(int));
+            dary2.Add (kv2.Key, kv2.Value);
+            var etor2 = dary2.GetEnumerator();
+            Assert.AreEqual (kvd2, etor2.Current);
+            bool ok2 = etor2.MoveNext();
+            Assert.AreEqual (kv2, etor2.Current);
+            dary2.Clear();
+            Assert.AreEqual (kv2, etor2.Current);
+        }
+
+
         [TestMethod]
         public void UnitRd_oGetEnumerator()
         {

@@ -1590,6 +1590,7 @@ namespace Kaos.Test.Collections
             { }
 
             var val = etor.Current;
+            Assert.AreEqual (default (int), val);
         }
 
         [TestMethod]
@@ -1639,6 +1640,45 @@ namespace Kaos.Test.Collections
                 if (++n == 2)
                     setI.Add (49);
             }
+        }
+
+        [TestMethod]
+        public void UnitRs_ocCurrent_HotUpdate()
+        {
+            Setup();
+            setI.Add (1);
+
+            System.Collections.ICollection oc = setI;
+            System.Collections.IEnumerator etor = oc.GetEnumerator();
+
+            bool ok = etor.MoveNext();
+            Assert.IsTrue (ok);
+            Assert.AreEqual (1, etor.Current);
+
+            setI.Clear();
+            Assert.AreEqual (1, etor.Current);
+        }
+
+        [TestMethod]
+        public void UnitRs_EtorCurrentHotUpdate()
+        {
+            Setup();
+            setI.Add (1);
+            var etor1 = setI.GetEnumerator();
+            Assert.AreEqual (default (int), etor1.Current);
+            bool ok1 = etor1.MoveNext();
+            Assert.IsTrue (ok1);
+            Assert.AreEqual (1, etor1.Current);
+            setI.Remove (1);
+            Assert.AreEqual (1, etor1.Current);
+
+            setS.Add ("AA");
+            var etor2 = setS.GetEnumerator();
+            Assert.AreEqual (default (string), etor2.Current);
+            bool ok2 = etor2.MoveNext();
+            Assert.AreEqual ("AA", etor2.Current);
+            setS.Clear();
+            Assert.AreEqual ("AA", etor2.Current);
         }
 
 

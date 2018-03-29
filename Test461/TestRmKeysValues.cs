@@ -388,6 +388,26 @@ namespace Kaos.Test.Collections
                     rm.Remove ("vv");
         }
 
+        [TestMethod]
+        public void UnitRmk_EtorCurrentHotUpdate()
+        {
+            var rm1 = new RankedMap<int,int> { {3,-3} };
+            var etor1 = rm1.Keys.GetEnumerator();
+            Assert.AreEqual (default (int), etor1.Current);
+            bool ok1 = etor1.MoveNext();
+            Assert.AreEqual (3, etor1.Current);
+            rm1.Remove (3);
+            Assert.AreEqual (3, etor1.Current);
+
+            var rm2 = new RankedMap<string,int> { {"CC",3} };
+            var etor2 = rm2.Keys.GetEnumerator();
+            Assert.AreEqual (default (string), etor2.Current);
+            bool ok2 = etor2.MoveNext();
+            Assert.AreEqual ("CC", etor2.Current);
+            rm2.Clear();
+            Assert.AreEqual ("CC", etor2.Current);
+        }
+
         #endregion
 
         #region Test Keys object enumeration
@@ -417,6 +437,22 @@ namespace Kaos.Test.Collections
             }
 
             Assert.AreEqual (rm.Count, actual);
+        }
+
+
+        [TestMethod]
+        public void UnitRmk_ocCurrent_HotUpdate()
+        {
+            var rm = new RankedMap<char,int> { {'c',3} };
+
+            System.Collections.ICollection oc = rm.Keys;
+            System.Collections.IEnumerator etor = oc.GetEnumerator();
+
+            bool ok = etor.MoveNext();
+            Assert.AreEqual ('c', etor.Current);
+
+            rm.Clear();
+            Assert.AreEqual ('c', etor.Current);
         }
 
 
@@ -778,6 +814,27 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
+        public void UnitRmv_EtorCurrentHotUpdate()
+        {
+            var rm1 = new RankedMap<int,int> { {3,-3} };
+            var etor1 = rm1.Values.GetEnumerator();
+            Assert.AreEqual (default (int), etor1.Current);
+            bool ok1 = etor1.MoveNext();
+            Assert.AreEqual (-3, etor1.Current);
+            rm1.Remove (3);
+            Assert.AreEqual (-3, etor1.Current);
+
+            var rm2 = new RankedMap<string,int> { {"CC",3} };
+            var etor2 = rm2.Values.GetEnumerator();
+            Assert.AreEqual (default (int), etor2.Current);
+            bool ok2 = etor2.MoveNext();
+            Assert.AreEqual (3, etor2.Current);
+            rm2.Clear();
+            Assert.AreEqual (3, etor2.Current);
+        }
+
+
+        [TestMethod]
         [ExpectedException (typeof (InvalidOperationException))]
         public void CrashRmv_ocCurrent_InvalidOperation()
         {
@@ -805,6 +862,22 @@ namespace Kaos.Test.Collections
                 ++ix;
             }
             Assert.AreEqual (rm.Count, ix);
+        }
+
+
+        [TestMethod]
+        public void UnitRmv_ocCurrent_HotUpdate()
+        {
+            var rm = new RankedMap<char,int> { {'c',3} };
+
+            System.Collections.ICollection oc = rm.Values;
+            System.Collections.IEnumerator etor = oc.GetEnumerator();
+
+            bool ok = etor.MoveNext();
+            Assert.AreEqual (3, etor.Current);
+
+            rm.Clear();
+            Assert.AreEqual (3, etor.Current);
         }
 
 
