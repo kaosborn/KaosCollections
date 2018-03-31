@@ -1222,6 +1222,7 @@ namespace Kaos.Collections
                 => etor = new PairEnumerator<TValue> (dary, predicate);
 
             /// <summary>Gets the key of the element at the current position.</summary>
+            /// <exception cref="InvalidOperationException">When the enumerator is not active.</exception>
             object IDictionaryEnumerator.Key
             {
                 get
@@ -1233,6 +1234,7 @@ namespace Kaos.Collections
             }
 
             /// <summary>Gets the value of the element at the current position.</summary>
+            /// <exception cref="InvalidOperationException">When the enumerator is not active.</exception>
             object IDictionaryEnumerator.Value
             {
                 get
@@ -1244,6 +1246,7 @@ namespace Kaos.Collections
             }
 
             /// <summary>Gets the element at the current position as a <see cref="DictionaryEntry" />.</summary>
+            /// <exception cref="InvalidOperationException">When the enumerator is not active.</exception>
             DictionaryEntry IDictionaryEnumerator.Entry
             {
                 get
@@ -1255,6 +1258,7 @@ namespace Kaos.Collections
             }
 
             /// <summary>Gets the element at the current position.</summary>
+            /// <exception cref="InvalidOperationException">When the enumerator is not active.</exception>
             object IEnumerator.Current
             {
                 get

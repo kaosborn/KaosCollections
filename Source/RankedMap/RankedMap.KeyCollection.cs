@@ -365,6 +365,7 @@ namespace Kaos.Collections
                 internal Enumerator (RankedMap<TKey,TValue> map, Func<TKey,int,bool> predicate) => etor = new KeyEnumerator (map, predicate);
 
                 /// <summary>Gets the key at the current position.</summary>
+                /// <exception cref="InvalidOperationException">When the enumerator is not active.</exception>
                 object IEnumerator.Current
                 {
                     get

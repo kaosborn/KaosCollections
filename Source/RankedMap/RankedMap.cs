@@ -1037,6 +1037,7 @@ namespace Kaos.Collections
                 => etor = new PairEnumerator<TValue> (map, predicate);
 
             /// <summary>Gets the element at the current position.</summary>
+            /// <exception cref="InvalidOperationException">When the enumerator is not active.</exception>
             object IEnumerator.Current
             {
                 get

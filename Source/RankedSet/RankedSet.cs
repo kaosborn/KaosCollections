@@ -1133,7 +1133,8 @@ namespace Kaos.Collections
 
             internal Enumerator (RankedSet<T> set, Func<T,int,bool> predicate) => etor = new KeyEnumerator (set, predicate);
 
-            /// <summary>Gets the element at the current position.</summary>
+            /// <summary>Gets the item at the current position.</summary>
+            /// <exception cref="InvalidOperationException">When the enumerator is not active.</exception>
             object IEnumerator.Current
             {
                 get
