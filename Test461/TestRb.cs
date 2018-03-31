@@ -506,8 +506,13 @@ namespace Kaos.Test.Collections
         [TestMethod]
         public void StressRb_Counts()
         {
+#if STRESS
+            int n=136;
+#else
+            int n=5;
+#endif
             int reps = 100;
-            for (int order = 4; order <= 136; order += 8)
+            for (int order = 4; order <= n; order += 8)
             {
                 var rb = new RankedBag<int> { Capacity=order };
 
@@ -694,15 +699,21 @@ namespace Kaos.Test.Collections
         [TestMethod]
         public void UnitRb_RemoveAt()
         {
-            var rb1 = new RankedBag<int>();
-            for (int i1 = 0; i1 < 5000; ++i1)
+            var rb1 = new RankedBag<int>() { Capacity=5 };
+#if STRESS
+            int n = 500, m = 10;
+#else
+            int n = 50, m = 5;
+#endif
+
+            for (int i1 = 0; i1 < n; ++i1)
                 rb1.Add (i1);
 
-            for (int i2 = 4900; i2 >= 0; i2 -= 100)
+            for (int i2 = n-m; i2 >= 0; i2 -= m)
                 rb1.RemoveAt (i2);
 
-            for (int i3 = 0; i3 < 5000; ++i3)
-                if (i3 % 100 == 0)
+            for (int i3 = 0; i3 < n; ++i3)
+                if (i3 % m == 0)
                     Assert.IsFalse (rb1.Contains (i3));
                 else
                     Assert.IsTrue (rb1.Contains (i3));
@@ -711,7 +722,7 @@ namespace Kaos.Test.Collections
             for (int ii = 0; ii < 8; ++ii)
                 rb2.Add (ii);
             rb2.RemoveAt (3);
-            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (new int[] { 0, 1, 2, 4, 5, 6, 7 }, rb2));
+            Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (new int[] { 0,1,2,4,5,6,7 }, rb2));
         }
 
 

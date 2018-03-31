@@ -599,8 +599,13 @@ namespace Kaos.Test.Collections
         [TestMethod]
         public void UnitRs_Remove()
         {
-            int n = 3200;
             Setup (4);
+#if STRESS
+            int n=3200;
+#else
+            int n=320;
+#endif
+
             for (int ii = n; ii >= 0; --ii)
                 setI.Add (ii);
 
@@ -1413,14 +1418,19 @@ namespace Kaos.Test.Collections
         public void UnitRsx_RemoveAt()
         {
             var rs = new RankedSet<int> { Capacity=5 };
-            for (int ii = 0; ii < 5000; ++ii)
+#if STRESS
+            int n = 5000, m = 10;
+#else
+            int n = 40, m = 5;
+#endif
+            for (int ii = 0; ii < n; ++ii)
                 rs.Add (ii);
 
-            for (int i2 = 4990; i2 >= 0; i2 -= 10)
+            for (int i2 = n-m; i2 >= 0; i2 -= m)
                 rs.RemoveAt (i2);
 
-            for (int i2 = 0; i2 < 5000; ++i2)
-                if (i2 % 10 == 0)
+            for (int i2 = 0; i2 < n; ++i2)
+                if (i2 % m == 0)
                     Assert.IsFalse (rs.Contains (i2));
                 else
                     Assert.IsTrue (rs.Contains (i2));
@@ -1531,7 +1541,12 @@ namespace Kaos.Test.Collections
         [TestMethod]
         public void StressRsx_RemoveRange()
         {
-            for (int width = 1; width <= 19; ++width)
+#if STRESS
+            int n = 19;
+#else
+            int n = 11;
+#endif
+            for (int width = 1; width <= n; ++width)
             {
                 for (int count = 0; count <= width; ++count)
                     for (int index = 0; index <= width - count; ++index)

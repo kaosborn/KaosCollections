@@ -10,7 +10,7 @@ namespace Kaos.Test.Collections
 #if STRESS
             int n = 8, m = 500;
 #else
-            int n = 5, m = 100;
+            int n = 5, m = 20;
 #endif
             for (int order = 5; order <= n; ++order)
             {
@@ -33,8 +33,13 @@ namespace Kaos.Test.Collections
         public void StressRd_RemoveForLongBranchShift()
         {
             Setup (6);
+#if STRESS
+            int n=90;
+#else
+            int n=10;
+#endif
 
-            for (int size = 1; size < 90; ++size)
+            for (int size = 1; size < n; ++size)
             {
                 for (int i = 1; i <= size; ++i)
                     dary1.Add (i, i+200);
@@ -58,11 +63,11 @@ namespace Kaos.Test.Collections
         {
             Setup (5);
 #if STRESS
-            int n = 75;
+            int n1=65, n2=75;
 #else
-            int n = 65;
+            int n1=11, n2=12;
 #endif
-            for (int size = 65; size <= n; ++size)
+            for (int size = n1; size <= n2; ++size)
             {
                 for (int a = 1; a <= size; ++a)
                     for (int b = a; b <= size; ++b)

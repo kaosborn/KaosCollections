@@ -1204,21 +1204,21 @@ namespace Kaos.Test.Collections
         [TestMethod]
         public void UnitRdx_ElementsFromMissingVal()
         {
-            var rd = new RankedDictionary<int,int>();
-
-            for (int i = 0; i < 1000; i += 2)
+            var rd = new RankedDictionary<int,int>() { Capacity=8 };
+#if STRESS
+            int n = 1000;
+#else
+            int n = 10;
+#endif
+            for (int i = 0; i < n; i += 2)
                 rd.Add (i, -i);
 
-            for (int i = 1; i < 999; i += 2)
+            for (int i = 1; i < n-1; i += 2)
             {
-                bool isFirst = true;
                 foreach (var x in rd.ElementsFrom (i))
                 {
-                    if (isFirst)
-                    {
-                        Assert.AreEqual (i + 1, x.Key, "Incorrect key value");
-                        isFirst = false;
-                    }
+                    Assert.AreEqual (i + 1, x.Key, "Incorrect key value");
+                    break;
                 }
             }
         }

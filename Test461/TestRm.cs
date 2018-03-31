@@ -779,9 +779,12 @@ namespace Kaos.Test.Collections
         [TestMethod]
         public void UnitRm_RemoveAt()
         {
-            int n = 500, m = 10;
-
             var rm = new RankedMap<int,int>() { Capacity=4 };
+#if STRESS
+            int n = 500, m = 10;
+#else
+            int n = 50, m = 5;
+#endif
             for (int ii = 0; ii < n; ++ii)
                 rm.Add (ii, -ii);
 
@@ -1106,20 +1109,22 @@ namespace Kaos.Test.Collections
         [TestMethod]
         public void UnitRm_ElementsFromMissingVal()
         {
-            var rm = new RankedMap<int,int>();
-
-            for (int i = 0; i < 1000; i += 2)
+            var rm = new RankedMap<int,int>() { Capacity=6 };
+#if STRESS
+            int n = 1000;
+#else
+            int n = 10;
+#endif
+            for (int i = 0; i < n; i += 2)
                 rm.Add (i, -i);
 
-            for (int i = 1; i < 999; i += 2)
+            for (int i = 1; i < n-1; i += 2)
             {
-                bool isFirst = true;
                 foreach (var item in rm.ElementsFrom (i))
-                    if (isFirst)
-                    {
-                        Assert.AreEqual (i + 1, item.Key, "Incorrect key");
-                        isFirst = false;
-                    }
+                {
+                    Assert.AreEqual (i + 1, item.Key, "Incorrect key");
+                    break;
+                }
             }
         }
 

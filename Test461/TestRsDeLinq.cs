@@ -45,16 +45,21 @@ namespace Kaos.Test.Collections
         public void StressRsq_Contains()
         {
             Setup (4);
+#if STRESS
+            int n=10000;
+#else
+            int n=20;
+#endif
 
-            for (int ii = 1; ii <= 9999; ii+=2)
+            for (int ii = 1; ii <= n-1; ii+=2)
                 setI.Add (ii);
 
             Assert.IsTrue (setI.Contains (1));
             Assert.IsFalse (setI.Contains (0));
-            Assert.IsTrue (setI.Contains (499));
-            Assert.IsFalse (setI.Contains (500));
-            Assert.IsTrue (setI.Contains (9999));
-            Assert.IsFalse (setI.Contains (10000));
+            Assert.IsTrue (setI.Contains (n/2-1));
+            Assert.IsFalse (setI.Contains (n/2));
+            Assert.IsTrue (setI.Contains (n-1));
+            Assert.IsFalse (setI.Contains (n));
         }
 #endif
 
