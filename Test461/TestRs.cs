@@ -1501,6 +1501,18 @@ namespace Kaos.Test.Collections
             var setB = new RankedSet<int> { Capacity = 6 };
             for (int ii = 0; ii < 56; ++ii) setB.Add (ii);
 
+            var setU = new RankedSet<int> { Capacity = 5 };
+            for (int ii = 0; ii < 21; ++ii) setU.Add (ii);
+
+            var setV = new RankedSet<int> { Capacity = 5 };
+            for (int ii = 0; ii < 21; ++ii) setV.Add (ii);
+
+            var setW = new RankedSet<int> { Capacity = 5 };
+            for (int ii = 0; ii < 21; ++ii) setW.Add (ii);
+
+            var setX = new RankedSet<int> { Capacity = 6 };
+            for (int ii = 0; ii < 14; ++ii) setX.Add (ii);
+
             var setY = new RankedSet<int> { Capacity = 7 };
             for (int ii = 0; ii < 500; ++ii) setY.Add (ii);
 
@@ -1518,6 +1530,10 @@ namespace Kaos.Test.Collections
             set9.RemoveRange (1, 5);  Assert.AreEqual (2, set9.Count);
             setA.RemoveRange (5, 23); Assert.AreEqual (8, setA.Count);
             setB.RemoveRange (5, 40); Assert.AreEqual (16,setB.Count);
+            setU.RemoveRange (16, 3); Assert.AreEqual (18,setU.Count);
+            setV.RemoveRange (16, 5); Assert.AreEqual (16,setV.Count);
+            setW.RemoveRange (0, 16); Assert.AreEqual (5, setW.Count);
+            setX.RemoveRange (1, 8);  Assert.AreEqual (6, setX.Count);
             setY.RemoveRange (0,500); Assert.AreEqual (0, setY.Count);
             setZ.RemoveRange (0, 0);  Assert.AreEqual (0, setZ.Count);
 #if DEBUG
@@ -1533,6 +1549,10 @@ namespace Kaos.Test.Collections
             set9.SanityCheck();
             setA.SanityCheck();
             setB.SanityCheck();
+            setU.SanityCheck();
+            setV.SanityCheck();
+            setW.SanityCheck();
+            setX.SanityCheck();
             setY.SanityCheck();
             setZ.SanityCheck();
 #endif
