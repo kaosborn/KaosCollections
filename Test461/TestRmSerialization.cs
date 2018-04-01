@@ -61,6 +61,26 @@ namespace Kaos.Test.Collections
               { var map = (PlayerMap) formatter.Deserialize (fs); }
         }
 
+        [TestMethod]
+        [ExpectedException (typeof (SerializationException))]
+        public void CrashRmz_MissingKeys()
+        {
+            string fileName = @"Targets\MapMissingKeys.bin";
+            IFormatter formatter = new BinaryFormatter();
+            using (var fs = new FileStream (fileName, FileMode.Open))
+              { var map = (PlayerMap) formatter.Deserialize (fs); }
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (SerializationException))]
+        public void CrashRmz_MissingValues()
+        {
+            string fileName = @"Targets\MapMissingValues.bin";
+            IFormatter formatter = new BinaryFormatter();
+            using (var fs = new FileStream (fileName, FileMode.Open))
+              { var map = (PlayerMap) formatter.Deserialize (fs); }
+        }
+
 
         [TestMethod]
         public void UnitRm_Serialization()
