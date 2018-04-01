@@ -41,6 +41,26 @@ namespace Kaos.Test.Collections
             ((IDeserializationCallback) map).OnDeserialization (null);
         }
 
+        [TestMethod]
+        [ExpectedException (typeof (SerializationException))]
+        public void CrashRmz_BadCount()
+        {
+            string fileName = @"Targets\MapBadCount.bin";
+            IFormatter formatter = new BinaryFormatter();
+            using (var fs = new FileStream (fileName, FileMode.Open))
+              { var map = (PlayerMap) formatter.Deserialize (fs); }
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (SerializationException))]
+        public void CrashRmz_MismatchKV()
+        {
+            string fileName = @"Targets\MapMismatchKV.bin";
+            IFormatter formatter = new BinaryFormatter();
+            using (var fs = new FileStream (fileName, FileMode.Open))
+              { var map = (PlayerMap) formatter.Deserialize (fs); }
+        }
+
 
         [TestMethod]
         public void UnitRm_Serialization()
