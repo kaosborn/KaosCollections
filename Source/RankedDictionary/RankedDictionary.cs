@@ -720,25 +720,22 @@ namespace Kaos.Collections
             int storedCount = serializationInfo.GetInt32 ("Count");
             stage = serializationInfo.GetInt32 ("Stage");
 
-            if (storedCount != 0)
-            {
-                var keys = (TKey[]) serializationInfo.GetValue ("Keys", typeof (TKey[]));
-                if (keys == null)
-                    throw new SerializationException ("Missing Keys.");
+            var keys = (TKey[]) serializationInfo.GetValue ("Keys", typeof (TKey[]));
+            if (keys == null)
+                throw new SerializationException ("Missing Keys.");
 
-                var values = (TValue[]) serializationInfo.GetValue ("Values", typeof (TValue[]));
-                if (values == null)
-                    throw new SerializationException ("Missing Values.");
+            var values = (TValue[]) serializationInfo.GetValue ("Values", typeof (TValue[]));
+            if (values == null)
+                throw new SerializationException ("Missing Values.");
 
-                if (keys.Length != values.Length)
-                    throw new SerializationException ("Mismatched key/value count.");
+            if (keys.Length != values.Length)
+                throw new SerializationException ("Mismatched key/value count.");
 
-                for (int ix = 0; ix < keys.Length; ++ix)
-                    Add (keys[ix], values[ix]);
+            for (int ix = 0; ix < keys.Length; ++ix)
+                Add (keys[ix], values[ix]);
 
-                if (storedCount != keys.Length)
-                    throw new SerializationException ("Mismatched count.");
-            }
+            if (storedCount != keys.Length)
+                throw new SerializationException ("Mismatched count.");
 
             serializationInfo = null;
         }

@@ -633,18 +633,15 @@ namespace Kaos.Collections
             int storedCount = serializationInfo.GetInt32 ("Count");
             stage = serializationInfo.GetInt32 ("Stage");
 
-            if (storedCount != 0)
-            {
-                var items = (T[]) serializationInfo.GetValue ("Items", typeof (T[]));
-                if (items == null)
-                    throw new SerializationException ("Missing Items.");
+            var items = (T[]) serializationInfo.GetValue ("Items", typeof (T[]));
+            if (items == null)
+                throw new SerializationException ("Missing Items.");
 
-                for (int ix = 0; ix < items.Length; ++ix)
-                    Add (items[ix]);
+            for (int ix = 0; ix < items.Length; ++ix)
+                Add (items[ix]);
 
-                if (storedCount != Count)
-                    throw new SerializationException ("Mismatched count.");
-            }
+            if (storedCount != Count)
+                throw new SerializationException ("Mismatched count.");
 
             serializationInfo = null;
         }
