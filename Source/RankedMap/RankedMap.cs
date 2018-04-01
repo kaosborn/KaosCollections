@@ -775,7 +775,7 @@ namespace Kaos.Collections
                     throw new SerializationException ("Missing Keys.");
 
                 var values = (TValue[]) serializationInfo.GetValue ("Values", typeof (TValue[]));
-                if (keys == null)
+                if (values == null)
                     throw new SerializationException ("Missing Values.");
 
                 if (keys.Length != values.Length)
