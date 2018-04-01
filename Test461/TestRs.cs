@@ -560,8 +560,8 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
-        [ExpectedException (typeof(ArgumentException))]
-        public void CrashRs_CopyTo2D_Argument()
+        [ExpectedException (typeof (ArgumentException))]
+        public void CrashRs_ocCopyTo2D_Argument()
         {
             Setup();
             var oc = (System.Collections.ICollection) setI;
@@ -570,6 +570,19 @@ namespace Kaos.Test.Collections
 
             setI.Add (3); setI.Add (5);
             oc.CopyTo (oa, 0);
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (ArgumentException))]
+        public void CrashRs_ocCopyTo2E_Argument()
+        {
+            Setup();
+            setI.Add (3); setI.Add (5);
+
+            var oc = (System.Collections.ICollection) setI;
+
+            var wrongType = new long[2];
+            oc.CopyTo (wrongType, 0);
         }
 
         [TestMethod]
