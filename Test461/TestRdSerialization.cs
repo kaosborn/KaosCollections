@@ -87,6 +87,48 @@ namespace Kaos.Test.Collections
         }
 #endif
 
+
+        [TestMethod]
+        [ExpectedException (typeof (SerializationException))]
+        public void CrashRdz_BadCount()
+        {
+            string fileName = @"Targets\DaryBadCount.bin";
+            IFormatter formatter = new BinaryFormatter();
+            using (var fs = new FileStream (fileName, FileMode.Open))
+              { var dary = (PlayerDary) formatter.Deserialize (fs); }
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (SerializationException))]
+        public void CrashRdz_MismatchKV()
+        {
+            string fileName = @"Targets\DaryMismatchKV.bin";
+            IFormatter formatter = new BinaryFormatter();
+            using (var fs = new FileStream (fileName, FileMode.Open))
+              { var dary = (PlayerDary) formatter.Deserialize (fs); }
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (SerializationException))]
+        public void CrashRdz_MissingKeys()
+        {
+            string fileName = @"Targets\DaryMissingKeys.bin";
+            IFormatter formatter = new BinaryFormatter();
+            using (var fs = new FileStream (fileName, FileMode.Open))
+              { var dary = (PlayerDary) formatter.Deserialize (fs); }
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (SerializationException))]
+        public void CrashRdz_MissingValues()
+        {
+            string fileName = @"Targets\DaryMissingValues.bin";
+            IFormatter formatter = new BinaryFormatter();
+            using (var fs = new FileStream (fileName, FileMode.Open))
+              { var dary = (PlayerDary) formatter.Deserialize (fs); }
+        }
+
+
         [TestMethod]
         public void UnitRd_Serialization()
         {

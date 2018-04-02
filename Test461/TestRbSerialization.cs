@@ -71,6 +71,27 @@ namespace Kaos.Test.Collections
         }
 
         [TestMethod]
+        [ExpectedException (typeof (SerializationException))]
+        public void CrashRbz_BadCount()
+        {
+            string fileName = @"Targets\BagBadCount.bin";
+            IFormatter formatter = new BinaryFormatter();
+            using (var fs = new FileStream (fileName, FileMode.Open))
+              { var bag = (RankedBag<Exam>) formatter.Deserialize (fs); }
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof (SerializationException))]
+        public void CrashRbz_MissingItems()
+        {
+            string fileName = @"Targets\BagMissingItems.bin";
+            IFormatter formatter = new BinaryFormatter();
+            using (var fs = new FileStream (fileName, FileMode.Open))
+              { var bag = (RankedBag<Exam>) formatter.Deserialize (fs); }
+        }
+
+
+        [TestMethod]
         public void UnitRb_Serialization()
         {
             string fileName = "BagOfExams.bin";
