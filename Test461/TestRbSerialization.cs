@@ -56,7 +56,7 @@ namespace Kaos.Test.Collections
     {
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void CrashRb_Bin_ArgumentNull()
+        public void CrashRbz_ArgumentNull()
         {
             var bag = new ExamBag();
             ((ISerializable) bag).GetObjectData (null, new StreamingContext());
@@ -64,7 +64,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (SerializationException))]
-        public void CrashRb_BinNullCB_Serialization()
+        public void CrashRbz_NullCB()
         {
             var bag = new ExamBag ((SerializationInfo) null, new StreamingContext());
             ((IDeserializationCallback) bag).OnDeserialization (null);
@@ -92,7 +92,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRb_Serialization()
+        public void UnitRbz_Serialization()
         {
             string fileName = "BagOfExams.bin";
             var bag1 = new RankedBag<Exam> (new ScoreComparer());

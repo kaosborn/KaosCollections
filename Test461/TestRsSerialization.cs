@@ -57,7 +57,7 @@ namespace Kaos.Test.Collections
     {
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void CrashRs_Bin_ArgumentNull()
+        public void CrashRsz_ArgumentNull()
         {
             var set = new StudentSet();
             ((ISerializable) set).GetObjectData (null, new StreamingContext());
@@ -65,7 +65,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (SerializationException))]
-        public void CrashRs_BinNullCB_Serialization()
+        public void CrashRsz_NullCB()
         {
             var set = new StudentSet ((SerializationInfo) null, new StreamingContext());
             ((IDeserializationCallback) set).OnDeserialization (null);
@@ -93,7 +93,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRs_Serialization()
+        public void UnitRsz_Serialization()
         {
             string fileName = "SetOfStudents.bin";
             var set1 = new StudentSet();

@@ -72,7 +72,7 @@ namespace Kaos.Test.Collections
 #if ! TEST_BCL
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void CrashRd_Bin_ArgumentNull()
+        public void CrashRdz_ArgumentNull()
         {
             var dary = new PlayerDary();
             ((ISerializable) dary).GetObjectData (null, new StreamingContext());
@@ -80,7 +80,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (SerializationException))]
-        public void CrashRd_BinNullCB_Serialization()
+        public void CrashRdz_NullCB()
         {
             var dary = new PlayerDary ((SerializationInfo) null, new StreamingContext());
             ((IDeserializationCallback) dary).OnDeserialization (null);
@@ -130,7 +130,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRd_Serialization()
+        public void UnitRdz_Serialization()
         {
             string fileName = "DaryScores.bin";
             var p1 = new PlayerDary();

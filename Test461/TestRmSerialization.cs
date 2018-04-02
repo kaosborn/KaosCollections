@@ -27,7 +27,7 @@ namespace Kaos.Test.Collections
     {
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
-        public void CrashRm_Bin_ArgumentNull()
+        public void CrashRmz_ArgumentNull()
         {
             var map = new PlayerMap();
             ((ISerializable) map).GetObjectData (null, new StreamingContext());
@@ -35,7 +35,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (SerializationException))]
-        public void CrashRm_BinNullCB_Serialization()
+        public void CrashRmz_NullCB()
         {
             var map = new PlayerMap ((SerializationInfo) null, new StreamingContext());
             ((IDeserializationCallback) map).OnDeserialization (null);
@@ -83,7 +83,7 @@ namespace Kaos.Test.Collections
 
 
         [TestMethod]
-        public void UnitRm_Serialization()
+        public void UnitRmz_Serialization()
         {
             string fileName = "MapScores.bin";
             var map1 = new PlayerMap();
