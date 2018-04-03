@@ -63,9 +63,11 @@ namespace Kaos.Test.Collections
         [TestMethod]
         public void UnitRsc_GetHashCode()
         {
-            int comparerHashCode = setComparer.GetHashCode();
+            int comparerHashCode0 = setComparer.GetHashCode (null);
+            Assert.AreEqual (0, comparerHashCode0);
 
-            Assert.AreNotEqual (0, comparerHashCode);
+            int comparerHashCode1 = setComparer.GetHashCode();
+            Assert.AreNotEqual (0, comparerHashCode1);
         }
 
 
