@@ -415,7 +415,7 @@ namespace Kaos.Collections
         }
 
 
-        // delete all elements between path1 & path2 inclusive.
+        // Bulk delete all elements between path1 & path2 inclusive.
         private protected void Delete (NodeVector path1, NodeVector path2)
         {
             var leaf1 = (Leaf) path1.TopNode; int ix1 = path1.TopIndex, deltaW1 = 0;
@@ -435,12 +435,9 @@ namespace Kaos.Collections
             if (leaf1 == leaf2)
             {
                 int count = ix2 - ix1;
-                if (count > 0)
-                {
-                    path2.ChangePathWeight (-count);
-                    leaf2.RemoveRange (ix1, count);
-                    path2.Balance();
-                }
+                path2.ChangePathWeight (-count);
+                leaf2.RemoveRange (ix1, count);
+                path2.Balance();
                 return;
             }
 
@@ -454,7 +451,7 @@ namespace Kaos.Collections
             else
             {
                 deltaW2 = -ix2;
-                if (j1!=0)
+                if (j1 != 0)
                     leaf1.rightLeaf = leaf2;
                 leaf2.RemoveRange (0, ix2);
                 if (j1 == 0)
@@ -469,7 +466,7 @@ namespace Kaos.Collections
                 }
             }
 
-            for (int level = path2.Height-2; level >= 0; --level)
+            for (int level = path2.Height-2;; --level)
             {
                 var bh1 = (Branch) path1.GetNode (level); ix1 = path1.GetIndex (level);
                 var bh2 = (Branch) path2.GetNode (level); ix2 = path2.GetIndex (level);
@@ -494,12 +491,9 @@ namespace Kaos.Collections
 
                 if (j1 != 0)
                 {
-                    if (ix1 <= bh1.KeyCount)
-                    {
-                        for (int ix = ix1+1; ix <= bh1.KeyCount; ++ix)
-                            deltaW1 -= bh1.GetChild(ix).Weight;
-                        bh1.RemoveChildRange1 (ix1, bh1.KeyCount - ix1);
-                    }
+                    for (int ix = ix1+1; ix <= bh1.KeyCount; ++ix)
+                        deltaW1 -= bh1.GetChild(ix).Weight;
+                    bh1.RemoveChildRange1 (ix1, bh1.KeyCount - ix1);
                     bh1.AdjustWeight (deltaW1);
                 }
                 if (j2 != 0)
