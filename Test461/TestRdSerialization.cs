@@ -85,8 +85,6 @@ namespace Kaos.Test.Collections
             var dary = new PlayerDary ((SerializationInfo) null, new StreamingContext());
             ((IDeserializationCallback) dary).OnDeserialization (null);
         }
-#endif
-
 
         [TestMethod]
         [ExpectedException (typeof (SerializationException))]
@@ -127,7 +125,7 @@ namespace Kaos.Test.Collections
             using (var fs = new FileStream (fileName, FileMode.Open))
               { var dary = (PlayerDary) formatter.Deserialize (fs); }
         }
-
+#endif
 
         [TestMethod]
         public void UnitRdz_Serialization()

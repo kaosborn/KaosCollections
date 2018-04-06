@@ -71,6 +71,7 @@ namespace Kaos.Test.Collections
             ((IDeserializationCallback) set).OnDeserialization (null);
         }
 
+#if ! TEST_BCL
         [TestMethod]
         [ExpectedException (typeof (SerializationException))]
         public void CrashRsz_BadCount()
@@ -90,7 +91,7 @@ namespace Kaos.Test.Collections
             using (var fs = new FileStream (fileName, FileMode.Open))
               { var set = (StudentSet) formatter.Deserialize (fs); }
         }
-
+#endif
 
         [TestMethod]
         public void UnitRsz_Serialization()
