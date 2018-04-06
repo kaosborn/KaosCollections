@@ -20,11 +20,21 @@ namespace ExampleApp
     [Serializable]
     public class PlayerMap : RankedMap<Player,int>
     {
+        public string Game { get; set; }
+
         public PlayerMap() : base (new PlayerComparer())
         { }
 
         public PlayerMap (SerializationInfo info, StreamingContext context) : base (info, context)
-        { }
+        {
+            this.Game = info.GetString ("Game");
+        }
+
+        protected override void GetObjectData (SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData (info, context);
+            info.AddValue ("Game", Game, typeof (string));
+        }
     }
 
     [Serializable]
@@ -57,36 +67,42 @@ namespace ExampleApp
         static void Main()
         {
             string fileName = "MapScores.bin";
-            var map1 = new PlayerMap();
+            var map1 = new PlayerMap() { Game = "Day of Defeat" };
             map1.Add (new Player ("GG", "Floyd"), 11);
-            map1.Add (new Player (null, "Betty"), 22);
-            map1.Add (new Player ("A1", "Chuck"), 44);
+            map1.Add (new Player (null, "Player"), 22);
+            map1.Add (new Player ("A1", "Betty"), 44);
             map1.Add (new Player ("GG", "Edwin"), 66);
+            map1.Add (new Player (null, "Player"), 77);
 
             IFormatter formatter = new BinaryFormatter();
             using (var fs = new FileStream (fileName, FileMode.Create))
             { formatter.Serialize (fs, map1); }
-            Console.WriteLine ("Wrote " + map1.Count + " key/value pairs.");
-            Console.WriteLine ();
+
+            Console.WriteLine ($"Wrote {map1.Count} key/value pairs.\n");
 
             PlayerMap map2 = null;
             using (var fs = new FileStream (fileName, FileMode.Open))
             { map2 = (PlayerMap) formatter.Deserialize (fs); }
-            Console.WriteLine ("Read back:");
 
+            Console.WriteLine ("Read back:");
+            Console.WriteLine ($"Game = {map2.Game}");
+            Console.WriteLine ("Players:");
             foreach (var kv in map2)
-                Console.WriteLine (kv);
+                Console.WriteLine ($"  {kv}");
         }
 
         /* Output:
 
-        Wrote 4 key/value pairs.
+        Wrote 5 key/value pairs.
 
         Read back:
-        [.Betty, 22]
-        [A1.Chuck, 44]
-        [GG.Edwin, 66]
-        [GG.Floyd, 11]
+        Game = Day of Defeat
+        Players:
+          [.Player, 22]
+          [.Player, 77]
+          [A1.Betty, 44]
+          [GG.Edwin, 66]
+          [GG.Floyd, 11]
 
         */
     }
