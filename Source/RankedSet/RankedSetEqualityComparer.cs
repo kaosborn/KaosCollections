@@ -17,9 +17,9 @@ namespace Kaos.Collections
             private readonly IComparer<T> comparer;
             private readonly IEqualityComparer<T> equalityComparer;
 
-            public RankedSetEqualityComparer (IEqualityComparer<T> equalityComparer, IComparer<T> comparer=null)
+            public RankedSetEqualityComparer (IEqualityComparer<T> equalityComparer)
             {
-                this.comparer = comparer ?? Comparer<T>.Default;
+                this.comparer = Comparer<T>.Default;
                 this.equalityComparer = equalityComparer ?? EqualityComparer<T>.Default;
             }
 
