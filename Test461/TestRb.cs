@@ -643,6 +643,39 @@ namespace Kaos.Test.Collections
             Assert.IsFalse (rb3.Contains (6));
         }
 
+        [TestMethod]
+        public void StressRbRemove()
+        {
+#if STRESS
+            int m=2, n=50, x1=0, x2=n;
+#else
+            int m=2, n=22, x1=15, x2=x1;
+#endif
+
+            for (int x = x1; x<= x2; ++x)
+            {
+                var rb = new RankedBag<int>() { Capacity=4 };
+                var ex = new System.Collections.Generic.List<int>();
+
+                for (int i = n; i >= 0; --i)
+                {
+                    rb.Add (i, m);
+                    if (i != x)
+                      { ex.Insert (0,i); ex.Insert (0,i); }
+                }
+
+                rb.Remove (x);
+                var isOk = System.Linq.Enumerable.SequenceEqual (ex, rb);
+                if (! isOk)
+                    { }
+
+                Assert.IsTrue (System.Linq.Enumerable.SequenceEqual (ex, rb));
+#if DEBUG
+                rb.SanityCheck();
+#endif
+            }
+        }
+
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]
