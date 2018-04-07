@@ -324,8 +324,8 @@ namespace Kaos.Collections
 
             public void SetPivot (T key, int level)
             {
-                while (--level >= 0)
-                    if (indexStack[level] > 0)
+                for (;;)
+                    if (indexStack[--level] > 0)
                     {
                         nodeStack[level].SetKey(indexStack[level] - 1, key);
                         break;
