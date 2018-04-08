@@ -117,7 +117,7 @@ To build this project, first build `Collections461` in Release configuration.
 All source is organized using shared projects which are referenced by the build projects.
 
 * The `Test461` folder contains unit tests and some short running stress tests.
-Code coverage is 99%.
+Code coverage (branch and line) is 100%.
 To verify correct emulation, these tests may be run against either this library
 or against the emulated BCL classes.
 To run the test suite against the Microsoft classes,
