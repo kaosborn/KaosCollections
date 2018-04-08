@@ -42,6 +42,7 @@ namespace Kaos.Test.Collections
 
 
 #if ! TEST_BCL
+    [Serializable]
     public class ExamBag : RankedBag<Exam>
     {
         public ExamBag() : base (new ScoreComparer())
@@ -49,6 +50,23 @@ namespace Kaos.Test.Collections
 
         public ExamBag (SerializationInfo info, StreamingContext context) : base (info, context)
         { }
+    }
+
+    [Serializable]
+    public class BadExamBag : RankedBag<Exam>, IDeserializationCallback
+    {
+        public BadExamBag() : base (new ScoreComparer())
+        { }
+
+        public BadExamBag (SerializationInfo info, StreamingContext context) : base (info, context)
+        { }
+
+        void IDeserializationCallback.OnDeserialization (Object sender)
+        {
+            // This double call is for coverage purposes only.
+            OnDeserialization (sender);
+            OnDeserialization (sender);
+        }
     }
 
 
@@ -77,7 +95,7 @@ namespace Kaos.Test.Collections
             string fileName = @"Targets\BagBadCount.bin";
             IFormatter formatter = new BinaryFormatter();
             using (var fs = new FileStream (fileName, FileMode.Open))
-              { var bag = (RankedBag<Exam>) formatter.Deserialize (fs); }
+            { var bag = (ExamBag) formatter.Deserialize (fs); }
         }
 
         [TestMethod]
@@ -87,7 +105,7 @@ namespace Kaos.Test.Collections
             string fileName = @"Targets\BagMissingItems.bin";
             IFormatter formatter = new BinaryFormatter();
             using (var fs = new FileStream (fileName, FileMode.Open))
-              { var bag = (RankedBag<Exam>) formatter.Deserialize (fs); }
+            { var bag = (ExamBag) formatter.Deserialize (fs); }
         }
 
 
@@ -95,7 +113,7 @@ namespace Kaos.Test.Collections
         public void UnitRbz_Serialization()
         {
             string fileName = "BagOfExams.bin";
-            var bag1 = new RankedBag<Exam> (new ScoreComparer());
+            var bag1 = new ExamBag();
             bag1.Add (new Exam (5, "Floyd"));
 
             IFormatter formatter = new BinaryFormatter();
@@ -104,7 +122,26 @@ namespace Kaos.Test.Collections
 
             RankedBag<Exam> bag2 = null;
             using (var fs = new FileStream (fileName, FileMode.Open))
-            { bag2 = (RankedBag<Exam>) formatter.Deserialize (fs); }
+            { bag2 = (ExamBag) formatter.Deserialize (fs); }
+
+            Assert.AreEqual (1, bag2.Count);
+        }
+
+
+        [TestMethod]
+        public void UnitRbz_BadSerialization()
+        {
+            string fileName = "BagOfBadExams.bin";
+            var bag1 = new BadExamBag();
+            bag1.Add (new Exam (1, "Agness"));
+
+            IFormatter formatter = new BinaryFormatter();
+            using (var fs = new FileStream (fileName, FileMode.Create))
+            { formatter.Serialize (fs, bag1); }
+
+            BadExamBag bag2 = null;
+            using (var fs = new FileStream (fileName, FileMode.Open))
+            { bag2 = (BadExamBag) formatter.Deserialize (fs); }
 
             Assert.AreEqual (1, bag2.Count);
         }

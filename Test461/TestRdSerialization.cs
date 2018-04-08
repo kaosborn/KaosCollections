@@ -66,6 +66,29 @@ namespace Kaos.Test.Collections
 #endif
     }
 
+    [Serializable]
+#if TEST_BCL
+    public class BadPlayerDary : SortedDictionary<Player,int>
+#else
+    public class BadPlayerDary : RankedDictionary<Player,int>, IDeserializationCallback
+#endif
+    {
+        public BadPlayerDary() : base (new PlayerComparer())
+        { }
+
+#if ! TEST_BCL
+        public BadPlayerDary (SerializationInfo info, StreamingContext context) : base (info, context)
+        { }
+
+        void IDeserializationCallback.OnDeserialization (Object sender)
+        {
+            // This double call is for coverage purposes only.
+            OnDeserialization (sender);
+            OnDeserialization (sender);
+        }
+#endif
+    }
+
 
     public partial class TestBtree
     {
@@ -148,6 +171,25 @@ namespace Kaos.Test.Collections
             { p2 = (PlayerDary) formatter.Deserialize (fs); }
 
             Assert.AreEqual (6, p2.Count);
+        }
+
+
+        [TestMethod]
+        public void UnitRdz_BadSerialization()
+        {
+            string fileName = "BadDaryScores.bin";
+            var p1 = new BadPlayerDary ();
+            p1.Add (new Player ("YY", "Josh"), 88);
+
+            IFormatter formatter = new BinaryFormatter();
+            using (var fs = new FileStream (fileName, FileMode.Create))
+            { formatter.Serialize (fs, p1); }
+
+            BadPlayerDary p2 = null;
+            using (var fs = new FileStream (fileName, FileMode.Open))
+            { p2 = (BadPlayerDary) formatter.Deserialize (fs); }
+
+            Assert.AreEqual (1, p2.Count);
         }
     }
 }

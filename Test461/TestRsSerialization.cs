@@ -53,6 +53,28 @@ namespace Kaos.Test.Collections
     }
 
 
+    [Serializable]
+#if TEST_BCL
+    public class BadStudentSet : SortedSet<Student>, IDeserializationCallback
+#else
+    public class BadStudentSet : RankedSet<Student>, IDeserializationCallback
+#endif
+    {
+        public BadStudentSet() : base (new StudentComparer())
+        { }
+
+        public BadStudentSet (SerializationInfo info, StreamingContext context) : base (info, context)
+        { }
+
+        void IDeserializationCallback.OnDeserialization (Object sender)
+        {
+            // This double call is for coverage purposes only.
+            OnDeserialization (sender);
+            OnDeserialization (sender);
+        }
+    }
+
+
     public partial class TestBtree
     {
         [TestMethod]
@@ -110,6 +132,25 @@ namespace Kaos.Test.Collections
             { set2 = (StudentSet) formatter.Deserialize (fs); }
 
             Assert.AreEqual (2, set2.Count);
+        }
+
+
+        [TestMethod]
+        public void UnitRsz_BadSerialization()
+        {
+            string fileName = "SetOfBadStudents.bin";
+            var set1 = new BadStudentSet();
+            set1.Add (new Student ("Orville"));
+
+            IFormatter formatter = new BinaryFormatter();
+            using (var fs = new FileStream (fileName, FileMode.Create))
+            { formatter.Serialize (fs, set1); }
+
+            var set2 = new BadStudentSet();
+            using (var fs = new FileStream (fileName, FileMode.Open))
+            { set2 = (BadStudentSet) formatter.Deserialize (fs); }
+
+            Assert.AreEqual (1, set2.Count);
         }
     }
 }

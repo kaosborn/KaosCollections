@@ -22,6 +22,23 @@ namespace Kaos.Test.Collections
         { }
     }
 
+    [Serializable]
+    public class BadPlayerMap : RankedMap<Player,int>, IDeserializationCallback
+    {
+        public BadPlayerMap() : base (new PlayerComparer())
+        { }
+
+        public BadPlayerMap (SerializationInfo info, StreamingContext context) : base (info, context)
+        { }
+
+        void IDeserializationCallback.OnDeserialization (Object sender)
+        {
+            // This double call is for coverage purposes only.
+            OnDeserialization (sender);
+            OnDeserialization (sender);
+        }
+    }
+
 
     public partial class TestBtree
     {
@@ -103,6 +120,25 @@ namespace Kaos.Test.Collections
             { map2 = (PlayerMap) formatter.Deserialize (fs); }
 
             Assert.AreEqual (6, map2.Count);
+        }
+
+
+        [TestMethod]
+        public void UnitRmz_BadSerialization()
+        {
+            string fileName = "BadMapScores.bin";
+            var map1 = new BadPlayerMap();
+            map1.Add (new Player ("VV", "Vicky"), 11);
+
+            IFormatter formatter = new BinaryFormatter();
+            using (var fs = new FileStream (fileName, FileMode.Create))
+            { formatter.Serialize (fs, map1); }
+
+            BadPlayerMap map2 = null;
+            using (var fs = new FileStream (fileName, FileMode.Open))
+            { map2 = (BadPlayerMap) formatter.Deserialize (fs); }
+
+            Assert.AreEqual (1, map2.Count);
         }
     }
 }
