@@ -120,6 +120,52 @@
       </content>
     </section>
 
+
+    <section>
+      <title>KaosCollections version Next (2018-??-??)</title>
+      <content>
+        <para><legacyBold><legacyItalic>Summary</legacyItalic></legacyBold></para>
+        <list class="bullet">
+          <listItem>
+            Adds optimized <codeInline>Skip</codeInline> and <codeInline>SkipWhile</codeInline> instance methods.
+          </listItem>
+          <listItem>
+            Improves enumerator compatibility with Microsoft's Base Class Library.
+            <list class="bullet">
+              <listItem>
+                All enumerator types have been converted from <codeInline>class</codeInline> to <codeInline>struct</codeInline>.
+              </listItem>
+              <listItem>
+                Calls to the <codeInline>Current</codeInline> property will succeed following updates to the underlying class.
+              </listItem>
+            </list>
+          </listItem>
+        </list>
+        <para><legacyBold><legacyItalic>Details</legacyItalic></legacyBold></para>
+        <para><legacyBold>Adds optimized <codeInline>Skip</codeInline> and <codeInline>SkipWhile</codeInline> instance methods</legacyBold></para>
+        <para>
+          Microsoft's <codeInline>IEnumerable</codeInline> version of <codeInline>Skip</codeInline> performs an item-by-item fetching on the target structure.
+          Such an inefficient scan can be optimized when the underlying structure has indexing capability.
+          The instance method versions of <codeInline>Skip</codeInline> in this library execute in logarithmic time rather than scalar time.
+          This optimization applies to any <codeInline>Skip</codeInline> call following any number of <codeInline>Skip</codeInline> or <codeInline>SkipWhile</codeInline> calls.
+        </para>
+        <para><legacyBold>All enumerator types have been converted from <codeInline>class</codeInline> to <codeInline>struct</codeInline></legacyBold></para>
+        <para>
+          While it is unlikely that <codeInline>class</codeInline> versus <codeInline>struct</codeInline> is relied on, this is a breaking change for such an edge case.
+        </para>
+        <para><legacyBold>Calls to the <codeInline>Current</codeInline> property will succeed following updates to the underlying class</legacyBold></para>
+        <para>
+          Microsoft's enumerators permit calls to the <codeInline>Current</codeInline> property after their underlying data structure has been modified.
+          The returned value is whatever a call to <codeInline>Current</codeInline> would have returned before the update.
+          KaosCollections now emulates this behavior.
+        </para>
+        <para>
+          Previous versions of this library threw an exception here.
+          While it is unlikely that a codebase would rely on an exception, this is a potential breaking change.
+        </para>
+      </content>
+    </section>
+
     <relatedTopics>
       <link xlink:href="bd99e66d-09ef-4adc-89eb-db2aaf89e8ad" />
     </relatedTopics>
