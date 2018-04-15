@@ -537,7 +537,7 @@ namespace Kaos.Collections
         /// <param name="count">Number of items to skip.</param>
         /// <returns>The items after the supplied offset.</returns>
         /// <exception cref="InvalidOperationException">When the bag was modified after the enumerator was created.</exception>
-        /// <remarks>This is a O(1) operation.</remarks>
+        /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
         /// <example>
         /// In the below snippet, both Skip operations perform an order of magnitude faster than their LINQ equivalent.
         /// <code source="..\Bench\RxExample01\RxExample01.cs" lang="cs" region="RbSkip" />
@@ -994,7 +994,7 @@ namespace Kaos.Collections
             /// <summary>Bypasses a supplied number of items and yields the remaining items.</summary>
             /// <param name="count">Number of items to skip.</param>
             /// <returns>The items after the supplied offset.</returns>
-            /// <remarks>This is a O(1) operation.</remarks>
+            /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
             /// <example>
             /// In the below snippet, both Skip operations perform an order of magnitude faster than their LINQ equivalent.
             /// <code source="..\Bench\RxExample01\RxExample01.cs" lang="cs" region="RbSkip" />

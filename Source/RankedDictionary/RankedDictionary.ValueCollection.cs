@@ -248,7 +248,7 @@ namespace Kaos.Collections
             /// <summary>Bypasses a supplied number of values and yields the remaining values.</summary>
             /// <param name="count">Number of values to skip.</param>
             /// <returns>The values after the supplied offset.</returns>
-            /// <remarks>This is a O(1) operation.</remarks>
+            /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
             /// <example>
             /// In the below snippet, both Skip operations perform an order of magnitude faster than their LINQ equivalent.
             /// <code source="..\Bench\RxExample01\RxExample01.cs" lang="cs" region="RdvSkip" />
@@ -347,7 +347,7 @@ namespace Kaos.Collections
                 /// <summary>Bypasses a supplied number of values and yields the remaining values.</summary>
                 /// <param name="count">Number of values to skip.</param>
                 /// <returns>The values after the supplied offset.</returns>
-                /// <remarks>This is a O(1) operation.</remarks>
+                /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
                 /// <example>
                 /// In the below snippet, both Skip operations perform an order of magnitude faster than their LINQ equivalent.
                 /// <code source="..\Bench\RxExample01\RxExample01.cs" lang="cs" region="RdvSkip" />

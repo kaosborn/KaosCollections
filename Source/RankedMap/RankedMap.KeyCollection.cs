@@ -231,7 +231,7 @@ namespace Kaos.Collections
             /// <summary>Bypasses a supplied number of keys and yields the remaining keys.</summary>
             /// <param name="count">Number of keys to skip.</param>
             /// <returns>The keys after the supplied offset.</returns>
-            /// <remarks>This is a O(1) operation.</remarks>
+            /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
             /// <example>
             /// In the below snippet, both Skip operations perform an order of magnitude faster than their LINQ equivalent.
             /// <code source="..\Bench\RxExample01\RxExample01.cs" lang="cs" region="RmkSkip" />
@@ -401,7 +401,7 @@ namespace Kaos.Collections
                 /// <summary>Bypasses a supplied number of keys and yields the remaining keys.</summary>
                 /// <param name="count">Number of keys to skip.</param>
                 /// <returns>The keys after the supplied offset.</returns>
-                /// <remarks>This is a O(1) operation.</remarks>
+                /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
                 /// <example>
                 /// In the below snippet, both Skip operations perform an order of magnitude faster than their LINQ equivalent.
                 /// <code source="..\Bench\RxExample01\RxExample01.cs" lang="cs" region="RmkSkip" />
