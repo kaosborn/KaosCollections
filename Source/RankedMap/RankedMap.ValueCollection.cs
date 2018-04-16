@@ -178,7 +178,7 @@ namespace Kaos.Collections
             public TValue ElementAtOrDefault (int index)
             {
                 if (index < 0 || index >= Count)
-                    return default (TValue);
+                    return default;
 
                 var leaf = (PairLeaf<TValue>) tree.Find (index, out int leafIndex);
                 return leaf.GetValue (leafIndex);

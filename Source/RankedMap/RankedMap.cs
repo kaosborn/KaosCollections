@@ -171,12 +171,12 @@ namespace Kaos.Collections
 
         /// <summary>Gets the maximum key in the map per the comparer.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
-        public TKey MaxKey => Count == 0 ? default (TKey) : rightmostLeaf.GetKey (rightmostLeaf.KeyCount - 1);
+        public TKey MaxKey => Count == 0 ? default : rightmostLeaf.GetKey (rightmostLeaf.KeyCount - 1);
 
 
         /// <summary>Gets the minimum key in the map per the comparer.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
-        public TKey MinKey => Count == 0 ? default (TKey) : leftmostLeaf.Key0;
+        public TKey MinKey => Count == 0 ? default : leftmostLeaf.Key0;
 
 
         /// <summary>Indicates that this collection may be modified.</summary>
@@ -367,7 +367,7 @@ namespace Kaos.Collections
         public KeyValuePair<TKey,TValue> ElementAtOrDefault (int index)
         {
             if (index < 0 || index >= Count)
-                return new KeyValuePair<TKey,TValue> (default (TKey), default (TValue));
+                return new KeyValuePair<TKey,TValue> (default, default);
 
             var leaf = (PairLeaf<TValue>) Find (index, out int leafIndex);
             return new KeyValuePair<TKey,TValue> (leaf.GetKey (leafIndex), leaf.GetValue (index));
@@ -652,7 +652,7 @@ namespace Kaos.Collections
             TryGetGT (getKey, out Leaf leaf, out int index);
             if (leaf == null)
             {
-                keyValuePair = new KeyValuePair<TKey,TValue> (default (TKey), default (TValue));
+                keyValuePair = new KeyValuePair<TKey,TValue> (default, default);
                 return false;
             }
 
@@ -670,7 +670,7 @@ namespace Kaos.Collections
             TryGetGE (getKey, out Leaf leaf, out int index);
             if (leaf == null)
             {
-                keyValuePair = new KeyValuePair<TKey,TValue> (default (TKey), default (TValue));
+                keyValuePair = new KeyValuePair<TKey,TValue> (default, default);
                 return false;
             }
 
@@ -688,7 +688,7 @@ namespace Kaos.Collections
             TryGetLT (getKey, out Leaf leaf, out int index);
             if (leaf == null)
             {
-                keyValuePair = new KeyValuePair<TKey,TValue> (default (TKey), default (TValue));
+                keyValuePair = new KeyValuePair<TKey,TValue> (default, default);
                 return false;
             }
 
@@ -706,7 +706,7 @@ namespace Kaos.Collections
             TryGetLE (getKey, out Leaf leaf, out int index);
             if (leaf == null)
             {
-                keyValuePair = new KeyValuePair<TKey,TValue> (default (TKey), default (TValue));
+                keyValuePair = new KeyValuePair<TKey,TValue> (default, default);
                 return false;
             }
 

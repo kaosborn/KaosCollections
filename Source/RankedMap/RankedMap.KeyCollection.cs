@@ -172,7 +172,7 @@ namespace Kaos.Collections
             public TKey ElementAtOrDefault (int index)
             {
                 if (index < 0 || index >= Count)
-                    return default (TKey);
+                    return default;
 
                 var leaf = (PairLeaf<TValue>) tree.Find (index, out int leafIndex);
                 return leaf.GetKey (leafIndex);
@@ -265,7 +265,7 @@ namespace Kaos.Collections
             {
                 tree.TryGetGT (getKey, out Leaf leaf, out int index);
                 if (leaf == null)
-                { key = default (TKey); return false; }
+                { key = default; return false; }
                 else
                 { key = leaf.GetKey (index); return true; }
             }
@@ -279,7 +279,7 @@ namespace Kaos.Collections
             {
                 tree.TryGetGE (getKey, out Leaf leaf, out int index);
                 if (leaf == null)
-                { key = default (TKey); return false; }
+                { key = default; return false; }
                 else
                 { key = leaf.GetKey (index); return true; }
             }
@@ -293,7 +293,7 @@ namespace Kaos.Collections
             {
                 tree.TryGetLT (getKey, out Leaf leaf, out int index);
                 if (leaf == null)
-                { key = default (TKey); return false; }
+                { key = default; return false; }
                 else
                 { key = leaf.GetKey (index); return true; }
             }
@@ -307,7 +307,7 @@ namespace Kaos.Collections
             {
                 tree.TryGetLE (getKey, out Leaf leaf, out int index);
                 if (leaf == null)
-                { key = default (TKey); return false; }
+                { key = default; return false; }
                 else
                 { key = leaf.GetKey (index); return true; }
             }
