@@ -9,7 +9,7 @@
 using System;
 using Kaos.Collections;
 
-namespace ExampleApp
+namespace BenchApp
 {
     class RxBench01
     {

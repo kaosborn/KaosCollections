@@ -1,9 +1,9 @@
 ﻿using System;
 using Kaos.Collections;
 
-namespace RxExample01
+namespace ExampleApp
 {
-    class ExampleApp
+    class RxExample01
     {
         static void Main()
         {

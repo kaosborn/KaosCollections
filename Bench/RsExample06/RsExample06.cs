@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Kaos.Collections;
 
-namespace ChartApp
+namespace ExampleApp
 {
     class RsExample06
     {

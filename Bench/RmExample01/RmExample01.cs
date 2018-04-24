@@ -1,7 +1,7 @@
 ﻿using System;
 using Kaos.Collections;
 
-namespace ExampleApps
+namespace ExampleApp
 {
     class RmExample01
     {

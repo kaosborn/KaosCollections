@@ -13,7 +13,7 @@ using Kaos.Collections;
 using Kaos.Combinatorics;
 [assembly: System.Reflection.AssemblyVersion ("0.1.0.0")]
 
-namespace BenchApp
+namespace StressApp
 {
     class RdStress01
     {

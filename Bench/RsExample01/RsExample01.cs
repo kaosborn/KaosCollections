@@ -1,7 +1,7 @@
 ﻿using System;
 using Kaos.Collections;
 
-namespace ChartApp
+namespace ExampleApp
 {
     class RsExample01
     {
