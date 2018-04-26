@@ -17,7 +17,7 @@ namespace ExampleApp
 
             Console.WriteLine ("Candidates:");
             foreach (var item in musicians)
-                Console.WriteLine ("  " + item);
+                Console.WriteLine ($"  {item}");
 
             musicians.Remove ("Falco");
             musicians.RemoveWhere (IsPolynymous);
@@ -25,7 +25,7 @@ namespace ExampleApp
 
             Console.WriteLine ("\nFavorite:");
             foreach (var item in musicians)
-                Console.WriteLine ("  " + item);
+                Console.WriteLine ($"  {item}");
         }
 
         /* Output:

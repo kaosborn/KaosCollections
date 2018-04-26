@@ -5,15 +5,15 @@ namespace ExampleApp
 {
     class RsExample03
     {
-        static string Text<T> (System.Collections.Generic.IEnumerable<T> arr)
-        { return "{ " + String.Join (" ", arr) + " }"; }
+        static string Text<T> (System.Collections.Generic.IEnumerable<T> items)
+            => "{ " + String.Join (" ", items) + " }";
 
         static void Main()
         {
-            var set1 = new RankedSet<int>( new int[] { 3, 5, 7 });
-            var set2 = new RankedSet<int>( new int[] { 5, 7 });
-            var set3 = new RankedSet<int>( new int[] { 1, 9 });
-            var set4 = new RankedSet<int> (new int[] { 5, 9 });
+            var set1 = new RankedSet<int> { 3, 5, 7 };
+            var set2 = new RankedSet<int> { 5, 7 };
+            var set3 = new RankedSet<int> { 1, 9 };
+            var set4 = new RankedSet<int> { 5, 9 };
             var arg5 = new int[] { 5, 9, 9 };
 
             bool isSub1 = set2.IsSubsetOf (set1);
@@ -32,31 +32,31 @@ namespace ExampleApp
             bool isEq2 = set4.SetEquals (set3);
             bool isEq3 = set4.SetEquals (arg5);
 
-            Console.WriteLine (Text(set2) + " IsSubsetOf " + Text(set1) + " = " + isSub1);
-            Console.WriteLine (Text(set2) + " IsSubsetOf " + Text(set2) + " = " + isSub2);
-            Console.WriteLine (Text(set4) + " IsSubsetOf " + Text(set2) + " = " + isSub3);
+            Console.WriteLine ($"{Text(set2)} IsSubsetOf {Text(set1)} = {isSub1}");
+            Console.WriteLine ($"{Text(set2)} IsSubsetOf {Text(set2)} = {isSub2}");
+            Console.WriteLine ($"{Text(set4)} IsSubsetOf {Text(set2)} = {isSub3}");
             Console.WriteLine ();
 
-            Console.WriteLine (Text(set1) + " IsSupersetOf " + Text(set2) + " = " + isSup1);
-            Console.WriteLine (Text(set2) + " IsSupersetOf " + Text(set2) + " = " + isSup2);
-            Console.WriteLine (Text(set2) + " IsSupersetOf " + Text(set4) + " = " + isSup3);
+            Console.WriteLine ($"{Text(set1)} IsSupersetOf {Text(set2)} = {isSup1}");
+            Console.WriteLine ($"{Text(set2)} IsSupersetOf {Text(set2)} = {isSup2}");
+            Console.WriteLine ($"{Text(set2)} IsSupersetOf {Text(set4)} = {isSup3}");
             Console.WriteLine ();
 
-            Console.WriteLine (Text(set2) + " IsProperSubsetOf " + Text(set1) + " = " + isPSub1);
-            Console.WriteLine (Text(set2) + " IsProperSubsetOf " + Text(set2) + " = " + isPSub2);
+            Console.WriteLine ($"{Text(set2)} IsProperSubsetOf {Text(set1)} = {isPSub1}");
+            Console.WriteLine ($"{Text(set2)} IsProperSubsetOf {Text(set2)} = {isPSub2}");
             Console.WriteLine ();
 
-            Console.WriteLine (Text(set1) + " IsProperSupersetOf " + Text(set2) + " = " + isPSup1);
-            Console.WriteLine (Text(set2) + " IsProperSupersetOf " + Text(set2) + " = " + isPSup2);
+            Console.WriteLine ($"{Text(set1)} IsProperSupersetOf {Text(set2)} = {isPSup1}");
+            Console.WriteLine ($"{Text(set2)} IsProperSupersetOf {Text(set2)} = {isPSup2}");
             Console.WriteLine ();
 
-            Console.WriteLine (Text(set1) + " Overlaps " + Text(set4) + " = " + isOlap1);
-            Console.WriteLine (Text(set1) + " Overlaps " + Text(set3) + " = " + isOlap2);
+            Console.WriteLine ($"{Text(set1)} Overlaps {Text(set4)} = {isOlap1}");
+            Console.WriteLine ($"{Text(set1)} Overlaps {Text(set3)} = {isOlap2}");
             Console.WriteLine ();
 
-            Console.WriteLine (Text(set4) + " SetEquals " + Text(set4) + " = " + isEq1);
-            Console.WriteLine (Text(set4) + " SetEquals " + Text(set3) + " = " + isEq2);
-            Console.WriteLine (Text(set4) + " SetEquals " + Text(arg5) + " = " + isEq3);
+            Console.WriteLine ($"{Text(set4)} SetEquals {Text(set4)} = {isEq1}");
+            Console.WriteLine ($"{Text(set4)} SetEquals {Text(set3)} = {isEq2}");
+            Console.WriteLine ($"{Text(set4)} SetEquals {Text(arg5)} = {isEq3}");
             Console.WriteLine ();
         }
 

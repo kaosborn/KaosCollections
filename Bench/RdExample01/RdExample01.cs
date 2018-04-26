@@ -34,14 +34,14 @@ namespace ExampleApp
 
             // The Item property is another name for the indexer,
             // so you can omit its name when accessing elements.
-            Console.WriteLine ("For key = 'CH', value = {0}.", cc["CH"]);
+            Console.WriteLine ($"For key = 'CH', value = {cc["CH"]}.");
 
             #region Indexer
             // The indexer can be used to change the value associated with a key.
             cc["RU"] = "Russian Federation";
 
             // The indexer can be used to get a value for a key.
-            Console.WriteLine ("For key = 'RU', value = {0}.", cc["RU"]);
+            Console.WriteLine ($"For key = 'RU', value = {cc["RU"]}.");
 
             // If a key does not exist, setting the indexer for that key
             // adds a new key/value pair.
@@ -52,7 +52,7 @@ namespace ExampleApp
             // not in the dictionary.
             try
             {
-                Console.WriteLine ("For key = 'ZZ', value = {0}.", cc["ZZ"]);
+                Console.WriteLine ($"For key = 'ZZ', value = {cc["ZZ"]}.");
             }
             catch (KeyNotFoundException)
             {
@@ -63,7 +63,7 @@ namespace ExampleApp
             // When a program often has to try keys that are usually not in the
             // dictionary, TryGetValue can be a more efficient way to get values.
             if (cc.TryGetValue ("ZZ", out string value))
-                Console.WriteLine ("For key = 'ZZ', value = {0}.", value);
+                Console.WriteLine ($"For key = 'ZZ', value = {value}.");
             else
                 Console.WriteLine ("Key = 'ZZ' is not found.");
             #endregion
@@ -73,7 +73,7 @@ namespace ExampleApp
             if (! cc.ContainsKey ("GG"))
             {
                 cc.Add ("GG", "Guernsey");
-                Console.WriteLine ("Value added for key = 'GG': {0}", cc["GG"]);
+                Console.WriteLine ($"Value added for key = 'GG': {cc["GG"]}");
             }
             #endregion
 
@@ -81,7 +81,7 @@ namespace ExampleApp
             // the elements are retrieved as KeyValuePair instances.
             Console.WriteLine();
             foreach (KeyValuePair<string,string> pair in cc)
-                Console.WriteLine ("Key = {0}, Value = {1}", pair.Key, pair.Value);
+                Console.WriteLine ($"Key = {pair.Key}, Value = {pair.Value}");
 
             #region Values
             // To get the values alone, use the Values property.
@@ -91,7 +91,7 @@ namespace ExampleApp
             // with the type that was specified for dictionary values.
             Console.WriteLine();
             foreach(string val in vals)
-                Console.WriteLine ("Value = {0}", val);
+                Console.WriteLine ($"Value = {val}");
             #endregion
 
             #region Keys
@@ -102,7 +102,7 @@ namespace ExampleApp
             // with the type that was specified for dictionary keys.
             Console.WriteLine();
             foreach (string key in keys)
-                Console.WriteLine ("Key = {0}", key);
+                Console.WriteLine ($"Key = {key}");
             #endregion
 
             // Use the Remove method to remove a key/value pair.

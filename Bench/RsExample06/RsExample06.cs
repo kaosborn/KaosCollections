@@ -17,27 +17,27 @@ namespace ExampleApp
 
             // Remove mononymous items.
             Console.WriteLine ("Remove single names from the set...");
-            Console.WriteLine ("  Count before: " + musicians.Count);
+            Console.WriteLine ($"  Count before: {musicians.Count}");
             musicians.RemoveWhere (IsMononymous);
-            Console.WriteLine ("  Count after: " + musicians.Count + "\n");
+            Console.WriteLine ($"  Count after: {musicians.Count}\n");
 
             // List names starting with 'J'.
             Console.WriteLine ("Musicians J-T");
             foreach (var name in musicians.ElementsBetween ("J", "U"))
-                Console.WriteLine ("  " + name);
+                Console.WriteLine ($"  {name}");
 
             // Create another RankedSet.
             var painters = new RankedSet<string> (names2);
 
             // Remove elements in musicians that are also in painters.
             Console.WriteLine ("\nRemove duplicates (of painters) from the musicians...");
-            Console.WriteLine ("  Count before: " + musicians.Count);
+            Console.WriteLine ($"  Count before: {musicians.Count}");
             musicians.ExceptWith (painters);
-            Console.WriteLine ("  Count after: " + musicians.Count + "\n");
+            Console.WriteLine ($"  Count after: {musicians.Count}\n");
 
             Console.WriteLine ("List of musicians that are not painters:");
             foreach (string name in musicians)
-                Console.WriteLine ("  " + name);
+                Console.WriteLine ($"  {name}");
 
             var comp = RankedSet<string>.CreateSetComparer();
 
@@ -48,19 +48,19 @@ namespace ExampleApp
             Console.WriteLine ("\nAll sets in hash set:");
             foreach (var set in setOfSets)
             {
-                Console.WriteLine ("  " + set.Count + " items:");
+                Console.WriteLine ($"  {set.Count} items:");
                 foreach (var item in set)
-                    Console.WriteLine ("    " + item);
+                    Console.WriteLine ($"    {item}");
             }
 
             // Create a 3rd RankedSet.
-            var people = new RankedSet<string> (new string[] { "Tom Petty", "Warren Zevon" });
+            var people = new RankedSet<string> { "Tom Petty", "Warren Zevon" };
 
             // Create a set equality comparer.
             var comparer = RankedSet<string>.CreateSetComparer();
 
-            Console.WriteLine ("\nSet comparison 1: " + comparer.Equals (musicians, people));
-            Console.WriteLine ("Set comparison 2: " + comparer.Equals (painters, people));
+            Console.WriteLine ($"\nSet comparison 1: {comparer.Equals (musicians, people)}");
+            Console.WriteLine ($"Set comparison 2: {comparer.Equals (painters, people)}");
         }
 
         /* Output:

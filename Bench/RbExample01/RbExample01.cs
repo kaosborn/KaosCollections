@@ -1,7 +1,7 @@
 ﻿using System;
 using Kaos.Collections;
 
-namespace ExampleApps
+namespace ExampleApp
 {
     class RbExample01
     {
@@ -12,22 +12,22 @@ namespace ExampleApps
 
             crayons.Add ("blue");
 
-            Console.WriteLine ("There are " + crayons.Count + " total crayons:");
+            Console.WriteLine ($"There are {crayons.Count} total crayons:");
             foreach (var crayon in crayons)
-                Console.WriteLine ("  " + crayon);
+                Console.WriteLine ($"  {crayon}");
 
-            Console.WriteLine ("\nThere are " + crayons.GetDistinctCount() + " distinct colors:");
+            Console.WriteLine ($"\nThere are {crayons.GetDistinctCount()} distinct colors:");
             foreach (var crayon in crayons.Distinct())
-                Console.WriteLine ("  " + crayon);
+                Console.WriteLine ($"  {crayon}");
 
-            Console.WriteLine ("\nGot 'gold' crayon? " + crayons.Contains ("gold"));
+            Console.WriteLine ($"\nGot 'gold' crayon? {crayons.Contains ("gold")}");
 
             // RetainAll respects cardinality so the oldest 'black' is removed:
             crayons.RetainAll (new string[] { "white", "grey", "Black", "red" });
 
             Console.WriteLine ("\nAfter RetainAll: ");
             foreach (var crayon in crayons)
-                Console.WriteLine ("  " + crayon);
+                Console.WriteLine ($"  {crayon}");
         }
 
         /* Output:

@@ -50,7 +50,7 @@ namespace ExampleApp
             set1.Add (new Person ("Hammond", "Egger"), "C-");
 
             SerializePersons ("Persons.bin", set1, formatter);
-            Console.WriteLine ("Wrote " + set1.Count + " key/value pairs.");
+            Console.WriteLine ($"Wrote {set1.Count} key/value pairs.");
             Console.WriteLine ();
 
             RankedDictionary<Person,string> set2 = DeserializePersons ("Persons.bin", formatter);

@@ -51,11 +51,11 @@ namespace ExampleApp
             IFormatter formatter = new BinaryFormatter();
 
             SerializePersons (fileName, set1, formatter);
-            Console.WriteLine ("Wrote " + set1.Count + " items to file '" + fileName + "'.");
+            Console.WriteLine ($"Wrote {set1.Count} items to file '{fileName}'.");
             Console.WriteLine ();
 
             RankedSet<Person> set2 = DeserializePersons (fileName, formatter);
-            Console.WriteLine ("Read back " + set2.Count + " items:");
+            Console.WriteLine ($"Read back {set2.Count} items:");
 
             foreach (var p2 in set2)
                 Console.WriteLine (p2);

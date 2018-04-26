@@ -25,18 +25,17 @@ namespace ExampleApp
         protected Exam (SerializationInfo info, StreamingContext context)
         {
             this.Score = (int) info.GetValue ("Score", typeof (int));
-            this.Name = (String) info.GetValue ("Name", typeof (String));
+            this.Name = (string) info.GetValue ("Name", typeof (string));
         }
 
         public virtual void GetObjectData (SerializationInfo info, StreamingContext context)
         {
             info.AddValue ("Score", Score, typeof (int));
-            info.AddValue ("Name", Name, typeof (String));
+            info.AddValue ("Name", Name, typeof (string));
         }
 
         public override string ToString() => Score + ", " + Name;
     }
-
 
     class RbExample05
     {
@@ -51,20 +50,20 @@ namespace ExampleApp
 
             Console.WriteLine ("Items are inserted after other items that compare equally:");
             foreach (var item in bag1)
-                Console.WriteLine ("  " + item);
+                Console.WriteLine ($"  {item}");
 
             string fileName = "Exams.bin";
             IFormatter formatter = new BinaryFormatter();
 
             SerializeExams (fileName, bag1, formatter);
-            Console.WriteLine ("\nWrote " + bag1.Count + " items to file '" + fileName + "'.");
+            Console.WriteLine ($"\nWrote {bag1.Count} items to file '{fileName}'.");
             Console.WriteLine ();
 
             RankedBag<Exam> bag2 = DeserializeExams (fileName, formatter);
-            Console.WriteLine ("Read back " + bag2.Count + " items:");
+            Console.WriteLine ($"Read back {bag2.Count} items:");
 
             foreach (var p2 in bag2)
-                Console.WriteLine ("  " + p2);
+                Console.WriteLine ($"  {p2}");
         }
 
         static void SerializeExams (string fn, RankedBag<Exam> bag, IFormatter formatter)

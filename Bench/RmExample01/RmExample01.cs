@@ -38,18 +38,18 @@ namespace ExampleApp
             // each element is retrieved as a KeyValuePair.
             Console.WriteLine ("All map elements:");
             foreach (System.Collections.Generic.KeyValuePair<string,string> pair in fmt)
-                Console.WriteLine ("  Key = {0}, Value = {1}", pair.Key, pair.Value);
+                Console.WriteLine ($"  Key = {pair.Key}, Value = {pair.Value}");
             #endregion
 
             #region GetDistinctCount
-            Console.WriteLine ("\nDistinct format count: " + fmt.Keys.GetDistinctCount());
-            Console.WriteLine ("Total format count: " + fmt.Count);
+            Console.WriteLine ($"\nDistinct format count: {fmt.Keys.GetDistinctCount()}");
+            Console.WriteLine ($"Total format count: {fmt.Count}");
             #endregion
 
             #region Remove2
             Console.WriteLine ("\nRemove all sln format occurrences...");
             int removed = fmt.Remove ("sln", Int32.MaxValue);
-            Console.WriteLine ("Items removed: " + removed);
+            Console.WriteLine ($"Items removed: {removed}");
             #endregion
 
             #region Remove1
@@ -64,7 +64,7 @@ namespace ExampleApp
             // The items of a KeyCollection have the type specified for the map keys.
             Console.WriteLine ("\nKeys:");
             foreach (string x in keys)
-                Console.WriteLine ("  " + x);
+                Console.WriteLine ($"  {x}");
             #endregion
 
             #region Values
@@ -73,7 +73,7 @@ namespace ExampleApp
 
             Console.WriteLine ("\nValues:");
             foreach (string x in values)
-                Console.WriteLine ("  " + x);
+                Console.WriteLine ($"  {x}");
             #endregion
         }
 

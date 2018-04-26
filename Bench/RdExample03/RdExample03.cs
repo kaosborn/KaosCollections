@@ -39,7 +39,7 @@ namespace ExampleApp
 
             // Here's a typical LINQ-To-Objects operation.
             double avg = towns.Average (x => x.Value);
-            Console.WriteLine ("Average population of all towns = {0:f0}", avg);
+            Console.WriteLine ($"Average population of all towns = {avg:f0}");
 
             // Lambda expression
             IEnumerable<KeyValuePair<string,int>> r1 = towns.Where (t => t.Key.CompareTo ("E") < 0);
