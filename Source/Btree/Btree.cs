@@ -38,13 +38,12 @@ namespace Kaos.Collections
         }
 
         private protected Btree (IComparer<T> comparer, Leaf startLeaf) : this (startLeaf)
-        {
-            this.keyComparer = comparer ?? Comparer<T>.Default;
-        }
+         => this.keyComparer = comparer ?? Comparer<T>.Default;
 
         #region Nonpublic methods
 
-        private protected bool IsUnderflow (int count) => count < ((maxKeyCount + 1) >> 1);
+        private protected bool IsUnderflow (int count)
+         => count < ((maxKeyCount + 1) >> 1);
 
         private protected void CopyKeysTo1 (T[] array, int index, int count)
         {
@@ -397,9 +396,7 @@ namespace Kaos.Collections
 
 
         private protected void RemoveAt2 (int index)
-        {
-            Remove2 (NodeVector.CreateFromIndex (this, index));
-        }
+         => Remove2 (NodeVector.CreateFromIndex (this, index));
 
 
         private protected void RemoveRange2 (int index, int count)
@@ -709,7 +706,8 @@ namespace Kaos.Collections
 
 
         /// <exclude />
-        protected int StageBump() => ++stage;
+        protected int StageBump()
+         => ++stage;
 
         /// <exclude />
         protected void StageCheck (int expected)
@@ -742,7 +740,7 @@ namespace Kaos.Collections
         /// <exception cref="ArgumentOutOfRangeException">When supplied value is less than zero.</exception>
         public int Capacity
         {
-            get { return maxKeyCount + 1; }
+            get => maxKeyCount + 1;
             set
             {
                 if (value < 0)
@@ -805,7 +803,8 @@ namespace Kaos.Collections
 
         /// <summary>Gets maximum number of children of a branch.</summary>
         /// <returns>Maximum number of children of a branch.</returns>
-        public int GetOrder() => maxKeyCount + 1;
+        public int GetOrder()
+         => maxKeyCount + 1;
 
 
         /// <summary>Gets the number of levels in the tree.</summary>

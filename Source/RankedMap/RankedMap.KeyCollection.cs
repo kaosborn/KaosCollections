@@ -56,19 +56,23 @@ namespace Kaos.Collections
             /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
             /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or not less than the number of items.</exception>
             public TKey this[int index]
-            { get { return ElementAt (index); } }
+             => ElementAt (index);
 
             /// <summary>Gets the number of keys in the collection.</summary>
-            public int Count => tree.Count;
+            public int Count
+             => tree.Count;
 
             /// <summary>Indicates that the collection is read-only.</summary>
-            bool ICollection<TKey>.IsReadOnly => true;
+            bool ICollection<TKey>.IsReadOnly
+             => true;
 
             /// <summary>Indicates that the collection is not thread safe.</summary>
-            bool ICollection.IsSynchronized => false;
+            bool ICollection.IsSynchronized
+             => false;
 
             /// <summary>Gets an object that can be used to synchronize access to the collection.</summary>
-            object ICollection.SyncRoot => tree.GetSyncRoot();
+            object ICollection.SyncRoot
+             => tree.GetSyncRoot();
 
             #endregion
 
@@ -76,11 +80,13 @@ namespace Kaos.Collections
 
             /// <summary>This implementation always throws a <see cref="NotSupportedException" />.</summary>
             /// <param name="key">The object to add.</param>
-            void ICollection<TKey>.Add (TKey key) => throw new NotSupportedException();
+            void ICollection<TKey>.Add (TKey key)
+             => throw new NotSupportedException();
 
 
             /// <summary>This implementation always throws a <see cref="NotSupportedException" />.</summary>
-            void ICollection<TKey>.Clear() => throw new NotSupportedException();
+            void ICollection<TKey>.Clear()
+             => throw new NotSupportedException();
 
 
             /// <summary>Determines whether the map contains the supplied key.</summary>
@@ -88,7 +94,7 @@ namespace Kaos.Collections
             /// <returns><b>true</b> if <em>key</em> is contained in the map; otherwise <b>false</b>.</returns>
             /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
             public bool Contains (TKey key)
-                => tree.ContainsKey (key);
+             => tree.ContainsKey (key);
 
 
             /// <summary>Determines whether the collection contains the supplied key.</summary>
@@ -96,7 +102,7 @@ namespace Kaos.Collections
             /// <returns><b>true</b> if <em>key</em> is contained in the collection; otherwise <b>false</b>.</returns>
             /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
             bool ICollection<TKey>.Contains (TKey key)
-                => tree.ContainsKey (key);
+             => tree.ContainsKey (key);
 
 
             /// <summary>Copies keys to a supplied array, starting at the supplied position.</summary>
@@ -106,7 +112,7 @@ namespace Kaos.Collections
             /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero.</exception>
             /// <exception cref="ArgumentException">When not enough space is given for the copy.</exception>
             public void CopyTo (TKey[] array, int index)
-                => tree.CopyKeysTo1 (array, index, tree.Count);
+             => tree.CopyKeysTo1 (array, index, tree.Count);
 
             /// <summary>Copies keys to a supplied array, starting at the supplied position.</summary>
             /// <param name="array">A one-dimensional array that is the destination of the copy.</param>
@@ -115,7 +121,7 @@ namespace Kaos.Collections
             /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero.</exception>
             /// <exception cref="ArgumentException">When not enough space is given for the copy.</exception>
             void ICollection.CopyTo (Array array, int index)
-                => tree.CopyKeysTo2 (array, index);
+             => tree.CopyKeysTo2 (array, index);
 
 
             /// <summary>Returns the number of elements with the supplied key in the map.</summary>
@@ -132,7 +138,8 @@ namespace Kaos.Collections
             /// <see cref="RankedMap{TKey,TValue}"/>class.
             /// <code source="..\Bench\RmExample01\RmExample01.cs" lang="cs" region="GetCount" />
             /// </example>
-            public int GetCount (TKey key) => tree.GetCount2 (key);
+            public int GetCount (TKey key)
+             => tree.GetCount2 (key);
 
 
             /// <summary>Returns the number of distinct keys in the map.</summary>
@@ -147,7 +154,8 @@ namespace Kaos.Collections
             /// <see cref="RankedMap{TKey,TValue}"/>class.
             /// <code source="..\Bench\RmExample01\RmExample01.cs" lang="cs" region="GetDistinctCount" />
             /// </example>
-            public int GetDistinctCount() => tree.GetDistinctCount2();
+            public int GetDistinctCount()
+             => tree.GetDistinctCount2();
 
 
             /// <summary>Gets the key at the supplied index.</summary>
@@ -193,7 +201,7 @@ namespace Kaos.Collections
             /// </para>
             /// </remarks>
             public int IndexOf (TKey key)
-                => tree.FindEdgeForIndex (key, out Leaf _, out int _, leftEdge:true);
+             => tree.FindEdgeForIndex (key, out Leaf _, out int _, leftEdge:true);
 
 
             /// <summary>Gets the minimum key in the map per the comparer.</summary>
@@ -225,7 +233,8 @@ namespace Kaos.Collections
             /// <summary>This implementation always throws a <see cref="NotSupportedException" />.</summary>
             /// <param name="key">The key to remove.</param>
             /// <returns><b>true</b> if the object was removed; otherwise <b>false</b>.</returns>
-            bool ICollection<TKey>.Remove (TKey key) => throw new NotSupportedException();
+            bool ICollection<TKey>.Remove (TKey key)
+             => throw new NotSupportedException();
 
 
             /// <summary>Bypasses a supplied number of keys and yields the remaining keys.</summary>
@@ -237,7 +246,8 @@ namespace Kaos.Collections
             /// <code source="..\Bench\RxExample01\RxExample01.cs" lang="cs" region="RmkSkip" />
             /// </example>
             /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
-            public Enumerator Skip (int count) => new Enumerator (tree, count);
+            public Enumerator Skip (int count)
+             => new Enumerator (tree, count);
 
 
             /// <summary>
@@ -246,7 +256,8 @@ namespace Kaos.Collections
             /// <param name="predicate">The condition to test for.</param>
             /// <returns>Remaining keys after the first key that does not satisfy the supplied condition.</returns>
             /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
-            public Enumerator SkipWhile (Func<TKey,bool> predicate) => new Enumerator (tree, predicate);
+            public Enumerator SkipWhile (Func<TKey,bool> predicate)
+             => new Enumerator (tree, predicate);
 
             /// <summary>
             /// Bypasses keys as long as a supplied index-based condition is true and yields the remaining keys.
@@ -254,7 +265,8 @@ namespace Kaos.Collections
             /// <param name="predicate">The condition to test for.</param>
             /// <returns>Remaining keys after the first key that does not satisfy the supplied condition.</returns>
             /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
-            public Enumerator SkipWhile (Func<TKey,int,bool> predicate) => new Enumerator (tree, predicate);
+            public Enumerator SkipWhile (Func<TKey,int,bool> predicate)
+             => new Enumerator (tree, predicate);
 
 
             /// <summary>Gets the least key greater than the supplied key.</summary>
@@ -334,20 +346,24 @@ namespace Kaos.Collections
             /// <summary>Returns an enumerator that iterates thru the map keys in reverse order.</summary>
             /// <returns>An enumerator that reverse iterates thru the map keys.</returns>
             /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
-            public Enumerator Reverse() => new Enumerator (tree, isReverse:true);
+            public Enumerator Reverse()
+             => new Enumerator (tree, isReverse:true);
 
 
             /// <summary>Gets an enumerator that iterates thru the collection.</summary>
             /// <returns>An enumerator for the collection.</returns>
-            public Enumerator GetEnumerator() => new Enumerator (tree);
+            public Enumerator GetEnumerator()
+             => new Enumerator (tree);
 
             /// <summary>Gets an enumerator that iterates thru the collection.</summary>
             /// <returns>An enumerator for the collection.</returns>
-            IEnumerator<TKey> IEnumerable<TKey>.GetEnumerator() => new Enumerator (tree);
+            IEnumerator<TKey> IEnumerable<TKey>.GetEnumerator()
+             => new Enumerator (tree);
 
             /// <summary>Gets an enumerator that iterates thru the collection.</summary>
             /// <returns>An enumerator for the collection.</returns>
-            IEnumerator IEnumerable.GetEnumerator() => new Enumerator (tree);
+            IEnumerator IEnumerable.GetEnumerator()
+             => new Enumerator (tree);
 
 
             /// <summary>Enumerates the items of a <see cref="RankedMap{TKey,TValue}.KeyCollection"/> in sort order.</summary>
@@ -356,13 +372,17 @@ namespace Kaos.Collections
             {
                 private readonly KeyEnumerator etor;
 
-                internal Enumerator (RankedMap<TKey,TValue> map, bool isReverse=false) => etor = new KeyEnumerator (map, isReverse);
+                internal Enumerator (RankedMap<TKey,TValue> map, bool isReverse=false)
+                 => etor = new KeyEnumerator (map, isReverse);
 
-                internal Enumerator (RankedMap<TKey,TValue> map, int count) => etor = new KeyEnumerator (map, count);
+                internal Enumerator (RankedMap<TKey,TValue> map, int count)
+                 => etor = new KeyEnumerator (map, count);
 
-                internal Enumerator (RankedMap<TKey,TValue> map, Func<TKey,bool> predicate) => etor = new KeyEnumerator (map, predicate);
+                internal Enumerator (RankedMap<TKey,TValue> map, Func<TKey,bool> predicate)
+                 => etor = new KeyEnumerator (map, predicate);
 
-                internal Enumerator (RankedMap<TKey,TValue> map, Func<TKey,int,bool> predicate) => etor = new KeyEnumerator (map, predicate);
+                internal Enumerator (RankedMap<TKey,TValue> map, Func<TKey,int,bool> predicate)
+                 => etor = new KeyEnumerator (map, predicate);
 
                 /// <summary>Gets the key at the current position.</summary>
                 /// <exception cref="InvalidOperationException">When the enumerator is not active.</exception>
@@ -377,26 +397,32 @@ namespace Kaos.Collections
                 }
 
                 /// <summary>Gets the key at the current position of the enumerator.</summary>
-                public TKey Current => etor.CurrentKeyOrDefault;
+                public TKey Current
+                 => etor.CurrentKeyOrDefault;
 
                 /// <summary>Advances the enumerator to the next key in the collection.</summary>
                 /// <returns><b>true</b> if the enumerator was successfully advanced to the next key; <b>false</b> if the enumerator has passed the end of the collection.</returns>
                 /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
-                public bool MoveNext() => etor.Advance();
+                public bool MoveNext()
+                 => etor.Advance();
 
                 /// <summary>Rewinds the enumerator to its initial state.</summary>
-                void IEnumerator.Reset() => etor.Initialize();
+                void IEnumerator.Reset()
+                 => etor.Initialize();
 
                 /// <summary>Releases all resources used by the enumerator.</summary>
-                public void Dispose() { }
+                public void Dispose()
+                { }
 
                 /// <summary>Gets an iterator for this collection.</summary>
                 /// <returns>An iterator for this collection.</returns>
-                public IEnumerator<TKey> GetEnumerator() => this;
+                public IEnumerator<TKey> GetEnumerator()
+                 => this;
 
                 /// <summary>Gets an iterator for this collection.</summary>
                 /// <returns>An iterator for this collection.</returns>
-                IEnumerator IEnumerable.GetEnumerator() => this;
+                IEnumerator IEnumerable.GetEnumerator()
+                 => this;
 
                 /// <summary>Bypasses a supplied number of keys and yields the remaining keys.</summary>
                 /// <param name="count">Number of keys to skip.</param>

@@ -113,16 +113,19 @@ namespace Kaos.Collections
         /// To override sorting based on the default comparer,
         /// supply an alternate comparer when constructing the map.
         /// </remarks>
-        public IComparer<TKey> Comparer => keyComparer;
+        public IComparer<TKey> Comparer
+         => keyComparer;
 
 
         /// <summary>Gets the number of elements in the map.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
-        public int Count => root.Weight;
+        public int Count
+         => root.Weight;
 
 
         /// <summary>Indicates that the collection is not thread safe.</summary>
-        bool ICollection.IsSynchronized => false;
+        bool ICollection.IsSynchronized
+         => false;
 
 
         /// <summary>Gets a <see cref="RankedMap{TKey,TValue}.KeyCollection"/> containing the keys of the map.</summary>
@@ -146,7 +149,8 @@ namespace Kaos.Collections
 
 
         /// <summary>Gets an object that can be used to synchronize access to the collection.</summary>
-        object ICollection.SyncRoot => GetSyncRoot();
+        object ICollection.SyncRoot
+         => GetSyncRoot();
 
 
         /// <summary>Gets a <see cref="RankedMap{TKey,TValue}.ValueCollection"/> containing the values of the map.</summary>
@@ -171,16 +175,19 @@ namespace Kaos.Collections
 
         /// <summary>Gets the maximum key in the map per the comparer.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
-        public TKey MaxKey => Count == 0 ? default : rightmostLeaf.GetKey (rightmostLeaf.KeyCount - 1);
+        public TKey MaxKey
+         => Count == 0 ? default : rightmostLeaf.GetKey (rightmostLeaf.KeyCount - 1);
 
 
         /// <summary>Gets the minimum key in the map per the comparer.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
-        public TKey MinKey => Count == 0 ? default : leftmostLeaf.Key0;
+        public TKey MinKey
+         => Count == 0 ? default : leftmostLeaf.Key0;
 
 
         /// <summary>Indicates that this collection may be modified.</summary>
-        bool ICollection<KeyValuePair<TKey,TValue>>.IsReadOnly => false;
+        bool ICollection<KeyValuePair<TKey,TValue>>.IsReadOnly
+         => false;
 
         #endregion
 
@@ -223,7 +230,8 @@ namespace Kaos.Collections
 
         /// <summary>Removes all elements from the map.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
-        public void Clear() => Initialize();
+        public void Clear()
+         => Initialize();
 
 
         /// <summary>Determines whether the map contains the supplied key.</summary>
@@ -283,7 +291,8 @@ namespace Kaos.Collections
         /// <param name="value">The value to locate.</param>
         /// <returns><b>true</b> if <em>value</em> is contained in the map; otherwise <b>false</b>.</returns>
         /// <remarks>This is a O(<em>n</em>) operation.</remarks>
-        public bool ContainsValue (TValue value) => ContainsValue2<TValue> (value) >= 0;
+        public bool ContainsValue (TValue value)
+         => ContainsValue2<TValue> (value) >= 0;
 
 
         /// <summary>Copies the map to a compatible array, starting at the supplied position.</summary>
@@ -629,7 +638,8 @@ namespace Kaos.Collections
         /// where <em>m</em> is the number of elements removed and <em>n</em> is <see cref="Count"/>.
         /// </remarks>
         /// <exception cref="ArgumentNullException">When <em>match</em> is <b>null</b>.</exception>
-        public int RemoveWhere (Predicate<TKey> match) => RemoveWhere2 (match);
+        public int RemoveWhere (Predicate<TKey> match)
+         => RemoveWhere2 (match);
 
 
         /// <summary>Removes all elements from the map that match the condition defined by the supplied key/value-parameterized predicate.</summary>
@@ -640,7 +650,8 @@ namespace Kaos.Collections
         /// where <em>m</em> is the number of elements removed and <em>n</em> is <see cref="Count"/>.
         /// </remarks>
         /// <exception cref="ArgumentNullException">When <em>match</em> is <b>null</b>.</exception>
-        public int RemoveWhereElement (Predicate<KeyValuePair<TKey,TValue>> match) => RemoveWhere2<TValue> (match);
+        public int RemoveWhereElement (Predicate<KeyValuePair<TKey,TValue>> match)
+         => RemoveWhere2<TValue> (match);
 
 
         /// <summary>Gets an element with the least key greater than the supplied key.</summary>
@@ -725,9 +736,7 @@ namespace Kaos.Collections
         /// <param name="info">The object that contains the information required to serialize the map.</param>
         /// <param name="context">The structure that contains the source and destination of the serialized stream.</param>
         protected RankedMap (SerializationInfo info, StreamingContext context) : base (new PairLeaf<TValue>())
-        {
-            this.serializationInfo = info;
-        }
+         => this.serializationInfo = info;
 
         /// <summary>Returns the data needed to serialize the map.</summary>
         /// <param name="info">An object that contains the information required to serialize the map.</param>
@@ -794,7 +803,7 @@ namespace Kaos.Collections
         /// <param name="context">A structure that contains the source and destination of the serialized stream.</param>
         /// <exception cref="ArgumentNullException">When <em>info</em> is <b>null</b>.</exception>
         void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
-        { GetObjectData (info, context); }
+         => GetObjectData (info, context);
 
 
         /// <summary>Implements the deserialization callback and raises the deserialization event when completed.</summary>
@@ -802,7 +811,7 @@ namespace Kaos.Collections
         /// <exception cref="ArgumentNullException">When <em>sender</em> is <b>null</b>.</exception>
         /// <exception cref="SerializationException">When the associated <em>SerializationInfo</em> is invalid.</exception>
         void IDeserializationCallback.OnDeserialization (Object sender)
-        { OnDeserialization (sender); }
+         => OnDeserialization (sender);
 
 #endif
         #endregion
@@ -965,7 +974,8 @@ namespace Kaos.Collections
         /// <summary>Returns an enumerator that iterates thru the map in reverse order.</summary>
         /// <returns>An enumerator that reverse iterates thru the map.</returns>
         /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
-        public Enumerator Reverse() => new Enumerator (this, isReverse:true);
+        public Enumerator Reverse()
+         => new Enumerator (this, isReverse:true);
 
 
         /// <summary>Bypasses a supplied number of elements and yields the remaining elements.</summary>
@@ -977,7 +987,8 @@ namespace Kaos.Collections
         /// <code source="..\Bench\RxExample01\RxExample01.cs" lang="cs" region="RmSkip" />
         /// </example>
         /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
-        public Enumerator Skip (int count) => new Enumerator (this, count);
+        public Enumerator Skip (int count)
+         => new Enumerator (this, count);
 
 
         /// <summary>
@@ -986,7 +997,8 @@ namespace Kaos.Collections
         /// <param name="predicate">The condition to test for.</param>
         /// <returns>Remaining elements after the first element that does not satisfy the supplied condition.</returns>
         /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
-        public Enumerator SkipWhile (Func<KeyValuePair<TKey,TValue>,bool> predicate) => new Enumerator (this, predicate);
+        public Enumerator SkipWhile (Func<KeyValuePair<TKey,TValue>,bool> predicate)
+         => new Enumerator (this, predicate);
 
         /// <summary>
         /// Bypasses elements as long as a supplied index-based condition is true and yields the remaining elements.
@@ -994,21 +1006,24 @@ namespace Kaos.Collections
         /// <param name="predicate">The condition to test for.</param>
         /// <returns>Remaining elements after the first element that does not satisfy the supplied condition.</returns>
         /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
-        public Enumerator SkipWhile (Func<KeyValuePair<TKey,TValue>,int,bool> predicate) => new Enumerator (this, predicate);
+        public Enumerator SkipWhile (Func<KeyValuePair<TKey,TValue>,int,bool> predicate)
+         => new Enumerator (this, predicate);
 
 
         /// <summary>Gets an enumerator that iterates thru the map.</summary>
         /// <returns>An enumerator for the map.</returns>
-        public Enumerator GetEnumerator() => new Enumerator (this);
+        public Enumerator GetEnumerator()
+         => new Enumerator (this);
 
         /// <summary>Gets an enumerator that iterates thru the map.</summary>
         /// <returns>An enumerator for the map.</returns>
         IEnumerator<KeyValuePair<TKey,TValue>> IEnumerable<KeyValuePair<TKey,TValue>>.GetEnumerator()
-            => new Enumerator (this);
+         => new Enumerator (this);
 
         /// <summary>Gets an enumerator that iterates thru the collection.</summary>
         /// <returns>An enumerator for the collection.</returns>
-        IEnumerator IEnumerable.GetEnumerator() => new Enumerator (this, isReverse:false, nonGeneric:true);
+        IEnumerator IEnumerable.GetEnumerator()
+         => new Enumerator (this, isReverse:false, nonGeneric:true);
 
 
         /// <summary>Enumerates the sorted key/value pairs of a <see cref="RankedMap{TKey,TValue}"/>.</summary>
@@ -1022,16 +1037,16 @@ namespace Kaos.Collections
             /// <param name="isReverse">Supply <b>true</b> to iterate from last to first.</param>
             /// <param name="nonGeneric">Supply <b>true</b> to indicate object Current should return DictionaryEntry values.</param>
             internal Enumerator (RankedMap<TKey,TValue> map, bool isReverse=false, bool nonGeneric=false)
-                => etor = new PairEnumerator<TValue> (map, isReverse, nonGeneric);
+             => etor = new PairEnumerator<TValue> (map, isReverse, nonGeneric);
 
             internal Enumerator (RankedMap<TKey,TValue> map, int count)
-                => etor = new PairEnumerator<TValue> (map, count);
+             => etor = new PairEnumerator<TValue> (map, count);
 
             internal Enumerator (RankedMap<TKey,TValue> map, Func<KeyValuePair<TKey,TValue>,bool> predicate)
-                => etor = new PairEnumerator<TValue> (map, predicate);
+             => etor = new PairEnumerator<TValue> (map, predicate);
 
             internal Enumerator (RankedMap<TKey,TValue> map, Func<KeyValuePair<TKey,TValue>,int,bool> predicate)
-                => etor = new PairEnumerator<TValue> (map, predicate);
+             => etor = new PairEnumerator<TValue> (map, predicate);
 
             /// <summary>Gets the element at the current position.</summary>
             /// <exception cref="InvalidOperationException">When the enumerator is not active.</exception>
@@ -1049,26 +1064,32 @@ namespace Kaos.Collections
             }
 
             /// <summary>Gets the key/value pair at the current position of the enumerator.</summary>
-            public KeyValuePair<TKey,TValue> Current => etor.CurrentPairOrDefault;
+            public KeyValuePair<TKey,TValue> Current
+             => etor.CurrentPairOrDefault;
 
             /// <summary>Advances the enumerator to the next element in the map.</summary>
             /// <returns><b>true</b> if the enumerator was successfully advanced to the next element; <b>false</b> if the enumerator has passed the end of the collection.</returns>
             /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
-            public bool MoveNext() => etor.Advance();
+            public bool MoveNext()
+             => etor.Advance();
 
             /// <summary>Rewinds the enumerator to its initial state.</summary>
-            void IEnumerator.Reset() => etor.Initialize();
+            void IEnumerator.Reset()
+             => etor.Initialize();
 
             /// <summary>Releases all resources used by the enumerator.</summary>
-            public void Dispose() { }
+            public void Dispose()
+            { }
 
             /// <summary>Gets an iterator for this collection.</summary>
             /// <returns>An iterator for this collection.</returns>
-            public IEnumerator<KeyValuePair<TKey,TValue>> GetEnumerator() => this;
+            public IEnumerator<KeyValuePair<TKey,TValue>> GetEnumerator()
+             => this;
 
             /// <summary>Gets an iterator for this collection.</summary>
             /// <returns>An iterator for this collection.</returns>
-            IEnumerator IEnumerable.GetEnumerator() => this;
+            IEnumerator IEnumerable.GetEnumerator()
+             => this;
 
             /// <summary>Bypasses a supplied number of elements and yields the remaining elements.</summary>
             /// <param name="count">Number of elements to skip.</param>

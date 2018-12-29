@@ -114,32 +114,39 @@ namespace Kaos.Collections
         #region Properties
 
         /// <summary>Indicates that the collection is not read-only.</summary>
-        bool ICollection<T>.IsReadOnly => false;
+        bool ICollection<T>.IsReadOnly
+         => false;
 
         /// <summary>Indicates that the collection is not thread safe.</summary>
-        bool ICollection.IsSynchronized => false;
+        bool ICollection.IsSynchronized
+         => false;
 
         /// <summary>Gets the maximum item in the bag per the comparer.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
-        public T Max => Count==0 ? default : rightmostLeaf.GetKey (rightmostLeaf.KeyCount-1);
+        public T Max
+         => Count == 0 ? default : rightmostLeaf.GetKey (rightmostLeaf.KeyCount-1);
 
         /// <summary>Gets the minimum item in the bag per the comparer.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
-        public T Min => Count==0 ? default : leftmostLeaf.Key0;
+        public T Min
+         => Count == 0 ? default : leftmostLeaf.Key0;
 
         /// <summary>Returns a wrapper of the method used to order items in the bag.</summary>
         /// <remarks>
         /// To override sorting based on the default comparer,
         /// supply an alternate comparer when constructing the bag.
         /// </remarks>
-        public IComparer<T> Comparer => keyComparer;
+        public IComparer<T> Comparer
+         => keyComparer;
 
         /// <summary>Gets the total number of occurrences of all items in the bag.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
-        public int Count => root.Weight;
+        public int Count
+         => root.Weight;
 
         /// <summary>Gets an object that can be used to synchronize access to the collection.</summary>
-        object ICollection.SyncRoot => GetSyncRoot();
+        object ICollection.SyncRoot
+         => GetSyncRoot();
 
         #endregion
 
@@ -148,7 +155,7 @@ namespace Kaos.Collections
         /// <summary>Adds an item to the bag.</summary>
         /// <param name="item">The item to add.</param>
         void ICollection<T>.Add (T item)
-        { AddKey (item, new NodeVector (this, item, leftEdge:false)); }
+         => AddKey (item, new NodeVector (this, item, leftEdge:false));
 
         /// <summary>Adds an item to the bag.</summary>
         /// <param name="item">The item to add.</param>
@@ -222,7 +229,8 @@ namespace Kaos.Collections
 
         /// <summary>Removes all items from the bag.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
-        public void Clear() => Initialize();
+        public void Clear()
+         => Initialize();
 
 
         /// <summary>Determines whether the bag contains the supplied item.</summary>
@@ -282,7 +290,7 @@ namespace Kaos.Collections
         /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
         /// <exception cref="ArgumentException">When not enough space is available for the copy.</exception>
         public void CopyTo (T[] array)
-        { CopyKeysTo1 (array, 0, Count); }
+         => CopyKeysTo1 (array, 0, Count);
 
         /// <summary>Copies the items to a compatible array, starting at the supplied position.</summary>
         /// <param name="array">A one-dimensional array that is the destination of the copy.</param>
@@ -292,7 +300,7 @@ namespace Kaos.Collections
         /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero.</exception>
         /// <exception cref="ArgumentException">When not enough space is available for the copy.</exception>
         public void CopyTo (T[] array, int index)
-        { CopyKeysTo1 (array, index, Count); }
+         => CopyKeysTo1 (array, index, Count);
 
         /// <summary>Copies a supplied number of items to a compatible array, starting at the supplied position.</summary>
         /// <param name="array">A one-dimensional array that is the destination of the copy.</param>
@@ -303,13 +311,13 @@ namespace Kaos.Collections
         /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero.</exception>
         /// <exception cref="ArgumentException">When not enough space is available for the copy.</exception>
         public void CopyTo (T[] array, int index, int count)
-        { CopyKeysTo1 (array, index, count); }
+         => CopyKeysTo1 (array, index, count);
 
         /// <summary>Copies the bag to a compatible array, starting at the supplied array index.</summary>
         /// <param name="array">A one-dimensional array that is the destination of the copy.</param>
         /// <param name="index">The zero-based starting position in <em>array</em>.</param>
         void ICollection.CopyTo (Array array, int index)
-        { CopyKeysTo2 (array, index); }
+         => CopyKeysTo2 (array, index);
 
 
         /// <summary>Returns the number of occurrences of the supplied item in the bag.</summary>
@@ -321,7 +329,8 @@ namespace Kaos.Collections
         /// where <em>n</em> is <see cref="Count"/>.
         /// </para>
         /// </remarks>
-        public int GetCount (T item) => GetCount2 (item);
+        public int GetCount (T item)
+         => GetCount2 (item);
 
 
         /// <summary>Returns the number of distinct items in the bag.</summary>
@@ -331,7 +340,8 @@ namespace Kaos.Collections
         /// where <em>m</em> is the distinct item count
         /// and <em>n</em> is <see cref="Count"/>.
         /// </remarks>
-        public int GetDistinctCount() => GetDistinctCount2();
+        public int GetDistinctCount()
+         => GetDistinctCount2();
 
 
         /// <summary>Gets the index of the first occurrence of the supplied item.</summary>
@@ -348,7 +358,8 @@ namespace Kaos.Collections
         /// This is a O(log <em>n</em>) operation.
         /// </para>
         /// </remarks>
-        public int IndexOf (T item) => FindEdgeForIndex (item, out Leaf _, out int _, leftEdge:true);
+        public int IndexOf (T item)
+         => FindEdgeForIndex (item, out Leaf _, out int _, leftEdge:true);
 
 
         /// <summary>Removes all occurrences of the supplied item from the bag.</summary>
@@ -470,7 +481,8 @@ namespace Kaos.Collections
         /// </remarks>
         /// <exception cref="ArgumentNullException">When <em>match</em> is <b>null</b>.</exception>
         /// <exception cref="InvalidOperationException">When the collection is updated from the supplied predicate.</exception>
-        public int RemoveWhere (Predicate<T> match) => RemoveWhere2 (match);
+        public int RemoveWhere (Predicate<T> match)
+         => RemoveWhere2 (match);
 
 
         /// <summary>Removes any elements that are not in the supplied collection from the bag.</summary>
@@ -542,7 +554,8 @@ namespace Kaos.Collections
         /// In the below snippet, both Skip operations perform an order of magnitude faster than their LINQ equivalent.
         /// <code source="..\Bench\RxExample01\RxExample01.cs" lang="cs" region="RbSkip" />
         /// </example>
-        public Enumerator Skip (int count) => new Enumerator (this, count);
+        public Enumerator Skip (int count)
+         => new Enumerator (this, count);
 
 
         /// <summary>
@@ -551,7 +564,8 @@ namespace Kaos.Collections
         /// <param name="predicate">The condition to test for.</param>
         /// <returns>Remaining items after the first item that does not satisfy the supplied condition.</returns>
         /// <exception cref="InvalidOperationException">When the bag was modified after the enumerator was created.</exception>
-        public Enumerator SkipWhile (Func<T,bool> predicate) => new Enumerator (this, predicate);
+        public Enumerator SkipWhile (Func<T,bool> predicate)
+         => new Enumerator (this, predicate);
 
         /// <summary>
         /// Bypasses elements as long as a supplied index-based condition is true and yields the remaining items.
@@ -559,7 +573,8 @@ namespace Kaos.Collections
         /// <param name="predicate">The condition to test for.</param>
         /// <returns>Remaining items after the first item that does not satisfy the supplied condition.</returns>
         /// <exception cref="InvalidOperationException">When the bag was modified after the enumerator was created.</exception>
-        public Enumerator SkipWhile (Func<T,int,bool> predicate) => new Enumerator (this, predicate);
+        public Enumerator SkipWhile (Func<T,int,bool> predicate)
+         => new Enumerator (this, predicate);
 
 
         /// <summary>Gets the actual item for the supplied search item.</summary>
@@ -647,9 +662,7 @@ namespace Kaos.Collections
         /// <param name="info">The object that contains the information required to serialize the bag.</param>
         /// <param name="context">The structure that contains the source and destination of the serialized stream.</param>
         protected RankedBag (SerializationInfo info, StreamingContext context) : base (new Btree<T>.Leaf())
-        {
-            this.serializationInfo = info;
-        }
+         => this.serializationInfo = info;
 
 
         /// <summary>Returns the data needed to serialize the bag.</summary>
@@ -705,7 +718,7 @@ namespace Kaos.Collections
         /// <param name="context">A structure that contains the source and destination of the serialized stream.</param>
         /// <exception cref="ArgumentNullException">When <em>info</em> is <b>null</b>.</exception>
         void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
-        { GetObjectData (info, context); }
+         => GetObjectData (info, context);
 
 
         /// <summary>Implements the deserialization callback and raises the deserialization event when completed.</summary>
@@ -713,7 +726,7 @@ namespace Kaos.Collections
         /// <exception cref="ArgumentNullException">When <em>sender</em> is <b>null</b>.</exception>
         /// <exception cref="SerializationException">When the associated <em>SerializationInfo</em> is invalid.</exception>
         void IDeserializationCallback.OnDeserialization (Object sender)
-        { OnDeserialization (sender); }
+         => OnDeserialization (sender);
 
 #endif
         #endregion
@@ -927,20 +940,24 @@ namespace Kaos.Collections
         /// <summary>Returns an IEnumerable that iterates thru the bag in reverse sort order.</summary>
         /// <returns>An enumerator that reverse iterates thru the bag.</returns>
         /// <exception cref="InvalidOperationException">When the bag was modified after the enumerator was created.</exception>
-        public Enumerator Reverse() => new Enumerator (this, isReverse:true);
+        public Enumerator Reverse()
+         => new Enumerator (this, isReverse:true);
 
 
         /// <summary>Returns an enumerator that iterates thru the bag.</summary>
         /// <returns>An enumerator that iterates thru the bag in sorted order.</returns>
-        public Enumerator GetEnumerator() => new Enumerator (this);
+        public Enumerator GetEnumerator()
+         => new Enumerator (this);
 
         /// <summary>Returns an enumerator that iterates thru the bag.</summary>
         /// <returns>An enumerator that iterates thru the bag in sorted order.</returns>
-        IEnumerator<T> IEnumerable<T>.GetEnumerator() => new Enumerator (this);
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+         => new Enumerator (this);
 
         /// <summary>Returns an enumerator that iterates thru the collection.</summary>
         /// <returns>An enumerator that iterates thru the collection in sorted order.</returns>
-        IEnumerator IEnumerable.GetEnumerator() => new Enumerator (this);
+        IEnumerator IEnumerable.GetEnumerator()
+         => new Enumerator (this);
 
 
         /// <summary>Enumerates the items of a <see cref="RankedBag{T}"/> in sort order.</summary>
@@ -949,13 +966,17 @@ namespace Kaos.Collections
         {
             private readonly KeyEnumerator etor;
 
-            internal Enumerator (RankedBag<T> bag, bool isReverse=false) => etor = new KeyEnumerator (bag, isReverse);
+            internal Enumerator (RankedBag<T> bag, bool isReverse=false)
+             => etor = new KeyEnumerator (bag, isReverse);
 
-            internal Enumerator (RankedBag<T> bag, int count) => etor = new KeyEnumerator (bag, count);
+            internal Enumerator (RankedBag<T> bag, int count)
+             => etor = new KeyEnumerator (bag, count);
 
-            internal Enumerator (RankedBag<T> bag, Func<T,bool> predicate) => etor = new KeyEnumerator (bag, predicate);
+            internal Enumerator (RankedBag<T> bag, Func<T,bool> predicate)
+             => etor = new KeyEnumerator (bag, predicate);
 
-            internal Enumerator (RankedBag<T> bag, Func<T,int,bool> predicate) => etor = new KeyEnumerator (bag, predicate);
+            internal Enumerator (RankedBag<T> bag, Func<T,int,bool> predicate)
+             => etor = new KeyEnumerator (bag, predicate);
 
             /// <summary>Gets the item at the current position.</summary>
             /// <exception cref="InvalidOperationException">When the enumerator is not active.</exception>
@@ -970,26 +991,32 @@ namespace Kaos.Collections
             }
 
             /// <summary>Gets the item at the current position of the enumerator.</summary>
-            public T Current => etor.CurrentKeyOrDefault;
+            public T Current
+             => etor.CurrentKeyOrDefault;
 
             /// <summary>Advances the enumerator to the next item in the bag.</summary>
             /// <returns><b>true</b> if the enumerator was successfully advanced to the next item; <b>false</b> if the enumerator has passed the end of the bag.</returns>
             /// <exception cref="InvalidOperationException">When the bag was modified after the enumerator was created.</exception>
-            public bool MoveNext() => etor.Advance();
+            public bool MoveNext()
+             => etor.Advance();
 
             /// <summary>Rewinds the enumerator to its initial state.</summary>
-            void IEnumerator.Reset() => etor.Initialize();
+            void IEnumerator.Reset()
+             => etor.Initialize();
 
             /// <summary>Releases all resources used by the enumerator.</summary>
-            public void Dispose() { }
+            public void Dispose()
+            { }
 
             /// <summary>Gets an iterator for this collection.</summary>
             /// <returns>An iterator for this collection.</returns>
-            public IEnumerator<T> GetEnumerator() => this;
+            public IEnumerator<T> GetEnumerator()
+             => this;
 
             /// <summary>Gets an iterator for this collection.</summary>
             /// <returns>An iterator for this collection.</returns>
-            IEnumerator IEnumerable.GetEnumerator() => this;
+            IEnumerator IEnumerable.GetEnumerator()
+             => this;
 
             /// <summary>Bypasses a supplied number of items and yields the remaining items.</summary>
             /// <param name="count">Number of items to skip.</param>

@@ -233,24 +233,29 @@ namespace Kaos.Collections
 
             #region Properties
 
-            public bool IsFound
-            { get; private set; }
+            public bool IsFound { get; private set; }
 
-            public Node TopNode => nodeStack[indexStack.Count-1];
+            public Node TopNode
+             => nodeStack[indexStack.Count-1];
 
-            public int TopIndex => indexStack[indexStack.Count-1];
+            public int TopIndex
+             => indexStack[indexStack.Count-1];
 
-            public int Height => indexStack.Count;
+            public int Height
+             => indexStack.Count;
 
             #endregion
 
             #region Methods
 
-            public Node GetNode (int level) => nodeStack[level];
+            public Node GetNode (int level)
+             => nodeStack[level];
 
-            public int GetIndex (int level) => indexStack[level];
+            public int GetIndex (int level)
+             => indexStack[level];
 
-            public T LeftKey => ((Leaf) TopNode).GetKey (TopIndex-1);
+            public T LeftKey
+             => ((Leaf) TopNode).GetKey (TopIndex-1);
 
 
             public int GetTreeIndex()
@@ -716,7 +721,8 @@ namespace Kaos.Collections
             }
 
             /// <summary>Returns <b>true</b> if no left sibling.</summary>
-            public bool IsLeftmostNode => indexStack[Height - 2] == 0;
+            public bool IsLeftmostNode
+             => indexStack[Height - 2] == 0;
 #endif
         }
     }

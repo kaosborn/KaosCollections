@@ -135,28 +135,35 @@ namespace Kaos.Collections
         /// To override sorting based on the default comparer,
         /// supply an alternate comparer when constructing the set.
         /// </remarks>
-        public IComparer<T> Comparer => keyComparer;
+        public IComparer<T> Comparer
+         => keyComparer;
 
         /// <summary>Gets the number of items in the set.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
-        public int Count => root.Weight;
+        public int Count
+         => root.Weight;
 
         /// <summary>Indicates that the collection is not read-only.</summary>
-        bool ICollection<T>.IsReadOnly => false;
+        bool ICollection<T>.IsReadOnly
+         => false;
 
         /// <summary>Indicates that the collection is not thread safe.</summary>
-        bool ICollection.IsSynchronized => false;
+        bool ICollection.IsSynchronized
+         => false;
 
         /// <summary>Gets the maximum item in the set per the comparer.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
-        public T Max => Count==0 ? default : rightmostLeaf.GetKey (rightmostLeaf.KeyCount - 1);
+        public T Max
+         => Count == 0 ? default : rightmostLeaf.GetKey (rightmostLeaf.KeyCount - 1);
 
         /// <summary>Gets the minimum item in the set per the comparer.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
-        public T Min => Count==0 ? default : leftmostLeaf.Key0;
+        public T Min
+         => Count == 0 ? default : leftmostLeaf.Key0;
 
         /// <summary>Gets an object that can be used to synchronize access to the collection.</summary>
-        object ICollection.SyncRoot => GetSyncRoot();
+        object ICollection.SyncRoot
+         => GetSyncRoot();
 
         #endregion
 
@@ -165,7 +172,7 @@ namespace Kaos.Collections
         /// <summary>Adds an item to the set.</summary>
         /// <param name="item">The item to add.</param>
         void ICollection<T>.Add (T item)
-        { Add (item); }
+         => Add (item);
 
         /// <summary>Adds an item to the set and returns a success indicator.</summary>
         /// <param name="item">The item to add.</param>
@@ -189,7 +196,8 @@ namespace Kaos.Collections
 
         /// <summary>Removes all items from the set.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
-        public void Clear() => Initialize();
+        public void Clear()
+         => Initialize();
 
 
         /// <summary>Determines whether the set contains the supplied item.</summary>
@@ -209,7 +217,7 @@ namespace Kaos.Collections
         /// <exception cref="ArgumentNullException">When <em>array</em> is <b>null</b>.</exception>
         /// <exception cref="ArgumentException">When not enough space is available for the copy.</exception>
         public void CopyTo (T[] array)
-        { CopyKeysTo1 (array, 0, Count); }
+         => CopyKeysTo1 (array, 0, Count);
 
         /// <summary>Copies the set to a compatible array, starting at the supplied position.</summary>
         /// <param name="array">A one-dimensional array that is the destination of the copy.</param>
@@ -219,7 +227,7 @@ namespace Kaos.Collections
         /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero.</exception>
         /// <exception cref="ArgumentException">When not enough space is available for the copy.</exception>
         public void CopyTo (T[] array, int index)
-        { CopyKeysTo1 (array, index, Count); }
+         => CopyKeysTo1 (array, index, Count);
 
         /// <summary>Copies a supplied number of items to a compatible array, starting at the supplied position.</summary>
         /// <param name="array">A one-dimensional array that is the destination of the copy.</param>
@@ -230,13 +238,13 @@ namespace Kaos.Collections
         /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> or <em>count</em> is less than zero.</exception>
         /// <exception cref="ArgumentException">When not enough space is available for the copy.</exception>
         public void CopyTo (T[] array, int index, int count)
-        { CopyKeysTo1 (array, index, count); }
+         => CopyKeysTo1 (array, index, count);
 
         /// <summary>Copies the set to a compatible array, starting at the supplied array index.</summary>
         /// <param name="array">A one-dimensional array that is the destination of the copy.</param>
         /// <param name="index">The zero-based starting position in <em>array</em>.</param>
         void ICollection.CopyTo (Array array, int index)
-        { CopyKeysTo2 (array, index); }
+         => CopyKeysTo2 (array, index);
 
 
         /// <summary>Removes the supplied item from the set.</summary>
@@ -291,7 +299,8 @@ namespace Kaos.Collections
         /// <code source="..\Bench\RsExample01\RsExample01.cs" lang="cs"/>
         /// </example>
         /// <exception cref="ArgumentNullException">When <em>match</em> is <b>null</b>.</exception>
-        public int RemoveWhere (Predicate<T> match) => RemoveWhere2 (match);
+        public int RemoveWhere (Predicate<T> match)
+         => RemoveWhere2 (match);
 
         #endregion
 
@@ -593,9 +602,7 @@ namespace Kaos.Collections
         /// <param name="info">The object that contains the information required to serialize the set.</param>
         /// <param name="context">The structure that contains the source and destination of the serialized stream.</param>
         protected RankedSet (SerializationInfo info, StreamingContext context) : base (new Btree<T>.Leaf())
-        {
-            this.serializationInfo = info;
-        }
+         => this.serializationInfo = info;
 
 
         /// <summary>Returns the data needed to serialize the set.</summary>
@@ -652,7 +659,7 @@ namespace Kaos.Collections
         /// <param name="context">A structure that contains the source and destination of the serialized stream.</param>
         /// <exception cref="ArgumentNullException">When <em>info</em> is <b>null</b>.</exception>
         void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
-        { GetObjectData (info, context); }
+         => GetObjectData (info, context);
 
 
         /// <summary>Implements the deserialization callback and raises the deserialization event when completed.</summary>
@@ -660,7 +667,7 @@ namespace Kaos.Collections
         /// <exception cref="ArgumentNullException">When <em>sender</em> is <b>null</b>.</exception>
         /// <exception cref="SerializationException">When the associated <em>SerializationInfo</em> is invalid.</exception>
         void IDeserializationCallback.OnDeserialization (Object sender)
-        { OnDeserialization (sender); }
+         => OnDeserialization (sender);
 
 #endif
         #endregion
@@ -725,7 +732,8 @@ namespace Kaos.Collections
         /// <summary>Returns an IEnumerable that iterates thru the set in reverse order.</summary>
         /// <returns>An enumerator that reverse iterates thru the set.</returns>
         /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
-        public Enumerator Reverse() => new Enumerator (this, isReverse:true);
+        public Enumerator Reverse()
+         => new Enumerator (this, isReverse:true);
 
         #endregion
 
@@ -876,7 +884,7 @@ namespace Kaos.Collections
         /// </para>
         /// </remarks>
         public int IndexOf (T item)
-            => FindEdgeForIndex (item, out Leaf _, out int _, leftEdge:true);
+         => FindEdgeForIndex (item, out Leaf _, out int _, leftEdge:true);
 
 
         /// <summary>Removes the item at the supplied index from the set.</summary>
@@ -947,7 +955,8 @@ namespace Kaos.Collections
         /// <code source="..\Bench\RxExample01\RxExample01.cs" lang="cs" region="RsSkip" />
         /// </example>
         /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
-        public Enumerator Skip (int count) => new Enumerator (this, count);
+        public Enumerator Skip (int count)
+         => new Enumerator (this, count);
 
 
         /// <summary>
@@ -956,7 +965,8 @@ namespace Kaos.Collections
         /// <param name="predicate">The condition to test for.</param>
         /// <returns>Remaining items after the first item that does not satisfy the supplied condition.</returns>
         /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
-        public Enumerator SkipWhile (Func<T,bool> predicate) => new Enumerator (this, predicate);
+        public Enumerator SkipWhile (Func<T,bool> predicate)
+         => new Enumerator (this, predicate);
 
         /// <summary>
         /// Bypasses elements as long as a supplied index-based condition is true and yields the remaining items.
@@ -964,7 +974,8 @@ namespace Kaos.Collections
         /// <param name="predicate">The condition to test for.</param>
         /// <returns>Remaining items after the first item that does not satisfy the supplied condition.</returns>
         /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
-        public Enumerator SkipWhile (Func<T,int,bool> predicate) => new Enumerator (this, predicate);
+        public Enumerator SkipWhile (Func<T,int,bool> predicate)
+         => new Enumerator (this, predicate);
 
 
         /// <summary>Gets the actual item for the supplied search item.</summary>
@@ -1050,24 +1061,18 @@ namespace Kaos.Collections
         /// <code source="..\Bench\RsExample06\RsExample06.cs" lang="cs" />
         /// </example>
         public static IEqualityComparer<RankedSet<T>> CreateSetComparer()
-        {
-            return CreateSetComparer (null);
-        }
+         => CreateSetComparer (null);
 
 
         /// <summary>Returns an equality comparer using a supplied comparer that can be used to create a collection that contains sets.</summary>
         /// <param name="memberEqualityComparer">Used for creating the returned comparer.</param>
         /// <returns>An equality comparer for creating a collection of sets.</returns>
         public static IEqualityComparer<RankedSet<T>> CreateSetComparer (IEqualityComparer<T> memberEqualityComparer)
-        {
-            return new RankedSetEqualityComparer (memberEqualityComparer);
-        }
+         => new RankedSetEqualityComparer (memberEqualityComparer);
 
 
         private bool HasEqualComparer (RankedSet<T> other)
-        {
-            return Comparer == other.Comparer || Comparer.Equals (other.Comparer);
-        }
+         => Comparer == other.Comparer || Comparer.Equals (other.Comparer);
 
 
         private static bool RankedSetEquals (RankedSet<T> set1, RankedSet<T> set2, IComparer<T> comparer)
@@ -1105,15 +1110,18 @@ namespace Kaos.Collections
 
         /// <summary>Returns an enumerator that iterates thru the set.</summary>
         /// <returns>An enumerator that iterates thru the set in sorted order.</returns>
-        public Enumerator GetEnumerator() => new Enumerator (this);
+        public Enumerator GetEnumerator()
+         => new Enumerator (this);
 
         /// <summary>Returns an enumerator that iterates thru the set.</summary>
         /// <returns>An enumerator that iterates thru the set in sorted order.</returns>
-        IEnumerator<T> IEnumerable<T>.GetEnumerator() => new Enumerator (this);
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+         => new Enumerator (this);
 
         /// <summary>Returns an enumerator that iterates thru the collection.</summary>
         /// <returns>An enumerator that iterates thru the collection in sorted order.</returns>
-        IEnumerator IEnumerable.GetEnumerator() => new Enumerator (this);
+        IEnumerator IEnumerable.GetEnumerator()
+         => new Enumerator (this);
 
 
         /// <summary>Enumerates the items of a <see cref="RankedSet{T}"/> in sort order.</summary>
@@ -1122,13 +1130,17 @@ namespace Kaos.Collections
         {
             private readonly KeyEnumerator etor;
 
-            internal Enumerator (RankedSet<T> set, bool isReverse=false) => etor = new KeyEnumerator (set, isReverse);
+            internal Enumerator (RankedSet<T> set, bool isReverse=false)
+             => etor = new KeyEnumerator (set, isReverse);
 
-            internal Enumerator (RankedSet<T> set, int count) => etor = new KeyEnumerator (set, count);
+            internal Enumerator (RankedSet<T> set, int count)
+             => etor = new KeyEnumerator (set, count);
 
-            internal Enumerator (RankedSet<T> set, Func<T,bool> predicate) => etor = new KeyEnumerator (set, predicate);
+            internal Enumerator (RankedSet<T> set, Func<T,bool> predicate)
+             => etor = new KeyEnumerator (set, predicate);
 
-            internal Enumerator (RankedSet<T> set, Func<T,int,bool> predicate) => etor = new KeyEnumerator (set, predicate);
+            internal Enumerator (RankedSet<T> set, Func<T,int,bool> predicate)
+             => etor = new KeyEnumerator (set, predicate);
 
             /// <summary>Gets the item at the current position.</summary>
             /// <exception cref="InvalidOperationException">When the enumerator is not active.</exception>
@@ -1143,26 +1155,32 @@ namespace Kaos.Collections
             }
 
             /// <summary>Gets the item at the current position of the enumerator.</summary>
-            public T Current => etor.CurrentKeyOrDefault;
+            public T Current
+             => etor.CurrentKeyOrDefault;
 
             /// <summary>Advances the enumerator to the next item in the set.</summary>
             /// <returns><b>true</b> if the enumerator was successfully advanced to the next item; <b>false</b> if the enumerator has passed the end of the set.</returns>
             /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
-            public bool MoveNext() => etor.Advance();
+            public bool MoveNext()
+             => etor.Advance();
 
             /// <summary>Rewinds the enumerator to its initial state.</summary>
-            void IEnumerator.Reset() => etor.Initialize();
+            void IEnumerator.Reset()
+             => etor.Initialize();
 
             /// <summary>Releases all resources used by the enumerator.</summary>
-            public void Dispose() { }
+            public void Dispose()
+            { }
 
             /// <summary>Gets an iterator for this collection.</summary>
             /// <returns>An iterator for this collection.</returns>
-            public IEnumerator<T> GetEnumerator() => this;
+            public IEnumerator<T> GetEnumerator()
+             => this;
 
             /// <summary>Gets an iterator for this collection.</summary>
             /// <returns>An iterator for this collection.</returns>
-            IEnumerator IEnumerable.GetEnumerator() => this;
+            IEnumerator IEnumerable.GetEnumerator()
+             => this;
 
             /// <summary>Bypasses a supplied number of items and yields the remaining items.</summary>
             /// <param name="count">Number of items to skip.</param>

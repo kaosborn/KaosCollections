@@ -23,25 +23,23 @@ namespace Kaos.Collections
             protected readonly List<T> keys;
 
             public Node (int keyCapacity)
-            {
-                this.keys = new List<T> (keyCapacity);
-            }
+             => this.keys = new List<T> (keyCapacity);
 
             public abstract int Weight { get; }
 
             public int KeyCount => keys.Count;
             public T Key0 => keys[0];
 
-            public void AddKey (T key) { keys.Add (key); }
-            public T GetKey (int index) { return keys[index]; }
-            public int Search (T key) { return keys.BinarySearch (key); }
-            public int Search (T key, IComparer<T> comparer) { return keys.BinarySearch (key, comparer); }
-            public void SetKey (int index, T key) { keys[index] = key; }
-            public void RemoveKey (int index) { keys.RemoveAt (index); }
-            public void RemoveKeys (int index, int count) { keys.RemoveRange (index, count); }
-            public void TruncateKeys (int index) { keys.RemoveRange (index, keys.Count - index); }
-            public void InsertKey (int index, T key) { keys.Insert (index, key); }
-            public void CopyKeysTo (T[] array, int index, int count) { keys.CopyTo (0, array, index, count); }
+            public void AddKey (T key) => keys.Add (key);
+            public T GetKey (int index) => keys[index];
+            public int Search (T key) => keys.BinarySearch (key);
+            public int Search (T key, IComparer<T> comparer) => keys.BinarySearch (key, comparer);
+            public void SetKey (int index, T key) => keys[index] = key;
+            public void RemoveKey (int index) => keys.RemoveAt (index);
+            public void RemoveKeys (int index, int count) => keys.RemoveRange (index, count);
+            public void TruncateKeys (int index) => keys.RemoveRange (index, keys.Count - index);
+            public void InsertKey (int index, T key) => keys.Insert (index, key);
+            public void CopyKeysTo (T[] array, int index, int count) => keys.CopyTo (0, array, index, count);
 
             public void InsertKey (int index, T key, int count)
             {
@@ -101,9 +99,7 @@ namespace Kaos.Collections
             private int weight;
 
             public Branch (int keyCapacity) : base (keyCapacity)
-            {
-                this.childNodes = new List<Node> (keyCapacity + 1);
-            }
+             => this.childNodes = new List<Node> (keyCapacity + 1);
 
             public Branch (int keyCapacity, Node child, int weight=0) : base (keyCapacity)
             {
@@ -111,22 +107,27 @@ namespace Kaos.Collections
                 this.weight = weight;
             }
 
-            public int ChildCount => childNodes.Count;
+            public int ChildCount
+             => childNodes.Count;
 
-            public Node Child0 => childNodes[0];
+            public Node Child0
+             => childNodes[0];
 
-            public Node GetChild (int childIndex) => childNodes[childIndex];
+            public Node GetChild (int childIndex)
+             => childNodes[childIndex];
 
             /// <summary>Number of elements in child leaves.</summary>
             public override int Weight
-            { get { return weight; } }
+             => weight;
 
-            public void AdjustWeight (int delta) { weight += delta; }
-            public void IncrementWeight() { ++weight; }
-            public void DecrementWeight() { --weight; }
+            public void AdjustWeight (int delta)
+             => weight += delta;
+
+            public void IncrementWeight() => ++weight;
+            public void DecrementWeight() => --weight;
 
             public void RemoveChild (int index)
-            { childNodes.RemoveAt (index); }
+             => childNodes.RemoveAt (index);
 
             public void Truncate (int index)
             {
@@ -151,9 +152,7 @@ namespace Kaos.Collections
             }
 
             public void Add (Node node)
-            {
-                childNodes.Add (node);
-            }
+             => childNodes.Add (node);
 
             public void Add (T key, Node node)
             {
@@ -162,9 +161,7 @@ namespace Kaos.Collections
             }
 
             public void Insert (int index, Node node)
-            {
-                childNodes.Insert (index, node);
-            }
+             => childNodes.Insert (index, node);
 
             public void Remove (int index, int count)
             {
@@ -191,9 +188,7 @@ namespace Kaos.Collections
             /// <summary>Create a siblingless leaf.</summary>
             /// <param name="capacity">The initial number of elements the page can store.</param>
             public Leaf (int capacity=0) : base (capacity)
-            {
-                this.leftLeaf = this.rightLeaf = null;
-            }
+             => this.leftLeaf = this.rightLeaf = null;
 
 
             /// <summary>Splice new leaf to right of leftLeaf".</summary>
@@ -210,7 +205,8 @@ namespace Kaos.Collections
 
 
             /// <summary>Number of key/value pairs in the subtree.</summary>
-            public override int Weight => keys.Count;
+            public override int Weight
+             => keys.Count;
 
 
             public void Add (Leaf source, int sourceStart, int sourceStop)
@@ -226,9 +222,7 @@ namespace Kaos.Collections
             }
 
             public void CopyLeafLeft (int index, int offset)
-            {
-                keys[index-offset] = keys[index];
-            }
+             => keys[index-offset] = keys[index];
 
             public virtual void MoveLeft (int count)
             {
@@ -238,14 +232,10 @@ namespace Kaos.Collections
             }
 
             public virtual void RemoveRange (int index, int count)
-            {
-                keys.RemoveRange (index, count);
-            }
+             => keys.RemoveRange (index, count);
 
             public virtual void Truncate (int index)
-            {
-                keys.RemoveRange (index, keys.Count-index);
-            }
+             => keys.RemoveRange (index, keys.Count-index);
         }
     }
 }

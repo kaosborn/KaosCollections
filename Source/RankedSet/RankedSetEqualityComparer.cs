@@ -23,7 +23,8 @@ namespace Kaos.Collections
                 this.equalityComparer = equalityComparer ?? EqualityComparer<T>.Default;
             }
 
-            public bool Equals (RankedSet<T> s1, RankedSet<T> s2) => RankedSet<T>.RankedSetEquals (s1, s2, comparer);
+            public bool Equals (RankedSet<T> s1, RankedSet<T> s2)
+             => RankedSet<T>.RankedSetEquals (s1, s2, comparer);
 
             public int GetHashCode (RankedSet<T> set)
             {
@@ -41,7 +42,8 @@ namespace Kaos.Collections
                 return rsComparer != null && comparer == rsComparer.comparer;
             }
 
-            public override int GetHashCode() => comparer.GetHashCode() ^ equalityComparer.GetHashCode();
+            public override int GetHashCode()
+             => comparer.GetHashCode() ^ equalityComparer.GetHashCode();
         }
     }
 }

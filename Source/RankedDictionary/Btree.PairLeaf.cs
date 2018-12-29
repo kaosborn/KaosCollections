@@ -24,28 +24,28 @@ namespace Kaos.Collections
             /// <summary>Create a siblingless leaf.</summary>
             /// <param name="capacity">The initial number of elements the page can store.</param>
             public PairLeaf (int capacity=0) : base (capacity)
-            {
-                this.values = new List<TValue> (capacity);
-            }
+             => this.values = new List<TValue> (capacity);
 
             /// <summary>Splice this leaf to right of <paramref name="leftLeaf"/>.</summary>
             /// <param name="leftLeaf">Provides linked list insert point.</param>
             /// <param name="capacity">The initial number of elements the page can store.</param>
             public PairLeaf (PairLeaf<TValue> leftLeaf, int capacity) : base (leftLeaf, capacity)
-            {
-                this.values = new List<TValue> (capacity);
-            }
+             => this.values = new List<TValue> (capacity);
 
-            public int ValueCount => values.Count;
+            public int ValueCount
+             => values.Count;
 
-            public KeyValuePair<T,TValue> GetPair (int index) => new KeyValuePair<T,TValue> (keys[index], values[index]);
+            public KeyValuePair<T,TValue> GetPair (int index)
+             => new KeyValuePair<T,TValue> (keys[index], values[index]);
 
-            public TValue GetValue (int index) => values[index];
+            public TValue GetValue (int index)
+             => values[index];
 
-            public int IndexOfValue (TValue value) => values.IndexOf (value);
+            public int IndexOfValue (TValue value)
+             => values.IndexOf (value);
 
             public void SetValue (int index, TValue value)
-            { values[index] = value; }
+             => values[index] = value;
 
             public void CopyPairLeft (int index, int offset)
             {
@@ -66,7 +66,7 @@ namespace Kaos.Collections
             }
 
             public void CopyValuesTo (TValue[] array, int index, int count)
-            { values.CopyTo (0, array, index, count); }
+             => values.CopyTo (0, array, index, count);
 
             public override void Coalesce()
             {

@@ -247,7 +247,9 @@ namespace Kaos.Collections
         private protected class KeyEnumerator : BaseEnumerator
         {
             public T CurrentKey { get; private set; }
-            public T CurrentKeyOrDefault => NotActive ? default : CurrentKey;
+
+            public T CurrentKeyOrDefault
+             => NotActive ? default : CurrentKey;
 
             public KeyEnumerator (Btree<T> owner, bool isReverse=false) : base (owner, isReverse)
             { }
@@ -256,10 +258,10 @@ namespace Kaos.Collections
             { }
 
             public KeyEnumerator (Btree<T> owner, Func<T,bool> condition) : base (owner)
-            { Bypass2 (condition, (leaf,ix) => leaf.GetKey (ix)); }
+             => Bypass2 (condition, (leaf,ix) => leaf.GetKey (ix));
 
             public KeyEnumerator (Btree<T> owner, Func<T,int,bool> condition) : base (owner)
-            { Bypass3 (condition, (leaf,ix) => leaf.GetKey (ix)); }
+             => Bypass3 (condition, (leaf,ix) => leaf.GetKey (ix));
 
 
             public void Initialize()
@@ -276,9 +278,11 @@ namespace Kaos.Collections
                   { CurrentKey = default; return false; }
             }
 
-            public void BypassKey (Func<T,bool> condition) => Bypass2 (condition, (leaf,ix) => leaf.GetKey (ix));
+            public void BypassKey (Func<T,bool> condition)
+             => Bypass2 (condition, (leaf,ix) => leaf.GetKey (ix));
 
-            public void BypassKey (Func<T,int,bool> condition) => Bypass3 (condition, (leaf,ix) => leaf.GetKey (ix));
+            public void BypassKey (Func<T,int,bool> condition)
+             => Bypass3 (condition, (leaf,ix) => leaf.GetKey (ix));
        }
     }
 }

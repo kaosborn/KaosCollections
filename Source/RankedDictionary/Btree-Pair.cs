@@ -13,7 +13,6 @@ namespace Kaos.Collections
 {
     public abstract partial class Btree<T>
     {
-
         private protected void Add2<TValue> (NodeVector path, T key, TValue value)
         {
             StageBump();

@@ -112,7 +112,6 @@ namespace Kaos.Collections
         public RankedDictionary() : base (Comparer<TKey>.Default, new PairLeaf<TValue>())
         { }
 
-
         /// <summary>Initializes a new dictionary instance using the supplied key comparer.</summary>
         /// <param name="comparer">Comparison operator for keys.</param>
         /// <remarks>
@@ -207,11 +206,13 @@ namespace Kaos.Collections
         /// To override sorting based on the default comparer,
         /// supply an alternate comparer when constructing the dictionary.
         /// </remarks>
-        public IComparer<TKey> Comparer => keyComparer;
+        public IComparer<TKey> Comparer
+         => keyComparer;
 
         /// <summary>Gets the number of elements in the dictionary.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
-        public int Count => root.Weight;
+        public int Count
+         => root.Weight;
 
         /// <summary>Gets a <see cref="RankedDictionary{TKey,TValue}.KeyCollection"/> containing the keys of the dictionary.</summary>
         /// <remarks>
@@ -234,14 +235,17 @@ namespace Kaos.Collections
         /// <summary>Gets only the collection of keys from this key/value pair collection.</summary>
         /// <remarks>The keys given by this collection are sorted according to the
         /// <see cref="Comparer"/> property.</remarks>
-        ICollection<TKey> IDictionary<TKey,TValue>.Keys => (ICollection<TKey>) Keys;
+        ICollection<TKey> IDictionary<TKey,TValue>.Keys
+         => (ICollection<TKey>) Keys;
 
 #if ! NET35 && ! NET40
         /// <summary>Gets a <see cref="RankedDictionary{TKey,TValue}.KeyCollection"/> containing the keys in the dictionary.</summary>
-        IEnumerable<TKey> IReadOnlyDictionary<TKey,TValue>.Keys => Keys;
+        IEnumerable<TKey> IReadOnlyDictionary<TKey,TValue>.Keys
+         => Keys;
 
         /// <summary>Gets a <see cref="RankedDictionary{TKey,TValue}.ValueCollection"/> containing the values in the dictionary.</summary>
-        IEnumerable<TValue> IReadOnlyDictionary<TKey,TValue>.Values => Values;
+        IEnumerable<TValue> IReadOnlyDictionary<TKey,TValue>.Values
+         => Values;
 #endif
 
         /// <summary>Gets a <see cref="RankedDictionary{TKey,TValue}.ValueCollection"/> containing the values of the dictionary.</summary>
@@ -269,14 +273,17 @@ namespace Kaos.Collections
 
         /// <summary>Gets the maximum key in the dictionary per the comparer.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
-        public TKey MaxKey => Count==0 ? default : rightmostLeaf.GetKey (rightmostLeaf.KeyCount-1);
+        public TKey MaxKey
+         => Count == 0 ? default : rightmostLeaf.GetKey (rightmostLeaf.KeyCount-1);
 
         /// <summary>Gets the minimum key in the dictionary per the comparer.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
-        public TKey MinKey => Count==0 ? default : leftmostLeaf.Key0;
+        public TKey MinKey
+         => Count == 0 ? default : leftmostLeaf.Key0;
 
         /// <summary>Indicates that this collection may be modified.</summary>
-        bool ICollection<KeyValuePair<TKey,TValue>>.IsReadOnly => false;
+        bool ICollection<KeyValuePair<TKey,TValue>>.IsReadOnly
+         => false;
 
         #endregion
 
@@ -329,7 +336,8 @@ namespace Kaos.Collections
 
         /// <summary>Removes all elements from the dictionary.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
-        public void Clear() => Initialize();
+        public void Clear()
+         => Initialize();
 
 
         /// <summary>Determines whether the dictionary contains the supplied key.</summary>
@@ -356,7 +364,8 @@ namespace Kaos.Collections
         /// <param name="value">The value to locate.</param>
         /// <returns><b>true</b> if <em>value</em> is contained in the dictionary; otherwise <b>false</b>.</returns>
         /// <remarks>This is a O(<em>n</em>) operation.</remarks>
-        public bool ContainsValue (TValue value) => ContainsValue2 (value) >= 0;
+        public bool ContainsValue (TValue value)
+         => ContainsValue2 (value) >= 0;
 
 
         /// <summary>Determines if the collection contains the supplied key/value pair.</summary>
@@ -456,7 +465,8 @@ namespace Kaos.Collections
         /// where <em>m</em> is the number of elements removed and <em>n</em> is <see cref="Count"/>.
         /// </remarks>
         /// <exception cref="ArgumentNullException">When <em>match</em> is <b>null</b>.</exception>
-        public int RemoveWhere (Predicate<TKey> match) => RemoveWhere2 (match);
+        public int RemoveWhere (Predicate<TKey> match)
+         => RemoveWhere2 (match);
 
 
         /// <summary>Removes all elements from the dictionary that match the condition defined by the supplied key/value-parameterized predicate.</summary>
@@ -467,7 +477,8 @@ namespace Kaos.Collections
         /// where <em>m</em> is the number of elements removed and <em>n</em> is <see cref="Count"/>.
         /// </remarks>
         /// <exception cref="ArgumentNullException">When <em>match</em> is <b>null</b>.</exception>
-        public int RemoveWhereElement (Predicate<KeyValuePair<TKey,TValue>> match) => RemoveWhere2<TValue> (match);
+        public int RemoveWhereElement (Predicate<KeyValuePair<TKey,TValue>> match)
+         => RemoveWhere2<TValue> (match);
 
 
         /// <summary>Gets the value associated with the supplied key.</summary>
@@ -553,19 +564,24 @@ namespace Kaos.Collections
         }
 
         /// <summary>Indicating that the dictionary is not fixed size.</summary>
-        bool IDictionary.IsFixedSize => false;
+        bool IDictionary.IsFixedSize
+         => false;
 
         /// <summary>Indicates that the dictionary may be modified.</summary>
-        bool IDictionary.IsReadOnly => false;
+        bool IDictionary.IsReadOnly
+         => false;
 
         /// <summary>Indicates that the collection is not thread safe.</summary>
-        bool ICollection.IsSynchronized => false;
+        bool ICollection.IsSynchronized
+         => false;
 
         /// <summary>Gets an <see cref="ICollection"/> containing the keys of the dictionary.</summary>
-        ICollection IDictionary.Keys => (ICollection) Keys;
+        ICollection IDictionary.Keys
+         => (ICollection) Keys;
 
         /// <summary>Gets an <see cref="ICollection"/> containing the values of the dictionary.</summary>
-        ICollection IDictionary.Values => (ICollection) Values;
+        ICollection IDictionary.Values
+         => (ICollection) Values;
 
         #endregion
 
@@ -664,7 +680,8 @@ namespace Kaos.Collections
 
 
         /// <summary>Gets an object that can be used to synchronize access to the collection.</summary>
-        object ICollection.SyncRoot => GetSyncRoot();
+        object ICollection.SyncRoot
+         => GetSyncRoot();
 
         #endregion
 
@@ -677,9 +694,7 @@ namespace Kaos.Collections
         /// <param name="info">The object that contains the information required to serialize the dictionary.</param>
         /// <param name="context">The structure that contains the source and destination of the serialized stream.</param>
         protected RankedDictionary (SerializationInfo info, StreamingContext context) : base (new PairLeaf<TValue>())
-        {
-            this.serializationInfo = info;
-        }
+         => this.serializationInfo = info;
 
         /// <summary>Returns the data needed to serialize the dictionary.</summary>
         /// <param name="info">An object that contains the information required to serialize the dictionary.</param>
@@ -746,7 +761,7 @@ namespace Kaos.Collections
         /// <param name="context">A structure that contains the source and destination of the serialized stream.</param>
         /// <exception cref="ArgumentNullException">When <em>info</em> is <b>null</b>.</exception>
         void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
-        { GetObjectData(info, context); }
+         => GetObjectData(info, context);
 
 
         /// <summary>Implements the deserialization callback and raises the deserialization event when completed.</summary>
@@ -754,7 +769,7 @@ namespace Kaos.Collections
         /// <exception cref="ArgumentNullException">When <em>sender</em> is <b>null</b>.</exception>
         /// <exception cref="SerializationException">When the associated <em>SerializationInfo</em> is invalid.</exception>
         void IDeserializationCallback.OnDeserialization (Object sender)
-        { OnDeserialization (sender); }
+         => OnDeserialization (sender);
 
 #endif
         #endregion
@@ -923,7 +938,7 @@ namespace Kaos.Collections
         /// <returns>The index of the element if found; otherwise -1.</returns>
         /// <remarks>This is a O(<em>n</em>) operation.</remarks>
         public int IndexOfValue (TValue value)
-            => ContainsValue2<TValue> (value);
+         => ContainsValue2<TValue> (value);
 
 
         /// <summary>
@@ -1143,8 +1158,8 @@ namespace Kaos.Collections
         /// <summary>Returns an enumerator that iterates thru the dictionary in reverse order.</summary>
         /// <returns>An enumerator that reverse iterates thru the dictionary.</returns>
         /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
-        public Enumerator Reverse() => new Enumerator (this, isReverse:true);
-
+        public Enumerator Reverse()
+         => new Enumerator (this, isReverse:true);
 
         /// <summary>Bypasses a supplied number of elements and yields the remaining elements.</summary>
         /// <param name="count">Number of elements to skip.</param>
@@ -1155,8 +1170,8 @@ namespace Kaos.Collections
         /// <code source="..\Bench\RxExample01\RxExample01.cs" lang="cs" region="RdSkip" />
         /// </example>
         /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
-        public Enumerator Skip (int count) => new Enumerator (this, count);
-
+        public Enumerator Skip (int count)
+         => new Enumerator (this, count);
 
         /// <summary>
         /// Bypasses elements as long as a supplied condition is true and yields the remaining elements.
@@ -1164,7 +1179,8 @@ namespace Kaos.Collections
         /// <param name="predicate">The condition to test for.</param>
         /// <returns>Remaining elements after the first element that does not satisfy the supplied condition.</returns>
         /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
-        public Enumerator SkipWhile (Func<KeyValuePair<TKey,TValue>,bool> predicate) => new Enumerator (this, predicate);
+        public Enumerator SkipWhile (Func<KeyValuePair<TKey,TValue>,bool> predicate)
+         => new Enumerator (this, predicate);
 
         /// <summary>
         /// Bypasses elements as long as a supplied index-based condition is true and yields the remaining elements.
@@ -1172,7 +1188,8 @@ namespace Kaos.Collections
         /// <param name="predicate">The condition to test for.</param>
         /// <returns>Remaining elements after the first element that does not satisfy the supplied condition.</returns>
         /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
-        public Enumerator SkipWhile (Func<KeyValuePair<TKey,TValue>,int,bool> predicate) => new Enumerator (this, predicate);
+        public Enumerator SkipWhile (Func<KeyValuePair<TKey,TValue>,int,bool> predicate)
+         => new Enumerator (this, predicate);
 
         #endregion
 
@@ -1180,26 +1197,28 @@ namespace Kaos.Collections
 
         /// <summary>Gets an enumerator that iterates thru the dictionary.</summary>
         /// <returns>An enumerator for the dictionary.</returns>
-        public Enumerator GetEnumerator() => new Enumerator (this);
+        public Enumerator GetEnumerator()
+         => new Enumerator (this);
 
         /// <summary>Gets an enumerator that iterates thru the dictionary.</summary>
         /// <returns>An enumerator for the dictionary.</returns>
         IEnumerator<KeyValuePair<TKey,TValue>> IEnumerable<KeyValuePair<TKey,TValue>>.GetEnumerator()
-            => new Enumerator (this);
+         => new Enumerator (this);
 
         /// <summary>Gets an enumerator that iterates thru the collection.</summary>
         /// <returns>An enumerator for the collection.</returns>
         IDictionaryEnumerator IDictionary.GetEnumerator()
-            => new Enumerator (this, isReverse:false, nonGeneric:true);
+         => new Enumerator (this, isReverse:false, nonGeneric:true);
 
         /// <summary>Gets an enumerator that iterates thru the collection.</summary>
         /// <returns>An enumerator for the collection.</returns>
-        IEnumerator IEnumerable.GetEnumerator() => new Enumerator (this);
+        IEnumerator IEnumerable.GetEnumerator()
+         => new Enumerator (this);
 
 
         /// <summary>Enumerates the sorted key/value pairs of a <see cref="RankedDictionary{TKey,TValue}"/>.</summary>
         [DebuggerTypeProxy (typeof (IEnumerableDebugView<,>))]
-        public struct Enumerator : IEnumerator<KeyValuePair<TKey,TValue>>, IDictionaryEnumerator,IEnumerable<KeyValuePair<TKey,TValue>>
+        public struct Enumerator : IEnumerator<KeyValuePair<TKey,TValue>>, IDictionaryEnumerator, IEnumerable<KeyValuePair<TKey,TValue>>
         {
             private readonly PairEnumerator<TValue> etor;
 
@@ -1207,16 +1226,17 @@ namespace Kaos.Collections
             /// <param name="dary">Collection containing these key/value pairs.</param>
             /// <param name="isReverse">Supply <b>true</b> to iterate from last to first.</param>
             /// <param name="nonGeneric">Supply <b>true</b> to indicate object Current should return DictionaryEntry values.</param>
-            internal Enumerator (RankedDictionary<TKey,TValue> dary, bool isReverse=false, bool nonGeneric=false) => etor = new PairEnumerator<TValue> (dary, isReverse, nonGeneric);
+            internal Enumerator (RankedDictionary<TKey,TValue> dary, bool isReverse=false, bool nonGeneric=false)
+             => etor = new PairEnumerator<TValue> (dary, isReverse, nonGeneric);
 
             internal Enumerator (RankedDictionary<TKey,TValue> dary, int count)
-                => etor = new PairEnumerator<TValue> (dary, count);
+             => etor = new PairEnumerator<TValue> (dary, count);
 
             internal Enumerator (RankedDictionary<TKey,TValue> dary, Func<KeyValuePair<TKey,TValue>,bool> predicate)
-                => etor = new PairEnumerator<TValue> (dary, predicate);
+             => etor = new PairEnumerator<TValue> (dary, predicate);
 
             internal Enumerator (RankedDictionary<TKey,TValue> dary, Func<KeyValuePair<TKey,TValue>,int,bool> predicate)
-                => etor = new PairEnumerator<TValue> (dary, predicate);
+             => etor = new PairEnumerator<TValue> (dary, predicate);
 
             /// <summary>Gets the key of the element at the current position.</summary>
             /// <exception cref="InvalidOperationException">When the enumerator is not active.</exception>
@@ -1270,26 +1290,32 @@ namespace Kaos.Collections
             }
 
             /// <summary>Gets the key/value pair at the current position of the enumerator.</summary>
-            public KeyValuePair<TKey,TValue> Current => etor.CurrentPairOrDefault;
+            public KeyValuePair<TKey,TValue> Current
+             => etor.CurrentPairOrDefault;
 
             /// <summary>Advances the enumerator to the next element in the dictionary.</summary>
             /// <returns><b>true</b> if the enumerator was successfully advanced to the next element; <b>false</b> if the enumerator has passed the end of the collection.</returns>
             /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
-            public bool MoveNext() => etor.Advance();
+            public bool MoveNext()
+             => etor.Advance();
 
             /// <summary>Rewinds the enumerator to its initial state.</summary>
-            void IEnumerator.Reset() => etor.Initialize();
+            void IEnumerator.Reset()
+             => etor.Initialize();
 
             /// <summary>Releases all resources used by the enumerator.</summary>
-            public void Dispose() { }
+            public void Dispose()
+            { }
 
             /// <summary>Gets an iterator for this collection.</summary>
             /// <returns>An iterator for this collection.</returns>
-            public IEnumerator<KeyValuePair<TKey,TValue>> GetEnumerator() => this;
+            public IEnumerator<KeyValuePair<TKey,TValue>> GetEnumerator()
+             => this;
 
             /// <summary>Gets an iterator for this collection.</summary>
             /// <returns>An iterator for this collection.</returns>
-            IEnumerator IEnumerable.GetEnumerator() => this;
+            IEnumerator IEnumerable.GetEnumerator()
+             => this;
 
             /// <summary>Bypasses a supplied number of elements and yields the remaining elements.</summary>
             /// <param name="count">Number of elements to skip.</param>

@@ -56,19 +56,23 @@ namespace Kaos.Collections
             /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
             /// <exception cref="ArgumentOutOfRangeException">When <em>index</em> is less than zero or not less than the number of items.</exception>
             public TValue this[int index]
-            { get { return ElementAt (index); } }
+             => ElementAt (index);
 
             /// <summary>Gets the number of values in the collection.</summary>
-            public int Count => tree.Count;
+            public int Count
+             => tree.Count;
 
             /// <summary>Indicates that the collection is read-only.</summary>
-            bool ICollection<TValue>.IsReadOnly => true;
+            bool ICollection<TValue>.IsReadOnly
+             => true;
 
             /// <summary>Indicates that the collection is not thread safe.</summary>
-            bool ICollection.IsSynchronized => false;
+            bool ICollection.IsSynchronized
+             => false;
 
             /// <summary>Gets an object that can be used to synchronize access to the collection.</summary>
-            object ICollection.SyncRoot => tree.GetSyncRoot();
+            object ICollection.SyncRoot
+             => tree.GetSyncRoot();
 
             #endregion
 
@@ -77,12 +81,12 @@ namespace Kaos.Collections
             /// <summary>This implementation always throws a <see cref="NotSupportedException" />.</summary>
             /// <param name="value">The object to add.</param>
             void ICollection<TValue>.Add (TValue value)
-            { throw new NotSupportedException(); }
+             => throw new NotSupportedException();
 
 
             /// <summary>This implementation always throws a <see cref="NotSupportedException" />.</summary>
             void ICollection<TValue>.Clear()
-            { throw new NotSupportedException(); }
+             => throw new NotSupportedException();
 
 
             /// <summary>Determines whether the map contains an element with the supplied value.</summary>
@@ -90,7 +94,7 @@ namespace Kaos.Collections
             /// <returns><b>true</b> if <em>value</em> is found in the map; otherwise <b>false</b>.</returns>
             /// <remarks>This is a O(<em>n</em>) operation.</remarks>
             bool ICollection<TValue>.Contains (TValue value)
-            { return tree.ContainsValue2<TValue> (value) >= 0; }
+             => tree.ContainsValue2<TValue> (value) >= 0;
 
 
             /// <summary>Copies values to a supplied array, starting as the supplied position.</summary>
@@ -150,7 +154,7 @@ namespace Kaos.Collections
             /// <param name="value">The value to remove.</param>
             /// <returns><b>true</b> if the object was removed; otherwise <b>false</b>.</returns>
             bool ICollection<TValue>.Remove (TValue value)
-            { throw new NotSupportedException(); }
+             => throw new NotSupportedException();
 
             #endregion
 
@@ -203,7 +207,7 @@ namespace Kaos.Collections
             /// <returns>The index of the first occurrence of <em>value</em> if found; otherwise -1.</returns>
             /// <remarks>This is a O(<em>n</em>) operation.</remarks>
             public int IndexOf (TValue value)
-                => tree.ContainsValue2<TValue> (value);
+             => tree.ContainsValue2<TValue> (value);
 
 
             /// <summary>Gets the value of the element with the highest sorted key in the map.</summary>
@@ -227,7 +231,8 @@ namespace Kaos.Collections
             /// <code source="..\Bench\RxExample01\RxExample01.cs" lang="cs" region="RmvSkip" />
             /// </example>
             /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
-            public Enumerator Skip (int count) => new Enumerator (tree, count);
+            public Enumerator Skip (int count)
+             => new Enumerator (tree, count);
 
 
             /// <summary>
@@ -236,7 +241,8 @@ namespace Kaos.Collections
             /// <param name="predicate">The condition to test for.</param>
             /// <returns>Remaining values after the first value that does not satisfy the supplied condition.</returns>
             /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
-            public Enumerator SkipWhile (Func<TValue,bool> predicate) => new Enumerator (tree, predicate);
+            public Enumerator SkipWhile (Func<TValue,bool> predicate)
+             => new Enumerator (tree, predicate);
 
             /// <summary>
             /// Bypasses values as long as a supplied index-based condition is true and yields the remaining values.
@@ -244,7 +250,8 @@ namespace Kaos.Collections
             /// <param name="predicate">The condition to test for.</param>
             /// <returns>Remaining values after the first value that does not satisfy the supplied condition.</returns>
             /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
-            public Enumerator SkipWhile (Func<TValue,int,bool> predicate) => new Enumerator (tree, predicate);
+            public Enumerator SkipWhile (Func<TValue,int,bool> predicate)
+             => new Enumerator (tree, predicate);
 
             #endregion
 
@@ -253,20 +260,24 @@ namespace Kaos.Collections
             /// <summary>Returns an enumerator that iterates thru the map values in reverse key order.</summary>
             /// <returns>An enumerator that reverse iterates thru the map values.</returns>
             /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
-            public Enumerator Reverse() => new Enumerator (tree, isReverse:true);
+            public Enumerator Reverse()
+             => new Enumerator (tree, isReverse:true);
 
 
             /// <summary>Gets an enumerator that iterates thru the collection.</summary>
             /// <returns>An enumerator for the collection.</returns>
-            public Enumerator GetEnumerator() => new Enumerator (tree);
+            public Enumerator GetEnumerator()
+             => new Enumerator (tree);
 
             /// <summary>Gets an enumerator that iterates thru the collection.</summary>
             /// <returns>An enumerator for the collection.</returns>
-            IEnumerator<TValue> IEnumerable<TValue>.GetEnumerator() => new Enumerator (tree);
+            IEnumerator<TValue> IEnumerable<TValue>.GetEnumerator()
+             => new Enumerator (tree);
 
             /// <summary>Gets an enumerator that iterates thru the collection.</summary>
             /// <returns>An enumerator for the collection.</returns>
-            IEnumerator IEnumerable.GetEnumerator() => new Enumerator (tree);
+            IEnumerator IEnumerable.GetEnumerator()
+             => new Enumerator (tree);
 
 
             /// <summary>Enumerates the items of a <see cref="RankedMap{TKey,TValue}.ValueCollection"/> in key sort order.</summary>
@@ -275,13 +286,17 @@ namespace Kaos.Collections
             {
                 private readonly ValueEnumerator<TValue> etor;
 
-                internal Enumerator (RankedMap<TKey,TValue> map, bool isReverse=false) => etor = new ValueEnumerator<TValue> (map, isReverse);
+                internal Enumerator (RankedMap<TKey,TValue> map, bool isReverse=false)
+                 => etor = new ValueEnumerator<TValue> (map, isReverse);
 
-                internal Enumerator (RankedMap<TKey,TValue> map, int count) => etor = new ValueEnumerator<TValue> (map, count);
+                internal Enumerator (RankedMap<TKey,TValue> map, int count)
+                 => etor = new ValueEnumerator<TValue> (map, count);
 
-                internal Enumerator (RankedMap<TKey,TValue> map, Func<TValue,bool> predicate) => etor = new ValueEnumerator<TValue> (map, predicate);
+                internal Enumerator (RankedMap<TKey,TValue> map, Func<TValue,bool> predicate)
+                 => etor = new ValueEnumerator<TValue> (map, predicate);
 
-                internal Enumerator (RankedMap<TKey,TValue> map, Func<TValue,int,bool> predicate) => etor = new ValueEnumerator<TValue> (map, predicate);
+                internal Enumerator (RankedMap<TKey,TValue> map, Func<TValue,int,bool> predicate)
+                 => etor = new ValueEnumerator<TValue> (map, predicate);
 
                 /// <summary>Gets the value at the current position.</summary>
                 /// <exception cref="InvalidOperationException">When the enumerator is not active.</exception>
@@ -296,26 +311,32 @@ namespace Kaos.Collections
                 }
 
                 /// <summary>Gets the value at the current position of the enumerator.</summary>
-                public TValue Current => etor.CurrentValueOrDefault;
+                public TValue Current
+                 => etor.CurrentValueOrDefault;
 
                 /// <summary>Advances the enumerator to the next value in the collection.</summary>
                 /// <returns><b>true</b> if the enumerator was successfully advanced to the next value; <b>false</b> if the enumerator has passed the end of the collection.</returns>
                 /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
-                public bool MoveNext() => etor.Advance();
+                public bool MoveNext()
+                 => etor.Advance();
 
                 /// <summary>Rewinds the enumerator to its initial state.</summary>
-                void IEnumerator.Reset() => etor.Initialize();
+                void IEnumerator.Reset()
+                 => etor.Initialize();
 
                 /// <summary>Releases all resources used by the enumerator.</summary>
-                public void Dispose() { }
+                public void Dispose()
+                { }
 
                 /// <summary>Gets an iterator for this collection.</summary>
                 /// <returns>An iterator for this collection.</returns>
-                public IEnumerator<TValue> GetEnumerator() => this;
+                public IEnumerator<TValue> GetEnumerator()
+                 => this;
 
                 /// <summary>Gets an iterator for this collection.</summary>
                 /// <returns>An iterator for this collection.</returns>
-                IEnumerator IEnumerable.GetEnumerator() => this;
+                IEnumerator IEnumerable.GetEnumerator()
+                 => this;
 
                 /// <summary>Bypasses a supplied number of values and yields the remaining values.</summary>
                 /// <param name="count">Number of values to skip.</param>

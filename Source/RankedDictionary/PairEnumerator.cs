@@ -28,10 +28,10 @@ namespace Kaos.Collections
             { }
 
             public ValueEnumerator (Btree<T> owner, Func<V,bool> condition) : base (owner)
-            { Bypass2 (condition, (leaf,ix) => ((PairLeaf<V>) leaf).GetValue (ix)); }
+             => Bypass2 (condition, (leaf,ix) => ((PairLeaf<V>) leaf).GetValue (ix));
 
             public ValueEnumerator (Btree<T> owner, Func<V,int,bool> condition) : base (owner)
-            { Bypass3 (condition, (leaf,ix) => ((PairLeaf<V>) leaf).GetValue (ix)); }
+             => Bypass3 (condition, (leaf,ix) => ((PairLeaf<V>) leaf).GetValue (ix));
 
             public void Initialize()
             {
@@ -47,9 +47,11 @@ namespace Kaos.Collections
                   { CurrentValue = default; return false; }
             }
 
-            public void BypassValue (Func<V,bool> condition) => Bypass2 (condition, (leaf,ix) => ((PairLeaf<V>) leaf).GetValue (ix));
+            public void BypassValue (Func<V,bool> condition)
+             => Bypass2 (condition, (leaf,ix) => ((PairLeaf<V>) leaf).GetValue (ix));
 
-            public void BypassValue (Func<V,int,bool> condition) => Bypass3 (condition, (leaf,ix) => ((PairLeaf<V>) leaf).GetValue (ix));
+            public void BypassValue (Func<V,int,bool> condition)
+             => Bypass3 (condition, (leaf,ix) => ((PairLeaf<V>) leaf).GetValue (ix));
         }
 
 
@@ -57,22 +59,22 @@ namespace Kaos.Collections
         private protected class PairEnumerator<V> : BaseEnumerator
         {
             public KeyValuePair<T,V> CurrentPair { get; private set; }
+            public bool NonGeneric { get; private set; }
+
             public KeyValuePair<T,V> CurrentPairOrDefault => NotActive ? default : CurrentPair;
             public DictionaryEntry CurrentEntry => new DictionaryEntry (CurrentPair.Key, CurrentPair.Value);
 
-            public bool NonGeneric { get; private set; }
-
             public PairEnumerator (Btree<T> owner, bool isReverse=false, bool nonGeneric=false) : base (owner, isReverse)
-            { this.NonGeneric = nonGeneric; }
+             => this.NonGeneric = nonGeneric;
 
             public PairEnumerator (Btree<T> owner, int count) : base (owner, count)
             { }
 
             public PairEnumerator (Btree<T> owner, Func<KeyValuePair<T,V>,bool> condition) : this (owner)
-            { Bypass2 (condition, (leaf,ix) => ((PairLeaf<V>) leaf).GetPair (ix)); }
+             => Bypass2 (condition, (leaf,ix) => ((PairLeaf<V>) leaf).GetPair (ix));
 
             public PairEnumerator (Btree<T> owner, Func<KeyValuePair<T,V>,int,bool> condition) : this (owner)
-            { Bypass3 (condition, (leaf,ix) => ((PairLeaf<V>) leaf).GetPair (ix)); }
+             => Bypass3 (condition, (leaf,ix) => ((PairLeaf<V>) leaf).GetPair (ix));
 
 
             public void Initialize()
@@ -84,14 +86,16 @@ namespace Kaos.Collections
             public bool Advance()
             {
                 if (AdvanceBase())
-                  { CurrentPair = ((PairLeaf<V>) leaf).GetPair (leafIndex); return true; }
+                { CurrentPair = ((PairLeaf<V>) leaf).GetPair (leafIndex); return true; }
                 else
-                  { CurrentPair = default; return false; }
+                { CurrentPair = default; return false; }
             }
 
-            public void BypassPair (Func<KeyValuePair<T,V>,bool> condition) => Bypass2 (condition, (leaf,ix) => ((PairLeaf<V>) leaf).GetPair (ix));
+            public void BypassPair (Func<KeyValuePair<T,V>,bool> condition)
+             => Bypass2 (condition, (leaf,ix) => ((PairLeaf<V>) leaf).GetPair (ix));
 
-            public void BypassPair (Func<KeyValuePair<T,V>,int,bool> condition) => Bypass3 (condition, (leaf,ix) => ((PairLeaf<V>) leaf).GetPair (ix));
+            public void BypassPair (Func<KeyValuePair<T,V>,int,bool> condition)
+             => Bypass3 (condition, (leaf,ix) => ((PairLeaf<V>) leaf).GetPair (ix));
         }
     }
 }
