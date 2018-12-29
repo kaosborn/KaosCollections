@@ -3,7 +3,7 @@
 // File:    Btree.Node.cs
 // Purpose: Define classes Node, Branch, Leaf.
 //
-// Copyright © 2009-2018 Kasey Osborn (github.com/kaosborn)
+// Copyright © 2009-2019 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely
 //
 

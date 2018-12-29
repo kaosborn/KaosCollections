@@ -3,7 +3,7 @@
 // File:    Btree.cs
 // Purpose: Define base functionality for Ranked classes.
 //
-// Copyright © 2009-2018 Kasey Osborn (github.com/kaosborn)
+// Copyright © 2009-2019 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely
 //
 
