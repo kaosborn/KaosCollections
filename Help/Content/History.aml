@@ -122,7 +122,7 @@
 
 
     <section>
-      <title>KaosCollections version Next (2018-??-??)</title>
+      <title>KaosCollections version 4.2.0 (2019-01-01)</title>
       <content>
         <para><legacyBold><legacyItalic>Summary</legacyItalic></legacyBold></para>
         <list class="bullet">
@@ -151,7 +151,7 @@
         </para>
         <para><legacyBold>All enumerator types have been converted from <codeInline>class</codeInline> to <codeInline>struct</codeInline></legacyBold></para>
         <para>
-          While it is unlikely that <codeInline>class</codeInline> versus <codeInline>struct</codeInline> is relied on, this is a breaking change for such an edge case.
+          This change is to align with BCL types. While it is unlikely that <codeInline>class</codeInline> versus <codeInline>struct</codeInline> is relied on, this is a breaking change for such an edge case.
         </para>
         <para><legacyBold>Calls to the <codeInline>Current</codeInline> property will succeed following updates to the underlying class</legacyBold></para>
         <para>
