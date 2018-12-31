@@ -107,11 +107,11 @@ will produce a `.nuget` file for distribution.
 * The `Collections461` folder contains a .NET 4.61 build of the class library.
 This project is used for development and testing only.
 
-* The `Images` folder contains the logo `.svg` file and its `.png` conversions.
-
 * The `Help` folder contains a [Sandcastle Help File Builder](https://github.com/EWSoftware/SHFB)
 project that produces documentation from embedded XML comments.
 To build this project, first build `Collections461` in Release configuration.
+
+* The `Images` folder contains the logo `.svg` file and its `.png` conversions.
 
 * The `Source` folder contains all source code for KaosCollections.
 All source is organized using shared projects which are referenced by the build projects.
