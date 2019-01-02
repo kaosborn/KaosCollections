@@ -27,11 +27,11 @@ This library is built as a .NET Standard project with multitargeting to:
 
 To install using Package Manager:
 
-* **`Install-Package Kaos.Collections -Version 4.1.0`**
+* **`Install-Package Kaos.Collections -Version 4.2.0`**
 
 To install using the .NET CLI:
 
-* **`dotnet add package Kaos.Collections --version 4.1.0`**
+* **`dotnet add package Kaos.Collections --version 4.2.0`**
 
 To install using the Visual Studio gallery:
 1. Click **Manage NuGet Packages**.
@@ -52,7 +52,7 @@ A project may then reference the extracted platform-specific `.dll` directly.
 
 ### Project status
 
-For the latest stable release, [install version 4.1.0](#library-installation).
+For the latest stable release, [install version 4.2.0](#library-installation).
 
 Documentation for the main branch is available by building the Help project for the `.chm` output.
 
@@ -90,7 +90,7 @@ Building documentation requires Sandcastle Help File Builder:
 
 This repository is a single Visual Studio solution with additional files in the root.
 
-* The `Bench` folder contains console program projects that mostly target the .NET 4.61 library build.
+* The `Bench` folder contains console program projects that mostly target the .NET 4.6.1 library build.
 These programs exist to:
 
   * Provide examples for documentation
