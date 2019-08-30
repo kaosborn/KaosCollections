@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29215.179
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bench", "Bench", "{F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}"
 EndProject
@@ -10,12 +10,6 @@ EndProject
 Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "Help", "Help\Help.shfbproj", "{CCB7FB93-229A-494D-A044-9095A523C71F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{FE32F6EA-9179-43FB-82C5-2D010EC41842}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Btree", "Source\Btree\Btree.shproj", "{F46832D9-2950-47B9-BB68-42EE79668F61}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "RankedDictionary", "Source\RankedDictionary\RankedDictionary.shproj", "{D1E37C27-B068-4F2E-8603-F8F5495B3330}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "RankedSet", "Source\RankedSet\RankedSet.shproj", "{C39A213B-5AAE-4C05-8CA8-946331511D0D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RsChart05B", "Bench\RsChart05B\RsChart05B.csproj", "{8AB42ED3-9510-4422-B756-9D7C7F80DF8A}"
 EndProject
@@ -65,8 +59,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RsChart04B", "Bench\RsChart
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RsChart04A", "Bench\RsChart04A\RsChart04A.csproj", "{7A3A42FF-EC4D-49A7-A70E-8666CDABF379}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "RankedBag", "Source\RankedBag\RankedBag.shproj", "{F7B692F7-C69C-4791-B3AF-6727BB08E016}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RbExample02", "Bench\RbExample02\RbExample02.csproj", "{A170E1BC-F876-49B8-A946-2B5481A43B5D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RbExample03", "Bench\RbExample03\RbExample03.csproj", "{D1C95835-C179-4F85-AE82-5DA75D6DE319}"
@@ -95,8 +87,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test461", "Test461\Test461.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Collections461", "Collections461\Collections461.csproj", "{FB547C0B-556F-4D84-BF48-9DA674832089}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "RankedMap", "Source\RankedMap\RankedMap.shproj", "{C40F0ADC-F1F0-41BE-9D08-ADFE38F8D8B5}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RmExample01", "Bench\RmExample01\RmExample01.csproj", "{1833A35B-7F4D-4B8C-AEC5-0F6FB8946325}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RmExample05", "Bench\RmExample05\RmExample05.csproj", "{A1C7A6DB-93F8-4C7D-BAAB-6D1965971B32}"
@@ -111,23 +101,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxBench02", "Bench\RxBench0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RxExample01", "Bench\RxExample01\RxExample01.csproj", "{8FF5A924-F981-477B-AD0C-52ED16DC1FE6}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "KaosCollections", "Source\KaosCollections\KaosCollections.shproj", "{D548BAD1-2DEB-4E61-86CC-599EC896043B}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Source\RankedSet\RankedSet.projitems*{c39a213b-5aae-4c05-8ca8-946331511d0d}*SharedItemsImports = 13
-		Source\RankedMap\RankedMap.projitems*{c40f0adc-f1f0-41be-9d08-adfe38f8d8b5}*SharedItemsImports = 13
-		Source\RankedDictionary\RankedDictionary.projitems*{d1e37c27-b068-4f2e-8603-f8f5495b3330}*SharedItemsImports = 13
-		Source\Btree\Btree.projitems*{ede8bef7-8503-45d1-95c5-47b827f18130}*SharedItemsImports = 4
-		Source\RankedBag\RankedBag.projitems*{ede8bef7-8503-45d1-95c5-47b827f18130}*SharedItemsImports = 4
-		Source\RankedDictionary\RankedDictionary.projitems*{ede8bef7-8503-45d1-95c5-47b827f18130}*SharedItemsImports = 4
-		Source\RankedMap\RankedMap.projitems*{ede8bef7-8503-45d1-95c5-47b827f18130}*SharedItemsImports = 4
-		Source\RankedSet\RankedSet.projitems*{ede8bef7-8503-45d1-95c5-47b827f18130}*SharedItemsImports = 4
-		Source\Btree\Btree.projitems*{f46832d9-2950-47b9-bb68-42ee79668f61}*SharedItemsImports = 13
-		Source\RankedBag\RankedBag.projitems*{f7b692f7-c69c-4791-b3af-6727bb08e016}*SharedItemsImports = 13
-		Source\Btree\Btree.projitems*{fb547c0b-556f-4d84-bf48-9da674832089}*SharedItemsImports = 4
-		Source\RankedBag\RankedBag.projitems*{fb547c0b-556f-4d84-bf48-9da674832089}*SharedItemsImports = 4
-		Source\RankedDictionary\RankedDictionary.projitems*{fb547c0b-556f-4d84-bf48-9da674832089}*SharedItemsImports = 4
-		Source\RankedMap\RankedMap.projitems*{fb547c0b-556f-4d84-bf48-9da674832089}*SharedItemsImports = 4
-		Source\RankedSet\RankedSet.projitems*{fb547c0b-556f-4d84-bf48-9da674832089}*SharedItemsImports = 4
+		Source\KaosCollections\KaosCollections.projitems*{d548bad1-2deb-4e61-86cc-599ec896043b}*SharedItemsImports = 13
+		Source\KaosCollections\KaosCollections.projitems*{ede8bef7-8503-45d1-95c5-47b827f18130}*SharedItemsImports = 4
+		Source\KaosCollections\KaosCollections.projitems*{fb547c0b-556f-4d84-bf48-9da674832089}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -309,9 +289,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{F46832D9-2950-47B9-BB68-42EE79668F61} = {FE32F6EA-9179-43FB-82C5-2D010EC41842}
-		{D1E37C27-B068-4F2E-8603-F8F5495B3330} = {FE32F6EA-9179-43FB-82C5-2D010EC41842}
-		{C39A213B-5AAE-4C05-8CA8-946331511D0D} = {FE32F6EA-9179-43FB-82C5-2D010EC41842}
 		{8AB42ED3-9510-4422-B756-9D7C7F80DF8A} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{308EA0A7-405B-4FFA-ACB3-1EE2C2467C3C} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{8D1A7AEF-73E7-4F1A-8656-E944A19DC94F} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
@@ -336,7 +313,6 @@ Global
 		{EF8631DA-9B03-4240-9A02-AAA48005416E} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{385083CF-7AA6-4C60-8E22-BA1EC689C4ED} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{7A3A42FF-EC4D-49A7-A70E-8666CDABF379} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
-		{F7B692F7-C69C-4791-B3AF-6727BB08E016} = {FE32F6EA-9179-43FB-82C5-2D010EC41842}
 		{A170E1BC-F876-49B8-A946-2B5481A43B5D} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{D1C95835-C179-4F85-AE82-5DA75D6DE319} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{476A91D1-5CF5-4673-9D7D-1354FCE38A72} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
@@ -345,7 +321,6 @@ Global
 		{2083724C-9A9B-4F95-8AA2-C43A1246FAAD} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{9C399188-73F9-4A6D-ABAD-7241C2F1E197} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{95D44882-0087-4401-A631-A57ADCCBFDA5} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
-		{C40F0ADC-F1F0-41BE-9D08-ADFE38F8D8B5} = {FE32F6EA-9179-43FB-82C5-2D010EC41842}
 		{1833A35B-7F4D-4B8C-AEC5-0F6FB8946325} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{A1C7A6DB-93F8-4C7D-BAAB-6D1965971B32} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{40823D4F-4AB8-4BF7-A9A2-4CCE6F8CB46E} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
@@ -353,6 +328,7 @@ Global
 		{3B7F5072-B38D-438A-954A-E91C8A1C336F} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{EDE8BEF7-8503-45D1-95C5-47B827F18130} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{8FF5A924-F981-477B-AD0C-52ED16DC1FE6} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
+		{D548BAD1-2DEB-4E61-86CC-599EC896043B} = {FE32F6EA-9179-43FB-82C5-2D010EC41842}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {201DA9DF-651F-47A0-B578-167533C3D874}

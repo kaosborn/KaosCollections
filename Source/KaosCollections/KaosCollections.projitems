@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>d548bad1-2deb-4e61-86cc-599ec896043b</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>KaosCollections</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Btree-Item.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Btree-Pair.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Btree.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Btree.Node.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Btree.NodeVector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Btree.PairLeaf.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KeyEnumerator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)KVDebugView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PairEnumerator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RankedBag.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.KeyCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RankedDictionary.ValueCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RankedMap.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RankedMap.KeyCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RankedMap.ValueCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RankedSet.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RankedSetEqualityComparer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TDebugView.cs" />
+  </ItemGroup>
+</Project>

@@ -63,16 +63,6 @@ https://kaosborn.github.io/help/KaosCollections/</PackageReleaseNotes>
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
 
-  <Import Project="..\Source\RankedSet\RankedSet.projitems" Label="Shared" />
-
-  <Import Project="..\Source\RankedDictionary\RankedDictionary.projitems" Label="Shared" />
-
-  <Import Project="..\Source\Btree\Btree.projitems" Label="Shared" />
-
-  <Import Project="..\Source\RankedBag\RankedBag.projitems" Label="Shared" />
-
-  <Import Project="..\Source\RankedMap\RankedMap.projitems" Label="Shared" />
-
   <Import Project="..\Source\KaosCollections\KaosCollections.projitems" Label="Shared" />
 
 </Project>
