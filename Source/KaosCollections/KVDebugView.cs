@@ -1,12 +1,4 @@
-﻿//
-// Library: KaosCollections
-// File:    KVDebugView.cs
-//
-// Copyright © 2009-2018 Kasey Osborn (github.com/kaosborn)
-// MIT License - Use and redistribute freely
-//
-
-using System;
+﻿using System;
 //
 // Library: KaosCollections
 // File:    KVDebugView.cs

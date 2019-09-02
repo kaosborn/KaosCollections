@@ -1,6 +1,6 @@
 ﻿//
 // Library: KaosCollections
-// File:    RankedSetEqualityComparer.cs
+// File:    RankedSet.RankedSetEqualityComparer.cs
 //
 // Copyright © 2009-2019 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely

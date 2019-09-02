@@ -9,9 +9,10 @@
     <Import_RootNamespace>KaosCollections</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Btree-Item.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Btree-Pair.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BaseEnumerator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Btree.Branch.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Btree.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Btree.Leaf.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Btree.Node.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Btree.NodeVector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Btree.PairLeaf.cs" />
@@ -26,7 +27,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)RankedMap.KeyCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RankedMap.ValueCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RankedSet.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RankedSetEqualityComparer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RankedSet.RankedSetEqualityComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TDebugView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ValueEnumerator.cs" />
   </ItemGroup>
 </Project>
