@@ -24,7 +24,7 @@ namespace Kaos.Test.Collections
         public int CompareTo(User other) => string.Compare(this.Name, other.Name);
     }
 
-    public partial class TestBtree
+    public partial class TestRs
     {
 #if TEST_BCL
         SortedSet<string> setS1 = new SortedSet<string>(), setS2 = new SortedSet<string>();

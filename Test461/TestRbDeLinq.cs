@@ -13,7 +13,7 @@ using Kaos.Collections;
 
 namespace Kaos.Test.Collections
 {
-    public partial class TestBtree
+    public partial class TestRb
     {
         #region Test methods (LINQ emulation)
 

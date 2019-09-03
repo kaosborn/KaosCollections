@@ -2,7 +2,7 @@
 
 namespace Kaos.Test.Collections
 {
-    public partial class TestBtree
+    public partial class TestRd
     {
         [TestMethod]
         public void StressRd_WithLongPermutations()

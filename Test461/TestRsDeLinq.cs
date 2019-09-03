@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Kaos.Test.Collections
 {
-    public partial class TestBtree
+    public partial class TestRs
     {
         #region Test methods (LINQ emulation)
 

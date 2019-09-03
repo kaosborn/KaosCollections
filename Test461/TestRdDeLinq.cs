@@ -14,7 +14,7 @@ using System.Linq;
 
 namespace Kaos.Test.Collections
 {
-    public partial class TestBtree
+    public partial class TestRd
     {
         #region Test methods (LINQ emulation)
 

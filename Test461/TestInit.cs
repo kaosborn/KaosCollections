@@ -50,34 +50,40 @@ namespace Kaos.Test.Collections
     [TestClass]
     public partial class TestBtree
     {
+        public static bool IsAlways (int arg) => true;
+        public static bool IsEven (int arg) => arg % 2 == 0;
+        public static bool IsPairAlways (KeyValuePair<int,int> kv) => true;
+        public static bool IsPairEven (KeyValuePair<int,int> kv) => kv.Value % 2 == 0;
+        public static bool IsPairLeN100 (KeyValuePair<int,int> kv) => kv.Value <= -100;
+
         #if TEST_BCL
-        SortedDictionary<int,int> dary1;
-        SortedDictionary<string,int> dary2;
-        SortedDictionary<string,int?> dary3;
-        SortedDictionary<int,string> dary4;
-        SortedDictionary<string,int> dary5;
-        SortedSet<int> setI;
-        SortedSet<string> setS;
-        SortedSet<TS1> setTS1;
-        SortedSet<Person> personSet;
+        public SortedDictionary<int,int> dary1;
+        public SortedDictionary<string,int> dary2;
+        public SortedDictionary<string,int?> dary3;
+        public SortedDictionary<int,string> dary4;
+        public SortedDictionary<string,int> dary5;
+        public SortedSet<int> setI;
+        public SortedSet<string> setS;
+        public SortedSet<TS1> setTS1;
+        public SortedSet<Person> personSet;
 #else
-        RankedDictionary<int,int> dary1;
-        RankedDictionary<string,int> dary2;
-        RankedDictionary<string,int?> dary3;
-        RankedDictionary<int,string> dary4;
-        RankedDictionary<string,int> dary5;
-        RankedSet<int> setI;
-        RankedSet<string> setS;
-        RankedSet<TS1> setTS1;
-        RankedSet<Person> personSet;
+        public RankedDictionary<int,int> dary1;
+        public RankedDictionary<string,int> dary2;
+        public RankedDictionary<string,int?> dary3;
+        public RankedDictionary<int,string> dary4;
+        public RankedDictionary<string,int> dary5;
+        public RankedSet<int> setI;
+        public RankedSet<string> setS;
+        public RankedSet<TS1> setTS1;
+        public RankedSet<Person> personSet;
 #endif
         ICollection<KeyValuePair<string,int>> genCol2;
-        ICollection<string> genKeys2;
-        ICollection<int> genValues2;
+        public ICollection<string> genKeys2;
+        public ICollection<int> genValues2;
 
-        System.Collections.IDictionary objCol1, objCol2, objCol3, objCol4;
+        public System.Collections.IDictionary objCol1, objCol2, objCol3, objCol4;
 
-        KeyValuePair<string,int>[] greek = new KeyValuePair<string,int>[]
+        public KeyValuePair<string,int>[] greek = new KeyValuePair<string,int>[]
         {
             new KeyValuePair<string,int> ("alpha", 1),
             new KeyValuePair<string,int> ("beta", 2),
@@ -91,9 +97,9 @@ namespace Kaos.Test.Collections
         };
 
         // Must not contain value 50.
-        static int[] iVals1 = new int[] { 12, 28, 15, 18, 14, 19, 25 };
+        public static int[] iVals1 = new int[] { 12, 28, 15, 18, 14, 19, 25 };
         static int[] iVals2 = new int[] { 10, 28, 14, 50 };
-        static int[] iVals3 = new int[] { 13, 22, 51, 22, 33 };
+        public static int[] iVals3 = new int[] { 13, 22, 51, 22, 33 };
         static int[] iVals4 = new int[] { 14, 15, 19 };
 
         public void Setup() { Setup (5); }

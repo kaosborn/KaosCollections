@@ -75,7 +75,7 @@ namespace Kaos.Test.Collections
     }
 
 
-    public partial class TestBtree
+    public partial class TestRs
     {
         [TestMethod]
         [ExpectedException (typeof (ArgumentNullException))]

@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Kaos.Test.Collections
 {
-    public partial class TestBtree
+    public partial class TestRd
     {
         [TestMethod]
         public void UnitRd_LinqAny()

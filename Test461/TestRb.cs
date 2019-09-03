@@ -16,7 +16,8 @@ namespace Kaos.Test.Collections
         public String Name { get; private set; }
     }
 
-    public partial class TestBtree
+    [TestClass]
+    public partial class TestRb : TestBtree
     {
         #region Test constructors
 

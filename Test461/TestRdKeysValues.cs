@@ -9,7 +9,7 @@ using Kaos.Collections;
 
 namespace Kaos.Test.Collections
 {
-    public partial class TestBtree
+    public partial class TestRd
     {
         #region Test Keys constructor
 

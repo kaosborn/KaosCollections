@@ -12,12 +12,9 @@ using Kaos.Collections;
 
 namespace Kaos.Test.Collections
 {
-    public partial class TestBtree
+    [TestClass]
+    public partial class TestRd : TestBtree
     {
-        static bool IsPairAlways (KeyValuePair<int,int> kv) => true;
-        static bool IsPairEven (KeyValuePair<int,int> kv) => kv.Value % 2 == 0;
-        static bool IsPairLeN100 (KeyValuePair<int,int> kv) => kv.Value <= -100;
-
         #region Test constructors
 
         [TestMethod]

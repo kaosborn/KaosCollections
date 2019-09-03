@@ -13,7 +13,8 @@ using Kaos.Collections;
 
 namespace Kaos.Test.Collections
 {
-    public partial class TestBtree
+    [TestClass]
+    public partial class TestRm : TestBtree
     {
         #region Test constructors
 
@@ -1173,7 +1174,7 @@ namespace Kaos.Test.Collections
 
         [TestMethod]
         [ExpectedException (typeof (ArgumentOutOfRangeException))]
-        public void CrashRd_ElementsBetweenIndexes_ArgumentOutOfRangeD()
+        public void CrashRm_ElementsBetweenIndexes_ArgumentOutOfRangeD()
         {
             var rm = new RankedMap<int,int> { { 0,0 }, { 1,-1 } };
             foreach (var pair in rm.ElementsBetweenIndexes (0, 2))

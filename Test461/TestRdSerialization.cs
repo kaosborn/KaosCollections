@@ -90,7 +90,7 @@ namespace Kaos.Test.Collections
     }
 
 
-    public partial class TestBtree
+    public partial class TestRd
     {
 #if ! TEST_BCL
         [TestMethod]

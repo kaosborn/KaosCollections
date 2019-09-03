@@ -13,7 +13,8 @@ using Kaos.Collections;
 
 namespace Kaos.Test.Collections
 {
-    public partial class TestBtree
+    [TestClass]
+    public partial class TestRs : TestBtree
     {
         #region Test constructors
 
@@ -637,8 +638,6 @@ namespace Kaos.Test.Collections
 
 
         static int rwCounter = 9;
-        static bool IsAlways (int arg) { return true; }
-        static bool IsEven (int arg) { return arg % 2 == 0; }
         static bool IsGe1000 (int arg) { return arg >= 1000; }
         static bool IsHotAlways (int arg) { staticSetI.Add (++rwCounter); return true; }
 #if TEST_BCL
