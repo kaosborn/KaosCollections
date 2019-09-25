@@ -1,0 +1,20 @@
+name: Test
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+    - name: Do test job
+      run: |
+        call "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat"
+        dotnet restore
+        msbuild -t:Collections461 -p:Configuration=Debug -p:Platform="Any CPU"
+        msbuild -t:Test461 -p:Configuration=Debug -p:Platform="Any CPU"
+        vstest.console Test461\bin\Debug\Test461.dll
