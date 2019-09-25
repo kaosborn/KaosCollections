@@ -17,5 +17,5 @@ jobs:
         dotnet restore
         msbuild -t:Collections461 -p:Configuration=Release -p:Platform="Any CPU"
         msbuild -t:Collections -p:Configuration=Release -p:Platform="Any CPU"
-        msbuild -t:RdStress01 -p:Configuration=Release -p:Platform="Any CPU"
-        msbuild -t:RxBench01 -p:Configuration=Release -p:Platform="Any CPU"
+        msbuild -t:Bench\RdStress01 -p:Configuration=Release -p:Platform="Any CPU"
+        msbuild -t:Bench\RxBench01 -p:Configuration=Release -p:Platform="Any CPU"
