@@ -1,4 +1,10 @@
 ![logo](Images/KaosCollections-218.png)
+
+<a href="https://github.com/kaosborn/KaosCollections/blob/master/.github/workflows/Build.yml">
+<img src="https://github.com/kaosborn/KaosCollections/workflows/Build/badge.svg"></a>
+<a href="https://github.com/kaosborn/KaosCollections/blob/master/.github/workflows/Test.yml">
+<img src="https://github.com/kaosborn/KaosCollections/workflows/Test/badge.svg"></a>
+
 # KaosCollections
 
 KaosCollections is a .NET library that provides generic collection classes
