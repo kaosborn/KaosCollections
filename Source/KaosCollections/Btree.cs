@@ -174,7 +174,6 @@ namespace Kaos.Collections
         {
             bool isFound = false;
             int treeIndex = 0;
-            leafIndex = 0;
 
             for (Node node = root;;)
             {
@@ -234,7 +233,6 @@ namespace Kaos.Collections
         private protected bool FindEdgeLeft (T key, out Leaf leaf, out int leafIndex)
         {
             bool isFound = false;
-            leafIndex = 0;
 
             for (Node node = root;;)
             {
@@ -267,7 +265,6 @@ namespace Kaos.Collections
         private protected bool FindEdgeRight (T key, out Leaf leaf, out int leafIndex)
         {
             bool isFound = false;
-            leafIndex = 0;
 
             for (Node node = root;;)
             {
@@ -300,11 +297,11 @@ namespace Kaos.Collections
 
         private protected int GetCount2 (T key)
         {
-            int treeIx1 = FindEdgeForIndex (key, out Leaf leaf1, out int leafIx1, leftEdge:true);
+            int treeIx1 = FindEdgeForIndex (key, out Leaf _, out int _, leftEdge:true);
             if (treeIx1 < 0)
                 return 0;
             else
-                return FindEdgeForIndex (key, out Leaf leaf2, out int leafIx2, leftEdge:false) - treeIx1;
+                return FindEdgeForIndex (key, out Leaf _, out int _, leftEdge:false) - treeIx1;
         }
 
 
