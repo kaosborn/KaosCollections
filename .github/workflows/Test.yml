@@ -25,5 +25,6 @@ jobs:
         msbuild -t:Collections461 -p:Configuration=Debug -p:Platform="Any CPU"
         msbuild -t:Test461 -p:DefineConstants="TRACE,DEBUG,TEST_BCL" -p:Configuration=Debug -p:Platform="Any CPU"
     - name: Run BCL compatibility tests
+      run: |
         call "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat"
         vstest.console Test461\bin\Debug\Test461.dll
