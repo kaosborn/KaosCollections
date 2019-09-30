@@ -25,8 +25,6 @@ Kaos.Collections.RankedBag&lt;T&gt;</Description>
     <PackageReleaseNotes>For complete documentation including release history:
 https://kaosborn.github.io/help/KaosCollections/</PackageReleaseNotes>
     <PackageTags>Generics Collections SortedDictionary SortedSet SortedList BTree Order Statistic Dictionary Set Bag Multiset Multimap</PackageTags>
-    <PackageLicenseUrl></PackageLicenseUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/kaosborn/KaosCollections/master/Images/KaosCollections-064.png</PackageIconUrl>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
   </PropertyGroup>
 
