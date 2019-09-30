@@ -362,7 +362,7 @@ namespace Kaos.Collections
             /// <summary>Adjust tree path to node to the left.</summary>
             public Node TraverseLeft()
             {
-                Node node = null;
+                Node node;
                 int height = indexStack.Count;
                 while (indexStack.Count > 1)
                 {
@@ -389,7 +389,7 @@ namespace Kaos.Collections
             /// <b>null</b> if current path at rightmost node.</returns>
             public Node TraverseRight()
             {
-                Node node = null;
+                Node node;
                 int height = indexStack.Count;
                 for (;;)
                 {

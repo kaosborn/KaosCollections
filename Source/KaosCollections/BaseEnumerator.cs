@@ -19,9 +19,8 @@ namespace Kaos.Collections
             private readonly bool isReverse=false;
             protected Leaf leaf=null;
             protected int leafIndex;
-            private int index;
             private int start=0;
-            private int stageFreeze;
+            private readonly int stageFreeze;
             private int state;  // -1=rewound; 0=active; 1=consumed
 
             public bool NotActive => state != 0;
@@ -69,9 +68,9 @@ namespace Kaos.Collections
                 tree.StageCheck (stageFreeze);
                 if (state == 0)
                     if (isReverse)
-                      { --index; --leafIndex; }
+                        --leafIndex;
                     else
-                      { ++index; ++leafIndex; }
+                        ++leafIndex;
                 else if (state > 0)
                     return false;
                 else
@@ -81,7 +80,6 @@ namespace Kaos.Collections
                           { state = 1; return false; }
                         else
                             leaf = (Leaf) tree.Find (start, out leafIndex);
-                    index = start;
                     state = 0;
                 }
 
