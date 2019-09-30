@@ -1,17 +1,13 @@
 name: Build
-
-on: [push]
-
+on: push
 jobs:
-  build:
-
+  Job1:
     runs-on: windows-latest
-
     steps:
     - uses: actions/checkout@v1
       with:
         fetch-depth: 1
-    - name: Do build job
+    - name: Build libraries
       run: |
         call "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat"
         dotnet restore
