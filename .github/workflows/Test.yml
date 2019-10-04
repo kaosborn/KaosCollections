@@ -40,7 +40,7 @@ jobs:
         dotnet clean
         dotnet restore
         msbuild -t:Collections461 -p:Configuration=Debug -p:Platform="Any CPU"
-        msbuild -t:Test461 -p:DefineDebug -p:DefineTrace -p:DefineConstants=TEST_BCL -p:Configuration=Debug -p:Platform="Any CPU"
+        msbuild -t:Test461 -p:DefineDebug=true -p:DefineTrace=true -p:DefineConstants=TEST_BCL -p:Configuration=Debug -p:Platform="Any CPU"
     - name: Run BCL compatibility suite
       run: |
         call "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat"
