@@ -33,7 +33,7 @@ jobs:
       run: |
         call "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat"
         "%USERPROFILE%\.nuget\packages\microsoft.codecoverage\16.3.0\build\netstandard1.0\CodeCoverage\CodeCoverage" analyze -output:TestResults\KaosCollections.coveragexml TestResults\KaosCollections.coverage
-        dotnet "%USERPROFILE%\.nuget\packages\reportgenerator\4.3.0\tools\netcoreapp2.1\ReportGenerator.dll" -reports:TestResults\KaosCollections.coveragexml -targetdir:TestResults\CoverageReport
+        dotnet "%USERPROFILE%\.nuget\packages\reportgenerator\4.3.0\tools\netcoreapp2.1\ReportGenerator.dll" -reports:TestResults\KaosCollections.coveragexml -targetdir:TestResults\KaosCollections-CoverageReport
     - name: Build BCL compatibility suite
       run: |
         call "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat"
