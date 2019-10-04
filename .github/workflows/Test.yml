@@ -7,24 +7,45 @@ jobs:
     - uses: actions/checkout@v1
       with:
         fetch-depth: 1
-    - name: Build unit tests
+    - name: Build standard suite
       run: |
         call "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat"
+        mkdir TestResults\KaosCollections-CoverageReport
         dotnet restore
+        dotnet add Test461 package -v 16.3.0 Microsoft.CodeCoverage
+        dotnet add Test461 package -v 4.3.0 ReportGenerator
         msbuild -t:Collections461 -p:Configuration=Debug -p:Platform="Any CPU"
         msbuild -t:Test461 -p:Configuration=Debug -p:Platform="Any CPU"
-    - name: Run unit tests
+    - name: Run standard suite
       run: |
         call "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat"
         vstest.console Test461\bin\Debug\Test461.dll
-    - name: Build BCL compatibility tests
+    - name: Build coverage suite
+      run: |
+        call "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat"
+        msbuild -t:Collections461 -p:Configuration=Release -p:Platform="Any CPU"
+        msbuild -t:Test461 -p:Configuration=Release -p:Platform="Any CPU"
+    - name: Run coverage suite
+      run: |
+        call "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat"
+        "%VSINSTALLDIR%\Team Tools\Dynamic Code Coverage Tools\CodeCoverage" collect -output:TestResults\KaosCollections.coverage "%VSINSTALLDIR%\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console" Test461\bin\Release\Test461.dll
+    - name: Run coverage analysis
+      run: |
+        call "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat"
+        "%USERPROFILE%\.nuget\packages\microsoft.codecoverage\16.3.0\build\netstandard1.0\CodeCoverage\CodeCoverage" analyze -output:TestResults\KaosCollections.coveragexml TestResults\KaosCollections.coverage
+        dotnet "%USERPROFILE%\.nuget\packages\reportgenerator\4.3.0\tools\netcoreapp2.1\ReportGenerator.dll" -reports:TestResults\KaosCollections.coveragexml -targetdir:TestResults\CoverageReport
+    - name: Build BCL compatibility suite
       run: |
         call "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat"
         dotnet clean
         dotnet restore
         msbuild -t:Collections461 -p:Configuration=Debug -p:Platform="Any CPU"
-        msbuild -t:Test461 -p:DefineConstants="TRACE,DEBUG,TEST_BCL" -p:Configuration=Debug -p:Platform="Any CPU"
-    - name: Run BCL compatibility tests
+        msbuild -t:Test461 -p:DefineDebug -p:DefineTrace -p:DefineConstants=TEST_BCL -p:Configuration=Debug -p:Platform="Any CPU"
+    - name: Run BCL compatibility suite
       run: |
         call "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat"
         vstest.console Test461\bin\Debug\Test461.dll
+    - uses: actions/upload-artifact@v1
+      with:
+        name: RunnerOutput-Coverage
+        path: TestResults\KaosCollections-CoverageReport

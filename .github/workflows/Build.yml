@@ -15,3 +15,7 @@ jobs:
         msbuild -t:Collections -p:Configuration=Release -p:Platform="Any CPU"
         msbuild -t:Bench\RdStress01 -p:Configuration=Release -p:Platform="Any CPU"
         msbuild -t:Bench\RxBench01 -p:Configuration=Release -p:Platform="Any CPU"
+    - uses: actions/upload-artifact@v1
+      with:
+        name: RunnerOutput-ReleaseBuild
+        path: Collections\bin\Release
