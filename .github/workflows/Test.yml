@@ -7,13 +7,14 @@ jobs:
     - uses: actions/checkout@v1
       with:
         fetch-depth: 1
+    - name: Initialize
+      run: |
+        mkdir TestResults\KaosCollections-CoverageReport
+        dotnet restore
+        dotnet add Test461 package -v 4.3.0 ReportGenerator
     - name: Build standard suite
       run: |
         call "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat"
-        mkdir TestResults\KaosCollections-CoverageReport
-        dotnet restore
-        dotnet add Test461 package -v 16.3.0 Microsoft.CodeCoverage
-        dotnet add Test461 package -v 4.3.0 ReportGenerator
         msbuild -t:Collections461 -p:Configuration=Debug -p:Platform="Any CPU"
         msbuild -t:Test461 -p:Configuration=Debug -p:Platform="Any CPU"
     - name: Run standard suite
@@ -32,7 +33,7 @@ jobs:
     - name: Run coverage analysis
       run: |
         call "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat"
-        "%USERPROFILE%\.nuget\packages\microsoft.codecoverage\16.3.0\build\netstandard1.0\CodeCoverage\CodeCoverage" analyze -output:TestResults\KaosCollections.coveragexml TestResults\KaosCollections.coverage
+        "%VSINSTALLDIR%\Team Tools\Dynamic Code Coverage Tools\CodeCoverage" analyze -output:TestResults\KaosCollections.coveragexml TestResults\KaosCollections.coverage
         dotnet "%USERPROFILE%\.nuget\packages\reportgenerator\4.3.0\tools\netcoreapp2.1\ReportGenerator.dll" -reports:TestResults\KaosCollections.coveragexml -targetdir:TestResults\KaosCollections-CoverageReport
     - name: Build BCL compatibility suite
       run: |
