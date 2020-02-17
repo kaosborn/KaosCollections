@@ -2,7 +2,7 @@
 // Library: KaosCollections
 // File:    RankedSet.cs
 //
-// Copyright © 2009-2019 Kasey Osborn (github.com/kaosborn)
+// Copyright © 2009-2020 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely
 //
 
