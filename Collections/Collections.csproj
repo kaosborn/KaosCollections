@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.0;net45;net40;net35</TargetFrameworks>
+    <TargetFrameworks>netstandard1.0;net45;net40</TargetFrameworks>
     <AssemblyName>KaosCollections</AssemblyName>
     <RootNamespace>Kaos.Collections</RootNamespace>
     <Version>4.2.0.1</Version>
