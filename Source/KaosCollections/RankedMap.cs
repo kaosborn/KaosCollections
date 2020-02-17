@@ -10,9 +10,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-#if NET35 || NET40 || NET45 || SERIALIZE
 using System.Runtime.Serialization;
-#endif
 
 namespace Kaos.Collections
 {
@@ -32,28 +30,21 @@ namespace Kaos.Collections
     /// </example>
     [DebuggerTypeProxy (typeof (ICollectionDebugView<,>))]
     [DebuggerDisplay("Count = {Count}")]
-#if NET35 || NET40 || NET45 || SERIALIZE
     [Serializable]
-#endif
     public partial class RankedMap<TKey,TValue> :
         Btree<TKey>
         , ICollection<KeyValuePair<TKey,TValue>>
         , ICollection
-#if ! NET35 && ! NET40
+#if ! NET40
         , IReadOnlyCollection<KeyValuePair<TKey,TValue>>
 #endif
-#if NET35 || NET40 || NET45 || SERIALIZE
         , ISerializable
         , IDeserializationCallback
-#endif
     {
-#if NET35 || NET40 || NET45 || SERIALIZE
         [NonSerialized]
-#endif
         private KeyCollection keys;
-#if NET35 || NET40 || NET45 || SERIALIZE
+
         [NonSerialized]
-#endif
         private ValueCollection values;
 
         #region Constructors
@@ -728,7 +719,6 @@ namespace Kaos.Collections
         #endregion
 
         #region ISerializable implementation and support
-#if NET35 || NET40 || NET45 || SERIALIZE
 
         private SerializationInfo serializationInfo;
 
@@ -813,7 +803,6 @@ namespace Kaos.Collections
         void IDeserializationCallback.OnDeserialization (Object sender)
          => OnDeserialization (sender);
 
-#endif
         #endregion
 
         #region Enumeration

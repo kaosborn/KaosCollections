@@ -10,9 +10,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-#if NET35 || NET40 || NET45 || SERIALIZE
 using System.Runtime.Serialization;
-#endif
 
 namespace Kaos.Collections
 {
@@ -77,28 +75,21 @@ namespace Kaos.Collections
     /// </example>
     [DebuggerTypeProxy (typeof (ICollectionDebugView<,>))]
     [DebuggerDisplay ("Count = {Count}")]
-#if NET35 || NET40 || NET45 || SERIALIZE
     [Serializable]
-#endif
     public partial class RankedDictionary<TKey,TValue> :
         Btree<TKey>
         , IDictionary<TKey,TValue>
         , IDictionary
-#if ! NET35 && ! NET40
+#if ! NET40
         , IReadOnlyDictionary<TKey,TValue>
 #endif
-#if NET35 || NET40 || NET45 || SERIALIZE
         , ISerializable
         , IDeserializationCallback
-#endif
     {
-#if NET35 || NET40 || NET45 || SERIALIZE
         [NonSerialized]
-#endif
         private KeyCollection keys;
-#if NET35 || NET40 || NET45 || SERIALIZE
+
         [NonSerialized]
-#endif
         private ValueCollection values;
 
         #region Constructors
@@ -238,7 +229,7 @@ namespace Kaos.Collections
         ICollection<TKey> IDictionary<TKey,TValue>.Keys
          => (ICollection<TKey>) Keys;
 
-#if ! NET35 && ! NET40
+#if ! NET40
         /// <summary>Gets a <see cref="RankedDictionary{TKey,TValue}.KeyCollection"/> containing the keys in the dictionary.</summary>
         IEnumerable<TKey> IReadOnlyDictionary<TKey,TValue>.Keys
          => Keys;
@@ -686,7 +677,6 @@ namespace Kaos.Collections
         #endregion
 
         #region ISerializable implementation and support
-#if NET35 || NET40 || NET45 || SERIALIZE
 
         private SerializationInfo serializationInfo;
 
@@ -771,7 +761,6 @@ namespace Kaos.Collections
         void IDeserializationCallback.OnDeserialization (Object sender)
          => OnDeserialization (sender);
 
-#endif
         #endregion
 
         #region Bonus methods

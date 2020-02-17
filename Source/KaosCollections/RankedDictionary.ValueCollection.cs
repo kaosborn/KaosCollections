@@ -48,7 +48,7 @@ namespace Kaos.Collections
         public sealed class ValueCollection :
             ICollection<TValue>,
             ICollection
-#if ! NET35 && ! NET40
+#if ! NET40
             , IReadOnlyCollection<TValue>
 #endif
         {

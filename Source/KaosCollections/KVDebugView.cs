@@ -12,9 +12,7 @@ using System.Diagnostics;
 
 namespace Kaos.Collections
 {
-#if ! NET35 && ! NETSTANDARD1_0
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-#endif
     internal class ICollectionDebugView<K,V>
     {
         private readonly ICollection<KeyValuePair<K,V>> target;
@@ -39,9 +37,7 @@ namespace Kaos.Collections
     }
 
 
-#if ! NET35 && ! NETSTANDARD1_0
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-#endif
     internal class ICollectionKeysDebugView<K,V>
     {
         private readonly ICollection<K> target;
@@ -68,9 +64,7 @@ namespace Kaos.Collections
     }
 
 
-#if ! NET35 && ! NETSTANDARD1_0
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-#endif
     internal class ICollectionValuesDebugView<K,V>
     {
         private readonly ICollection<V> target;
@@ -97,9 +91,7 @@ namespace Kaos.Collections
     }
 
 
-#if ! NET35 && ! NETSTANDARD1_0
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-#endif
     internal class IEnumerableDebugView<K,V>
     {
         [DebuggerBrowsable (DebuggerBrowsableState.Never)] 
@@ -125,9 +117,7 @@ namespace Kaos.Collections
     }
 
 
-#if ! NET35 && ! NETSTANDARD1_0
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-#endif
     internal class IEnumerableKeysDebugView<K,V>
     {
         [DebuggerBrowsable (DebuggerBrowsableState.Never)] 
@@ -152,9 +142,7 @@ namespace Kaos.Collections
         }
     }
 
-#if ! NET35 && ! NETSTANDARD1_0
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-#endif
     internal class IEnumerableValuesDebugView<K,V>
     {
         [DebuggerBrowsable (DebuggerBrowsableState.Never)] 
