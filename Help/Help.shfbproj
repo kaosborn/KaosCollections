@@ -13,7 +13,7 @@
     <RootNamespace>Help</RootNamespace>
     <Name>Help</Name>
     <!-- SHFB properties -->
-    <FrameworkVersion>.NET Framework 4.6.1</FrameworkVersion>
+    <FrameworkVersion>Cross-platform (.NET Core/.NET Standard)</FrameworkVersion>
     <OutputPath>.\Help\</OutputPath>
     <HtmlHelpName>KaosCollections</HtmlHelpName>
     <Language>en-US</Language>
@@ -31,7 +31,8 @@
       <Argument Key="requestExampleUrl" Value="" />
     </TransformComponentArguments>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\Collections461\Collections461.csproj" />
+      <DocumentationSource sourceFile="..\Collections\bin\Release\netstandard2.1\KaosCollections.dll" />
+      <DocumentationSource sourceFile="..\Collections\bin\Release\netstandard2.1\KaosCollections.xml" />
     </DocumentationSources>
     <SaveComponentCacheCapacity>100</SaveComponentCacheCapacity>
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
@@ -107,6 +108,13 @@ These classes closely emulate the API of the Microsoft's classes they are based 
       <ImageId>KaosCollections-Help</ImageId>
       <AlternateText>Kaos Collections-Help</AlternateText>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Collections\Collections.csproj">
+      <Name>Collections</Name>
+      <Project>{d44b60e8-0c5a-42dd-87b7-1125e37f4749}</Project>
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
   <!-- Import the SHFB build targets -->
   <Import Project="$(SHFBROOT)\SandcastleHelpFileBuilder.targets" />

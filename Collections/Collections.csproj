@@ -28,6 +28,10 @@ https://kaosborn.github.io/help/KaosCollections/</PackageReleaseNotes>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Include="..\LICENSE.txt">
       <Pack>True</Pack>

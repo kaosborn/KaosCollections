@@ -46,9 +46,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Collections461\Collections461.csproj">
-      <Project>{fb547c0b-556f-4d84-bf48-9da674832089}</Project>
-      <Name>Collections461</Name>
+    <ProjectReference Include="..\..\Collections\Collections.csproj">
+      <Project>{d44b60e8-0c5a-42dd-87b7-1125e37f4749}</Project>
+      <Name>Collections</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
