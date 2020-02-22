@@ -93,4 +93,6 @@
     </None>
   </ItemGroup>
 
+  <Import Project="..\Source\KaosTestCollections\KaosTestCollections.projitems" Label="Shared" />
+
 </Project>

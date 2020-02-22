@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>72e272a9-12e2-41a1-840c-60038ecd5d3e</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>KaosTestCollections</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)TestInit.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestRb.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestRbDeLinq.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestRbSerialization.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestRd.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestRdDeLinq.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestRdKeysValues.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestRdLinq.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestRdObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestRdSerialization.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestRdStress.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestRm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestRmDeLinq.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestRmKeysValues.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestRmSerialization.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestRs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestRsDeLinq.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestRsSerialization.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestRsSetCompare.cs" />
+  </ItemGroup>
+</Project>

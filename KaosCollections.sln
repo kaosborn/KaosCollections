@@ -101,8 +101,11 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "KaosCollections", "Source\K
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestCore", "TestCore\TestCore.csproj", "{24F93EB8-E22A-4D61-8F49-C4467812289D}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "KaosTestCollections", "Source\KaosTestCollections\KaosTestCollections.shproj", "{72E272A9-12E2-41A1-840C-60038ECD5D3E}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Source\KaosTestCollections\KaosTestCollections.projitems*{72e272a9-12e2-41a1-840c-60038ecd5d3e}*SharedItemsImports = 13
 		Source\KaosCollections\KaosCollections.projitems*{d548bad1-2deb-4e61-86cc-599ec896043b}*SharedItemsImports = 13
 		Source\KaosCollections\KaosCollections.projitems*{ede8bef7-8503-45d1-95c5-47b827f18130}*SharedItemsImports = 4
 	EndGlobalSection
@@ -322,6 +325,7 @@ Global
 		{EDE8BEF7-8503-45D1-95C5-47B827F18130} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{8FF5A924-F981-477B-AD0C-52ED16DC1FE6} = {F9AEB968-9A56-4192-BFF3-B4BEFEEE9FAE}
 		{D548BAD1-2DEB-4E61-86CC-599EC896043B} = {FE32F6EA-9179-43FB-82C5-2D010EC41842}
+		{72E272A9-12E2-41A1-840C-60038ECD5D3E} = {FE32F6EA-9179-43FB-82C5-2D010EC41842}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {201DA9DF-651F-47A0-B578-167533C3D874}
