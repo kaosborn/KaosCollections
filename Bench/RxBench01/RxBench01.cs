@@ -1,10 +1,7 @@
 ﻿//
 // Program: RxBench01.cs
-// Purpose: Demonstrate FxCore usage of all classes.
+// Purpose: Demonstrate usage with a .NET Core program.
 //
-// Usage:
-// • To execute from a command prompt run:
-//     dotnet RxBench01.dll
 
 using System;
 using Kaos.Collections;
