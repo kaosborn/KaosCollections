@@ -1061,7 +1061,7 @@ namespace Kaos.Collections
             if (root is Branch)
                 lastLeaf = CheckBranch ((Branch) root, 1, GetHeight(), true, default, null);
             else
-                lastLeaf = CheckLeaf ((Leaf) root, true, default, null);
+                lastLeaf = CheckLeaf ((Leaf) root, default, null);
 
             root.SanityCheck();
 
@@ -1128,7 +1128,7 @@ namespace Kaos.Collections
                 if (level + 1 < height)
                     visited = CheckBranch ((Branch) branch.GetChild (i), level+1, height, isRightmost0, anchor0, visited);
                 else
-                    visited = CheckLeaf ((Leaf) branch.GetChild (i), isRightmost0, anchor0, visited);
+                    visited = CheckLeaf ((Leaf) branch.GetChild (i), anchor0, visited);
 
                 branch.GetChild (i).SanityCheck();
                 actualWeight += branch.GetChild (i).Weight;
@@ -1140,7 +1140,7 @@ namespace Kaos.Collections
         }
 
 
-        private Leaf CheckLeaf (Leaf leaf, bool isRightmost, T anchor, Leaf visited)
+        private Leaf CheckLeaf (Leaf leaf, T anchor, Leaf visited)
         {
             LeafSlotCount += maxKeyCount;
             LeafSlotsUsed += leaf.KeyCount;
