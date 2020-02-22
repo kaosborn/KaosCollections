@@ -31,16 +31,13 @@ namespace Kaos.Collections
                 int hashCode = 0;
                 if (set != null)
                     foreach (T item in set)
-                        hashCode = hashCode ^ (equalityComparer.GetHashCode (item) & 0x7FFFFFFF);
+                        hashCode ^= (equalityComparer.GetHashCode (item) & 0x7FFFFFFF);
 
                 return hashCode;
             }
 
             public override bool Equals (object obComparer)
-            {
-                var rsComparer = obComparer as RankedSetEqualityComparer;
-                return rsComparer != null && comparer == rsComparer.comparer;
-            }
+             => obComparer is RankedSetEqualityComparer rsComparer && comparer == rsComparer.comparer;
 
             public override int GetHashCode()
              => comparer.GetHashCode() ^ equalityComparer.GetHashCode();

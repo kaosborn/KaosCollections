@@ -233,7 +233,7 @@ namespace Kaos.Collections
         /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
         public bool Contains (T item)
         {
-            Leaf leaf = Find (item, out int ix);
+            Leaf _ = Find (item, out int ix);
             return ix >= 0;
         }
 

@@ -1,5 +1,4 @@
-﻿using System;
-//
+﻿//
 // Library: KaosCollections
 // File:    KVDebugView.cs
 //
@@ -7,6 +6,7 @@
 // MIT License - Use and redistribute freely
 //
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -18,11 +18,7 @@ namespace Kaos.Collections
         private readonly ICollection<KeyValuePair<K,V>> target;
 
         public ICollectionDebugView (ICollection<KeyValuePair<K,V>> collection)
-        {
-            if (collection == null)
-                throw new ArgumentNullException (nameof (collection));
-            this.target = collection;
-        }
+         => this.target = collection ?? throw new ArgumentNullException (nameof (collection));
 
         [DebuggerBrowsable (DebuggerBrowsableState.RootHidden)]
         public KeyValuePair<K,V>[] Items
@@ -43,13 +39,7 @@ namespace Kaos.Collections
         private readonly ICollection<K> target;
 
         public ICollectionKeysDebugView (ICollection<K> collection)
-        {
-            if (collection == null)
-#pragma warning disable IDE0016
-                throw new ArgumentNullException (nameof (collection));
-#pragma warning restore IDE0016
-            this.target = collection;
-        }
+         => this.target = collection ?? throw new ArgumentNullException (nameof (collection));
 
         [DebuggerBrowsable (DebuggerBrowsableState.RootHidden)]
         public K[] Items
@@ -70,13 +60,7 @@ namespace Kaos.Collections
         private readonly ICollection<V> target;
 
         public ICollectionValuesDebugView (ICollection<V> collection)
-        {
-            if (collection == null)
-#pragma warning disable IDE0016
-                throw new ArgumentNullException (nameof (collection));
-#pragma warning restore IDE0016
-            this.target = collection;
-        }
+         => this.target = collection ?? throw new ArgumentNullException (nameof (collection));
 
         [DebuggerBrowsable (DebuggerBrowsableState.RootHidden)]
         public V[] Items
@@ -98,11 +82,7 @@ namespace Kaos.Collections
         private readonly IEnumerable<KeyValuePair<K,V>> target;
 
         public IEnumerableDebugView (IEnumerable<KeyValuePair<K,V>> enumerable)
-        {
-            if (enumerable == null)
-                throw new ArgumentNullException (nameof (enumerable));
-            this.target = enumerable;
-        }
+         => this.target = enumerable ?? throw new ArgumentNullException (nameof (enumerable));
 
         [DebuggerBrowsable (DebuggerBrowsableState.RootHidden)]
         public IEnumerable<KeyValuePair<K,V>> Items
@@ -124,11 +104,7 @@ namespace Kaos.Collections
         private readonly IEnumerable<K> target;
 
         public IEnumerableKeysDebugView (IEnumerable<K> enumerable)
-        {
-            if (enumerable == null)
-                throw new ArgumentNullException (nameof (enumerable));
-            this.target = enumerable;
-        }
+         => this.target = enumerable ?? throw new ArgumentNullException (nameof (enumerable));
 
         [DebuggerBrowsable (DebuggerBrowsableState.RootHidden)]
         public IEnumerable<K> Items
@@ -142,6 +118,7 @@ namespace Kaos.Collections
         }
     }
 
+
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal class IEnumerableValuesDebugView<K,V>
     {
@@ -149,11 +126,7 @@ namespace Kaos.Collections
         private readonly IEnumerable<V> target;
 
         public IEnumerableValuesDebugView (IEnumerable<V> enumerable)
-        {
-            if (enumerable == null)
-                throw new ArgumentNullException (nameof (enumerable));
-            this.target = enumerable;
-        }
+         => this.target = enumerable ?? throw new ArgumentNullException (nameof (enumerable));
 
         [DebuggerBrowsable (DebuggerBrowsableState.RootHidden)]
         public IEnumerable<V> Items

@@ -346,7 +346,7 @@ namespace Kaos.Collections
             if (key == null)
                 throw new ArgumentNullException (nameof (key));
 
-            var leaf = (PairLeaf<TValue>) Find (key, out int index);
+            var _ = (PairLeaf<TValue>) Find (key, out int index);
             return index >= 0;
         }
 
@@ -612,7 +612,7 @@ namespace Kaos.Collections
             if (! (key is TKey))
                 return false;
 
-            Leaf leaf = Find ((TKey) key, out int ix);
+            Leaf _ = Find ((TKey) key, out int ix);
             return ix >= 0;
         }
 

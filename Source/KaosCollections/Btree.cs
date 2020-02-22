@@ -1059,9 +1059,9 @@ namespace Kaos.Collections
 
             Leaf lastLeaf;
             if (root is Branch)
-                lastLeaf = CheckBranch ((Branch) root, 1, GetHeight(), true, default (T), null);
+                lastLeaf = CheckBranch ((Branch) root, 1, GetHeight(), true, default, null);
             else
-                lastLeaf = CheckLeaf ((Leaf) root, true, default (T), null);
+                lastLeaf = CheckLeaf ((Leaf) root, true, default, null);
 
             root.SanityCheck();
 

@@ -331,7 +331,7 @@ namespace Kaos.Collections
             {
                 tree.TryGetLE (getKey, out Leaf leaf, out int index);
                 if (leaf == null)
-                { key = default (TKey); return false; }
+                { key = default; return false; }
                 else
                 { key = leaf.GetKey (index); return true; }
             }

@@ -18,11 +18,7 @@ namespace Kaos.Collections
         private readonly ICollection<T> target;
 
         public ICollectionDebugView (ICollection<T> collection)
-        {
-            if (collection == null)
-                throw new ArgumentNullException (nameof (collection));
-            this.target = collection;
-        }
+         => this.target = collection ?? throw new ArgumentNullException (nameof (collection));
 
         [DebuggerBrowsable (DebuggerBrowsableState.RootHidden)]
         public T[] Items
@@ -36,6 +32,7 @@ namespace Kaos.Collections
         }
     }
 
+
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal class IEnumerableDebugView<T>
     {
@@ -43,11 +40,7 @@ namespace Kaos.Collections
         private readonly IEnumerable<T> target;
 
         public IEnumerableDebugView (IEnumerable<T> enumerable)
-        {
-            if (enumerable == null)
-                throw new ArgumentNullException (nameof (enumerable));
-            this.target = enumerable;
-        }
+         => this.target = enumerable ?? throw new ArgumentNullException (nameof (enumerable));
 
         [DebuggerBrowsable (DebuggerBrowsableState.RootHidden)]
         public IEnumerable<T> Items

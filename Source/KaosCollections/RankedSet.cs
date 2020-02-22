@@ -198,7 +198,7 @@ namespace Kaos.Collections
         /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
         public bool Contains (T item)
         {
-            Leaf leaf = Find (item, out int index);
+            Leaf _ = Find (item, out int index);
             return index >= 0;
         }
 
@@ -1076,7 +1076,7 @@ namespace Kaos.Collections
             if (set1.HasEqualComparer (set2))
                 return set1.Count == set2.Count && set1.SetEquals (set2);
             
-            bool found = false;
+            bool found;
             foreach (T item1 in set1)
             {
                 found = false;
