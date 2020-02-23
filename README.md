@@ -22,45 +22,41 @@ Primary types provided are:
 * `RankedMap<TKey,TValue>` - for collections of key/value pairs with nondistinct keys that can be accessed in sort order or by index.
 * `RankedBag<T>` - for collections of nondistinct items that can be accessed in sort order or by index. Also known as multisets.
 
-This library is built as a .NET Standard project with multitargeting to:
+This library is multitargeted to:
 
-* .NET Standard 1.0
+* .NET Standard 2.1 (v4.2 and prior targeted .NET Standard 1.0)
 * .NET Framework 4.5
 * .NET Framework 4.0
-* .NET Framework 3.5
+* .NET Framework 3.5 (ends with v4.2 of this library)
 
 ### Library installation
 
-To install using Package Manager:
+#### To install using Package Manager:
 
 * **`Install-Package Kaos.Collections -Version 4.2.0`**
 
-To install using the .NET CLI:
+#### To install using the .NET CLI:
 
 * **`dotnet add package Kaos.Collections --version 4.2.0`**
 
-To install using the Visual Studio gallery:
-1. Click **Manage NuGet Packages**.
-2. Select package source of **nuget.org**.
-3. Click **Browse** and input **Kaos.Collections**.
-4. The package should appear. Click **Install**.
+#### To install using Visual Studio gallery:
+
+1. Click *Manage NuGet Packages*.
+2. Select package source of *nuget.org*.
+3. Click *Browse* and input **Kaos.Collections**.
+4. The package should appear. Click *Install*.
 As a multitargeted package, the appropriate binary will be installed for your program.
 
-To install using a direct reference to a `.dll` binary:
+#### To install using a direct reference to a `.dll` binary:
 
 1. Download the `.nuget` package from either:
 
    * https://www.nuget.org/packages/Kaos.Collections/
    * https://github.com/kaosborn/KaosCollections/releases/
 
-2. As archives, individual binaries may be extracted from the `.nuget` package for specific platforms.
+2. As archives, individual binaries may be extracted from the NuGet package for specific platforms.
+This may require changing the file extension from `.nuget` to `.zip` to access the contents.
 A project may then reference the extracted platform-specific `.dll` directly.
-
-### Project status
-
-For the latest stable release, [install version 4.2.0](#library-installation).
-
-Documentation for the main branch is available by building the Help project for the `.chm` output.
 
 ### Documentation
 
@@ -69,67 +65,62 @@ For complete documentation, see:
 
 * https://kaosborn.github.io/help/KaosCollections/
 
-An offline version of this documentation is also provided as a `.chm` file.
-This file may need to be unblocked using the file properties dialog:
+Identical documentation is available as a Microsoft Help v1 file from the link below.
+This downloaded `.chm` file may require unblocking thru its file properties dialog.
 
 * https://github.com/kaosborn/KaosCollections/releases/
 
-Examples, benchmarks, and roadmap may be viewed here:
+Finally, examples are repeated in the repository wiki:
 
 * https://github.com/kaosborn/KaosCollections/wiki/
 
-### Build
+### Roadmap
 
-Complete source code with embedded XML documentation is hosted at GitHub:
+[X] Add serialization to .NET Standard build target
+[X] Remove .NET 3.5 build target; change .NET Standard build target to v2.1
+[ ] Add GAC installer
 
-* https://github.com/kaosborn/KaosCollections/releases/
+Latest library builds are posted as workflow artifacts to:
 
-Building the library requires Visual Studio 2017 Community Edition or greater:
+https://github.com/kaosborn/KaosCollections/actions?query=workflow%3ABuild
 
-* https://www.visualstudio.com/downloads/
-
-Building documentation requires Sandcastle Help File Builder:
-
-* https://github.com/EWSoftware/SHFB/releases/
-
-### Repository layout
+### Repository top-level folders
 
 This repository is a single Visual Studio solution with additional files in the root.
 
-* The `Bench` folder contains console program projects that mostly target the .NET 4.6.1 library build.
-These programs exist to:
+* `Bench` - Contains console programs that:
 
-  * Provide examples for documentation
-  * Exercise classes in this library
-  * Benchmark performance versus Microsoft classes
-  * Benchmark performance for tuning
-  * Stress test
-  * Show breadth first tree charts for operation sequences
+  * Provide examples for documentation.
+  * Exercise classes in this library.
+  * Benchmark performance versus Microsoft classes.
+  * Benchmark performance for tuning.
+  * Stress test.
+  * Show breadth first tree charts for operation sequences.
 
-* The `Collections` folder contains the primary build of the class library.
-Building the Release configuration of the project contained in this folder
-will produce a `.nuget` file for distribution.
+* Collections - Contains the `.nuget` library build of KaosCollections.
+This library is multitargeted to .NET Standard 2.1, .NET 4.5 and .NET 4.0.
 
-* The `Collections461` folder contains a .NET 4.61 build of the class library.
-This project is used for development and testing only.
-
-* The `Help` folder contains a [Sandcastle Help File Builder](https://github.com/EWSoftware/SHFB)
+* `Help` - Contains [Sandcastle Help File Builder](https://github.com/EWSoftware/SHFB)
 project that produces documentation from embedded XML comments.
-To build this project, first build `Collections461` in Release configuration.
+Output is a Microsoft Help v1 file with a `.chm` extension and (optionally) a static web site.
 
-* The `Images` folder contains the logo `.svg` file and its `.png` conversions.
+* `Images` - Contains SVG files with renderings.
 
-* The `Source` folder contains all source code for KaosCollections.
-All source is organized using shared projects which are referenced by the build projects.
+* `Source` - Contains source code in shared projects by namespace by class.
 
-* The `Test461` folder contains unit tests and some short running stress tests.
-Code coverage (branch and line) is 100%.
-To verify correct emulation, these tests may be run against either this library
-or against the emulated BCL classes.
+* `TestCore` - Contains MSTest unit tests and some short running stress tests.
+Line and branch coverage is 100%.
+To verify correct emulation,
+the same tests may be run against either this library or against the emulated BCL classes.
 To run the test suite against the Microsoft classes,
 add the `TEST_BCL` compilation symbol to the test project build properties.
-Testing against the full framework is preferred over Core due to:
 
-  * Decreased build times
-  * Full API support
-  * Support for code coverage analysis
+### Build requirements
+
+All links in this section are to free software.
+
+* https://github.com/kaosborn/KaosCollections/ - Complete source is hosted at GitHub.
+
+* https://www.visualstudio.com/downloads/ - Building the solution requires Visual Studio 2017 Community Edition or greater.
+
+* https://github.com/EWSoftware/SHFB/releases/ - Building `.chm` or web documentation requires Sandcastle Help File Builder.
