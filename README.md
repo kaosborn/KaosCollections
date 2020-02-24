@@ -76,9 +76,9 @@ Finally, examples are repeated in the repository wiki:
 
 ### Roadmap
 
-[X] Add serialization to .NET Standard build target
-[X] Remove .NET 3.5 build target; change .NET Standard build target to v2.1
-[ ] Add GAC installer
+- [X] Add serialization to .NET Standard build target
+- [X] Remove .NET 3.5 build target; change .NET Standard build target to v2.1
+- [ ] Add GAC installer
 
 Latest library builds are posted as workflow artifacts to:
 
@@ -86,22 +86,22 @@ https://github.com/kaosborn/KaosCollections/actions?query=workflow%3ABuild
 
 ### Repository top-level folders
 
-This repository is a single Visual Studio solution with additional files in the root.
+This repository holds a single Visual Studio solution plus a few more files.
+Folders referenced by the solution are:
 
 * `Bench` - Contains console programs that:
 
   * Provide examples for documentation.
   * Exercise classes in this library.
-  * Benchmark performance versus Microsoft classes.
+  * Benchmark performance versus corresponding Microsoft classes.
   * Benchmark performance for tuning.
   * Stress test.
   * Show breadth first tree charts for operation sequences.
 
-* Collections - Contains the `.nuget` library build of KaosCollections.
-This library is multitargeted to .NET Standard 2.1, .NET 4.5 and .NET 4.0.
+* Collections - Builds the `.nuget` package.
+Latest builds of this NuGet library multitarget .NET Standard 2.1, .NET 4.5 and .NET 4.0.
 
-* `Help` - Contains [Sandcastle Help File Builder](https://github.com/EWSoftware/SHFB)
-project that produces documentation from embedded XML comments.
+* `Help` - Contains a Sandcastle Help File Builder project that produces documentation from embedded XML comments.
 Output is a Microsoft Help v1 file with a `.chm` extension and (optionally) a static web site.
 
 * `Images` - Contains SVG files with renderings.
