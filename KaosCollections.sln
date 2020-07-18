@@ -105,7 +105,9 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "KaosTestCollections", "Sour
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Source\KaosTestCollections\KaosTestCollections.projitems*{24f93eb8-e22a-4d61-8f49-c4467812289d}*SharedItemsImports = 5
 		Source\KaosTestCollections\KaosTestCollections.projitems*{72e272a9-12e2-41a1-840c-60038ecd5d3e}*SharedItemsImports = 13
+		Source\KaosCollections\KaosCollections.projitems*{d44b60e8-0c5a-42dd-87b7-1125e37f4749}*SharedItemsImports = 5
 		Source\KaosCollections\KaosCollections.projitems*{d548bad1-2deb-4e61-86cc-599ec896043b}*SharedItemsImports = 13
 		Source\KaosCollections\KaosCollections.projitems*{ede8bef7-8503-45d1-95c5-47b827f18130}*SharedItemsImports = 4
 	EndGlobalSection
