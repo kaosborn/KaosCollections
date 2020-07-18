@@ -535,7 +535,7 @@ namespace Kaos.Collections
                     throw new ArgumentNullException (nameof (value));
 
                 if (! (key is TKey))
-                    throw new ArgumentException ("Parameter '" + nameof (key) + "' is not of type '" + typeof (TKey) + "'.");
+                    throw new ArgumentException ($"Parameter '{nameof (key)}' is not of type '{typeof (TKey)}'.");
 
                 try
                 {
@@ -549,7 +549,7 @@ namespace Kaos.Collections
                 catch (InvalidCastException)
                 {
                     // Can't use 'is' for this because it won't handle null.
-                    throw new ArgumentException ("Parameter 'value' is not of type '" + typeof (TValue) + "'.");
+                    throw new ArgumentException ($"Parameter 'value' is not of type '{typeof (TValue)}'.");
                 }
             }
         }
@@ -591,10 +591,10 @@ namespace Kaos.Collections
                 throw new ArgumentNullException (nameof (key));
 
             if (! (key is TKey))
-                throw new ArgumentException ("Parameter '" + nameof (key) + "' is not of type '" + typeof (TKey) + "'.");
+                throw new ArgumentException ($"Parameter '{nameof (key)}' is not of type '{typeof (TKey)}'.");
 
             if (! (value is TValue))
-                throw new ArgumentException ("Parameter '" + nameof (value) + "' is not of type '" + typeof (TValue) + "'.");
+                throw new ArgumentException ($"Parameter '{nameof (value)}' is not of type '{typeof (TValue)}'.");
 
             ((IDictionary<TKey,TValue>) this).Add ((TKey) key, (TValue) value);
         }
