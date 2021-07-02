@@ -3,9 +3,8 @@
 // File:    Btree.PairLeaf.cs
 // Purpose: Define Btree.PairLeaf class.
 //
-// Copyright © 2009-2020 Kasey Osborn (github.com/kaosborn)
+// Copyright © 2009-2021 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely
-//
 
 using System;
 using System.Collections.Generic;

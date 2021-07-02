@@ -2,9 +2,8 @@
 // Library: KaosCollections
 // File:    Btree.NodeVector.cs
 //
-// Copyright © 2009-2020 Kasey Osborn (github.com/kaosborn)
+// Copyright © 2009-2021 Kasey Osborn (github.com/kaosborn)
 // MIT License - Use and redistribute freely
-//
 
 using System.Collections.Generic;
 using System.Diagnostics;
