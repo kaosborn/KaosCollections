@@ -11,7 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Kaos.Collections;
-[assembly: System.Reflection.AssemblyVersion ("0.1.0.0")]
 
 namespace BenchApp
 {
@@ -21,7 +20,7 @@ namespace BenchApp
         {
             int reps = 5000000;
             var sd = new SortedDictionary<Guid,int>();
-            Console.Write ("Loading SortedDictionary with " + reps + " elements:\n\nLoad time = ");
+            Console.Write ($"Loading SortedDictionary with {reps} elements:\n\nLoad time = ");
 
             Stopwatch watch1 = new Stopwatch();
             watch1.Reset();
@@ -40,7 +39,7 @@ namespace BenchApp
             {
                 var bt = new RankedDictionary<Guid,int>() { Capacity = order };
 
-                Console.Write ("\nLoading BtreeDictionary (order="+order+") with " + reps + " elements:\n\nLoad time = ");
+                Console.Write ($"\nLoading BtreeDictionary (order={order}) with {reps} elements:\n\nLoad time = ");
 
                 Stopwatch watch2 = new Stopwatch();
                 watch2.Reset();
@@ -53,7 +52,7 @@ namespace BenchApp
                 }
 
                 var time21 = watch2.ElapsedMilliseconds;
-                Console.WriteLine (time21 + "ms");
+                Console.WriteLine ($"{time21}ms");
             }
         }
     }

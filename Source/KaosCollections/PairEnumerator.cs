@@ -35,7 +35,6 @@ namespace Kaos.Collections
             public PairEnumerator (Btree<T> owner, Func<KeyValuePair<T,V>,int,bool> condition) : this (owner)
              => Bypass3 (condition, (leaf,ix) => ((PairLeaf<V>) leaf).GetPair (ix));
 
-
             public void Initialize()
             {
                 Init();

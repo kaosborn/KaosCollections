@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Kaos.Collections;
-[assembly: System.Reflection.AssemblyVersion ("0.1.0.0")]
 
 namespace BenchApp
 {
@@ -67,7 +66,7 @@ namespace BenchApp
 
             Console.WriteLine ("Ranked Dictionary Add;Sorted Dictionary Add;Ranked Dictionary Seek;Sorted Dictionary Seek;Ranked Dictionary Iterate;Sorted Dictionary Iterate;" + scale);
 
-            for (int group = 1; group <= 10; ++group)
+            for (var group = 1; group <= 10; ++group)
             {
                 rd = new RankedDictionary<long,long>();
                 sd = new SortedDictionary<long,long>();
@@ -82,12 +81,12 @@ namespace BenchApp
                 long rdEMs = RunKeyIterate (rd);
                 long sdEMs = RunKeyIterate (sd);
 
-                Console.WriteLine ("{0,6};{1,6};{2,6};{3,6};{4,6};{5,6}", rdMs, sdMs, rdSMs, sdSMs, rdEMs, sdEMs);
+                Console.WriteLine ($"{rdMs,6};{sdMs,6};{rdSMs,6};{sdSMs,6};{rdEMs,6};{sdEMs,6}");
 
-                sumChange += ((float) sumRd)/(float) sumSd;
+                sumChange += ((float) sumRd) / (float) sumSd;
             }
             float change = sumChange * 10 + 0.5F;
-            Console.WriteLine ("Add improvement=" + (100 - (int) change) + "%");
+            Console.WriteLine ($"Add improvement={(100 - (int) change)}%");
         }
 
         /* Output:

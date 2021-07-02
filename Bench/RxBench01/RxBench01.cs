@@ -1,7 +1,5 @@
-﻿//
-// Program: RxBench01.cs
-// Purpose: Demonstrate usage with a .NET Core program.
-//
+﻿// Program: RxBench01.cs
+// Purpose: Contrast the collection classes.
 
 using System;
 using Kaos.Collections;

@@ -1,17 +1,14 @@
-﻿//
-// Program: RsBench01.cs
+﻿// Program: RsBench01.cs
 // Purpose: Benchmark SortedSet.RemoveWhere versus RankedSet.RemoveWhere (v4).
 //
 // Usage notes:
 // • Adjust 'maxN' to change test duration.
-// • For valid time results, run Release build outside Visual Studio.
-//
+// • For valid results, run Release build outside Visual Studio.
 
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Kaos.Collections;
-[assembly: System.Reflection.AssemblyVersion ("0.1.0.0")]
 
 namespace BenchApp
 {
@@ -46,13 +43,13 @@ namespace BenchApp
 
                 int removes = n * division / divisionCount;
                 if (c1Count != n-removes || c2Count != n-removes)
-                    Console.WriteLine ("*** ERROR ***" + c1Count + ", " + c2Count);
+                    Console.WriteLine ($"*** ERROR *** {c1Count}, {c2Count}");
 
                 if (isPass1)
                     isPass1 = false;
                 else
                 {
-                    Console.WriteLine ("{0},{1},{2},{3}", removes/1000, n/1000, c1Time, c2Time);
+                    Console.WriteLine ($"{removes/1000},{n/1000},{c1Time},{c2Time}");
                     n += maxN/10;
                 }
             }

@@ -32,7 +32,6 @@ namespace Kaos.Collections
         }
     }
 
-
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal class IEnumerableDebugView<T>
     {

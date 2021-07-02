@@ -8,22 +8,20 @@ jobs:
       with:
         fetch-depth: 1
     - name: Initialize
-      run: |
-        mkdir TestResults
-        dotnet tool install dotnet-reportgenerator-globaltool --global
+      run: mkdir RunResults
     - name: Build library
-      run: |
-        dotnet msbuild -nologo -restore -p:Configuration=Release Collections
-        copy Collections\bin\Release\*.nukpg TestResults\
+      run: dotnet build -c Release Collections
     - name: Build executables
       run: |
-        dotnet msbuild -nologo -restore -p:Configuration=Release Bench\RdStress01
-        dotnet msbuild -nologo -restore -p:Configuration=Release Bench\RxBench01
-    - name: Run coverage suite
-      run: dotnet test -c Release -p:CollectCoverage=true -p:CoverletOutputFormat=lcov -p:CoverletOutput=..\TestResults\lcov TestCore
-    - name: Generate coverage report
-      run: reportgenerator.exe -reports:.\TestResults\lcov.info -targetdir:.\TestResults\CoverageReport\
+        dotnet build -c Release Bench\RdStress01
+        dotnet build -c Release Bench\RxBench01
+        dotnet build -c Release Bench\RxBench02
+    - name: Copy build artifacts
+      run: copy .\Collections\bin\Release\*.nupkg .\RunResults
+    - name: Run executables
+      run: |
+        .\Bench\RxBench01\bin\Release\netcoreapp3.1\RxBench01.exe > .\RunResults\RxBench01.txt
     - uses: actions/upload-artifact@v1
       with:
         name: KaosCollections-Build
-        path: TestResults
+        path: .\RunResults

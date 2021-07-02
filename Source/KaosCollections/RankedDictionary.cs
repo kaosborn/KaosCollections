@@ -77,14 +77,12 @@ namespace Kaos.Collections
     [DebuggerDisplay ("Count = {Count}")]
     [Serializable]
     public partial class RankedDictionary<TKey,TValue> :
-        Btree<TKey>
-        , IDictionary<TKey,TValue>
-        , IDictionary
-#if ! NET40
-        , IReadOnlyDictionary<TKey,TValue>
-#endif
-        , ISerializable
-        , IDeserializationCallback
+        Btree<TKey>,
+        IDictionary<TKey,TValue>,
+        IDictionary,
+        IReadOnlyDictionary<TKey,TValue>,
+        ISerializable,
+        IDeserializationCallback
     {
         [NonSerialized]
         private KeyCollection keys;
@@ -229,7 +227,6 @@ namespace Kaos.Collections
         ICollection<TKey> IDictionary<TKey,TValue>.Keys
          => (ICollection<TKey>) Keys;
 
-#if ! NET40
         /// <summary>Gets a <see cref="RankedDictionary{TKey,TValue}.KeyCollection"/> containing the keys in the dictionary.</summary>
         IEnumerable<TKey> IReadOnlyDictionary<TKey,TValue>.Keys
          => Keys;
@@ -237,7 +234,6 @@ namespace Kaos.Collections
         /// <summary>Gets a <see cref="RankedDictionary{TKey,TValue}.ValueCollection"/> containing the values in the dictionary.</summary>
         IEnumerable<TValue> IReadOnlyDictionary<TKey,TValue>.Values
          => Values;
-#endif
 
         /// <summary>Gets a <see cref="RankedDictionary{TKey,TValue}.ValueCollection"/> containing the values of the dictionary.</summary>
         /// <remarks>
@@ -311,7 +307,6 @@ namespace Kaos.Collections
             Add2 (path, key, value);
         }
 
-
         /// <summary>Adds an element with the supplied key/value pair.</summary>
         /// <param name="keyValuePair">Contains the key and value of the element to add.</param>
         /// <exception cref="ArgumentException">When an element containing <em>key</em> has already been added.</exception>
@@ -324,12 +319,10 @@ namespace Kaos.Collections
             Add2 (path, keyValuePair.Key, keyValuePair.Value);
         }
 
-
         /// <summary>Removes all elements from the dictionary.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
         public void Clear()
          => Initialize();
-
 
         /// <summary>Determines whether the dictionary contains the supplied key.</summary>
         /// <param name="key">The key to locate.</param>
@@ -350,14 +343,12 @@ namespace Kaos.Collections
             return index >= 0;
         }
 
-
         /// <summary>Determines whether the dictionary contains the supplied value.</summary>
         /// <param name="value">The value to locate.</param>
         /// <returns><b>true</b> if <em>value</em> is contained in the dictionary; otherwise <b>false</b>.</returns>
         /// <remarks>This is a O(<em>n</em>) operation.</remarks>
         public bool ContainsValue (TValue value)
          => ContainsValue2 (value) >= 0;
-
 
         /// <summary>Determines if the collection contains the supplied key/value pair.</summary>
         /// <param name="keyValuePair">The key/value pair to locate.</param>
@@ -369,7 +360,6 @@ namespace Kaos.Collections
                 return false;
             return EqualityComparer<TValue>.Default.Equals (leaf.GetValue (index), keyValuePair.Value);
         }
-
 
         /// <summary>Copies the dictionary to a compatible array, starting at the supplied position.</summary>
         /// <param name="array">A one-dimensional array that is the destination of the copy.</param>
@@ -392,7 +382,6 @@ namespace Kaos.Collections
                 for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
                     array[index++] = new KeyValuePair<TKey,TValue> (leaf.GetKey (leafIndex), leaf.GetValue (leafIndex));
         }
-
 
         /// <summary>Removes an element with the supplied key from the dictionary.</summary>
         /// <param name="key">The key of the element to remove.</param>
@@ -429,7 +418,6 @@ namespace Kaos.Collections
             return false;
         }
 
-
         /// <summary>Removes an element at the supplied index from the dictionary.</summary>
         /// <param name="index">The zero-based position of the element to remove.</param>
         /// <para>
@@ -447,7 +435,6 @@ namespace Kaos.Collections
             RemoveAt2 (index);
         }
 
-
         /// <summary>Removes all elements from the dictionary that match the condition defined by the supplied key-parameterized predicate.</summary>
         /// <param name="match">The condition of the elements to remove.</param>
         /// <returns>The number of elements removed from the dictionary.</returns>
@@ -459,7 +446,6 @@ namespace Kaos.Collections
         public int RemoveWhere (Predicate<TKey> match)
          => RemoveWhere2 (match);
 
-
         /// <summary>Removes all elements from the dictionary that match the condition defined by the supplied key/value-parameterized predicate.</summary>
         /// <param name="match">The condition of the elements to remove.</param>
         /// <returns>The number of elements removed from the dictionary.</returns>
@@ -470,7 +456,6 @@ namespace Kaos.Collections
         /// <exception cref="ArgumentNullException">When <em>match</em> is <b>null</b>.</exception>
         public int RemoveWhereElement (Predicate<KeyValuePair<TKey,TValue>> match)
          => RemoveWhere2<TValue> (match);
-
 
         /// <summary>Gets the value associated with the supplied key.</summary>
         /// <param name="key">The key of the value to get.</param>
@@ -599,7 +584,6 @@ namespace Kaos.Collections
             ((IDictionary<TKey,TValue>) this).Add ((TKey) key, (TValue) value);
         }
 
-
         /// <summary>Determines whether the dictionary contains an element with the supplied key.</summary>
         /// <param name="key">The key to locate.</param>
         /// <returns><b>true</b> if the dictionary contains <em>key</em>; otherwise <b>false</b>.</returns>
@@ -615,7 +599,6 @@ namespace Kaos.Collections
             Leaf _ = Find ((TKey) key, out int ix);
             return ix >= 0;
         }
-
 
         /// <summary>Copies the elements of the collection to an array, starting at the supplied array index.</summary>
         /// <param name="array">The destination array of the copy.</param>
@@ -652,7 +635,6 @@ namespace Kaos.Collections
                 }
         }
 
-
         /// <summary>Removes an element with the supplied key from the dictionary.</summary>
         /// <param name="key">Key of element to remove.</param>
         /// <exception cref="ArgumentNullException">When <em>key</em> is <b>null</b>.</exception>
@@ -668,7 +650,6 @@ namespace Kaos.Collections
                     Remove2 (path);
             }
         }
-
 
         /// <summary>Gets an object that can be used to synchronize access to the collection.</summary>
         object ICollection.SyncRoot
@@ -708,7 +689,6 @@ namespace Kaos.Collections
             info.AddValue ("Values", values, typeof (TValue[]));
         }
 
-
         /// <summary>Implements the deserialization callback and raises the deserialization event when completed.</summary>
         /// <param name="sender">The source of the deserialization event.</param>
         /// <exception cref="ArgumentNullException">When <em>sender</em> is <b>null</b>.</exception>
@@ -745,14 +725,12 @@ namespace Kaos.Collections
             serializationInfo = null;
         }
 
-
         /// <summary>Returns the data needed to serialize the dictionary.</summary>
         /// <param name="info">An object that contains the information required to serialize the dictionary.</param>
         /// <param name="context">A structure that contains the source and destination of the serialized stream.</param>
         /// <exception cref="ArgumentNullException">When <em>info</em> is <b>null</b>.</exception>
         void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
          => GetObjectData(info, context);
-
 
         /// <summary>Implements the deserialization callback and raises the deserialization event when completed.</summary>
         /// <param name="sender">The source of the deserialization event.</param>
@@ -814,7 +792,6 @@ namespace Kaos.Collections
             }
         }
 
-
         /// <summary>Returns an enumerator that iterates over a range with the supplied lower bound.</summary>
         /// <param name="lower">Minimum key of the range.</param>
         /// <returns>An enumerator for the specified range.</returns>
@@ -853,7 +830,6 @@ namespace Kaos.Collections
                 index = 0;
             }
         }
-
 
         /// <summary>Returns an enumerator that iterates over a range with the supplied index bounds.</summary>
         /// <param name="lowerIndex">Minimum index of the range.</param>
@@ -898,7 +874,6 @@ namespace Kaos.Collections
             while (--toGo >= 0);
         }
 
-
         /// <summary>Gets the index of the element with the supplied key.</summary>
         /// <param name="key">The key of the element to find.</param>
         /// <returns>The index of the element containing <em>key</em> if found; otherwise a negative value holding the bitwise complement of the insert point.</returns>
@@ -921,14 +896,12 @@ namespace Kaos.Collections
             return FindEdgeForIndex (key, out Leaf _, out int _, leftEdge:true);
         }
 
-
         /// <summary>Gets the index of the first element with the supplied value.</summary>
         /// <param name="value">The value of the element to find.</param>
         /// <returns>The index of the element if found; otherwise -1.</returns>
         /// <remarks>This is a O(<em>n</em>) operation.</remarks>
         public int IndexOfValue (TValue value)
          => ContainsValue2<TValue> (value);
-
 
         /// <summary>
         /// Removes all elements with keys in the supplied collection from the dictionary.
@@ -956,7 +929,6 @@ namespace Kaos.Collections
             return result;
         }
 
-
         /// <summary>Removes an index range of elements from the dictionary.</summary>
         /// <param name="index">The zero-based starting index of the range of elements to remove.</param>
         /// <param name="count">The number of elements to remove.</param>
@@ -977,7 +949,6 @@ namespace Kaos.Collections
             RemoveRange2 (index, count);
         }
 
-
         /// <summary>Gets the element with the least key greater than the supplied key.</summary>
         /// <param name="getKey">The key to use for comparison.</param>
         /// <param name="keyValuePair">The actual element if found; otherwise contains defaults.</param>
@@ -994,7 +965,6 @@ namespace Kaos.Collections
             keyValuePair = new KeyValuePair<TKey,TValue> (leaf.GetKey (index), ((PairLeaf<TValue>) leaf).GetValue (index));
             return true;
         }
-
 
         /// <summary>Gets the element with the least key greater than or equal to the supplied key.</summary>
         /// <param name="getKey">The key to use for comparison.</param>
@@ -1013,7 +983,6 @@ namespace Kaos.Collections
             return true;
         }
 
-
         /// <summary>Gets the element with the greatest key less than the supplied key.</summary>
         /// <param name="getKey">The key to use for comparison.</param>
         /// <param name="keyValuePair">The actual element if found; otherwise contains defaults.</param>
@@ -1031,7 +1000,6 @@ namespace Kaos.Collections
             return true;
         }
 
-
         /// <summary>Gets the element with the greatest key less than or equal to the supplied key.</summary>
         /// <param name="getKey">The key to use for comparison.</param>
         /// <param name="keyValuePair">The actual element if found; otherwise contains defaults.</param>
@@ -1048,7 +1016,6 @@ namespace Kaos.Collections
             keyValuePair = new KeyValuePair<TKey,TValue> (leaf.GetKey (index), ((PairLeaf<TValue>) leaf).GetValue (index));
             return true;
         }
-
 
         /// <summary>Gets the value and index associated with the supplied key.</summary>
         /// <param name="key">The key of the value and index to get.</param>
@@ -1102,7 +1069,6 @@ namespace Kaos.Collections
             return new KeyValuePair<TKey,TValue> (leaf.GetKey (leafIndex), leaf.GetValue (leafIndex));
         }
 
-
         /// <summary>Gets the key/value pair at the supplied index or the default if the index is out of range.</summary>
         /// <param name="index">The zero-based index of the element to get.</param>
         /// <returns>The element at <em>index</em>.</returns>
@@ -1116,7 +1082,6 @@ namespace Kaos.Collections
             return new KeyValuePair<TKey,TValue> (leaf.GetKey (leafIndex), leaf.GetValue (index));
         }
 
-
         /// <summary>Gets the element with the minimum key in the dictionary per the comparer.</summary>
         /// <returns>The element with the minimum key in the dictionary.</returns>
         /// <remarks>This is a O(1) operation.</remarks>
@@ -1128,7 +1093,6 @@ namespace Kaos.Collections
 
             return new KeyValuePair<TKey,TValue> (leftmostLeaf.Key0, ((PairLeaf<TValue>) leftmostLeaf).GetValue (0));
         }
-
 
         /// <summary>Gets the element with the maximum key in the dictionary per the comparer.</summary>
         /// <returns>The element with the maximum key in the dictionary.</returns>
@@ -1142,7 +1106,6 @@ namespace Kaos.Collections
             int ix = rightmostLeaf.KeyCount - 1;
             return new KeyValuePair<TKey,TValue> (rightmostLeaf.GetKey (ix), ((PairLeaf<TValue>) rightmostLeaf).GetValue (ix));
         }
-
 
         /// <summary>Returns an enumerator that iterates thru the dictionary in reverse order.</summary>
         /// <returns>An enumerator that reverse iterates thru the dictionary.</returns>
@@ -1203,7 +1166,6 @@ namespace Kaos.Collections
         /// <returns>An enumerator for the collection.</returns>
         IEnumerator IEnumerable.GetEnumerator()
          => new Enumerator (this);
-
 
         /// <summary>Enumerates the sorted key/value pairs of a <see cref="RankedDictionary{TKey,TValue}"/>.</summary>
         [DebuggerTypeProxy (typeof (IEnumerableDebugView<,>))]

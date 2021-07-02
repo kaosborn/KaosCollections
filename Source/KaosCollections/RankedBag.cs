@@ -44,14 +44,12 @@ namespace Kaos.Collections
     [DebuggerDisplay ("Count = {Count}")]
     [Serializable]
     public class RankedBag<T> :
-        Btree<T>
-        , ICollection<T>
-        , ICollection
-#if ! NET40
-        , IReadOnlyCollection<T>
-#endif
-        , ISerializable
-        , IDeserializationCallback
+        Btree<T>,
+        ICollection<T>,
+        ICollection,
+        IReadOnlyCollection<T>,
+        ISerializable,
+        IDeserializationCallback
     {
         #region Constructors
 
@@ -169,7 +167,6 @@ namespace Kaos.Collections
             return ! path.IsFound;
         }
 
-
         /// <summary>Adds a supplied number of occurrences of the supplied item to the bag.</summary>
         /// <param name="item">The item to add.</param>
         /// <param name="count">The number of copies to add.</param>
@@ -220,12 +217,10 @@ namespace Kaos.Collections
             return result;
         }
 
-
         /// <summary>Removes all items from the bag.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
         public void Clear()
          => Initialize();
-
 
         /// <summary>Determines whether the bag contains the supplied item.</summary>
         /// <param name="item">The item to locate.</param>
@@ -236,7 +231,6 @@ namespace Kaos.Collections
             Leaf _ = Find (item, out int ix);
             return ix >= 0;
         }
-
 
         /// <summary>Determines whether the bag is a subset of the supplied collection.</summary>
         /// <param name="other">The collection to compare to this bag.</param>
@@ -277,7 +271,6 @@ namespace Kaos.Collections
             }
         }
 
-
         /// <summary>Copies the items to a compatible array.</summary>
         /// <param name="array">A one-dimensional array that is the destination of the copy.</param>
         /// <remarks>This is a O(<em>n</em>) operation.</remarks>
@@ -313,7 +306,6 @@ namespace Kaos.Collections
         void ICollection.CopyTo (Array array, int index)
          => CopyKeysTo2 (array, index);
 
-
         /// <summary>Returns the number of occurrences of the supplied item in the bag.</summary>
         /// <param name="item">The item to return the number of occurrences for.</param>
         /// <returns>The number of occurrences of the supplied item.</returns>
@@ -326,7 +318,6 @@ namespace Kaos.Collections
         public int GetCount (T item)
          => GetCount2 (item);
 
-
         /// <summary>Returns the number of distinct items in the bag.</summary>
         /// <returns>The number of distinct items in the bag.</returns>
         /// <remarks>
@@ -336,7 +327,6 @@ namespace Kaos.Collections
         /// </remarks>
         public int GetDistinctCount()
          => GetDistinctCount2();
-
 
         /// <summary>Gets the index of the first occurrence of the supplied item.</summary>
         /// <param name="item">The item to find.</param>
@@ -354,7 +344,6 @@ namespace Kaos.Collections
         /// </remarks>
         public int IndexOf (T item)
          => FindEdgeForIndex (item, out Leaf _, out int _, leftEdge:true);
-
 
         /// <summary>Removes all occurrences of the supplied item from the bag.</summary>
         /// <param name="item">The item to remove.</param>
@@ -380,7 +369,6 @@ namespace Kaos.Collections
             return true;
         }
 
-
         /// <summary>Removes a supplied number of occurrences of the supplied item from the bag.</summary>
         /// <param name="item">The item to remove.</param>
         /// <param name="count">The number of occurrences to remove.</param>
@@ -400,7 +388,6 @@ namespace Kaos.Collections
                 throw new ArgumentException ("Must be non-negative.", nameof (count));
             return Remove2 (item, count);
         }
-
 
         /// <summary>
         /// Removes all items in the supplied collection from the bag.
@@ -424,7 +411,6 @@ namespace Kaos.Collections
             return RemoveAll2 (other);
         }
 
-
         /// <summary>Removes the element at the supplied index from the bag.</summary>
         /// <param name="index">The zero-based position of the item to remove.</param>
         /// <remarks>
@@ -443,7 +429,6 @@ namespace Kaos.Collections
 
             RemoveAt2 (index);
         }
-
 
         /// <summary>Removes an index range of items from the bag.</summary>
         /// <param name="index">The zero-based starting index of the range of items to remove.</param>
@@ -465,7 +450,6 @@ namespace Kaos.Collections
             RemoveRange2 (index, count);
         }
 
-
         /// <summary>Removes all elements that match the condition defined by the supplied predicate from the bag.</summary>
         /// <param name="match">The condition of the items to remove.</param>
         /// <returns>The number of elements removed from the bag.</returns>
@@ -477,7 +461,6 @@ namespace Kaos.Collections
         /// <exception cref="InvalidOperationException">When the collection is updated from the supplied predicate.</exception>
         public int RemoveWhere (Predicate<T> match)
          => RemoveWhere2 (match);
-
 
         /// <summary>Removes any elements that are not in the supplied collection from the bag.</summary>
         /// <param name="other">The elements to retain.</param>
@@ -538,7 +521,6 @@ namespace Kaos.Collections
             return result;
         }
 
-
         /// <summary>Bypasses a supplied number of items and yields the remaining items.</summary>
         /// <param name="count">Number of items to skip.</param>
         /// <returns>The items after the supplied offset.</returns>
@@ -550,7 +532,6 @@ namespace Kaos.Collections
         /// </example>
         public Enumerator Skip (int count)
          => new Enumerator (this, count);
-
 
         /// <summary>
         /// Bypasses items as long as a supplied condition is true and yields the remaining items.
@@ -570,7 +551,6 @@ namespace Kaos.Collections
         public Enumerator SkipWhile (Func<T,int,bool> predicate)
          => new Enumerator (this, predicate);
 
-
         /// <summary>Gets the actual item for the supplied search item.</summary>
         /// <param name="getItem">The item to find.</param>
         /// <param name="item">
@@ -589,7 +569,6 @@ namespace Kaos.Collections
             item = default;
             return false;
         }
-
 
         /// <summary>Gets the least item greater than the supplied item.</summary>
         /// <param name="getItem">The item to use for comparison.</param>
@@ -617,7 +596,6 @@ namespace Kaos.Collections
             { item = leaf.GetKey (index); return true; }
         }
 
-
         /// <summary>Gets the greatest item that is less than the supplied item.</summary>
         /// <param name="getItem">The item to use for comparison.</param>
         /// <param name="item">The actual item if found; otherwise the default.</param>
@@ -630,7 +608,6 @@ namespace Kaos.Collections
             else
             { item = leaf.GetKey (index); return true; }
         }
-
 
         /// <summary>Gets the greatest item that is less than or equal to the supplied item.</summary>
         /// <param name="getItem">The item to use for comparison.</param>
@@ -657,7 +634,6 @@ namespace Kaos.Collections
         protected RankedBag (SerializationInfo info, StreamingContext context) : base (new Btree<T>.Leaf())
          => this.serializationInfo = info;
 
-
         /// <summary>Returns the data needed to serialize the bag.</summary>
         /// <param name="info">An object that contains the information required to serialize the bag.</param>
         /// <param name="context">A structure that contains the source and destination of the serialized stream.</param>
@@ -675,7 +651,6 @@ namespace Kaos.Collections
             CopyTo (items, 0);
             info.AddValue ("Items", items, typeof (T[]));
         }
-
 
         /// <summary>Implements the deserialization callback and raises the deserialization event when completed.</summary>
         /// <param name="sender">The source of the deserialization event.</param>
@@ -713,7 +688,6 @@ namespace Kaos.Collections
         void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
          => GetObjectData (info, context);
 
-
         /// <summary>Implements the deserialization callback and raises the deserialization event when completed.</summary>
         /// <param name="sender">The source of the deserialization event.</param>
         /// <exception cref="ArgumentNullException">When <em>sender</em> is <b>null</b>.</exception>
@@ -739,7 +713,6 @@ namespace Kaos.Collections
             return leaf.GetKey (leafIndex);
         }
 
-
         /// <summary>Gets the item at the supplied index or the default if the index is out of range.</summary>
         /// <param name="index">The zero-based index of the item to get.</param>
         /// <returns>The item at <em>index</em>.</returns>
@@ -753,7 +726,6 @@ namespace Kaos.Collections
             return leaf.GetKey (leafIndex);
         }
 
-
         /// <summary>Gets the minimum item in the bag per the comparer.</summary>
         /// <returns>The minimum item in the bag.</returns>
         /// <remarks>This is a O(1) operation.</remarks>
@@ -765,7 +737,6 @@ namespace Kaos.Collections
 
             return leftmostLeaf.Key0;
         }
-
 
         /// <summary>Gets the maximum item in the bag per the comparer.</summary>
         /// <returns>The maximum item in the bag.</returns>
@@ -800,7 +771,6 @@ namespace Kaos.Collections
             foreach (T item in Distinct2())
                 yield return item;
         }
-
 
         /// <summary>Returns an enumerator that iterates over a range with the supplied bounds.</summary>
         /// <param name="lower">Minimum item value of the range.</param>
@@ -847,7 +817,6 @@ namespace Kaos.Collections
             }
         }
 
-
         /// <summary>Returns an enumerator that iterates over a range with the supplied lower bound.</summary>
         /// <param name="lower">Minimum item of the range.</param>
         /// <returns>An enumerator for the supplied range.</returns>
@@ -883,7 +852,6 @@ namespace Kaos.Collections
                 ix = 0;
             }
         }
-
 
         /// <summary>Returns an enumerator that iterates over a range with the supplied index bounds.</summary>
         /// <param name="lowerIndex">Minimum index of the range.</param>
@@ -928,13 +896,11 @@ namespace Kaos.Collections
             while (--toGo >= 0);
         }
 
-
         /// <summary>Returns an IEnumerable that iterates thru the bag in reverse sort order.</summary>
         /// <returns>An enumerator that reverse iterates thru the bag.</returns>
         /// <exception cref="InvalidOperationException">When the bag was modified after the enumerator was created.</exception>
         public Enumerator Reverse()
          => new Enumerator (this, isReverse:true);
-
 
         /// <summary>Returns an enumerator that iterates thru the bag.</summary>
         /// <returns>An enumerator that iterates thru the bag in sorted order.</returns>
@@ -950,7 +916,6 @@ namespace Kaos.Collections
         /// <returns>An enumerator that iterates thru the collection in sorted order.</returns>
         IEnumerator IEnumerable.GetEnumerator()
          => new Enumerator (this);
-
 
         /// <summary>Enumerates the items of a <see cref="RankedBag{T}"/> in sort order.</summary>
         [DebuggerTypeProxy (typeof (IEnumerableDebugView<>))]

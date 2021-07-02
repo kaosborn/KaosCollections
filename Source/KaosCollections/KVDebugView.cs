@@ -32,7 +32,6 @@ namespace Kaos.Collections
         }
     }
 
-
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal class ICollectionKeysDebugView<K,V>
     {
@@ -53,7 +52,6 @@ namespace Kaos.Collections
         }
     }
 
-
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal class ICollectionValuesDebugView<K,V>
     {
@@ -73,7 +71,6 @@ namespace Kaos.Collections
             }
         }
     }
-
 
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal class IEnumerableDebugView<K,V>
@@ -96,7 +93,6 @@ namespace Kaos.Collections
         }
     }
 
-
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal class IEnumerableKeysDebugView<K,V>
     {
@@ -117,7 +113,6 @@ namespace Kaos.Collections
             }
         }
     }
-
 
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal class IEnumerableValuesDebugView<K,V>

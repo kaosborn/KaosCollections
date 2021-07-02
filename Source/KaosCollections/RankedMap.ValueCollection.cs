@@ -22,11 +22,9 @@ namespace Kaos.Collections
         [DebuggerTypeProxy (typeof (ICollectionValuesDebugView<,>))]
         [DebuggerDisplay ("Count = {Count}")]
         public sealed class ValueCollection :
-            ICollection<TValue>
-            , ICollection
-#if ! NET40
-            , IReadOnlyCollection<TValue>
-#endif
+            ICollection<TValue>,
+            ICollection,
+            IReadOnlyCollection<TValue>
         {
             private readonly RankedMap<TKey,TValue> tree;
 
@@ -83,11 +81,9 @@ namespace Kaos.Collections
             void ICollection<TValue>.Add (TValue value)
              => throw new NotSupportedException();
 
-
             /// <summary>This implementation always throws a <see cref="NotSupportedException" />.</summary>
             void ICollection<TValue>.Clear()
              => throw new NotSupportedException();
-
 
             /// <summary>Determines whether the map contains an element with the supplied value.</summary>
             /// <param name="value">The value to find.</param>
@@ -95,7 +91,6 @@ namespace Kaos.Collections
             /// <remarks>This is a O(<em>n</em>) operation.</remarks>
             bool ICollection<TValue>.Contains (TValue value)
              => tree.ContainsValue2<TValue> (value) >= 0;
-
 
             /// <summary>Copies values to a supplied array, starting as the supplied position.</summary>
             /// <param name="array">A one-dimensional array that is the destination of the copy.</param>
@@ -149,7 +144,6 @@ namespace Kaos.Collections
                     }
             }
 
-
             /// <summary>This implementation always throws a <see cref="NotSupportedException"/>.</summary>
             /// <param name="value">The value to remove.</param>
             /// <returns><b>true</b> if the object was removed; otherwise <b>false</b>.</returns>
@@ -174,7 +168,6 @@ namespace Kaos.Collections
                 return leaf.GetValue (leafIndex);
             }
 
-
             /// <summary>Gets the value at the supplied index or the default if the index is out of range.</summary>
             /// <param name="index">The zero-based index of the value to get.</param>
             /// <returns>The value at <em>index</em>.</returns>
@@ -188,7 +181,6 @@ namespace Kaos.Collections
                 return leaf.GetValue (leafIndex);
             }
 
-
             /// <summary>Gets the value of the element with the lowest sorted key in the map.</summary>
             /// <returns>The value of the element with the lowest sorted key.</returns>
             /// <remarks>This is a O(1) operation.</remarks>
@@ -201,14 +193,12 @@ namespace Kaos.Collections
                 return ((PairLeaf<TValue>) tree.leftmostLeaf).GetValue (0);
             }
 
-
             /// <summary>Gets the index of the first element with the supplied value.</summary>
             /// <param name="value">The value to find.</param>
             /// <returns>The index of the first occurrence of <em>value</em> if found; otherwise -1.</returns>
             /// <remarks>This is a O(<em>n</em>) operation.</remarks>
             public int IndexOf (TValue value)
              => tree.ContainsValue2<TValue> (value);
-
 
             /// <summary>Gets the value of the element with the highest sorted key in the map.</summary>
             /// <returns>The value of the element with the highest sorted key.</returns>
@@ -233,7 +223,6 @@ namespace Kaos.Collections
             /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
             public Enumerator Skip (int count)
              => new Enumerator (tree, count);
-
 
             /// <summary>
             /// Bypasses values as long as a supplied condition is true and yields the remaining values.
@@ -263,7 +252,6 @@ namespace Kaos.Collections
             public Enumerator Reverse()
              => new Enumerator (tree, isReverse:true);
 
-
             /// <summary>Gets an enumerator that iterates thru the collection.</summary>
             /// <returns>An enumerator for the collection.</returns>
             public Enumerator GetEnumerator()
@@ -278,7 +266,6 @@ namespace Kaos.Collections
             /// <returns>An enumerator for the collection.</returns>
             IEnumerator IEnumerable.GetEnumerator()
              => new Enumerator (tree);
-
 
             /// <summary>Enumerates the items of a <see cref="RankedMap{TKey,TValue}.ValueCollection"/> in key sort order.</summary>
             [DebuggerTypeProxy (typeof (IEnumerableValuesDebugView<,>))]

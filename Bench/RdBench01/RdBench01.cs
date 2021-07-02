@@ -13,7 +13,6 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Kaos.Collections;
-[assembly: System.Reflection.AssemblyVersion ("0.1.0.0")]
 
 namespace BenchApp
 {

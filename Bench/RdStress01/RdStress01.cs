@@ -11,7 +11,6 @@ using System;
 using System.Threading;
 using Kaos.Collections;
 using Kaos.Combinatorics;
-[assembly: System.Reflection.AssemblyVersion ("0.1.0.0")]
 
 namespace StressApp
 {

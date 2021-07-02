@@ -1,9 +1,8 @@
 ![logo](Images/KaosCollections-218.png)
 
-<a href="https://github.com/kaosborn/KaosCollections/blob/master/.github/workflows/Build.yml">
-<img src="https://github.com/kaosborn/KaosCollections/workflows/Build/badge.svg"></a>
-<a href="https://github.com/kaosborn/KaosCollections/blob/master/.github/workflows/Test.yml">
-<img src="https://github.com/kaosborn/KaosCollections/workflows/Test/badge.svg"></a>
+[![Test](https://github.com/kaosborn/KaosCollections/workflows/Test/badge.svg)](https://github.com/kaosborn/KaosCollections/blob/master/.github/workflows/Test.yml)
+[![Build](https://github.com/kaosborn/KaosCollections/workflows/Build/badge.svg)](https://github.com/kaosborn/KaosCollections/blob/master/.github/workflows/Build.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/kaosborn/KaosCollections/blob/master/LICENSE)
 
 # KaosCollections
 
@@ -22,18 +21,16 @@ Primary types provided are:
 * `RankedMap<TKey,TValue>` - for collections of key/value pairs with nondistinct keys that can be accessed in sort order or by index.
 * `RankedBag<T>` - for collections of nondistinct items that can be accessed in sort order or by index. Also known as multisets.
 
-This library is multitargeted to:
+The current build of this library targets .NET Standard 2.0.
+This provides support for .NET Framework 4.6.1 and greater or .NET Core 3.0 and greater.
 
-* .NET Standard 2.1 (v4.2 and prior targeted .NET Standard 1.0)
-* .NET Framework 4.5
-* .NET Framework 4.0
-* .NET Framework 3.5 (ends with v4.2 of this library)
+The most recently published version 4.2.0 multitargeted .NET Standard 2.1, .NET 3.5, .NET 4.0, and .NET 4.5.
 
 ### Library installation
 
 #### To install using Package Manager:
 
-* **`Install-Package Kaos.Collections -Version 4.2.0`**
+* **`Install-Package Kaos.Collections --version 4.2.0`**
 
 #### To install using the .NET CLI:
 
@@ -47,16 +44,10 @@ This library is multitargeted to:
 4. The package should appear. Click *Install*.
 As a multitargeted package, the appropriate binary will be installed for your program.
 
-#### To install using a direct reference to a `.dll` binary:
+#### To install by source code reference:
 
-1. Download the `.nuget` package from either:
-
-   * https://www.nuget.org/packages/Kaos.Collections/
-   * https://github.com/kaosborn/KaosCollections/releases/
-
-2. As archives, individual binaries may be extracted from the NuGet package for specific platforms.
-This may require changing the file extension from `.nuget` to `.zip` to access the contents.
-A project may then reference the extracted platform-specific `.dll` directly.
+Rather than referencing a compiled library, the shared project source code may be referenced.
+Do this by adding a project reference to the `KaosCollections.shproj` file.
 
 ### Documentation
 
@@ -76,10 +67,6 @@ Finally, examples are repeated in the repository wiki:
 
 ### Roadmap
 
-- [X] Add serialization to .NET Standard build target
-- [X] Remove .NET 3.5 build target; change .NET Standard build target to v2.1
-- [ ] Add GAC installer
-
 Latest library builds are posted as workflow artifacts to:
 
 https://github.com/kaosborn/KaosCollections/actions?query=workflow%3ABuild
@@ -96,21 +83,22 @@ Folders referenced by the solution are:
   * Benchmark performance versus corresponding Microsoft classes.
   * Benchmark performance for tuning.
   * Stress test.
-  * Show breadth first tree charts for operation sequences.
+  * Show breadth first tree charts of operation sequences.
 
 * Collections - Builds the `.nuget` package.
-Latest builds of this NuGet library multitarget .NET Standard 2.1, .NET 4.5 and .NET 4.0.
+The current build of this NuGet library targets .NET Standard 2.0.
 
 * `Help` - Contains a Sandcastle Help File Builder project that produces documentation from embedded XML comments.
 Output is a Microsoft Help v1 file with a `.chm` extension and (optionally) a static web site.
+Building this project requires Visual Studio.
 
 * `Images` - Contains SVG files with renderings.
 
-* `Source` - Contains source code in shared projects by namespace by class.
+* `Source` - Contains source code in shared projects by namespace, by class.
 
 * `TestCore` - Contains MSTest unit tests and some short running stress tests.
 Line and branch coverage is 100%.
-To verify correct emulation,
+To verify correct Base Class Library emulation,
 the same tests may be run against either this library or against the emulated BCL classes.
 To run the test suite against the Microsoft classes,
 add the `TEST_BCL` compilation symbol to the test project build properties.
@@ -124,3 +112,7 @@ All links in this section are to free software.
 * https://www.visualstudio.com/downloads/ - Building the solution requires Visual Studio 2017 Community Edition or greater.
 
 * https://github.com/EWSoftware/SHFB/releases/ - Building `.chm` or web documentation requires Sandcastle Help File Builder.
+
+### License
+
+All work here falls under the [MIT License](/LICENSE).

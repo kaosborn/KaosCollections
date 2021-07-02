@@ -10,21 +10,14 @@ jobs:
     - name: Initialize
       run: |
         mkdir TestResults
-    - name: Build library
-      run: |
-        dotnet msbuild -nologo -restore -p:Configuration=Debug Collections
-        copy Collections\bin\Debug\*.nukpg TestResults\
-    - name: Build executables
-      run: |
-        dotnet msbuild -nologo -restore -p:Configuration=Debug Bench\RdStress01
-        dotnet msbuild -nologo -restore -p:Configuration=Debug Bench\RxBench01
+        dotnet tool install dotnet-reportgenerator-globaltool --global
     - name: Run standard suite
-      run: dotnet test -c Debug TestCore
-    - name: Cleanup
-      run: dotnet clean TestCore -c Debug
+      run: dotnet test -c Release --collect:"XPlat Code Coverage" --results-directory .\TestResults TestCore
+    - name: Generate coverage report
+      run: reportgenerator.exe -reports:.\TestResults\**\coverage.cobertura.xml -reporttypes:html -targetdir:.\TestResults\CovRep
     - name: Run BCL compatiblity suite
       run: dotnet test -c Debug -p:DefineConstants=TEST_BCL TestCore
     - uses: actions/upload-artifact@v1
       with:
         name: KaosCollections-Test
-        path: TestResults
+        path: .\TestResults

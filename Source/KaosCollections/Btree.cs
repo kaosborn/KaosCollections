@@ -76,7 +76,6 @@ namespace Kaos.Collections
             }
         }
 
-
         private protected void CopyKeysTo2 (Array array, int index)
         {
             if (array == null)
@@ -113,7 +112,6 @@ namespace Kaos.Collections
                 throw new ArgumentException ("Invalid array type.", nameof (array));
         }
 
-
         /// <summary>Perform lite search for key.</summary>
         /// <param name="key">Target of search.</param>
         /// <param name="index">When found, holds index of returned Leaf; else ~index of nearest greater key.</param>
@@ -143,7 +141,6 @@ namespace Kaos.Collections
                 }
         }
 
-
         /// <summary>Perform traverse to leaf at index.</summary>
         /// <param name="treeIndex">Index of collection.</param>
         /// <param name="leafIndex">Leaf index of result.</param>
@@ -168,7 +165,6 @@ namespace Kaos.Collections
 
             return node;
         }
-
 
         private protected int FindEdgeForIndex (T key, out Leaf leaf, out int leafIndex, bool leftEdge=false)
         {
@@ -228,7 +224,6 @@ namespace Kaos.Collections
                 }
             }
         }
-
 
         private protected bool FindEdgeLeft (T key, out Leaf leaf, out int leafIndex)
         {
@@ -294,7 +289,6 @@ namespace Kaos.Collections
             }
         }
 
-
         private protected int GetCount2 (T key)
         {
             int treeIx1 = FindEdgeForIndex (key, out Leaf _, out int _, leftEdge:true);
@@ -303,7 +297,6 @@ namespace Kaos.Collections
             else
                 return FindEdgeForIndex (key, out Leaf _, out int _, leftEdge:false) - treeIx1;
         }
-
 
         private protected int GetDistinctCount2()
         {
@@ -338,7 +331,6 @@ namespace Kaos.Collections
             return result;
         }
 
-
         [NonSerialized]
         private object syncRoot = null;
 
@@ -349,7 +341,6 @@ namespace Kaos.Collections
             return syncRoot;
         }
 
-
         private protected void Initialize()
         {
             StageBump();
@@ -358,7 +349,6 @@ namespace Kaos.Collections
             root = rightmostLeaf = leftmostLeaf;
         }
 
-
         private protected void Remove2 (NodeVector path)
         {
             StageBump();
@@ -366,7 +356,6 @@ namespace Kaos.Collections
             path.DecrementPathWeight();
             path.Balance();
         }
-
 
         private protected int Remove2 (T item, int count)
         {
@@ -390,10 +379,8 @@ namespace Kaos.Collections
             return count;
         }
 
-
         private protected void RemoveAt2 (int index)
          => Remove2 (NodeVector.CreateFromIndex (this, index));
-
 
         private protected void RemoveRange2 (int index, int count)
         {
@@ -406,7 +393,6 @@ namespace Kaos.Collections
             StageBump();
             Delete (path1, path2);
         }
-
 
         // Bulk delete all elements between path1 & path2 inclusive.
         private protected void Delete (NodeVector path1, NodeVector path2)
@@ -569,7 +555,6 @@ namespace Kaos.Collections
             TrimRoot();
         }
 
-
         private protected int RemoveWhere2 (Predicate<T> match)
         {
             if (match == null)
@@ -648,13 +633,11 @@ namespace Kaos.Collections
             }
         }
 
-
         private protected void TrimRoot()
         {
-            while (root is Branch && root.KeyCount == 0)
-                root = ((Branch) root).Child0;
+            while (root is Branch branch && root.KeyCount == 0)
+                root = branch.Child0;
         }
-
 
         private protected void TryGetLT (T key, out Leaf leaf, out int index)
         {
@@ -662,7 +645,6 @@ namespace Kaos.Collections
             if (--index < 0)
                 leaf = null;
         }
-
 
         private protected void TryGetLE (T key, out Leaf leaf, out int index)
         {
@@ -678,7 +660,6 @@ namespace Kaos.Collections
                 leaf = null;
         }
 
-
         private protected void TryGetGT (T key, out Leaf leaf, out int index)
         {
             bool _ = FindEdgeRight (key, out leaf, out index);
@@ -689,7 +670,6 @@ namespace Kaos.Collections
             }
         }
 
-
         private protected void TryGetGE (T key, out Leaf leaf, out int index)
         {
             bool _ = FindEdgeLeft (key, out leaf, out index);
@@ -699,7 +679,6 @@ namespace Kaos.Collections
                 index = 0;
             }
         }
-
 
         /// <exclude />
         protected int StageBump()
@@ -1044,7 +1023,6 @@ namespace Kaos.Collections
         /// <summary>Number of keys contained in the leaves.</summary>
         public int LeafSlotsUsed { get; private set; }
 
-
         /// <summary>Perform diagnostics check for data structure sanity errors.</summary>
         /// <remarks>
         /// Since this is an in-memory managed structure, any errors would indicate a bug.
@@ -1058,8 +1036,8 @@ namespace Kaos.Collections
             LeafSlotsUsed = 0;
 
             Leaf lastLeaf;
-            if (root is Branch)
-                lastLeaf = CheckBranch ((Branch) root, 1, GetHeight(), true, default, null);
+            if (root is Branch branch)
+                lastLeaf = CheckBranch (branch, 1, GetHeight(), true, default, null);
             else
                 lastLeaf = CheckLeaf ((Leaf) root, default, null);
 
@@ -1078,12 +1056,10 @@ namespace Kaos.Collections
                 throw new InvalidOperationException ("rightmostLeaf has a right leaf");
         }
 
-
         /// <summary>Gets maximum number of children of a branch.</summary>
         /// <returns>Maximum number of children of a branch.</returns>
         public int GetOrder()
          => maxKeyCount + 1;
-
 
         /// <summary>Gets the number of levels in the tree.</summary>
         /// <returns>Number of levels in the tree.</returns>
@@ -1096,7 +1072,6 @@ namespace Kaos.Collections
                 else
                     return level;
         }
-
 
         private Leaf CheckBranch
         (
@@ -1139,7 +1114,6 @@ namespace Kaos.Collections
             return visited;
         }
 
-
         private Leaf CheckLeaf (Leaf leaf, T anchor, Leaf visited)
         {
             LeafSlotCount += maxKeyCount;
@@ -1167,7 +1141,6 @@ namespace Kaos.Collections
             return leaf;
         }
 
-
         /// <summary>Gets telemetry summary.</summary>
         /// <returns>Telemetry summary.</returns>
         public string GetTreeStatsText()
@@ -1180,7 +1153,6 @@ namespace Kaos.Collections
 
             return result + ", leaf fill = " + (int) (LeafSlotsUsed * 100.0 / LeafSlotCount + 0.5) + "%";
         }
-
 
         /// <summary>Generates content of tree by level (breadth first).</summary>
         /// <returns>Text lines where each line is a level of the tree.</returns>

@@ -48,10 +48,8 @@ namespace Kaos.Collections
         [DebuggerDisplay ("Count = {Count}")]
         public sealed class KeyCollection :
             ICollection<TKey>,
-            ICollection
-#if ! NET40
-            , IReadOnlyCollection<TKey>
-#endif
+            ICollection,
+            IReadOnlyCollection<TKey>
         {
             private readonly RankedDictionary<TKey,TValue> tree;
 
@@ -100,11 +98,9 @@ namespace Kaos.Collections
             void ICollection<TKey>.Add (TKey key)
              => throw new NotSupportedException();
 
-
             /// <summary>This implementation always throws a <see cref="NotSupportedException" />.</summary>
             void ICollection<TKey>.Clear()
              => throw new NotSupportedException();
-
 
             /// <summary>Determines whether the dictionary contains the supplied key.</summary>
             /// <param name="key">The key to locate.</param>
@@ -113,14 +109,12 @@ namespace Kaos.Collections
             public bool Contains (TKey key)
              => tree.ContainsKey (key);
 
-
             /// <summary>Determines whether the collection contains the supplied key.</summary>
             /// <param name="key">The key to locate.</param>
             /// <returns><b>true</b> if <em>key</em> is contained in the collection; otherwise <b>false</b>.</returns>
             /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
             bool ICollection<TKey>.Contains (TKey key)
              => tree.ContainsKey (key);
-
 
             /// <summary>Copies keys to a supplied array, starting at the supplied position.</summary>
             /// <param name="array">A one-dimensional array that is the destination of the copy.</param>
@@ -140,7 +134,6 @@ namespace Kaos.Collections
             void ICollection.CopyTo (Array array, int index)
              => tree.CopyKeysTo2 (array, index);
 
-
             /// <summary>This implementation always throws a <see cref="NotSupportedException" />.</summary>
             /// <param name="key">The key to remove.</param>
             /// <returns><b>true</b> if the object was removed; otherwise <b>false</b>.</returns>
@@ -159,7 +152,6 @@ namespace Kaos.Collections
             public TKey this[int index]
              => ElementAt (index);
 
-
             /// <summary>Gets the key at the supplied index.</summary>
             /// <param name="index">The zero-based index of the key to get.</param>
             /// <returns>The key at <em>index</em>.</returns>
@@ -174,7 +166,6 @@ namespace Kaos.Collections
                 return leaf.GetKey (leafIndex);
             }
 
-
             /// <summary>Gets the key at the supplied index or the default if the index is out of range.</summary>
             /// <param name="index">The zero-based index of the key to get.</param>
             /// <returns>The key at <em>index</em>.</returns>
@@ -187,7 +178,6 @@ namespace Kaos.Collections
                 var leaf = tree.Find (index, out int leafIndex);
                 return leaf.GetKey (leafIndex);
             }
-
 
             /// <summary>Gets the index of the supplied key.</summary>
             /// <param name="key">The key to find.</param>
@@ -205,7 +195,6 @@ namespace Kaos.Collections
             public int IndexOf (TKey key)
              => tree.FindEdgeForIndex (key, out Leaf _, out int _, leftEdge:true);
 
-
             /// <summary>Gets the minimum key in the dictionary per the comparer.</summary>
             /// <returns>The minimum key in the dictionary.</returns>
             /// <remarks>This is a O(1) operation.</remarks>
@@ -217,7 +206,6 @@ namespace Kaos.Collections
 
                 return tree.leftmostLeaf.Key0;
             }
-
 
             /// <summary>Gets the maximum key in the dictionary per the comparer.</summary>
             /// <returns>The maximum key in the dictionary.</returns>
@@ -231,7 +219,6 @@ namespace Kaos.Collections
                 return tree.rightmostLeaf.GetKey (tree.rightmostLeaf.KeyCount - 1);
             }
 
-
             /// <summary>Bypasses a supplied number of keys and yields the remaining keys.</summary>
             /// <param name="count">Number of keys to skip.</param>
             /// <returns>The keys after the supplied offset.</returns>
@@ -243,7 +230,6 @@ namespace Kaos.Collections
             /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
             public Enumerator Skip (int count)
              => new Enumerator (tree, count);
-
 
             /// <summary>
             /// Bypasses keys as long as a supplied condition is true and yields the remaining keys.
@@ -263,7 +249,6 @@ namespace Kaos.Collections
             public Enumerator SkipWhile (Func<TKey,int,bool> predicate)
              => new Enumerator (tree, predicate);
 
-
             /// <summary>Gets the actual key for the supplied search key.</summary>
             /// <param name="getKey">The key to find.</param>
             /// <param name="key">
@@ -281,7 +266,6 @@ namespace Kaos.Collections
                 return true;
             }
 
-
             /// <summary>Gets the least key greater than the supplied key.</summary>
             /// <param name="getKey">The key to use for comparison.</param>
             /// <param name="key">The actual key found.</param>
@@ -295,7 +279,6 @@ namespace Kaos.Collections
                 { key = leaf.GetKey (index); return true; }
             }
 
-
             /// <summary>Gets the least key greater than or equal to the supplied key.</summary>
             /// <param name="getKey">The key to use for comparison.</param>
             /// <param name="key">The actual key found.</param>
@@ -308,7 +291,6 @@ namespace Kaos.Collections
                 else
                 { key = leaf.GetKey (index); return true; }
             }
-
 
             /// <summary>Gets the greatest key less than the supplied key.</summary>
             /// <param name="getKey">The key to use for comparison.</param>
@@ -336,7 +318,6 @@ namespace Kaos.Collections
                 { key = leaf.GetKey (index); return true; }
             }
 
-
             /// <summary>Returns an enumerator that iterates thru the dictionary keys in reverse order.</summary>
             /// <returns>An enumerator that reverse iterates thru the dictionary keys.</returns>
             /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
@@ -361,7 +342,6 @@ namespace Kaos.Collections
             /// <returns>An enumerator for the collection.</returns>
             IEnumerator IEnumerable.GetEnumerator()
              => new Enumerator (tree);
-
 
             /// <summary>Enumerates the items of a <see cref="RankedDictionary{TKey,TValue}.KeyCollection"/> in sort order.</summary>
             [DebuggerTypeProxy (typeof (IEnumerableKeysDebugView<,>))]

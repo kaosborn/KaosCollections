@@ -32,14 +32,12 @@ namespace Kaos.Collections
     [DebuggerDisplay("Count = {Count}")]
     [Serializable]
     public partial class RankedMap<TKey,TValue> :
-        Btree<TKey>
-        , ICollection<KeyValuePair<TKey,TValue>>
-        , ICollection
-#if ! NET40
-        , IReadOnlyCollection<KeyValuePair<TKey,TValue>>
-#endif
-        , ISerializable
-        , IDeserializationCallback
+        Btree<TKey>,
+        ICollection<KeyValuePair<TKey,TValue>>,
+        ICollection,
+        IReadOnlyCollection<KeyValuePair<TKey,TValue>>,
+        ISerializable,
+        IDeserializationCallback
     {
         [NonSerialized]
         private KeyCollection keys;
@@ -73,13 +71,11 @@ namespace Kaos.Collections
         public RankedMap (IComparer<TKey> comparer) : base (comparer, new PairLeaf<TValue>())
         { }
 
-
         /// <summary>Initializes a new map instance that contains key/value pairs copied from the supplied map and sorted by the default comparer.</summary>
         /// <param name="map">The map to be copied.</param>
         /// <exception cref="ArgumentNullException">When <em>map</em> is <b>null</b>.</exception>
         public RankedMap (ICollection<KeyValuePair<TKey,TValue>> map) : this (map, Comparer<TKey>.Default)
         { }
-
 
         /// <summary>Initializes a new map instance that contains key/value pairs copied from the supplied map and sorted by the supplied comparer.</summary>
         /// <param name="map">The map to be copied.</param>
@@ -107,17 +103,14 @@ namespace Kaos.Collections
         public IComparer<TKey> Comparer
          => keyComparer;
 
-
         /// <summary>Gets the number of elements in the map.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
         public int Count
          => root.Weight;
 
-
         /// <summary>Indicates that the collection is not thread safe.</summary>
         bool ICollection.IsSynchronized
          => false;
-
 
         /// <summary>Gets a <see cref="RankedMap{TKey,TValue}.KeyCollection"/> containing the keys of the map.</summary>
         /// <remarks>
@@ -138,11 +131,9 @@ namespace Kaos.Collections
             }
         }
 
-
         /// <summary>Gets an object that can be used to synchronize access to the collection.</summary>
         object ICollection.SyncRoot
          => GetSyncRoot();
-
 
         /// <summary>Gets a <see cref="RankedMap{TKey,TValue}.ValueCollection"/> containing the values of the map.</summary>
         /// <remarks>
@@ -163,18 +154,15 @@ namespace Kaos.Collections
             }
         }
 
-
         /// <summary>Gets the maximum key in the map per the comparer.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
         public TKey MaxKey
          => Count == 0 ? default : rightmostLeaf.GetKey (rightmostLeaf.KeyCount - 1);
 
-
         /// <summary>Gets the minimum key in the map per the comparer.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
         public TKey MinKey
          => Count == 0 ? default : leftmostLeaf.Key0;
-
 
         /// <summary>Indicates that this collection may be modified.</summary>
         bool ICollection<KeyValuePair<TKey,TValue>>.IsReadOnly
@@ -208,7 +196,6 @@ namespace Kaos.Collections
             return ! path.IsFound;
         }
 
-
         /// <summary>Adds an element with the supplied key/value pair.</summary>
         /// <param name="keyValuePair">Contains the key and value of the element to add.</param>
         /// <exception cref="ArgumentException">When an element containing <em>key</em> has already been added.</exception>
@@ -218,12 +205,10 @@ namespace Kaos.Collections
             Add2<TValue> (path, keyValuePair.Key, keyValuePair.Value);
         }
 
-
         /// <summary>Removes all elements from the map.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
         public void Clear()
          => Initialize();
-
 
         /// <summary>Determines whether the map contains the supplied key.</summary>
         /// <param name="key">The key to locate.</param>
@@ -242,7 +227,6 @@ namespace Kaos.Collections
             var _ = (PairLeaf<TValue>) Find (key, out int index);
             return index >= 0;
         }
-
 
         /// <summary>Determines whether the map contains the supplied key/value pair.</summary>
         /// <param name="keyValuePair">The key/value pair to locate.</param>
@@ -277,14 +261,12 @@ namespace Kaos.Collections
             return false;
         }
 
-
         /// <summary>Determines whether the map contains the supplied value.</summary>
         /// <param name="value">The value to locate.</param>
         /// <returns><b>true</b> if <em>value</em> is contained in the map; otherwise <b>false</b>.</returns>
         /// <remarks>This is a O(<em>n</em>) operation.</remarks>
         public bool ContainsValue (TValue value)
          => ContainsValue2<TValue> (value) >= 0;
-
 
         /// <summary>Copies the map to a compatible array, starting at the supplied position.</summary>
         /// <param name="array">A one-dimensional array that is the destination of the copy.</param>
@@ -307,7 +289,6 @@ namespace Kaos.Collections
                 for (int leafIndex = 0; leafIndex < leaf.KeyCount; ++leafIndex)
                     array[index++] = new KeyValuePair<TKey,TValue> (leaf.GetKey (leafIndex), leaf.GetValue (leafIndex));
         }
-
 
         /// <summary>Copies the elements of the map to an array, starting at the supplied array index.</summary>
         /// <param name="array">The destination array of the copy.</param>
@@ -344,7 +325,6 @@ namespace Kaos.Collections
                 }
         }
 
-
         /// <summary>Gets the key/value pair at the supplied index.</summary>
         /// <param name="index">The zero-based index of the element to get.</param>
         /// <returns>The element at <em>index</em>.</returns>
@@ -359,7 +339,6 @@ namespace Kaos.Collections
             return new KeyValuePair<TKey,TValue> (leaf.GetKey (leafIndex), leaf.GetValue (leafIndex));
         }
 
-
         /// <summary>Gets the key/value pair at the supplied index or the default if the index is out of range.</summary>
         /// <param name="index">The zero-based index of the element to get.</param>
         /// <returns>The element at <em>index</em>.</returns>
@@ -372,7 +351,6 @@ namespace Kaos.Collections
             var leaf = (PairLeaf<TValue>) Find (index, out int leafIndex);
             return new KeyValuePair<TKey,TValue> (leaf.GetKey (leafIndex), leaf.GetValue (index));
         }
-
 
         /// <summary>Gets the index of the first element with the supplied key.</summary>
         /// <param name="key">The key of the element to find.</param>
@@ -397,7 +375,6 @@ namespace Kaos.Collections
             return FindEdgeForIndex (key, out Leaf _, out int _, leftEdge:true);
         }
 
-
         /// <summary>Gets the index of the first element with the supplied value.</summary>
         /// <param name="value">The value of the element to seek.</param>
         /// <returns>The index of the element if found; otherwise -1.</returns>
@@ -415,7 +392,6 @@ namespace Kaos.Collections
 
             return -1;
         }
-
 
         /// <summary>Removes all elements with the supplied key from the map.</summary>
         /// <param name="key">The key of the elements to remove.</param>
@@ -460,7 +436,6 @@ namespace Kaos.Collections
 
             return Remove2 (key, count);
         }
-
 
         /// <summary>Deletes all occurrences of the supplied key and its associated value from the collection.</summary>
         /// <param name="keyValuePair">Contains key and value of elements to find and remove.</param>
@@ -558,7 +533,6 @@ namespace Kaos.Collections
             }
         }
 
-
         /// <summary>
         /// Removes all elements with keys in the supplied collection from the map.
         /// </summary>
@@ -581,7 +555,6 @@ namespace Kaos.Collections
             return RemoveAll2 (other);
         }
 
-
         /// <summary>Removes an element at the supplied index from the map.</summary>
         /// <param name="index">The zero-based position of the element to remove.</param>
         /// <para>
@@ -598,7 +571,6 @@ namespace Kaos.Collections
 
             RemoveAt2 (index);
         }
-
 
         /// <summary>Removes an index range of elements from the map.</summary>
         /// <param name="index">The zero-based starting index of the range of elements to remove.</param>
@@ -620,7 +592,6 @@ namespace Kaos.Collections
             RemoveRange2 (index, count);
         }
 
-
         /// <summary>Removes all elements from the map that match the condition defined by the supplied key-parameterized predicate.</summary>
         /// <param name="match">The condition of the elements to remove.</param>
         /// <returns>The number of elements removed from the map.</returns>
@@ -632,7 +603,6 @@ namespace Kaos.Collections
         public int RemoveWhere (Predicate<TKey> match)
          => RemoveWhere2 (match);
 
-
         /// <summary>Removes all elements from the map that match the condition defined by the supplied key/value-parameterized predicate.</summary>
         /// <param name="match">The condition of the elements to remove.</param>
         /// <returns>The number of elements removed from the map.</returns>
@@ -643,7 +613,6 @@ namespace Kaos.Collections
         /// <exception cref="ArgumentNullException">When <em>match</em> is <b>null</b>.</exception>
         public int RemoveWhereElement (Predicate<KeyValuePair<TKey,TValue>> match)
          => RemoveWhere2<TValue> (match);
-
 
         /// <summary>Gets an element with the least key greater than the supplied key.</summary>
         /// <param name="getKey">The key to use for comparison.</param>
@@ -662,7 +631,6 @@ namespace Kaos.Collections
             return true;
         }
 
-
         /// <summary>Gets an element with the least key greater than or equal to the supplied key.</summary>
         /// <param name="getKey">The key to use for comparison.</param>
         /// <param name="keyValuePair">The actual element if found; otherwise contains defaults.</param>
@@ -680,7 +648,6 @@ namespace Kaos.Collections
             return true;
         }
 
-
         /// <summary>Gets an element with the greatest key less than the supplied key.</summary>
         /// <param name="getKey">The key to use for comparison.</param>
         /// <param name="keyValuePair">The actual element if found; otherwise contains defaults.</param>
@@ -697,7 +664,6 @@ namespace Kaos.Collections
             keyValuePair = new KeyValuePair<TKey,TValue> (leaf.GetKey (index), ((PairLeaf<TValue>) leaf).GetValue (index));
             return true;
         }
-
 
         /// <summary>Gets an element with the greatest key less than or equal to the supplied key.</summary>
         /// <param name="getKey">The key to use for comparison.</param>
@@ -750,7 +716,6 @@ namespace Kaos.Collections
             info.AddValue ("Values", values, typeof (TValue[]));
         }
 
-
         /// <summary>Implements the deserialization callback and raises the deserialization event when completed.</summary>
         /// <param name="sender">The source of the deserialization event.</param>
         /// <exception cref="ArgumentNullException">When <em>sender</em> is <b>null</b>.</exception>
@@ -787,14 +752,12 @@ namespace Kaos.Collections
             serializationInfo = null;
         }
 
-
         /// <summary>Returns the data needed to serialize the map.</summary>
         /// <param name="info">An object that contains the information required to serialize the map.</param>
         /// <param name="context">A structure that contains the source and destination of the serialized stream.</param>
         /// <exception cref="ArgumentNullException">When <em>info</em> is <b>null</b>.</exception>
         void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
          => GetObjectData (info, context);
-
 
         /// <summary>Implements the deserialization callback and raises the deserialization event when completed.</summary>
         /// <param name="sender">The source of the deserialization event.</param>
@@ -849,7 +812,6 @@ namespace Kaos.Collections
             }
         }
 
-
         /// <summary>Returns an enumerator that iterates over a range with the supplied lower bound.</summary>
         /// <param name="lower">Minimum key of the range.</param>
         /// <returns>An enumerator for the specified range.</returns>
@@ -887,7 +849,6 @@ namespace Kaos.Collections
                 index = 0;
             }
         }
-
 
         /// <summary>Returns an enumerator that iterates over a range with the supplied index bounds.</summary>
         /// <param name="lowerIndex">Minimum index of the range.</param>
@@ -932,7 +893,6 @@ namespace Kaos.Collections
             while (--toGo >= 0);
         }
 
-
         /// <summary>Gets the element with the lowest sorted key in the map.</summary>
         /// <returns>The element with the lowest sorted key in the map.</returns>
         /// <remarks>This is a O(1) operation.</remarks>
@@ -944,7 +904,6 @@ namespace Kaos.Collections
 
             return new KeyValuePair<TKey,TValue> (leftmostLeaf.Key0, ((PairLeaf<TValue>) leftmostLeaf).GetValue (0));
         }
-
 
         /// <summary>Gets the element with the highest sorted key in the map.</summary>
         /// <returns>The element with the highest sorted key in the map.</returns>
@@ -959,13 +918,11 @@ namespace Kaos.Collections
             return new KeyValuePair<TKey,TValue> (rightmostLeaf.GetKey (ix), ((PairLeaf<TValue>) rightmostLeaf).GetValue (ix));
         }
 
-
         /// <summary>Returns an enumerator that iterates thru the map in reverse order.</summary>
         /// <returns>An enumerator that reverse iterates thru the map.</returns>
         /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
         public Enumerator Reverse()
          => new Enumerator (this, isReverse:true);
-
 
         /// <summary>Bypasses a supplied number of elements and yields the remaining elements.</summary>
         /// <param name="count">Number of elements to skip.</param>
@@ -978,7 +935,6 @@ namespace Kaos.Collections
         /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
         public Enumerator Skip (int count)
          => new Enumerator (this, count);
-
 
         /// <summary>
         /// Bypasses elements as long as a supplied condition is true and yields the remaining elements.
@@ -998,7 +954,6 @@ namespace Kaos.Collections
         public Enumerator SkipWhile (Func<KeyValuePair<TKey,TValue>,int,bool> predicate)
          => new Enumerator (this, predicate);
 
-
         /// <summary>Gets an enumerator that iterates thru the map.</summary>
         /// <returns>An enumerator for the map.</returns>
         public Enumerator GetEnumerator()
@@ -1013,7 +968,6 @@ namespace Kaos.Collections
         /// <returns>An enumerator for the collection.</returns>
         IEnumerator IEnumerable.GetEnumerator()
          => new Enumerator (this, isReverse:false, nonGeneric:true);
-
 
         /// <summary>Enumerates the sorted key/value pairs of a <see cref="RankedMap{TKey,TValue}"/>.</summary>
         [DebuggerTypeProxy (typeof (IEnumerableDebugView<,>))]

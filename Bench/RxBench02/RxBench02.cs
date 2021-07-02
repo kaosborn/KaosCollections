@@ -1,14 +1,13 @@
 ﻿//
 // Program: RxBench02.cs
 // Purpose:
-// • Exercise library source compiled into the same assembly as the executable.
+// • Compile to lowest supported .NET Framework version: 4.6.1.
 // • Demonstrate BCL curiosities.
 //
 
 using System;
 using System.Collections.Generic;
 using Kaos.Collections;
-[assembly: System.Reflection.AssemblyVersion ("0.1.0.0")]
 
 namespace BenchApp
 {

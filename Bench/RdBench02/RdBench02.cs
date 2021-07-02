@@ -11,7 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Kaos.Collections;
-[assembly: System.Reflection.AssemblyVersion ("0.1.0.0")]
 
 namespace BenchApp
 {
@@ -78,7 +77,6 @@ namespace BenchApp
         }
     }
 
-
     class RdBench02
     {
         static void BenchSuite<T> (string title, Exercise<T> sort)
@@ -88,36 +86,36 @@ namespace BenchApp
             Stopwatch watch = new Stopwatch();
 
             Console.WriteLine();
-            Console.WriteLine ("Running suite for {0}:", title);
+            Console.WriteLine ($"Running suite for {title}");
 
             watch.Reset(); watch.Start();
             sort.RunInsert();
-            Console.WriteLine ("Random insert: time={0}ms", watch.ElapsedMilliseconds);
+            Console.WriteLine ($"Random insert: time={watch.ElapsedMilliseconds}ms");
 
             watch.Reset(); watch.Start();
             sort.RunSeek();
-            Console.WriteLine ("-Seek: time={0}ms", watch.ElapsedMilliseconds);
+            Console.WriteLine ($"-Seek: time={watch.ElapsedMilliseconds}ms");
 
             watch.Reset(); watch.Start();
             result = sort.RunPairIterator();
-            Console.WriteLine ("-Pair iterator: time={0}ms result={1}", watch.ElapsedMilliseconds, result);
+            Console.WriteLine ($"-Pair iterator: time={watch.ElapsedMilliseconds}ms result={result}");
 
             watch.Reset(); watch.Start();
             result = sort.RunValueIterator();
-            Console.WriteLine ("-Value iterator: time={0}ms result={1}", watch.ElapsedMilliseconds, result);
+            Console.WriteLine ($"-Value iterator: time={watch.ElapsedMilliseconds}ms result={result}");
 
             sort.Clear();
             watch.Reset(); watch.Start();
             sort.RunInsertSequential();
-            Console.WriteLine ("Sequential insert: time={0}ms", watch.ElapsedMilliseconds);
+            Console.WriteLine ($"Sequential insert: time={watch.ElapsedMilliseconds}ms");
 
             watch.Reset(); watch.Start();
             sort.RunSeek();
-            Console.WriteLine ("-Seek time={0}ms", watch.ElapsedMilliseconds);
+            Console.WriteLine ($"-Seek time={watch.ElapsedMilliseconds}ms");
 
             watch.Reset(); watch.Start();
             result = sort.RunPairIterator();
-            Console.WriteLine ("-Pair iterator: time={0}ms result={1}", watch.ElapsedMilliseconds, result);
+            Console.WriteLine ($"-Pair iterator: time={watch.ElapsedMilliseconds}ms result={result}");
 
             sort.Clear();
         }

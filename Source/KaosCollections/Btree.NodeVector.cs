@@ -36,7 +36,6 @@ namespace Kaos.Collections
                 this.nodeStack = new List<Node>();
             }
 
-
             /// <summary>Make a copy with indexes of zero.</summary>
             /// <param name="path">Target of copy.</param>
             /// <param name="count">Depth of copy.</param>
@@ -48,7 +47,6 @@ namespace Kaos.Collections
                     nodeStack.Add (path.nodeStack[ix]);
                 }
             }
-
 
             /// <summary>Perform search and store the result.</summary>
             /// <param name="tree">Tree to search.</param>
@@ -74,7 +72,6 @@ namespace Kaos.Collections
                     }
                 }
             }
-
 
             public NodeVector (Btree<T> tree, T key, bool leftEdge) : this (tree)
             {
@@ -119,7 +116,6 @@ namespace Kaos.Collections
                 }
             }
 
-
             public void Copy (NodeVector path, int count)
             {
                 Debug.Assert (tree == path.tree);
@@ -131,7 +127,6 @@ namespace Kaos.Collections
                     nodeStack.Add (path.nodeStack[ix]);
                 }
             }
-
 
             // On exit: path is left-edge normalized.
             public static NodeVector CreateFromOffset (NodeVector path, int offset)
@@ -176,7 +171,6 @@ namespace Kaos.Collections
                 }
                 return null;
             }
-
 
             public static NodeVector CreateFromIndex (Btree<T> tree, int index)
             {
@@ -257,7 +251,6 @@ namespace Kaos.Collections
             public T LeftKey
              => ((Leaf) TopNode).GetKey (TopIndex-1);
 
-
             public int GetTreeIndex()
             {
                 int level = Height-1;
@@ -279,7 +272,6 @@ namespace Kaos.Collections
                 return result;
             }
 
-
             public void TiltLeft (int delta)
             {
                 for (int level = indexStack.Count-2; ; --level)
@@ -300,7 +292,6 @@ namespace Kaos.Collections
                 }
             }
 
-
             /// <summary>Get nearest key where left child path taken.</summary>
             /// <remarks>On entry, top of path refers to a branch.</remarks>
             public T GetPivot()
@@ -313,7 +304,6 @@ namespace Kaos.Collections
                         return nodeStack[level].GetKey (indexStack[level] - 1);
                 }
             }
-
 
             /// <summary>Set nearest key where left child path taken.</summary>
             /// <remarks>On entry, top of vector refers to a branch.</remarks>
@@ -337,13 +327,11 @@ namespace Kaos.Collections
                     }
             }
 
-
             public void Clear()
             {
                 indexStack.Clear();
                 nodeStack.Clear();
             }
-
 
             public void Pop()
             {
@@ -351,13 +339,11 @@ namespace Kaos.Collections
                 indexStack.RemoveAt (indexStack.Count - 1);
             }
 
-
             public void Push (Node node, int nodeIndex)
             {
                 nodeStack.Add (node);
                 indexStack.Add (nodeIndex);
             }
-
 
             /// <summary>Adjust tree path to node to the left.</summary>
             public Node TraverseLeft()
@@ -382,7 +368,6 @@ namespace Kaos.Collections
                 Clear();
                 return null;
             }
-
 
             /// <summary>Adjust tree path to node to the right.</summary>
             /// <returns>Node to immediate right of current path;
@@ -422,7 +407,6 @@ namespace Kaos.Collections
                 return node;
             }
 
-
             public void ChangePathWeight (int delta)
             {
                 for (int level = Height-2; level >= 0; --level)
@@ -440,7 +424,6 @@ namespace Kaos.Collections
                 for (int level = Height-2; level >= 0; --level)
                     ((Branch) nodeStack[level]).IncrementWeight();
             }
-
 
             // Leaf or branch has been split so insert the new anchor into a branch.
             public void Promote (T key, Node newNode, bool isAppend)
@@ -532,7 +515,6 @@ namespace Kaos.Collections
                 }
             }
 
-
             // Leaf has been emptied so non-lazy delete its pivot.
             public void Demote()
             {
@@ -570,7 +552,6 @@ namespace Kaos.Collections
                         return;
                 }
             }
-
 
             /// <summary>Coalesce or rotate if underflow.</summary>
             /// <param name="left">Branch to left of path branch.</param>
@@ -630,7 +611,6 @@ namespace Kaos.Collections
 
                 return false;
             }
-
 
             /// <summary>Balance leaf with leaf to right.</summary>
             public void Balance()

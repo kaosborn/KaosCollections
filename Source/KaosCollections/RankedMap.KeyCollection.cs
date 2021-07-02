@@ -22,11 +22,9 @@ namespace Kaos.Collections
         [DebuggerTypeProxy (typeof (ICollectionKeysDebugView<,>))]
         [DebuggerDisplay("Count = {Count}")]
         public sealed class KeyCollection :
-              ICollection<TKey>
-            , ICollection
-#if ! NET40
-            , IReadOnlyCollection<TKey>
-#endif
+            ICollection<TKey>,
+            ICollection,
+            IReadOnlyCollection<TKey>
         {
             private readonly RankedMap<TKey,TValue> tree;
 
@@ -83,11 +81,9 @@ namespace Kaos.Collections
             void ICollection<TKey>.Add (TKey key)
              => throw new NotSupportedException();
 
-
             /// <summary>This implementation always throws a <see cref="NotSupportedException" />.</summary>
             void ICollection<TKey>.Clear()
              => throw new NotSupportedException();
-
 
             /// <summary>Determines whether the map contains the supplied key.</summary>
             /// <param name="key">The key to locate.</param>
@@ -96,14 +92,12 @@ namespace Kaos.Collections
             public bool Contains (TKey key)
              => tree.ContainsKey (key);
 
-
             /// <summary>Determines whether the collection contains the supplied key.</summary>
             /// <param name="key">The key to locate.</param>
             /// <returns><b>true</b> if <em>key</em> is contained in the collection; otherwise <b>false</b>.</returns>
             /// <remarks>This is a O(log <em>n</em>) operation.</remarks>
             bool ICollection<TKey>.Contains (TKey key)
              => tree.ContainsKey (key);
-
 
             /// <summary>Copies keys to a supplied array, starting at the supplied position.</summary>
             /// <param name="array">A one-dimensional array that is the destination of the copy.</param>
@@ -123,7 +117,6 @@ namespace Kaos.Collections
             void ICollection.CopyTo (Array array, int index)
              => tree.CopyKeysTo2 (array, index);
 
-
             /// <summary>Returns the number of elements with the supplied key in the map.</summary>
             /// <param name="key">The key to return the number of occurrences for.</param>
             /// <returns>The number of elements with the supplied key.</returns>
@@ -141,7 +134,6 @@ namespace Kaos.Collections
             public int GetCount (TKey key)
              => tree.GetCount2 (key);
 
-
             /// <summary>Returns the number of distinct keys in the map.</summary>
             /// <returns>The number of distinct keys in the map.</returns>
             /// <remarks>
@@ -157,7 +149,6 @@ namespace Kaos.Collections
             public int GetDistinctCount()
              => tree.GetDistinctCount2();
 
-
             /// <summary>Gets the key at the supplied index.</summary>
             /// <param name="index">The zero-based index of the element to get.</param>
             /// <returns>The key at <em>index</em>.</returns>
@@ -172,7 +163,6 @@ namespace Kaos.Collections
                 return leaf.GetKey (leafIndex);
             }
 
-
             /// <summary>Gets the key at the supplied index or the default if the index is out of range.</summary>
             /// <param name="index">The zero-based index of the key to get.</param>
             /// <returns>The key at <em>index</em>.</returns>
@@ -185,7 +175,6 @@ namespace Kaos.Collections
                 var leaf = (PairLeaf<TValue>) tree.Find (index, out int leafIndex);
                 return leaf.GetKey (leafIndex);
             }
-
 
             /// <summary>Gets the index of the first occurrence of supplied key.</summary>
             /// <param name="key">The key to find.</param>
@@ -203,7 +192,6 @@ namespace Kaos.Collections
             public int IndexOf (TKey key)
              => tree.FindEdgeForIndex (key, out Leaf _, out int _, leftEdge:true);
 
-
             /// <summary>Gets the minimum key in the map per the comparer.</summary>
             /// <returns>The minimum key in the map.</returns>
             /// <remarks>This is a O(1) operation.</remarks>
@@ -215,7 +203,6 @@ namespace Kaos.Collections
 
                 return tree.leftmostLeaf.Key0;
             }
-
 
             /// <summary>Gets the maximum key in the map per the comparer.</summary>
             /// <returns>The maximum key in the map.</returns>
@@ -229,13 +216,11 @@ namespace Kaos.Collections
                 return tree.rightmostLeaf.GetKey (tree.rightmostLeaf.KeyCount - 1);
             }
 
-
             /// <summary>This implementation always throws a <see cref="NotSupportedException" />.</summary>
             /// <param name="key">The key to remove.</param>
             /// <returns><b>true</b> if the object was removed; otherwise <b>false</b>.</returns>
             bool ICollection<TKey>.Remove (TKey key)
              => throw new NotSupportedException();
-
 
             /// <summary>Bypasses a supplied number of keys and yields the remaining keys.</summary>
             /// <param name="count">Number of keys to skip.</param>
@@ -248,7 +233,6 @@ namespace Kaos.Collections
             /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
             public Enumerator Skip (int count)
              => new Enumerator (tree, count);
-
 
             /// <summary>
             /// Bypasses keys as long as a supplied condition is true and yields the remaining keys.
@@ -268,7 +252,6 @@ namespace Kaos.Collections
             public Enumerator SkipWhile (Func<TKey,int,bool> predicate)
              => new Enumerator (tree, predicate);
 
-
             /// <summary>Gets the least key greater than the supplied key.</summary>
             /// <param name="getKey">The key to use for comparison.</param>
             /// <param name="key">The actual key if found; otherwise the default.</param>
@@ -281,7 +264,6 @@ namespace Kaos.Collections
                 else
                 { key = leaf.GetKey (index); return true; }
             }
-
 
             /// <summary>Gets the least key greater than or equal to the supplied key.</summary>
             /// <param name="getKey">The key to use for comparison.</param>
@@ -296,7 +278,6 @@ namespace Kaos.Collections
                 { key = leaf.GetKey (index); return true; }
             }
 
-
             /// <summary>Gets the greatest key that is less than the supplied key.</summary>
             /// <param name="getKey">The key to use for comparison.</param>
             /// <param name="key">The actual key if found; otherwise the default.</param>
@@ -309,7 +290,6 @@ namespace Kaos.Collections
                 else
                 { key = leaf.GetKey (index); return true; }
             }
-
 
             /// <summary>Gets the greatest key that is less than or equal to the supplied key.</summary>
             /// <param name="getKey">The key to use for comparison.</param>
@@ -342,13 +322,11 @@ namespace Kaos.Collections
                     yield return key;
             }
 
-
             /// <summary>Returns an enumerator that iterates thru the map keys in reverse order.</summary>
             /// <returns>An enumerator that reverse iterates thru the map keys.</returns>
             /// <exception cref="InvalidOperationException">When the map was modified after the enumerator was created.</exception>
             public Enumerator Reverse()
              => new Enumerator (tree, isReverse:true);
-
 
             /// <summary>Gets an enumerator that iterates thru the collection.</summary>
             /// <returns>An enumerator for the collection.</returns>
@@ -364,7 +342,6 @@ namespace Kaos.Collections
             /// <returns>An enumerator for the collection.</returns>
             IEnumerator IEnumerable.GetEnumerator()
              => new Enumerator (tree);
-
 
             /// <summary>Enumerates the items of a <see cref="RankedMap{TKey,TValue}.KeyCollection"/> in sort order.</summary>
             [DebuggerTypeProxy (typeof (IEnumerableKeysDebugView<,>))]

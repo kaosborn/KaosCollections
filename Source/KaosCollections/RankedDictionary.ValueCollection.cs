@@ -47,10 +47,8 @@ namespace Kaos.Collections
         [DebuggerDisplay ("Count = {Count}")]
         public sealed class ValueCollection :
             ICollection<TValue>,
-            ICollection
-#if ! NET40
-            , IReadOnlyCollection<TValue>
-#endif
+            ICollection,
+            IReadOnlyCollection<TValue>
         {
             private readonly RankedDictionary<TKey,TValue> tree;
 
@@ -99,11 +97,9 @@ namespace Kaos.Collections
             void ICollection<TValue>.Add (TValue value)
              => throw new NotSupportedException();
 
-
             /// <summary>This implementation always throws a <see cref="NotSupportedException" />.</summary>
             void ICollection<TValue>.Clear()
              => throw new NotSupportedException();
-
 
             /// <summary>Determines whether the dictionary contains the supplied value.</summary>
             /// <param name="value">The value to locate.</param>
@@ -111,7 +107,6 @@ namespace Kaos.Collections
             /// <remarks>This is a O(<em>n</em>) operation.</remarks>
             bool ICollection<TValue>.Contains (TValue value)
              => tree.ContainsValue2 (value) >= 0;
-
 
             /// <summary>Copies values to a supplied array, starting as the supplied position.</summary>
             /// <param name="array">A one-dimensional array that is the destination of the copy.</param>
@@ -165,7 +160,6 @@ namespace Kaos.Collections
                     }
             }
 
-
             /// <summary>This implementation always throws a <see cref="NotSupportedException"/>.</summary>
             /// <param name="value">The value to remove.</param>
             /// <returns><b>true</b> if the object was removed; otherwise <b>false</b>.</returns>
@@ -184,7 +178,6 @@ namespace Kaos.Collections
             public TValue this[int index]
              => ElementAt (index);
 
-
             /// <summary>Gets the value at the supplied index.</summary>
             /// <param name="index">The zero-based index of the value to get.</param>
             /// <returns>The value at <em>index</em>.</returns>
@@ -199,7 +192,6 @@ namespace Kaos.Collections
                 return leaf.GetValue (leafIndex);
             }
 
-
             /// <summary>Gets the value at the supplied index or the default if the index is out of range.</summary>
             /// <param name="index">The zero-based index of the value to get.</param>
             /// <returns>The value at <em>index</em>.</returns>
@@ -213,7 +205,6 @@ namespace Kaos.Collections
                 return leaf.GetValue (leafIndex);
             }
 
-
             /// <summary>Gets the value of the element with the minimum key in the dictionary per the comparer.</summary>
             /// <returns>The value of the element with the minimum key.</returns>
             /// <remarks>This is a O(1) operation.</remarks>
@@ -226,7 +217,6 @@ namespace Kaos.Collections
                 return ((PairLeaf<TValue>) tree.leftmostLeaf).GetValue (0);
             }
 
-
             /// <summary>Gets the index of the first element with the supplied value.</summary>
             /// <param name="value">The value to find.</param>
             /// <returns>The index of <em>value</em> if found; otherwise -1.</returns>
@@ -235,7 +225,6 @@ namespace Kaos.Collections
             /// </remarks>
             public int IndexOf (TValue value)
              => tree.ContainsValue2<TValue> (value);
-
 
             /// <summary>Gets the value of the element with the maximum key in the dictionary per the comparer.</summary>
             /// <returns>The value of the element with the maximum key.</returns>
@@ -249,7 +238,6 @@ namespace Kaos.Collections
                 return ((PairLeaf<TValue>) tree.rightmostLeaf).GetValue (tree.rightmostLeaf.KeyCount - 1);
             }
 
-
             /// <summary>Bypasses a supplied number of values and yields the remaining values.</summary>
             /// <param name="count">Number of values to skip.</param>
             /// <returns>The values after the supplied offset.</returns>
@@ -261,7 +249,6 @@ namespace Kaos.Collections
             /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
             public Enumerator Skip (int count)
              => new Enumerator (tree, count);
-
 
             /// <summary>
             /// Bypasses values as long as a supplied condition is true and yields the remaining values.
@@ -280,7 +267,6 @@ namespace Kaos.Collections
             /// <exception cref="InvalidOperationException">When the dictionary was modified after the enumerator was created.</exception>
             public Enumerator SkipWhile (Func<TValue,int,bool> predicate)
              => new Enumerator (tree, predicate);
-
 
             /// <summary>Returns an enumerator that iterates thru the dictionary values in reverse key order.</summary>
             /// <returns>An enumerator that reverse iterates thru the dictionary values.</returns>
@@ -306,7 +292,6 @@ namespace Kaos.Collections
             /// <returns>An enumerator for the collection.</returns>
             IEnumerator IEnumerable.GetEnumerator()
              => new Enumerator (tree);
-
 
             /// <summary>Enumerates the items of a <see cref="RankedDictionary{TKey,TValue}.ValueCollection"/> in key sort order.</summary>
             [DebuggerTypeProxy (typeof (IEnumerableValuesDebugView<,>))]

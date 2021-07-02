@@ -66,15 +66,13 @@ namespace Kaos.Collections
     [DebuggerDisplay ("Count = {Count}")]
     [Serializable]
     public partial class RankedSet<T> :
-        Btree<T>
-        , ISet<T>
-        , ICollection<T>
-        , ICollection
-#if ! NET40
-        , IReadOnlyCollection<T>
-#endif
-        , ISerializable
-        , IDeserializationCallback
+        Btree<T>,
+        ISet<T>,
+        ICollection<T>,
+        ICollection,
+        IReadOnlyCollection<T>,
+        ISerializable,
+        IDeserializationCallback
     {
         #region Constructors
 
@@ -185,12 +183,10 @@ namespace Kaos.Collections
             return AddKey (item, path);
         }
 
-
         /// <summary>Removes all items from the set.</summary>
         /// <remarks>This is a O(1) operation.</remarks>
         public void Clear()
          => Initialize();
-
 
         /// <summary>Determines whether the set contains the supplied item.</summary>
         /// <param name="item">The item to locate.</param>
@@ -201,7 +197,6 @@ namespace Kaos.Collections
             Leaf _ = Find (item, out int index);
             return index >= 0;
         }
-
 
         /// <summary>Copies the set to a compatible array, starting at the beginning of the array.</summary>
         /// <param name="array">A one-dimensional array that is the destination of the copy.</param>
@@ -238,7 +233,6 @@ namespace Kaos.Collections
         void ICollection.CopyTo (Array array, int index)
          => CopyKeysTo2 (array, index);
 
-
         /// <summary>Removes the supplied item from the set.</summary>
         /// <param name="item">The item to remove.</param>
         /// <returns><b>true</b> if <em>item</em> was found and removed; otherwise <b>false</b>.</returns>
@@ -252,7 +246,6 @@ namespace Kaos.Collections
             Remove2 (path);
             return true;
         }
-
 
         /// <summary>Removes an index range of items from the set.</summary>
         /// <param name="index">The zero-based starting index of the range of items to remove.</param>
@@ -277,7 +270,6 @@ namespace Kaos.Collections
 
             RemoveRange2 (index, count);
         }
-
 
         /// <summary>Removes all items that match the condition defined by the supplied predicate from the set.</summary>
         /// <param name="match">The condition of the items to remove.</param>
@@ -322,7 +314,6 @@ namespace Kaos.Collections
                         Remove (key);
         }
 
-
         /// <summary>Removes all items that are not in a supplied collection.</summary>
         /// <param name="other">The collection of items to intersect.</param>
         /// <example>
@@ -355,7 +346,6 @@ namespace Kaos.Collections
                 }
         }
 
-
         /// <summary>Determines whether the set is a proper subset of the supplied collection.</summary>
         /// <param name="other">The collection to compare to this set.</param>
         /// <returns><b>true</b> if the set is a proper subset of <em>other</em>; otherwise <b>false</b>.</returns>
@@ -379,7 +369,6 @@ namespace Kaos.Collections
 
             return true;
         }
-
 
         /// <summary>Determines whether the set is a proper superset of the supplied collection.</summary>
         /// <param name="other">The collection to compare to this set.</param>
@@ -405,7 +394,6 @@ namespace Kaos.Collections
             return true;
         }
 
-
         /// <summary>Determines whether the set is a subset of the supplied collection.</summary>
         /// <param name="other">The collection to compare to this set.</param>
         /// <returns><b>true</b> if the set is a subset of <em>other</em>; otherwise <b>false</b>.</returns>
@@ -430,7 +418,6 @@ namespace Kaos.Collections
             return true;
         }
 
-
         /// <summary>Determines whether a set is a superset of the supplied collection.</summary>
         /// <param name="other">The items to compare to the current set.</param>
         /// <returns><b>true</b> if the set is a superset of <em>other</em>; otherwise <b>false</b>.</returns>
@@ -449,7 +436,6 @@ namespace Kaos.Collections
 
             return true;
         }
-
 
         /// <summary>Determines whether the set and a supplied collection share common items.</summary>
         /// <param name="other">The collection to compare to this set.</param>
@@ -484,7 +470,6 @@ namespace Kaos.Collections
             return false;
         }
 
-
         /// <summary>Determines whether the set and the supplied collection contain the same items.</summary>
         /// <param name="other">The collection to compare to this set.</param>
         /// <returns><b>true</b> if the set is equal to <em>other</em>; otherwise <b>false</b>.</returns>
@@ -509,7 +494,6 @@ namespace Kaos.Collections
 
             return true;
         }
-
 
         /// <summary>Modifies the set so that it contains only items that are present either in itself or in the supplied collection, but not both.</summary>
         /// <param name="other">The collection to compare to this set.</param>
@@ -565,7 +549,6 @@ namespace Kaos.Collections
             }
         }
 
-
         /// <summary>Add all items in <em>other</em> to this set that are not already in this set.</summary>
         /// <param name="other">The collection to add to this set.</param>
         /// <remarks>Duplicate values in <em>other</em> are ignored.</remarks>
@@ -595,7 +578,6 @@ namespace Kaos.Collections
         protected RankedSet (SerializationInfo info, StreamingContext context) : base (new Btree<T>.Leaf())
          => this.serializationInfo = info;
 
-
         /// <summary>Returns the data needed to serialize the set.</summary>
         /// <param name="info">An object that contains the information required to serialize the set.</param>
         /// <param name="context">A structure that contains the source and destination of the serialized stream.</param>
@@ -613,7 +595,6 @@ namespace Kaos.Collections
             CopyTo (items, 0);
             info.AddValue ("Items", items, typeof (T[]));
         }
-
 
         /// <summary>Implements the deserialization callback and raises the deserialization event when completed.</summary>
         /// <param name="sender">The source of the deserialization event.</param>
@@ -644,14 +625,12 @@ namespace Kaos.Collections
             serializationInfo = null;
         }
 
-
         /// <summary>Returns the data needed to serialize the set.</summary>
         /// <param name="info">An object that contains the information required to serialize the set.</param>
         /// <param name="context">A structure that contains the source and destination of the serialized stream.</param>
         /// <exception cref="ArgumentNullException">When <em>info</em> is <b>null</b>.</exception>
         void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
          => GetObjectData (info, context);
-
 
         /// <summary>Implements the deserialization callback and raises the deserialization event when completed.</summary>
         /// <param name="sender">The source of the deserialization event.</param>
@@ -678,7 +657,6 @@ namespace Kaos.Collections
             return leaf.GetKey (leafIndex);
         }
 
-
         /// <summary>Gets the item at the supplied index or the default if the index is out of range.</summary>
         /// <param name="index">The zero-based index of the item to get.</param>
         /// <returns>The item at <em>index</em>.</returns>
@@ -692,7 +670,6 @@ namespace Kaos.Collections
             return leaf.GetKey (leafIndex);
         }
 
-
         /// <summary>Gets the minimum item in the set per the comparer.</summary>
         /// <returns>The minimum item in the set.</returns>
         /// <remarks>This is a O(1) operation.</remarks>
@@ -705,7 +682,6 @@ namespace Kaos.Collections
             return leftmostLeaf.Key0;
         }
 
-
         /// <summary>Gets the maximum item in the set per the comparer.</summary>
         /// <returns>The maximum item in the set.</returns>
         /// <remarks>This is a O(1) operation.</remarks>
@@ -717,7 +693,6 @@ namespace Kaos.Collections
 
             return rightmostLeaf.GetKey (rightmostLeaf.KeyCount - 1);
         }
-
 
         /// <summary>Returns an IEnumerable that iterates thru the set in reverse order.</summary>
         /// <returns>An enumerator that reverse iterates thru the set.</returns>
@@ -774,7 +749,6 @@ namespace Kaos.Collections
             }
         }
 
-
         /// <summary>Returns an enumerator that iterates over a range with the supplied index bounds.</summary>
         /// <param name="lowerIndex">Minimum index of the range.</param>
         /// <param name="upperIndex">Maximum index of the range.</param>
@@ -818,7 +792,6 @@ namespace Kaos.Collections
             while (--toGo >= 0);
         }
 
-
         /// <summary>Returns an enumerator that iterates over a range with the supplied lower bound.</summary>
         /// <param name="lower">Minimum of the range.</param>
         /// <returns>An enumerator for the specified range.</returns>
@@ -859,7 +832,6 @@ namespace Kaos.Collections
             }
         }
 
-
         /// <summary>Gets the index of the supplied item.</summary>
         /// <param name="item">The item to find.</param>
         /// <returns>The index of <em>item</em> if found; otherwise a negative value holding the bitwise complement of the insert point.</returns>
@@ -875,7 +847,6 @@ namespace Kaos.Collections
         /// </remarks>
         public int IndexOf (T item)
          => FindEdgeForIndex (item, out Leaf _, out int _, leftEdge:true);
-
 
         /// <summary>Removes the item at the supplied index from the set.</summary>
         /// <param name="index">The zero-based position of the item to remove.</param>
@@ -894,7 +865,6 @@ namespace Kaos.Collections
             RemoveAt2 (index);
         }
 
-
         /// <summary>Replace an item if present.</summary>
         /// <param name="item">The replacement item.</param>
         /// <returns><b>true</b> if an item is replaced; otherwise <b>false</b>.</returns>
@@ -912,7 +882,6 @@ namespace Kaos.Collections
             ReplaceKey (path, item);
             return true;
         }
-
 
         /// <summary>Replace an item or optionally add it if missing.</summary>
         /// <param name="item">The replacement or new item.</param>
@@ -935,7 +904,6 @@ namespace Kaos.Collections
             return true;
         }
 
-
         /// <summary>Bypasses a supplied number of items and yields the remaining items.</summary>
         /// <param name="count">Number of items to skip.</param>
         /// <returns>The items after the supplied offset.</returns>
@@ -947,7 +915,6 @@ namespace Kaos.Collections
         /// <exception cref="InvalidOperationException">When the set was modified after the enumerator was created.</exception>
         public Enumerator Skip (int count)
          => new Enumerator (this, count);
-
 
         /// <summary>
         /// Bypasses elements as long as a supplied condition is true and yields the remaining items.
@@ -967,7 +934,6 @@ namespace Kaos.Collections
         public Enumerator SkipWhile (Func<T,int,bool> predicate)
          => new Enumerator (this, predicate);
 
-
         /// <summary>Gets the actual item for the supplied search item.</summary>
         /// <param name="getItem">The item to find.</param>
         /// <param name="item">
@@ -985,7 +951,6 @@ namespace Kaos.Collections
             return true;
         }
 
-
         /// <summary>Gets the least item greater than the supplied item.</summary>
         /// <param name="getItem">The item to use for comparison.</param>
         /// <param name="item">The actual item if found; otherwise the default.</param>
@@ -998,7 +963,6 @@ namespace Kaos.Collections
             else
             { item = leaf.GetKey (index); return true; }
         }
-
 
         /// <summary>Gets the least item greater than or equal to the supplied item.</summary>
         /// <param name="getItem">The item to use for comparison.</param>
@@ -1013,7 +977,6 @@ namespace Kaos.Collections
             { item = leaf.GetKey (index); return true; }
         }
 
-
         /// <summary>Gets the greatest item that is less than the supplied item.</summary>
         /// <param name="getItem">The item to use for comparison.</param>
         /// <param name="item">The actual item if found; otherwise the default.</param>
@@ -1026,7 +989,6 @@ namespace Kaos.Collections
             else
             { item = leaf.GetKey (index); return true; }
         }
-
 
         /// <summary>Gets the greatest item that is less than or equal to the supplied item.</summary>
         /// <param name="getItem">The item to use for comparison.</param>
@@ -1053,17 +1015,14 @@ namespace Kaos.Collections
         public static IEqualityComparer<RankedSet<T>> CreateSetComparer()
          => CreateSetComparer (null);
 
-
         /// <summary>Returns an equality comparer using a supplied comparer that can be used to create a collection that contains sets.</summary>
         /// <param name="memberEqualityComparer">Used for creating the returned comparer.</param>
         /// <returns>An equality comparer for creating a collection of sets.</returns>
         public static IEqualityComparer<RankedSet<T>> CreateSetComparer (IEqualityComparer<T> memberEqualityComparer)
          => new RankedSetEqualityComparer (memberEqualityComparer);
 
-
         private bool HasEqualComparer (RankedSet<T> other)
          => Comparer == other.Comparer || Comparer.Equals (other.Comparer);
-
 
         private static bool RankedSetEquals (RankedSet<T> set1, RankedSet<T> set2, IComparer<T> comparer)
         {
@@ -1112,7 +1071,6 @@ namespace Kaos.Collections
         /// <returns>An enumerator that iterates thru the collection in sorted order.</returns>
         IEnumerator IEnumerable.GetEnumerator()
          => new Enumerator (this);
-
 
         /// <summary>Enumerates the items of a <see cref="RankedSet{T}"/> in sort order.</summary>
         [DebuggerTypeProxy (typeof (IEnumerableDebugView<>))]

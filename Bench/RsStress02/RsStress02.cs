@@ -12,7 +12,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Kaos.Collections;
-[assembly: AssemblyVersion ("0.1.0.0")]
 
 namespace StressApp
 {
@@ -30,8 +29,8 @@ namespace StressApp
                         for (int order = 4; order <= 7; ++order)
                         {
                             set = new RankedSet<int> { Capacity=order };
-                            for (int ii = 0; ii < width; ++ii) set.Add (ii);
-                            //Console.WriteLine ("width=" + width + ", index=" + index + ", count=" + count + ", order=" + order);
+                            for (int ii = 0; ii < width; ++ii)
+                                set.Add (ii);
 
                             try
                             {
@@ -46,7 +45,7 @@ namespace StressApp
                             }
                             catch (Exception)
                             {
-                                Console.WriteLine ("\nwidth=" + width + ", index=" + index + ", count=" + count + ", order=" + order);
+                                Console.WriteLine ($"\nwidth={width}, index={index}, count={count}, order={order}");
                                 throw;
                             }
                         }

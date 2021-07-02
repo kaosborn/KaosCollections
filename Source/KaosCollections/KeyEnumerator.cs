@@ -32,7 +32,6 @@ namespace Kaos.Collections
             public KeyEnumerator (Btree<T> owner, Func<T,int,bool> condition) : base (owner)
              => Bypass3 (condition, (leaf,ix) => leaf.GetKey (ix));
 
-
             public void Initialize()
             {
                 Init();

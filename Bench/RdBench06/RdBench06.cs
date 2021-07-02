@@ -13,7 +13,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Kaos.Collections;
-[assembly: System.Reflection.AssemblyVersion ("0.1.0.0")]
 
 namespace BenchApp
 {
@@ -54,7 +53,7 @@ namespace BenchApp
                 if (rdPair.Key != -rdPair.Value)
                     Console.Write ("FAIL");
 
-                var lx = String.Format ("{0,9};{1,4};{2,5};{3,5}", ix, row, slTime, rdTime);
+                var lx = String.Format ($"{ix,9};{row,4};{slTime,5};{rdTime,5}");
                 if (row > 0)
                     Console.WriteLine (lx);
                 ++row;
@@ -72,7 +71,7 @@ namespace BenchApp
             if (rdPair2.Key != -rdPair2.Value)
                 Console.Write ("FAIL");
 
-            var lx2 = String.Format ("{0,9};{1};{2,5};{3,5}", reps, "Last", slTime2, rdTime2);
+            var lx2 = String.Format ($"{reps,9};Last;{slTime2,5};{rdTime2,5}");
             Console.WriteLine (lx2);
         }
 

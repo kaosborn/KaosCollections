@@ -9,7 +9,6 @@
 using System;
 using System.Reflection;
 using Kaos.Collections;
-[assembly: AssemblyVersion ("0.1.0.0")]
 
 namespace ChartApp
 {

@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Kaos.Collections;
-[assembly: AssemblyVersion ("0.1.0.0")]
 
 namespace BenchApp
 {
@@ -30,7 +29,7 @@ namespace BenchApp
             var watch = new Stopwatch();
 
             Console.WriteLine ("RankedSet Bulk Add and indexing");
-            Console.WriteLine (divs.ToString() + " increments of " + (reps / divs));
+            Console.WriteLine ($"{divs} increments of {(reps / divs)}");
             Console.WriteLine ("RankedSet Size;SortedSet Size;RankedSet Add;SortedSet Add;RankedSet ElementAt;SortedSet ELementAt;RankedSetLast;SortedSet Last");
 
             for (int k1 = 0; k1 <= divs; ++k1)
@@ -66,8 +65,7 @@ namespace BenchApp
                 var elAtRs = watch.ElapsedMilliseconds;
 
                 if (k1 > 0)
-                    Console.WriteLine ("{0,8};{1,8};{2,5};{3,5};{4,2};{5,4};{6,2};{7,4}",
-                        rs.Count, ss.Count, loadRs, loadSs, lastRs, lastSs, elAtRs, elAtSs);
+                    Console.WriteLine ($"{rs.Count,8};{ss.Count,8};{loadRs,5};{loadSs,5};{lastRs,2};{lastSs,4};{elAtRs,2};{elAtSs,4}");
             }
         }
     }
