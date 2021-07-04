@@ -51,6 +51,11 @@
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
-  <Import Project="..\..\Source\KaosCollections\KaosCollections.projitems" Label="Shared" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\Collections\Collections.csproj">
+      <Project>{d44b60e8-0c5a-42dd-87b7-1125e37f4749}</Project>
+      <Name>Collections</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

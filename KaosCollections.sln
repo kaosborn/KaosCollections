@@ -87,7 +87,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RmExample01", "Bench\RmExam
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RmExample05", "Bench\RmExample05\RmExample05.csproj", "{A1C7A6DB-93F8-4C7D-BAAB-6D1965971B32}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RsBench01", "Bench\RsBench01\RsBench01.csproj", "{40823D4F-4AB8-4BF7-A9A2-4CCE6F8CB46E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RsBench01", "Bench\RsBench01\RsBench01.csproj", "{40823D4F-4AB8-4BF7-A9A2-4CCE6F8CB46E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RmExample02", "Bench\RmExample02\RmExample02.csproj", "{333AFE6C-CF9B-45F0-B4C3-74AF2C0E65B2}"
 EndProject
@@ -141,7 +141,6 @@ Global
 		Source\KaosCollections\KaosCollections.projitems*{d44b60e8-0c5a-42dd-87b7-1125e37f4749}*SharedItemsImports = 5
 		Source\KaosCollections\KaosCollections.projitems*{d548bad1-2deb-4e61-86cc-599ec896043b}*SharedItemsImports = 13
 		Source\KaosCollections\KaosCollections.projitems*{d5da9f3e-f99b-4f06-86fe-7d0fdac44a06}*SharedItemsImports = 5
-		Source\KaosCollections\KaosCollections.projitems*{ede8bef7-8503-45d1-95c5-47b827f18130}*SharedItemsImports = 4
 		Source\KaosCollections\KaosCollections.projitems*{ef8631da-9b03-4240-9a02-aaa48005416e}*SharedItemsImports = 5
 		Source\KaosCollections\KaosCollections.projitems*{f1cd6891-a2a0-4443-9960-27e2a24d87f1}*SharedItemsImports = 5
 		Source\KaosCollections\KaosCollections.projitems*{f87ef1a4-aaf7-4c59-a93b-1478fb557bb7}*SharedItemsImports = 5

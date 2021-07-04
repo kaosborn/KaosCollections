@@ -1,5 +1,7 @@
 ﻿// Program: RxBench01.cs
-// Purpose: Contrast the collection classes.
+// Purpose:
+// • Exercise the primary classes of the Kaos.Collections namespace.
+// • Reference the library assembly with a target of .NET Core.
 
 using System;
 using Kaos.Collections;

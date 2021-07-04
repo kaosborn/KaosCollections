@@ -65,12 +65,6 @@ Finally, examples are repeated in the repository wiki:
 
 * https://github.com/kaosborn/KaosCollections/wiki/
 
-### Roadmap
-
-Latest library builds are posted as workflow artifacts to:
-
-https://github.com/kaosborn/KaosCollections/actions?query=workflow%3ABuild
-
 ### Repository top-level folders
 
 This repository holds a single Visual Studio solution plus a few more files.
@@ -85,7 +79,7 @@ Folders referenced by the solution are:
   * Stress test.
   * Show breadth first tree charts of operation sequences.
 
-* Collections - Builds the `.nuget` package.
+* `Collections` - Builds the `.nuget` package.
 The current build of this NuGet library targets .NET Standard 2.0.
 
 * `Help` - Contains a Sandcastle Help File Builder project that produces documentation from embedded XML comments.
